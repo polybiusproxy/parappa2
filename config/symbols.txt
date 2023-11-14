@@ -1,0 +1,29 @@
+// crt0
+// ENTRYPOINT
+_start 	= 0x00100008; // type:func
+_exit 	= 0x001000b8; // type:func
+_root	= 0x001000c0; // type:func
+
+reg_frame = 0x001000c8; // type:func
+dereg_frame = 0x00100100; // type:func
+
+// dbug/syori.c
+SyoriLineInit = 0x00100838; // type:func
+SyoriLineReset = 0x00100840; // type:func
+SyoriLineCnt = 0x00100848; // type:func
+SyoriLineDisp = 0x00100850; // type:func
+
+// os/syssub.c
+DrawGetTbpPos = 0x00103030; // type:func
+
+// os/system.c
+main 				= 0x001030a8; // type:func
+SetIopModule 		= 0x001030f8; // type:func
+firstClrFrameBuffer = 0x001031c8; // type:func
+initSystem 			= 0x001032f8; // type:func
+exitSystem 			= 0x001035a8; // type:func
+SetOsFuncAddr 		= 0x001035d8; // type:func
+osFunc 				= 0x001035e0; // type:func
+systemCtrlMain 		= 0x00103798; // type:func
+FullAllocAndFree	= 0x001037d8; // type:func
+mallocInit 			= 0x00103828; // type:func

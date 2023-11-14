@@ -1,0 +1,43 @@
+name: PaRappa the Rapper 2 (NTSC-J) (July 12th prototype)
+sha1: fa7b1d19c68c4d4f06cf3047a05f2b5daaae2a1e
+options:
+    # paths
+    basename: SCPS_150.17
+    target_path: iso/SCPS_150.17
+    base_path: ..
+    
+    asm_path: asm
+    src_path: src
+    build_path: build
+    
+    symbol_addrs_path: config/symbols.txt
+    
+    # compiler 
+    compiler: GCC
+    platform: ps2
+    
+    rodata_string_guesser_level: 2 # improve string detection
+    disasm_unknown: True
+    # gp_value: 0x3A0EF0 # (in case we need this later)
+    # subalign: 8
+    
+    find_file_boundaries: False
+    section_order: [".text", ".data", ".rodata", ".bss"]
+    auto_all_sections: [".data", ".rodata", ".bss"]
+segments:
+    - [0, databin, elf_header]
+    - name: main
+      type: code
+      start: 0x1000
+      vram: 0x100000
+      subsegments:
+        - [0x1000, asm, unk]
+        
+        - [0x79040, databin, vutext] # .vutext
+        - [0x7b900, data, unk] # .data
+        - [0x291ed0, databin, vudata] # .vudata
+        - [0x291f00, rodata, unk] # .rodata
+        - [0x299d80, databin, gcc_except_table] # .gcc_except_table
+        - [0x299f00, databin, unk_sections] # .lit4 start
+    - [0x29AA1C, databin] # .bss
+    - [0x8AAF0D]

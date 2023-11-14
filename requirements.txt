@@ -1,0 +1,3 @@
+spimdisasm==1.18.0
+rabbitizer==1.7.10
+tqdm
