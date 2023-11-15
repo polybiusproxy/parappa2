@@ -32,14 +32,13 @@ segments:
       vram: 0x100000
       subsegments:
         - [0x1000, asm, unk]
-        
-        - [0x79040, databin, vutext] # .vutext
+        - [0x79040, data, vutext] # .vutext
         - [0x7b900, data, unk]
-        - [0x291ed0, databin, vudata] # .vudata
+        - [0x291ed0, data, vudata] # .vudata
         - [0x291f00, databin] # .rodata
-        - [0x299d80, databin, gcc_except_table] # .gcc_except_table
-        - [0x299f00, databin] # .lit4
-        - [0x29A300, databin] # .sdata
-        - [0x29A9D8, databin] # .sbss / .bss
+        - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
+        - [0x299f00, rodatabin] # .lit4
+        - [0x29A300, rodatabin] # .sdata
+        - [0x29A9D8, rodatabin] # .sbss / .bss
     - [0x29B000, databin] # .mfifo
     - [0x8AAF0D]
