@@ -34,7 +34,7 @@ segments:
         - [0x1000, asm, unk]
         
         - [0x79040, databin, vutext] # .vutext
-        - [0x7b900, databin] # .data
+        - [0x7b900, data, unk]
         - [0x291ed0, databin, vudata] # .vudata
         - [0x291f00, databin] # .rodata
         - [0x299d80, databin, gcc_except_table] # .gcc_except_table
