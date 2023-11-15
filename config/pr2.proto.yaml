@@ -19,7 +19,7 @@ options:
     rodata_string_guesser_level: 2 # improve string detection
     disasm_unknown: True
     # gp_value: 0x3A0EF0 # (in case we need this later)
-    # subalign: 8
+    subalign: 8
     
     find_file_boundaries: False
     section_order: [".text", ".data", ".rodata", ".bss"]
@@ -34,10 +34,12 @@ segments:
         - [0x1000, asm, unk]
         
         - [0x79040, databin, vutext] # .vutext
-        - [0x7b900, data, unk] # .data
+        - [0x7b900, databin] # .data
         - [0x291ed0, databin, vudata] # .vudata
-        - [0x291f00, rodata, unk] # .rodata
+        - [0x291f00, databin] # .rodata
         - [0x299d80, databin, gcc_except_table] # .gcc_except_table
-        - [0x299f00, databin, unk_sections] # .lit4 start
-    - [0x29AA1C, databin] # .bss
+        - [0x299f00, databin] # .lit4
+        - [0x29A300, databin] # .sdata
+        - [0x29A9D8, databin] # .sbss / .bss
+    - [0x29B000, databin] # .mfifo
     - [0x8AAF0D]

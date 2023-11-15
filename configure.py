@@ -102,7 +102,7 @@ def build_stuff(linker_entries: List[LinkerEntry]):
     # Rules
     cross = "mips-linux-gnu-"
 
-    ld_args = f"-EL -T undefined_syms_auto.txt -T undefined_funcs_auto.txt -Map $mapfile -T $in -o $out"
+    ld_args = f"-EL -T undefined_syms_auto.txt -T undefined_funcs_auto.txt -T undefined_syms.txt -Map $mapfile -T $in -o $out"
 
     ninja.rule(
         "as",
