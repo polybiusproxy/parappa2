@@ -20,6 +20,7 @@ import segtypes.common.asm
 import segtypes.common.bin
 import segtypes.common.c
 import segtypes.common.databin
+import segtypes.common.rodatabin
 import segtypes.common.bss
 import segtypes.common.data
 from segtypes.linker_entry import LinkerEntry
@@ -102,7 +103,7 @@ def build_stuff(linker_entries: List[LinkerEntry]):
     # Rules
     cross = "mips-linux-gnu-"
 
-    ld_args = f"-EL -T undefined_syms_auto.txt -T undefined_funcs_auto.txt -Map $mapfile -T $in -o $out"
+    ld_args = f"-EL -T undefined_syms_auto.txt -T undefined_funcs_auto.txt -T undefined_syms.txt -Map $mapfile -T $in -o $out"
 
     ninja.rule(
         "as",
@@ -151,7 +152,7 @@ def build_stuff(linker_entries: List[LinkerEntry]):
             build(entry.object_path, entry.src_paths, "as")
         elif isinstance(seg, segtypes.common.c.CommonSegC):
             build(entry.object_path, entry.src_paths, "cc")
-        elif isinstance(seg, segtypes.common.databin.CommonSegDatabin):
+        elif isinstance(seg, segtypes.common.databin.CommonSegDatabin) or isinstance(seg, segtypes.common.rodatabin.CommonSegRodatabin):
             build(entry.object_path, entry.src_paths, "as")
         else:
             print(f"ERROR: Unsupported build segment type {seg.type}")
