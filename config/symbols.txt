@@ -1,11 +1,25 @@
-// crt0
+// sce/ee/lib/crt0.s
 // ENTRYPOINT
 _start 	= 0x00100008; // type:func
 _exit 	= 0x001000b8; // type:func
 _root	= 0x001000c0; // type:func
 
+// tmp/cc76DAYa.c
 reg_frame = 0x001000c8; // type:func
 dereg_frame = 0x00100100; // type:func
+
+// dbug/dbgmsg.c
+DbgMsgInit = 0x00100130; // type:func
+DbgMsgClear = 0x001001c8; // type:func
+DbgMsgFlash = 0x00100338; // type:func
+DbgMsgSetColor = 0x001003d0; // type:func
+DbgMsgSetSize = 0x00100420; // type:func
+msgOutYY = 0x00100438; // type:func
+DbgMsgPrint = 0x00100490; // type:func
+DbgMsgPrintUserPkt = 0x001005b8; // type:func
+DbgMsgClearUserPkt = 0x001006d0; // type:func
+DbgMsgSetColorUserPkt = 0x001007f0; // type:func
+DbgMsgSetZ = 0x00100830; // type:func
 
 // dbug/syori.c
 SyoriLineInit = 0x00100838; // type:func
@@ -27,3 +41,19 @@ osFunc 				= 0x001035e0; // type:func
 systemCtrlMain 		= 0x00103798; // type:func
 FullAllocAndFree	= 0x001037d8; // type:func
 mallocInit 			= 0x00103828; // type:func
+
+// os/tim2.c
+GetTim2Info = 0x00104388; // type:func
+Tim2Load = 0x001048d0; // type:func
+
+//
+//
+// ** SCE SDK FUNCTIONS **
+//
+//
+
+// libdma.c
+sceDmaGetChan = 0x00156b28; // type:func
+
+// libgifpk.c
+sceGifPkInit = 0x00157d00; // type:func

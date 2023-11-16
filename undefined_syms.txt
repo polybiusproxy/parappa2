@@ -1,2 +1,11 @@
 D_397E58 = 0x397E58;
 D_397E68 = 0x397E68;
+
+msg8x8data = 0x0017a970;
+dbgDmaC = 0x00399a00;
+MSGCOL = 0x00399a08;
+MSGSIZE = 0x00399a10;
+MSGZPOP = 0x00399a14;
+dbgPacket = 0x00399d60;
+gifPacket = 0x003a9d60;
+tinfo = 0x003a9d70;

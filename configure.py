@@ -35,7 +35,7 @@ PRE_ELF_PATH = f"build/{BASENAME}.elf"
 
 COMMON_INCLUDES = "-Iinclude -isystem include/sdk/ee -isystem include/gcc"
 COMPILER_DIR = f"{TOOLS_DIR}/cc/ee-gcc2.96/bin"
-COMPILER_FLAGS = "-O2"
+COMPILER_FLAGS = "-O2 -G4"
 COMPILE_CMD = (
     f"{COMPILER_DIR}/ee-gcc -c -B {COMPILER_DIR}/ee- {COMMON_INCLUDES} {COMPILER_FLAGS}"
 )
