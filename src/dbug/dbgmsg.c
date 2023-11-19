@@ -28,7 +28,29 @@ void DbgMsgInit(void) {
     MSGZPOP = 0x7fffff;
 }
 
-INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgClear);
+// INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgClear);
+
+void DbgMsgClear(void) {
+    u_long giftag[2] = { SCE_GIF_SET_TAG(0, 0, 0, 0, 0, 1), 0x000000000000000eL };
+    
+    sceGifPkReset(&gifPacket);
+    sceGifPkCnt(&gifPacket, 0, 0, 0);
+    
+    sceGifPkOpenGifTag(&gifPacket, *(u_long128*)&giftag);
+    
+    sceGifPkAddGsAD(&gifPacket, SCE_GS_TEXFLUSH, 0);
+    sceGifPkAddGsAD(&gifPacket, SCE_GS_TEX0_1, tinfo.picturH->GsTex0);
+    sceGifPkAddGsAD(&gifPacket, SCE_GS_TEX1_1, tinfo.picturH->GsTex1);
+    sceGifPkAddGsAD(&gifPacket, SCE_GS_CLAMP_1, 0);
+    sceGifPkAddGsAD(&gifPacket, SCE_GS_TEXCLUT, tinfo.picturH->GsTexClut);
+    sceGifPkAddGsAD(&gifPacket, SCE_GS_ALPHA_1, 0x44);
+    sceGifPkAddGsAD(&gifPacket, SCE_GS_PRIM, 0x156);
+
+    sceGifPkAddGsAD(&gifPacket, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(MSGCOL[0], MSGCOL[1], MSGCOL[2], 128, 0x3F800000));
+    sceGifPkAddGsAD(&gifPacket, SCE_GS_PABE, 0);
+    sceGifPkAddGsAD(&gifPacket, SCE_GS_TEST_1, 0x3000d);
+    sceGifPkAddGsAD(&gifPacket, SCE_GS_TEXA, 0x8000008000);
+}
 
 INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgFlash);
 
@@ -47,7 +69,5 @@ INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgClearUserPkt);
 INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgSetColorUserPkt);
 
 INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgSetZ);
-
-INCLUDE_RODATA(const s32, "dbug/dbgmsg", D_00390F00);
 
 INCLUDE_RODATA(const s32, "dbug/dbgmsg", D_00390F10);
