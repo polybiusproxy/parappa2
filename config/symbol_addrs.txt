@@ -66,3 +66,7 @@ sceDmaGetChan = 0x00156b28; // type:func
 
 // libgifpk.c
 sceGifPkInit = 0x00157d00; // type:func
+sceGifPkReset = 0x00157d10; // type:func
+sceGifPkCnt = 0x00157d78; // type:func
+sceGifPkOpenGifTag = 0x00157f70; // type:func
+sceGifPkAddGsAD = 0x00158030; // type:func
