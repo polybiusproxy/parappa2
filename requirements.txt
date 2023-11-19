@@ -1,3 +1,9 @@
-spimdisasm==1.18.0
-rabbitizer==1.7.10
+spimdisasm
+rabbitizer
+PyYAML
+pylibyaml
 tqdm
+intervaltree
+colorama
+pygfxd
+n64img
