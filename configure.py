@@ -37,7 +37,8 @@ COMMON_INCLUDES = "-Iinclude -isystem include/sdk/ee -isystem include/gcc"
 COMPILER_DIR = f"{TOOLS_DIR}/cc/ee-gcc2.96/bin"
 COMPILER_FLAGS = "-O2 -G4"
 COMPILE_CMD = (
-    f"{COMPILER_DIR}/ee-gcc -c -B {COMPILER_DIR}/ee- {COMMON_INCLUDES} {COMPILER_FLAGS}"
+    f"{COMPILER_DIR}/ee-gcc -c {COMMON_INCLUDES} {COMPILER_FLAGS}"
+    # f"{COMPILER_DIR}/ee-gcc -c -B {COMPILER_DIR}/ee- {COMMON_INCLUDES} {COMPILER_FLAGS}"
 )
 
 WIBO_VER = "0.6.9"
@@ -103,13 +104,12 @@ def build_stuff(linker_entries: List[LinkerEntry]):
     # Rules
     cross = "mips-linux-gnu-"
 
-    ld_args = f"-EL -T undefined_syms_auto.txt -T undefined_funcs_auto.txt -T undefined_syms.txt -Map $mapfile -T $in -o $out"
+    ld_args = f"-EL -T config/undefined_syms_auto.txt -T config/undefined_funcs_auto.txt -T config/undefined_syms.txt -Map $mapfile -T $in -o $out"
 
     ninja.rule(
         "as",
         description="as $in",
         command=f"cpp {COMMON_INCLUDES} $in -o  - | iconv -f=UTF-8 -t=EUC-JP $in | {cross}as -no-pad-sections -EL -march=5900 -mabi=eabi -Iinclude -o $out",
-        #command=f"cpp {COMMON_INCLUDES} $in -o  - | {COMPILER_DIR}/ee-as -no-pad-sections -EL -march=5900 -mabi=eabi -Iinclude -o $out",
     )
 
     ninja.rule(
