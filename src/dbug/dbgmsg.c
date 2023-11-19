@@ -4,10 +4,11 @@ extern int msg8x8data[0];
 extern TIM2INFO tinfo;
 extern sceGifPacket gifPacket;
 extern u_long128 dbgPacket[4096];
-extern sceDmaChan* dbgDmaC;
-extern u_char MSGCOL[3];
-extern u_short MSGSIZE[2];
-extern u_int MSGZPOP;
+
+sceDmaChan* dbgDmaC;
+u_char MSGCOL[3];
+u_short MSGSIZE[2];
+u_int MSGZPOP;
 
 // INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgInit);
 void DbgMsgInit(void) {
@@ -17,9 +18,9 @@ void DbgMsgInit(void) {
     sceGifPkInit(&gifPacket, dbgPacket);
     dbgDmaC = sceDmaGetChan(SCE_DMA_GIF);
 
-    MSGCOL[0] = 128;
-    MSGCOL[1] = 128;
     MSGCOL[2] = 128;
+	MSGCOL[1] = 128;
+	MSGCOL[0] = 128;
     
     MSGSIZE[0] = 0x100;
     MSGSIZE[1] = 0xa0;

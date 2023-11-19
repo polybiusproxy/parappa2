@@ -10,7 +10,9 @@ options:
     src_path: src
     build_path: build
     
-    symbol_addrs_path: config/symbols.txt
+    symbol_addrs_path: config/symbol_addrs.txt
+    undefined_funcs_auto_path: config/undefined_funcs_auto.txt
+    undefined_syms_auto_path:  config/undefined_syms_auto.txt
     
     # compiler 
     compiler: GCC

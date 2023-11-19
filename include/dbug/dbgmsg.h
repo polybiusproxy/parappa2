@@ -5,7 +5,7 @@
 
 //
 // !! THIS SHOULD NOT GO IN HERE !!
-// TODO: move this to tim2.c when splitted
+// TODO(poly): move this to tim2.c when splitted
 //
 
 typedef struct { // 0x10
