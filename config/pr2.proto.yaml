@@ -41,7 +41,8 @@ segments:
         - [0x10c8, asm, sce/tmp]
         
         - [0x1130, c, dbug/dbgmsg]
-        - [0x1838, asm, unk]
+        - [0x1838, c, dbug/syori]
+        - [0x1858, asm, unk]
         
         - [0x79040, data, vutext] # .vutext
         
