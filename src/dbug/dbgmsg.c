@@ -1,6 +1,6 @@
 #include "dbug/dbgmsg.h"
 
-extern int msg8x8data[0];
+extern int msg8x8data[0]; /* size/type unknown */
 extern TIM2INFO tinfo;
 extern sceGifPacket gifPacket;
 extern u_long128 dbgPacket[4096];
