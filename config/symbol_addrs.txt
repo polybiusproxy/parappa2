@@ -36,6 +36,14 @@ SyoriLineReset = 0x00100840; // type:func
 SyoriLineCnt = 0x00100848; // type:func
 SyoriLineDisp = 0x00100850; // type:func
 
+// dbug/vramsave.c
+BekiDat = 0x00100858; // type:func
+VramSave = 0x00100890; // type:func
+VramSaveBMP = 0x00100b18; // type:func
+VramSaveBMPDouble = 0x00100de0; // type:func
+VramTmpSave = 0x00101198; // type:func
+VramTmpSaveOutBMP = 0x00101260; // type:func
+
 // os/syssub.c
 DrawGetTbpPos = 0x00103030; // type:func
 
