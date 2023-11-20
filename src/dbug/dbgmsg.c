@@ -65,8 +65,7 @@ void DbgMsgFlash(void) {
 	sceGsSyncPath(0, 0);
 }
 
-/* (poly): should we use u_char? */
-void DbgMsgSetColor(char r, char g, char b) {
+void DbgMsgSetColor(u_char r, u_char g, u_char b) {
 	MSGCOL[0] = r;
 	MSGCOL[1] = g;
 	MSGCOL[2] = b;
@@ -74,13 +73,26 @@ void DbgMsgSetColor(char r, char g, char b) {
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(MSGCOL[0], MSGCOL[1], MSGCOL[2], 128, 0x3f800000));
 }
 
-/* (poly): same here, should we use u_short? */
-void DbgMsgSetSize(short sw, short sh) {
+void DbgMsgSetSize(u_short sw, u_short sh) {
 	MSGSIZE[0] = (sw << 4);
 	MSGSIZE[1] = (sh << 4);
 }
 
-INCLUDE_ASM(const s32, "dbug/dbgmsg", msgOutYY);
+static void msgOutYY(u_char msg, u_short *uv_pp) {
+	if (msg < 32) {
+		uv_pp[3] = 0;
+		uv_pp[2] = 0;
+		uv_pp[1] = 0;
+		uv_pp[0] = 0;
+	}
+	
+	msg -= 32;
+	uv_pp[0] = (msg & 0xF) * 8;
+	uv_pp[1] = (msg >> 4) * 10;
+	
+	uv_pp[2] = (((msg & 0xF) * 8) + 8);
+	uv_pp[3] = (((msg >> 4) * 10) + 10);
+}
 
 INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgPrint);
 
