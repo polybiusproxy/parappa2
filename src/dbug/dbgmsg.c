@@ -74,7 +74,11 @@ void DbgMsgSetColor(char r, char g, char b) {
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(MSGCOL[0], MSGCOL[1], MSGCOL[2], 128, 0x3f800000));
 }
 
-INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgSetSize);
+/* (poly): same here, should we use u_short? */
+void DbgMsgSetSize(short sw, short sh) {
+	MSGSIZE[0] = (sw << 4);
+	MSGSIZE[1] = (sh << 4);
+}
 
 INCLUDE_ASM(const s32, "dbug/dbgmsg", msgOutYY);
 
