@@ -49,12 +49,14 @@ segments:
         
         - [0x7b900, data] # .data
         - [0x7b970, data, dbug/dbgmsg]
-        - [0x7c9e0, data, unk]
+        - [0x7c9e0, data, dbug/vramsave]
+        - [0x7ca90, data, unk]
         
         - [0x291ed0, data, vudata] # .vudata
         
         - [0x291f00, .rodata, dbug/dbgmsg] # .rodata
-        - [0x291f20, rodata, unk]
+        - [0x291f20, .rodata, dbug/vramsave]
+        - [0x291fa0, rodata, unk]
         
         - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
         - [0x299f00, rodatabin] # .lit4
