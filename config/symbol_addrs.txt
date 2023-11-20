@@ -61,12 +61,23 @@ Tim2Load = 0x001048d0; // type:func
 //
 //
 
+// graphdev.c
+sceGsSyncPath = 0x001551d0; // type:func
+
 // libdma.c
 sceDmaGetChan = 0x00156b28; // type:func
+sceDmaSend = 0x00156e78; // type:func
 
 // libgifpk.c
 sceGifPkInit = 0x00157d00; // type:func
 sceGifPkReset = 0x00157d10; // type:func
+sceGifPkTerminate = 0x00157d20; // type:func
 sceGifPkCnt = 0x00157d78; // type:func
+sceGifPkEnd = 0x00157ef8; // type:func
 sceGifPkOpenGifTag = 0x00157f70; // type:func
+sceGifPkCloseGifTag = 0x00157f88; // type:func
 sceGifPkAddGsAD = 0x00158030; // type:func
+
+// klib.s
+FlushCache = 0x00159aa0; // type:func
+
