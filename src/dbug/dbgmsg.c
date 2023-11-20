@@ -158,4 +158,6 @@ void DbgMsgSetColorUserPkt(u_char r, u_char g, u_char b, sceGifPacket *usrPacket
 	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(r, g, b, 128, 0x3f800000));
 }
 
-INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgSetZ);
+void DbgMsgSetZ(int z) {
+	MSGZPOP = z;
+}
