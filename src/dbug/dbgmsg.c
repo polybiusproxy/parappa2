@@ -94,7 +94,26 @@ static void msgOutYY(u_char msg, u_short *uv_pp) {
 	uv_pp[3] = (((msg >> 4) * 10) + 10);
 }
 
-INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgPrint);
+void DbgMsgPrint(u_char *m_pp, u_short x, u_short y) {
+	u_short uv_buf[4];
+	
+	x = x << 4;
+	y = y << 4;
+	
+	while (*m_pp != '\0') {
+		msgOutYY(*m_pp, uv_buf);
+		
+		sceGifPkAddGsAD(&gifPacket, SCE_GS_UV, SCE_GS_SET_UV(uv_buf[0] << 4, uv_buf[1] << 4));
+		sceGifPkAddGsAD(&gifPacket, SCE_GS_XYZ2, SCE_GS_SET_XYZ2((u_long)x, (u_long)y, 1));
+		
+		sceGifPkAddGsAD(&gifPacket, SCE_GS_UV, SCE_GS_SET_UV(uv_buf[2] << 4, uv_buf[3] << 4));
+		sceGifPkAddGsAD(&gifPacket, SCE_GS_XYZ2, SCE_GS_SET_XYZ2(x + MSGSIZE[0], y + MSGSIZE[1], MSGZPOP));
+		
+		x += MSGSIZE[0];
+		
+		m_pp++;
+	}
+}
 
 INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgPrintUserPkt);
 
