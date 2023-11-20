@@ -136,7 +136,23 @@ void DbgMsgPrintUserPkt(u_char *m_pp, u_short x, u_short y, sceGifPacket *usrPac
 	}
 }
 
-INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgClearUserPkt);
+void DbgMsgClearUserPkt(sceGifPacket *usrPacket_pp) {
+	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_TEXFLUSH, 0);
+	
+	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_TEX0_1, tinfo.picturH->GsTex0);
+	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_TEX1_1, tinfo.picturH->GsTex1);
+	
+	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_CLAMP_1, 0);
+	
+	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_TEXCLUT, tinfo.picturH->GsTexClut);
+	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_ALPHA_1, 0x44);
+	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_PRIM, 0x156);
+	
+	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(MSGCOL[0], MSGCOL[1], MSGCOL[2], 128, 0x3f800000));
+	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_PABE, 0);
+	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_TEST_1, 0x3000d);
+	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_TEXA, 0x8000008000);
+}
 
 INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgSetColorUserPkt);
 
