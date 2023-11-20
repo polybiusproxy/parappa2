@@ -43,7 +43,7 @@ void DbgMsgClear(void) {
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_ALPHA_1, 0x44);
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_PRIM, 0x156);
 	
-	sceGifPkAddGsAD(&gifPacket, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(MSGCOL[0], MSGCOL[1], MSGCOL[2], 128, 0x3F800000));
+	sceGifPkAddGsAD(&gifPacket, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(MSGCOL[0], MSGCOL[1], MSGCOL[2], 128, 0x3f800000));
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_PABE, 0);
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_TEST_1, 0x3000d);
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_TEXA, 0x8000008000);
@@ -65,7 +65,14 @@ void DbgMsgFlash(void) {
 	sceGsSyncPath(0, 0);
 }
 
-INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgSetColor);
+/* (poly): should we use u_char? */
+void DbgMsgSetColor(char r, char g, char b) {
+	MSGCOL[0] = r;
+	MSGCOL[1] = g;
+	MSGCOL[2] = b;
+	
+	sceGifPkAddGsAD(&gifPacket, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(MSGCOL[0], MSGCOL[1], MSGCOL[2], 128, 0x3f800000));
+}
 
 INCLUDE_ASM(const s32, "dbug/dbgmsg", DbgMsgSetSize);
 
