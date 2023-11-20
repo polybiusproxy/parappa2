@@ -42,7 +42,8 @@ segments:
         
         - [0x1130, c, dbug/dbgmsg]
         - [0x1838, c, dbug/syori]
-        - [0x1858, asm, unk]
+        - [0x1858, c, dbug/vramsave]
+        - [0x24a0, asm, unk]
         
         - [0x79040, data, vutext] # .vutext
         
