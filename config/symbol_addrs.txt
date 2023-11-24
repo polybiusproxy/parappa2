@@ -44,6 +44,35 @@ VramSaveBMPDouble = 0x00100de0; // type:func
 VramTmpSave = 0x00101198; // type:func
 VramTmpSaveOutBMP = 0x00101260; // type:func
 
+// os/mtc.c
+mtcStackErrorCheck = 0x001014a0; // type:func
+MtcChangeThCtrl = 0x00101500;
+MtcInit = 0x001015e8;
+MtcQuit = 0x00101690;
+MtcStart = 0x001016e0;
+MtcExec = 0x00101718;
+MtcWait = 0x001017f0;
+MtcKill = 0x00101858;
+MtcPause = 0x001018c8;
+MtcContinue = 0x001018f8;
+MtcExit = 0x00101928;
+MtcGetCondition = 0x00101978;
+MtcResetCheck = 0x00101998;
+
+mtcStackSizeTbl = 0x0017ba90; // type:s32 size:0x64
+mtcStack = 0x0017bad0; // type:s32 size:0x40
+
+// stupid pad on mtcStack...
+D_0017BAF4 = 0x0017BAF4; // ignore:true rom:0x7CAF4
+
+mtcSemaPara = 0x0017bb10; // size:0x18
+mtcCurrentTask = 0x00399310; // type:s32
+mtcSemaEnd = 0x00399314; // type:s32
+th_id_Ctrl = 0x00399a18; // type:s8
+mtcTaskConB = 0x003b8c90; // size:0x400
+mtcStack_Ctrl = 0x003b9090; // size:0x1000
+th_para_Ctrl = 0x003ba090; // size:0x30
+
 // os/syssub.c
 DrawGetTbpPos = 0x00103030; // type:func
 
@@ -70,6 +99,7 @@ Tim2Load = 0x001048d0; // type:func
 //
 
 // graphdev.c
+sceGsSyncV = 0x00155138; // type:func
 sceGsSyncPath = 0x001551d0; // type:func
 
 // libdma.c
@@ -87,5 +117,15 @@ sceGifPkCloseGifTag = 0x00157f88; // type:func
 sceGifPkAddGsAD = 0x00158030; // type:func
 
 // klib.s
+StartThread = 0x00159640; // type:func
+SleepThread = 0x00159740; // type:func
+WakeupThread = 0x00159750; // type:func
+ExitDeleteThread = 0x00159660; // type:func
+ChangeThreadPriority = 0x001596b0; // type:func
+RotateThreadReadyQueue = 0x001596d0; // type:func
+SignalSema = 0x00159840; // type:func
 FlushCache = 0x00159aa0; // type:func
+
+// sce/ee/gcc/src/newlib/libc/stdio/printf.c
+printf = 0x00170700; // type:func
 
