@@ -44,7 +44,7 @@ segments:
         - [0x1838, c, dbug/syori]
         - [0x1858, c, dbug/vramsave]
         
-        - [0x24a0, asm, os/mtc]
+        - [0x24a0, c, os/mtc]
         - [0x29a0, asm, unk]
         
         - [0x79040, data, vutext] # .vutext
@@ -59,7 +59,7 @@ segments:
         
         - [0x291f00, .rodata, dbug/dbgmsg] # .rodata
         - [0x291f20, .rodata, dbug/vramsave]
-        - [0x291fa0, rodata, os/mtc]
+        - [0x291fa0, .rodata, os/mtc]
         - [0x291fc0, rodata, unk]
         
         - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
