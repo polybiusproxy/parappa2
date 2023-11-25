@@ -3,6 +3,7 @@
 
 #include "common.h"
 
+#include "libgraph.h"
 #include "libgifpk.h"
 #include "libdma.h"
 

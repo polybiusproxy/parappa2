@@ -34,18 +34,18 @@ void MtcChangeThCtrl(void* x) {
 		if (mtcTaskConB[mtcCurrentTask].status == MTC_COND_EXEC) {
 			SyoriLineCnt(mtcCurrentTask);
 			RotateThreadReadyQueue(16);
+			
 			StartThread(mtcTaskConB[mtcCurrentTask].th_id, 0);
+			SleepThread();
 		}
 		else if ((mtcTaskConB[mtcCurrentTask].status == MTC_COND_WAIT) 
 			&& (--mtcTaskConB[mtcCurrentTask].wtime <= 0)) {
 			SyoriLineCnt(mtcCurrentTask);
 			RotateThreadReadyQueue(16);
+			
 			WakeupThread(mtcTaskConB[mtcCurrentTask].th_id);
-		} else {
-			continue;
+			SleepThread();
 		}
-		
-		SleepThread();
 	}
 }
 
