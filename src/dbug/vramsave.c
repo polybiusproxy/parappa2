@@ -1,6 +1,17 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "dbug/vramsave", BekiDat);
+#include "eetypes.h" /* tmp */
+
+u_int BekiDat(u_int size) {
+    u_int mot = 2;
+    u_int i;
+    
+    for (i = 1; size > mot; i++) {
+        mot = mot << 1;
+    }
+
+    return i;
+}
 
 INCLUDE_ASM(const s32, "dbug/vramsave", VramSave);
 
