@@ -1,3 +1,6 @@
+#ifndef DBGMSG_H
+#define DBGMSG_H
+
 #include "common.h"
 
 #include "libgifpk.h"
@@ -59,3 +62,5 @@ typedef struct { // 0x18
 
 int GetTim2Info(/* s2 18 */ void* tim2_pp, /* s0 16 */ TIM2INFO* info_pp, /* s1 17 */ int maxinfo);
 int Tim2Load(TIM2INFO* info_pp, int img_pos, int col_pos);
+
+#endif
