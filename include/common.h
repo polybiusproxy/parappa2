@@ -26,6 +26,7 @@ typedef float f32;
 #define TRUE 1
 #define FALSE 0
 
-#define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
+#define PR_COUNTOF(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
+#define PR_CLEAR(x) { u_int i; char *p = (char*)&x; for (i = 0; i < sizeof(x); i++) *p++ = 0; }
 
 #endif /* COMMON_H */

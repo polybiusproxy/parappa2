@@ -1,4 +1,4 @@
-#include "common.h"
+#include "dbug/syori.h"
 
 void SyoriLineInit(int bar_size) {
 }
