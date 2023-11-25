@@ -60,7 +60,7 @@ void MtcInit(void) {
 	th_para_Ctrl.entry = MtcChangeThCtrl;
 	th_para_Ctrl.stack = mtcStack_Ctrl;
 	th_para_Ctrl.stackSize = MTC_TASK_SIZE_CTRL;
-	th_para_Ctrl.initPriority = 18;
+	th_para_Ctrl.initPriority = MTC_CTRL_END;
 	th_para_Ctrl.gpReg = &_gp;
 	
 	th_id_Ctrl = CreateThread(&th_para_Ctrl);
@@ -99,7 +99,7 @@ void MtcExec(void *prg_pp, long int level) {
 	th_pp->entry = prg_pp;
 	th_pp->stack = mtcStack[level];
 	th_pp->stackSize = mtcStackSizeTbl[level];
-	th_pp->initPriority = 17;
+	th_pp->initPriority = MTC_EACH;
 	th_pp->gpReg = &_gp;
 	th_pp->option = level;
 	
@@ -117,7 +117,7 @@ void MtcWait(long int wt) {
 	mtcTaskConB[mtcCurrentTask].status = MTC_COND_WAIT;
 	mtcTaskConB[mtcCurrentTask].wtime = wt;
 	
-	ChangeThreadPriority(th_id_Ctrl, 18);
+	ChangeThreadPriority(th_id_Ctrl, MTC_CTRL_END);
 	
 	WakeupThread(th_id_Ctrl);
 	SleepThread();
@@ -159,7 +159,7 @@ void MtcExit(void) {
 	tcb_pp = &mtcTaskConB[mtcCurrentTask];
 	tcb_pp->status = MTC_COND_KILL;
 	
-	ChangeThreadPriority(th_id_Ctrl, 18);
+	ChangeThreadPriority(th_id_Ctrl, MTC_CTRL_END);
 	WakeupThread(th_id_Ctrl);
 	ExitDeleteThread();
 }

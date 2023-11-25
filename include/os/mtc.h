@@ -35,6 +35,13 @@ typedef enum {
 	MTC_COND_PAUSE = 32768
 } MTC_COND_ENUM;
 
+typedef enum {
+	MTC_TOP_PRI = 16,
+	MTC_CTRL_TOP = 16,
+	MTC_EACH = 17,
+	MTC_CTRL_END = 18
+} MTC_PRI_ENUM;
+
 typedef struct { // 0x40
 	/* 0x00 */ short int th_id;
 	/* 0x04 */ MTC_COND_ENUM status;
