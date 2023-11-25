@@ -147,6 +147,8 @@ SignalSema = 0x00159840; // type:func
 WaitSema = 0x00159860; // type:func
 FlushCache = 0x00159aa0; // type:func
 
+// sce/ee/gcc/src/gcc/libgcc2.c
+__main = 0x001680b0; // type:func
+
 // sce/ee/gcc/src/newlib/libc/stdio/printf.c
 printf = 0x00170700; // type:func
-

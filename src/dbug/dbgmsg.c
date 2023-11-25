@@ -1,6 +1,6 @@
 #include "dbug/dbgmsg.h"
 
-extern int msg8x8data[0]; /* size/type unknown */
+extern int msg8x8data[]; /* size/type unknown */
 extern TIM2INFO tinfo;
 extern sceGifPacket gifPacket;
 extern u_long128 dbgPacket[4096];
@@ -21,8 +21,8 @@ void DbgMsgInit(void) {
 	MSGCOL[1] = 128;
 	MSGCOL[0] = 128;
 	
-	MSGSIZE[0] = 0x100;
-	MSGSIZE[1] = 0xa0;
+	MSGSIZE[0] = 256;
+	MSGSIZE[1] = 160;
 	
 	MSGZPOP = 0x7fffff;
 }
@@ -40,13 +40,13 @@ void DbgMsgClear(void) {
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_TEX1_1, tinfo.picturH->GsTex1);
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_CLAMP_1, 0);
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_TEXCLUT, tinfo.picturH->GsTexClut);
-	sceGifPkAddGsAD(&gifPacket, SCE_GS_ALPHA_1, 0x44);
+	sceGifPkAddGsAD(&gifPacket, SCE_GS_ALPHA_1, SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0));
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_PRIM, 0x156);
 	
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(MSGCOL[0], MSGCOL[1], MSGCOL[2], 128, 0x3f800000));
 	sceGifPkAddGsAD(&gifPacket, SCE_GS_PABE, 0);
-	sceGifPkAddGsAD(&gifPacket, SCE_GS_TEST_1, 0x3000d);
-	sceGifPkAddGsAD(&gifPacket, SCE_GS_TEXA, 0x8000008000);
+	sceGifPkAddGsAD(&gifPacket, SCE_GS_TEST_1, SCE_GS_SET_TEST_1(1, 6, 0, 0, 0, 0, 3, SCE_GS_ZNOUSE));
+	sceGifPkAddGsAD(&gifPacket, SCE_GS_TEXA, SCE_GS_SET_TEXA(32768, 0, 128));
 }
 
 void DbgMsgFlash(void) {
@@ -145,7 +145,7 @@ void DbgMsgClearUserPkt(sceGifPacket *usrPacket_pp) {
 	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_CLAMP_1, 0);
 	
 	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_TEXCLUT, tinfo.picturH->GsTexClut);
-	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_ALPHA_1, 0x44);
+	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_ALPHA_1, SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0));
 	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_PRIM, 0x156);
 	
 	sceGifPkAddGsAD(usrPacket_pp, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(MSGCOL[0], MSGCOL[1], MSGCOL[2], 128, 0x3f800000));
