@@ -28,7 +28,7 @@ void DbgMsgInit(void) {
 }
 
 void DbgMsgClear(void) {
-	u_long giftag[2] = { SCE_GIF_SET_TAG(0, 0, 0, 0, 0, 1), 0x000000000000000eL };
+	u_long giftag[2] = { SCE_GIF_SET_TAG(0, 0, 0, 0, 0, 1), SCE_GIF_PACKED_AD };
 	
 	sceGifPkReset(&gifPacket);
 	sceGifPkCnt(&gifPacket, 0, 0, 0);
@@ -50,7 +50,7 @@ void DbgMsgClear(void) {
 }
 
 void DbgMsgFlash(void) {
-	u_long giftag[2] = { SCE_GIF_SET_TAG(0, 1, 0, 0, 0, 1), 0x000000000000000eL };
+	u_long giftag[2] = { SCE_GIF_SET_TAG(0, 1, 0, 0, 0, 1), SCE_GIF_PACKED_AD };
 	
 	sceGifPkCloseGifTag(&gifPacket);
 	sceGifPkOpenGifTag(&gifPacket, *(u_long128*)&giftag);
