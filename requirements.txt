@@ -1,9 +1,4 @@
 spimdisasm
 rabbitizer
-PyYAML
-pylibyaml
 tqdm
-intervaltree
-colorama
-pygfxd
-n64img
+splat64
