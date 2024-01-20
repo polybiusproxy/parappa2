@@ -9,6 +9,7 @@ undefined_funcs_auto.txt
 
 .ninja_log
 .splache
+.cache
 build.ninja
 iso/
 SLPS_150.17*

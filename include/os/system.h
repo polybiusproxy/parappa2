@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+#include <stdio.h>
+
 #include <eekernel.h>
 #include <sifrpc.h>
 #include <sifdev.h>
@@ -66,6 +68,7 @@ void SetBackColor(u_char R, u_char G, u_char B);
 
 // TODO(poly): move to cmngifpk.c
 void CmnGifInit(void *buf_adr, int size);
+void CmnGifFlush(void);
 void CmnGifClear(void);
 
 #endif
