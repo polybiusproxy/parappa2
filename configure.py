@@ -10,21 +10,12 @@ from typing import Dict, List, Set, Union
 
 import ninja_syntax
 
+import splat
+import splat.scripts.split as split
+from   splat.segtypes.linker_entry import LinkerEntry
+
 ROOT = Path(__file__).parent.resolve()
 TOOLS_DIR = ROOT / "tools"
-SPLAT_DIR = TOOLS_DIR / "splat"
-
-sys.path.append(str(SPLAT_DIR))
-
-import segtypes.common.asm
-import segtypes.common.bin
-import segtypes.common.c
-import segtypes.common.databin
-import segtypes.common.rodatabin
-import segtypes.common.bss
-import segtypes.common.data
-from segtypes.linker_entry import LinkerEntry
-import split
 
 YAML_FILE = "config/pr2.proto.yaml"
 BASENAME = "SCPS_150.17"
@@ -146,13 +137,13 @@ def build_stuff(linker_entries: List[LinkerEntry]):
         if entry.object_path is None:
             continue
 
-        if isinstance(seg, segtypes.common.asm.CommonSegAsm) or isinstance(
-            seg, segtypes.common.data.CommonSegData
+        if isinstance(seg, splat.segtypes.common.asm.CommonSegAsm) or isinstance(
+            seg, splat.segtypes.common.data.CommonSegData
         ):
             build(entry.object_path, entry.src_paths, "as")
-        elif isinstance(seg, segtypes.common.c.CommonSegC):
+        elif isinstance(seg, splat.segtypes.common.c.CommonSegC):
             build(entry.object_path, entry.src_paths, "cc")
-        elif isinstance(seg, segtypes.common.databin.CommonSegDatabin) or isinstance(seg, segtypes.common.rodatabin.CommonSegRodatabin):
+        elif isinstance(seg, splat.segtypes.common.databin.CommonSegDatabin) or isinstance(seg, splat.segtypes.common.rodatabin.CommonSegRodatabin):
             build(entry.object_path, entry.src_paths, "as")
         else:
             print(f"ERROR: Unsupported build segment type {seg.type}")
