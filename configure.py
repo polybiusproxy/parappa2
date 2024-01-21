@@ -32,7 +32,7 @@ COMPILE_CMD = (
     # f"{COMPILER_DIR}/ee-gcc -c -B {COMPILER_DIR}/ee- {COMMON_INCLUDES} {COMPILER_FLAGS}"
 )
 
-WIBO_VER = "0.6.9"
+WIBO_VER = "0.6.11"
 
 def exec_shell(command: List[str]) -> str:
     ret = subprocess.run(

@@ -8,6 +8,7 @@ undefined_syms_auto.txt
 undefined_funcs_auto.txt
 
 .ninja_log
+.ninja_deps
 .splache
 .cache
 build.ninja

@@ -3,6 +3,6 @@
 
 #include "common.h"
 
-void mainStart(void *xx);
+void mainStart(void* xx);
 
 #endif

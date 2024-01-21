@@ -22,7 +22,7 @@ options:
     rodata_string_guesser_level: 2 # improve string detection
     disasm_unknown: True
     named_regs_for_c_funcs: False
-    gp_value: 0x3A0EF0 # (in case we need this later)
+    gp_value: 0x3A0EF0
     subalign: 8
     include_macro_inc: no # don't write macro.inc to rodata files
     
@@ -45,7 +45,7 @@ segments:
         - [0x1858, c, dbug/vramsave]
         
         - [0x24a0, c, os/mtc]
-        - [0x29a0, asm, os/syssub]
+        - [0x29a0, c, os/syssub]
         - [0x40a8, c, os/system]
         - [0x4850, asm, unk]
         
@@ -64,7 +64,7 @@ segments:
         - [0x291f00, .rodata, dbug/dbgmsg] # .rodata
         - [0x291f20, .rodata, dbug/vramsave]
         - [0x291fa0, .rodata, os/mtc]
-        - [0x291fc0, rodata, os/syssub]
+        - [0x291fc0, .rodata, os/syssub]
         - [0x292760, .rodata, os/system]
         - [0x292928, rodata, unk]
         
