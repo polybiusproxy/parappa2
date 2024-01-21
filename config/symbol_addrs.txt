@@ -89,13 +89,51 @@ mtcStack_Ctrl = 0x003b9090; // size:0x1000
 th_para_Ctrl = 0x003ba090; // size:0x30
 
 // os/syssub.c
+WorkClear = 0x0001019A0; // type:func
 GPadInit = 0x001019d8; // type:func
 GPadExit = 0x00101a78; // type:func
 GPadSysRead = 0x00101ab8; // type:func
+padMakeData = 0x00101e40; // type:func
+pad0Clear = 0x00101e70; // type:func
+padOneOffBitCLear = 0x00101e78; // type:func
+padNormalRead = 0x00101e88; // type:func
+padAnaRead = 0x00101ea0; // type:func
+padAnaRead0Clear = 0x00101ed8; // type:func
+padPrsRead = 0x00101f10; // type:func
+padPrsRead0Clear = 0x00101f48; // type:func
+padPrsTreate = 0x00101f78; // type:func
+padActSet = 0x00102018; // type:func
+padActClear = 0x00102040; // type:func
+padAnaMixPad = 0x00102050; // type:func
 GPadRead = 0x001020d0; // type:func
+GetPadbit2PressId = 0x00102220; // type:func
+GetPadbit2PressPad = 0x00102330; // type:func
 SetBackColor = 0x00102380; // type:func
+ChangeDrawArea = 0x001023b0; // type:func
+ChangeDrawAreaSetGifTag = 0x001024e0; // type:func
+ChangeDrawArea2 = 0x00102568; // type:func
+ClearFrameBufferGifTag = 0x00102668; // type:func
+GGsSetLocalMoveImage = 0x001027b0; // type:func
+GGsExecLocalMoveImage = 0x00102a68; // type:func
+randMakeMax = 0x00102ad0; // type:func
+ByteStringSub = 0x00102b00; // type:func
+ByteString = 0x00102bb0; // type:func
+ReportHeapUsage = 0x00102c18; // type:func
 usrMallcInit = 0x00102ce8; // type:func
+usrMalloc = 0x00102cf8; // type:func
+usrFree = 0x00102d90; // type:func
+usrMallcReport = 0x00102e20; // type:func
+DrawGetDrawEnvP = 0x00102ea8; // type:func
+DrawGetFrameP = 0x00102f30; // type:func
+DrawGetFbpPos = 0x00102fb8; // type:func
 DrawGetTbpPos = 0x00103030; // type:func
+
+sysPad = 0x0017bb40; // size:0x80
+pad_dma_buf = 0x003ba100; // size:0x200
+ChangeDrawAreaPacket = 0x003ba300; // size:0xC0
+exl_dmatag = 0x003ba3c0; // size:0x10
+usr_malloc_str = 0x003ba3d0; // size:0x800
+s = 0x003ba0c0; // size:0x32
 
 // os/system.c
 main 				= 0x001030a8; // type:func
@@ -177,6 +215,22 @@ sceGifPkOpenGifTag = 0x00157f70; // type:func
 sceGifPkCloseGifTag = 0x00157f88; // type:func
 sceGifPkAddGsAD = 0x00158030; // type:func
 
+// libpad.c
+scePadInit = 0x00158188; // type:func
+scePadEnd = 0x00158368; // type:func
+scePadPortOpen = 0x001583e8; // type:func
+scePadPortClose = 0x001585d0; // type:func
+scePadRead = 0x00158738; // type:func
+scePadGetState = 0x001587b8; // type:func
+scePadGetReqState = 0x001588d0; // type:func
+scePadInfoAct = 0x00158958; // type:func
+scePadInfoMode = 0x00158b98; // type:func
+scePadSetMainMode = 0x00158cd0; // type:func
+scePadSetActDirect = 0x00158d88; // type:func
+scePadSetActAlign = 0x00158e40; // type:func
+scePadInfoPressMode = 0x00159080; // type:func
+scePadEnterPressMode = 0x001590e0; // type:func
+
 // klib.s
 StartThread = 0x00159640; // type:func
 SleepThread = 0x00159740; // type:func
@@ -224,8 +278,14 @@ __main = 0x001680b0; // type:func
 malloc = 0x0016f9e8; // type:func
 free = 0x0016fa10; // type:func
 
+// sce/ee/gcc/src/newlib/libc/stdlib/mstats.c
+mallinfo = 0x00170608; // type:func
+
 // sce/ee/gcc/src/newlib/libc/stdio/printf.c
 printf = 0x00170700; // type:func
 
 // sce/ee/gcc/src/newlib/libc/stdlib/rand.c
 rand = 0x00171188; // type:func
+
+// sce/ee/gcc/src/newlib/libc/stdio/sprintf.c
+sprintf = 0x00171650; // type:func
