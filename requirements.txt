@@ -1,4 +1,5 @@
 spimdisasm
 rabbitizer
+splat64[mips]
 tqdm
-splat64
+ninja_syntax
