@@ -52,7 +52,7 @@ segments:
         - [0x79040, data, vutext] # .vutext
         
         - [0x7b900, data] # .data
-        - [0x7b970, data, dbug/dbgmsg]
+        - [0x7b970, .data, dbug/dbgmsg]
         - [0x7c9e0, data, dbug/vramsave]
         - [0x7ca90, data, os/mtc]
         - [0x7cb40, data, os/syssub]

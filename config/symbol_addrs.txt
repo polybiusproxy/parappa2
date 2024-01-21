@@ -21,7 +21,7 @@ DbgMsgClearUserPkt = 0x001006d0; // type:func
 DbgMsgSetColorUserPkt = 0x001007f0; // type:func
 DbgMsgSetZ = 0x00100830; // type:func
 
-msg8x8data = 0x0017A970;
+msg8x8data = 0x0017A970; // type:s32 size:0x41C
 dbgDmaC = 0x00399A00; // type:s32 size:0x4
 MSGCOL = 0x00399A08; // type:u8 size:0x3
 MSGSIZE = 0x00399A10; // type:u16 size:0x4

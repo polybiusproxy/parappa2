@@ -1,11 +1,10 @@
 #include "dbug/dbgmsg.h"
 
-extern int msg8x8data[]; /* size/type unknown */
-extern TIM2INFO tinfo;
-extern sceGifPacket gifPacket;
-extern u_long128 dbgPacket[4096];
-
+u_long128 dbgPacket[4096];
+sceGifPacket gifPacket;
 sceDmaChan* dbgDmaC;
+
+TIM2INFO tinfo;
 u_char MSGCOL[3];
 u_short MSGSIZE[2];
 u_int MSGZPOP;
