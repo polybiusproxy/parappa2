@@ -7,6 +7,8 @@
 #include "libgifpk.h"
 #include "libdma.h"
 
+#include "msg8x8data.h"
+
 //
 // !! THIS SHOULD NOT GO IN HERE !!
 // TODO(poly): move this to tim2.c when splitted
@@ -61,7 +63,7 @@ typedef struct { // 0x18
     /* 0x14 */ u_long* image_pp;
 } TIM2INFO;
 
-int GetTim2Info(/* s2 18 */ void* tim2_pp, /* s0 16 */ TIM2INFO* info_pp, /* s1 17 */ int maxinfo);
+int GetTim2Info(void* tim2_pp, TIM2INFO* info_pp, int maxinfo);
 int Tim2Load(TIM2INFO* info_pp, int img_pos, int col_pos);
 
 #endif
