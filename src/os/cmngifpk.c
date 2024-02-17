@@ -63,7 +63,7 @@ void CmnGifFlush(void) {
         cmnDmaC = sceDmaGetChan(2);
         FlushCache(0);
 
-        sceDmaSend(cmnDmaC,cmnGifPacket.pBase);
+        sceDmaSend(cmnDmaC, cmnGifPacket.pBase);
         sceGsSyncPath(0, 0);
     }
 }
