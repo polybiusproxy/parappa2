@@ -1,6 +1,7 @@
 #include "common.h"
 
-#include "eetypes.h" /* tmp */
+#include <eetypes.h> /* tmp */
+#include <sifdev.h>
 
 u_int BekiDat(u_int size) {
     u_int mot = 2;

@@ -48,7 +48,10 @@ segments:
         - [0x24a0, c, os/mtc]
         - [0x29a0, c, os/syssub]
         - [0x40a8, c, os/system]
-        - [0x4850, asm, unk]
+        - [0x4850, c, os/cmngifpk]
+        - [0x4f68, asm, os/usrmem]
+        - [0x5330, asm, os/tim2]
+        - [0x6120, asm, unk]
         
         - [0x79040, data, vutext] # .vutext
         
@@ -58,7 +61,7 @@ segments:
         - [0x7ca90, data, os/mtc]
         - [0x7cb40, data, os/syssub]
         - [0x7cbc0, data, os/system]
-        - [0x818d8, data, unk]
+        - [0x7cf80, data, unk]
         
         - [0x291ed0, data, vudata] # .vudata
         
@@ -67,7 +70,10 @@ segments:
         - [0x291fa0, .rodata, os/mtc]
         - [0x291fc0, .rodata, os/syssub]
         - [0x292760, .rodata, os/system]
-        - [0x292928, rodata, unk]
+        - [0x292928, .rodata, os/cmngifpk]
+        - [0x292968, rodata, os/usrmem]
+        - [0x292a30, rodata, os/tim2]
+        - [0x292a80, rodata, unk]
         
         - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
         - [0x299f00, rodatabin] # .lit4
