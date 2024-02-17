@@ -167,6 +167,22 @@ drawEnvEnd = 0x003dacd0; // size:0x80
 CmnGifInit	= 0x00103850; // type:func
 CmnGifClear = 0x00103890; // type:func
 CmnGifFlush = 0x001038d8; // type:func
+CmnGifSetData = 0x00103ab0; // type:func
+CmnGifOpenCmnPk = 0x00103b18; // type:func
+CmnGifCloseCmnPk = 0x00103c20; // type:func
+CmnGifAdrsGet = 0x00103c88; // type:func
+CmnGifAdrsEnd = 0x00103c90; // type:func
+CmnGifADPacketMake = 0x00103cd0; // type:func
+CmnGifADPacketMake2 = 0x00103dd0; // type:func
+CmnGifADPacketMakeTrans = 0x00103ed0; // type:func
+
+cmngif_pri = 0x003dad50; // size:0x200
+cmngif_pri_cnt = 0x00399a1c; // size:0x4
+cmnGifPkBase = 0x00399a20; // size:0x4
+cmnGifPkCurrent = 0x00399a24; // size:0x4
+cmnGifPkEnd = 0x00399a28; // size:0x4
+cmnGifTr = 0x003daf50; // size:0x410
+cmnGifPacket = 0x003db360; // size:0x10
 
 // os/tim2.c
 GetTim2Info = 0x00104388; // type:func
@@ -210,6 +226,8 @@ sceGifPkInit = 0x00157d00; // type:func
 sceGifPkReset = 0x00157d10; // type:func
 sceGifPkTerminate = 0x00157d20; // type:func
 sceGifPkCnt = 0x00157d78; // type:func
+sceGifPkCall = 0x00157df0; // type:func
+sceGifPkRet = 0x00157e80; // type:func
 sceGifPkEnd = 0x00157ef8; // type:func
 sceGifPkOpenGifTag = 0x00157f70; // type:func
 sceGifPkCloseGifTag = 0x00157f88; // type:func
