@@ -14,7 +14,7 @@ import splat
 import splat.scripts.split as split
 from   splat.segtypes.linker_entry import LinkerEntry
 
-ROOT = Path(__file__).parent.resolve()
+ROOT = Path(__file__).parent
 TOOLS_DIR = ROOT / "tools"
 
 YAML_FILE = "config/pr2.proto.yaml"
@@ -52,14 +52,14 @@ def clean():
 def write_permuter_settings():
     with open("permuter_settings.toml", "w") as f:
         f.write(
-            f"""compiler_command = "{COMPILE_CMD} -D__GNUC__"
+            f"""compiler_command = "tools/cc/ee-gcc2.96/bin/ee-gcc -c -Iinclude -Iinclude/sdk/ee -Iinclude/gcc -Iinclude/gcc/gcc-lib -O2 -G8 -gstabs -D__GNUC__"
 assembler_command = "mips-linux-gnu-as -march=r5900 -mabi=eabi -Iinclude"
 compiler_type = "gcc"
 
 [preserve_macros]
 
 [decompme.compilers]
-"tools/build/cc/gcc/gcc" = "ee-gcc2.96"
+"tools/cc/ee-gcc2.96/bin/ee-gcc" = "ee-gcc2.9-991111-01"
 """
         )
 

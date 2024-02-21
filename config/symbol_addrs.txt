@@ -184,7 +184,30 @@ cmnGifPkEnd = 0x00399a28; // size:0x4
 cmnGifTr = 0x003daf50; // size:0x410
 cmnGifPacket = 0x003db360; // size:0x10
 
+// os/usrmem.c
+UsrMemClear = 0x00103f68; // type:func
+UsrMemClearTop = 0x00103f98; // type:func
+UsrMemClearEnd = 0x00103fb0; // type:func
+UsrMemGetAdr = 0x00103fc8; // type:func
+UsrMemGetSize = 0x00104018; // type:func
+UsrMemGetEndAdr = 0x00104078; // type:func
+UsrMemGetEndSize = 0x001040d0; // type:func
+UsrMemAllocNext = 0x00104140; // type:func
+UsrMemAllocEndNext = 0x00104160; // type:func
+UsrMemAlloc = 0x00104188; // type:func
+UsrMemEndAlloc = 0x00104258; // type:func
+UsrMemFree = 0x00104300; // type:func
+UsrMemEndFree = 0x00104318; // type:func
+
+// 25 MB of RAM!!!
+usrMemoryData = 0x003db380; // size:0x1880000
+
+usrMemPos = 0x01c5b380; // size:0x2000
+usrMemPosCnt = 0x00399a2c; // size:0x4
+usrMemPosEndCnt = 0x00399a30; // size:0x4
+
 // os/tim2.c
+SPstrncmp = 0x00104330; // type:func
 GetTim2Info = 0x00104388; // type:func
 Tim2Load = 0x001048d0; // type:func
 
