@@ -1,6 +1,7 @@
 #ifndef TIM2_H
 #define TIM2_H
 
+#include "common.h"
 #include <eetypes.h>
 
 typedef struct { // 0x10

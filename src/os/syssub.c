@@ -605,7 +605,7 @@ void usrFree(void *adrs) {
         }
     }
 
-    printf("free is NG\n\0"); // Either figure out padding, or keep adding zero bytes to strings...
+    printf("free is NG\n");
     return;
 }
 
@@ -622,7 +622,7 @@ void usrMallcReport(void) {
         }
     }
 
-    printf("--- use cnt[%d] ---\n\0\0\0\0", cnt);
+    printf("--- use cnt[%d] ---\n", cnt);
 }
 
 sceGsDrawEnv1* DrawGetDrawEnvP(DNUM_ENUM dnum) {
