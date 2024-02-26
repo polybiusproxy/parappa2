@@ -219,9 +219,6 @@ void Tim2Trans(void *adrs) {
         Tim2LoadSet(&tim2info);
 }
 
-#ifndef NON_MATCHING
-INCLUDE_ASM(const s32, "os/tim2", Tim2TransX);
-#else
 int Tim2TransX(void *adrs, int ofs_num) {
     TIM2INFO info;
     TIM2INFO *info_x;
@@ -232,17 +229,26 @@ int Tim2TransX(void *adrs, int ofs_num) {
     {
         max_page = info.fileH->Pictures;
 
-        if (ofs_num < max_page)
-        {
-
-        }
-        else
+        if (ofs_num >= max_page)
             ret = -1;
+        else
+        {
+            info_x = malloc(max_page * 0x18);
+
+            GetTim2Info(adrs, info_x, max_page);
+
+            if (ofs_num != 0)
+                Tim2LoadSetX(&info, info_x + ofs_num);
+            else
+                Tim2LoadSet(&info);
+
+            ret = 1;
+            free(info_x);
+        }
     }
 
     return ret;
 }
-#endif
 
 #ifndef NON_MATCHING
 INCLUDE_ASM(const s32, "os/tim2", GetModeMaxH);
