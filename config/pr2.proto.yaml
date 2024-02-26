@@ -61,8 +61,8 @@ segments:
         - [0x7ca90, data, os/mtc]
         - [0x7cb40, data, os/syssub]
         - [0x7cbc0, data, os/system]
-        - [0x818d8, data, os/tim2]
-        - [0x81920, data, unk]
+        - [0x818d8, .data, os/tim2]
+        - [0x818f0, data, unk]
         
         - [0x291ed0, data, vudata] # .vudata
         
@@ -81,6 +81,12 @@ segments:
         - [0x29a300, rodatabin] # .sdata
         - [0x29a318, .sdata, os/syssub] # .sdata
         - [0x29a330, rodatabin] # .sdata
-        - [0x29a9d8, rodatabin] # .sbss / .bss
+        # - [0x29a9d8, rodatabin] # .sbss / .bss
+        
+        # .sbss / .bss
+        - { start: 0x29aa00, type: bss, vram: 0x00399a00, name: sbss }
+        - { start: 0x29aa1c, type: bss, vram: 0x00399c00, name: bss  }
+        - { start: 0x29aa1c, type: .bss, vram: 0x01c5d380, name: os/tim2 }
+        - { start: 0x29aa1c, type: bss, vram: 0x01c5e000, name: unk }
     - [0x29b000, databin] # .mfifo
     - [0x8aaf0d]

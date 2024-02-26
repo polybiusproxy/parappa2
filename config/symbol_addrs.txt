@@ -1,8 +1,8 @@
 // sce/ee/lib/crt0.s
 // ENTRYPOINT
-_start 	= 0x00100008; // type:func
-_exit 	= 0x001000b8; // type:func
-_root	= 0x001000c0; // type:func
+_start  = 0x00100008; // type:func
+_exit   = 0x001000b8; // type:func
+_root   = 0x001000c0; // type:func
 
 // tmp/cc76DAYa.c
 reg_frame = 0x001000c8; // type:func
@@ -136,16 +136,16 @@ usr_malloc_str = 0x003ba3d0; // size:0x800
 s = 0x003ba0c0; // size:0x32
 
 // os/system.c
-main 				= 0x001030a8; // type:func
-SetIopModule 		= 0x001030f8; // type:func
+main                = 0x001030a8; // type:func
+SetIopModule        = 0x001030f8; // type:func
 firstClrFrameBuffer = 0x001031c8; // type:func
-initSystem 			= 0x001032f8; // type:func
-exitSystem 			= 0x001035a8; // type:func
-SetOsFuncAddr 		= 0x001035d8; // type:func
-osFunc 				= 0x001035e0; // type:func
-systemCtrlMain 		= 0x00103798; // type:func
-FullAllocAndFree	= 0x001037d8; // type:func
-mallocInit 			= 0x00103828; // type:func
+initSystem          = 0x001032f8; // type:func
+exitSystem          = 0x001035a8; // type:func
+SetOsFuncAddr       = 0x001035d8; // type:func
+osFunc              = 0x001035e0; // type:func
+systemCtrlMain      = 0x00103798; // type:func
+FullAllocAndFree    = 0x001037d8; // type:func
+mallocInit          = 0x00103828; // type:func
 
 iop_module = 0x0017bbc0; // type:s32 size:0x2C
 DBufDc = 0x0017bbf0; // size:0x330
@@ -209,7 +209,27 @@ usrMemPosEndCnt = 0x00399a30; // size:0x4
 // os/tim2.c
 SPstrncmp = 0x00104330; // type:func
 GetTim2Info = 0x00104388; // type:func
+HsizeAdj = 0x001045f0; // type:func
+Tim2SetLoadImageI = 0x00104638; // type:func
+Tim2SetLoadImageIX = 0x00104718; // type:func
+Tim2SetLoadImageC = 0x001047f0; // type:func
 Tim2Load = 0x001048d0; // type:func
+MODE_TR_P = 0x001049e0; // type:func
+Tim2LoadSet = 0x00104a30; // type:func
+Tim2LoadSetX = 0x00104cc8; // type:func
+Tim2Trans = 0x00104da0; // type:func
+Tim2TransX = 0x00104df0; // type:func
+GetModeMaxH = 0x00104eb8; // type:func
+Tim2Trans_TBP_MODE = 0x00104f18; // type:func
+Tim2TransColor_TBP = 0x00105060; // type:func
+
+tim2ColorTypeTbl = 0x001808d8; // size:0x18
+
+tp = 0x01c5d380; // allow_duplicated:True
+tp = 0x01c5d3e0; // allow_duplicated:True
+tp = 0x01c5d440; // allow_duplicated:True
+tp = 0x01c5d4a0; // allow_duplicated:True
+tp = 0x01c5d500; // allow_duplicated:True
 
 // main/main.c
 mainStart = 0x00121a68; // type:func
@@ -221,22 +241,26 @@ mainStart = 0x00121a68; // type:func
 //
 
 // graphdev.c
-sceGsResetGraph		= 0x00154b58; // type:func
-sceGsResetPath 		= 0x00154cf8; // type:func
-sceGsSetDefDrawEnv 	= 0x00154d60; // type:func
-sceGsSetDefClear 	= 0x00154f48; // type:func
-sceGsSyncV 			= 0x00155138; // type:func
-sceGsSyncPath 		= 0x001551d0; // type:func
-sceGsSetHalfOffset 	= 0x001560c0; // type:func
-sceGsSetHalfOffset2 = 0x00156148; // type:func
-sceGsSetDefDBuffDc	= 0x001561d0; // type:func
-sceGsSwapDBuffDc 	= 0x001564b8; // type:func
+sceGsResetGraph         = 0x00154b58; // type:func
+sceGsResetPath          = 0x00154cf8; // type:func
+sceGsSetDefDrawEnv      = 0x00154d60; // type:func
+sceGsSetDefClear        = 0x00154f48; // type:func
+sceGsSetDefLoadImage    = 0x001554e8; // type:func
+sceGsSyncV              = 0x00155138; // type:func
+sceGsSyncPath           = 0x001551d0; // type:func
+sceGsExecLoadImage      = 0x00155810; // type:func
+sceGsSetHalfOffset      = 0x001560c0; // type:func
+sceGsSetHalfOffset2     = 0x00156148; // type:func
+sceGsSetDefDBuffDc      = 0x001561d0; // type:func
+sceGsSwapDBuffDc        = 0x001564b8; // type:func
+
+
 
 // libdma.c
-sceDmaGetChan 	= 0x00156b28; // type:func
-sceDmaReset		= 0x00156b50; // type:func
-sceDmaSend 		= 0x00156e78; // type:func
-sceDmaSync 		= 0x001573c8; // type:func
+sceDmaGetChan   = 0x00156b28; // type:func
+sceDmaReset     = 0x00156b50; // type:func
+sceDmaSend      = 0x00156e78; // type:func
+sceDmaSync      = 0x001573c8; // type:func
 
 // devvu0.c
 sceDevVu0Reset = 0x001575d8; // type:func

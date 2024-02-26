@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include <eetypes.h>
+#include <libgraph.h>
 
 typedef struct { // 0x10
     /* 0x0 */ char FileId[4];
@@ -45,15 +46,31 @@ typedef struct { // 0x10
 } TIM2_EXHEADER;
 
 typedef struct { // 0x18
-    /* 0x00 */ TIM2_FILEHEADER* fileH;
-    /* 0x04 */ TIM2_PICTUREHEADER* picturH;
-    /* 0x08 */ TIM2_MIPMAPHEADER* mipmapH;
-    /* 0x0c */ TIM2_EXHEADER* exH;
-    /* 0x10 */ u_long* clut_pp;
-    /* 0x14 */ u_long* image_pp;
+    /* 0x00 */ TIM2_FILEHEADER *fileH;
+    /* 0x04 */ TIM2_PICTUREHEADER *picturH;
+    /* 0x08 */ TIM2_MIPMAPHEADER *mipmapH;
+    /* 0x0c */ TIM2_EXHEADER *exH;
+    /* 0x10 */ u_long *clut_pp;
+    /* 0x14 */ u_long *image_pp;
 } TIM2INFO;
 
-int GetTim2Info(void* tim2_pp, TIM2INFO* info_pp, int maxinfo);
-int Tim2Load(TIM2INFO* info_pp, int img_pos, int col_pos);
+int SPstrncmp(char *sr1, char *sr2, int num);
+int GetTim2Info(void *tim2_pp, TIM2INFO *info_pp, int maxinfo);
+
+int Tim2SetLoadImageI(TIM2INFO *info_pp, int img_pos, sceGsLoadImage *img_pp, int ofsx, int ofsy);
+int Tim2SetLoadImageIX(TIM2INFO *info_pp, int img_pos, sceGsLoadImage *img_pp, TIM2INFO *infoX_pp);
+int Tim2SetLoadImageC(TIM2INFO *info_pp, int col_pos, sceGsLoadImage *img_pp, int ofsx, int ofsy);
+int Tim2Load(TIM2INFO *info_pp, int img_pos, int col_pos);
+
+int MODE_TR_P(int mode, int ws, int hs);
+
+int Tim2LoadSet(TIM2INFO *info_pp);
+int Tim2LoadSetX(TIM2INFO *info_pp, TIM2INFO *infoX_pp);
+
+void Tim2Trans(void *adrs);
+int Tim2TransX(void *adrs, int ofs_num);
+
+void Tim2Trans_TBP_MODE(void *adrs, int tbp, int mode);
+void Tim2TransColor_TBP(void *adrs, int tbp);
 
 #endif // TIM2_H
