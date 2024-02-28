@@ -24,21 +24,21 @@ extern char mtcStack_0F[4096];
 
 /* data */
 // Size for each stack
-extern int mtcStackSizeTbl[]/* = { 
+int mtcStackSizeTbl[] = { 
     0x1000, 0x1000, 0x100,  0x800,
     0x1000, 0x4000, 0x100,  0x4000,
     0x100,  0x100,  0x1000, 0x100,
     0x100,  0x1000, 0x100,  0x1000
-}*/;
+};
 
-extern char* mtcStack[16] /*= {
+char* mtcStack[16] = {
     mtcStack_CTRL, mtcStack_MAIN, mtcStack_02, mtcStack_03,
     mtcStack_04,   mtcStack_05,   mtcStack_06, mtcStack_07,
     mtcStack_08,   mtcStack_09,   mtcStack_0A, mtcStack_0B,
     mtcStack_0C,   mtcStack_0D,   mtcStack_0E, mtcStack_0F
-}*/;
+};
 
-extern struct SemaParam mtcSemaPara /*= { 0, 0, 0, 0, 0, 0 }*/;
+struct SemaParam mtcSemaPara = { 0, 0, 0, 0, 0, 0 };
 
 /* sdata */
 extern int mtcCurrentTask;
