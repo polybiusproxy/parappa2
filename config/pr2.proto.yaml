@@ -51,7 +51,9 @@ segments:
         - [0x4850, c, os/cmngifpk]
         - [0x4f68, c, os/usrmem]
         - [0x5330, c, os/tim2]
-        - [0x6120, asm, unk]
+
+        - [0x6120, asm, main/cdctrl]
+        - [0x7d70, asm, unk]
         
         - [0x79040, data, vutext] # .vutext
         
@@ -74,19 +76,28 @@ segments:
         - [0x292928, .rodata, os/cmngifpk]
         - [0x292968, .rodata, os/usrmem]
         - [0x292a30, .rodata, os/tim2]
-        - [0x292a80, rodata, unk]
+        - [0x292a80, rodata, main/cdctrl]
+        - [0x292da8, rodata, unk]
         
         - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
         - [0x299f00, rodatabin] # .lit4
         - [0x29a300, rodatabin] # .sdata
+
         - [0x29a318, .sdata, os/syssub] # .sdata
         - [0x29a330, rodatabin] # .sdata
+        - [0x29a360, sdata, main/cdctrl]
+        - [0x29a378, rodatabin] # .sdata
+        
         # - [0x29a9d8, rodatabin] # .sbss / .bss
         
         # .sbss / .bss
-        - { start: 0x29aa00, type: bss, vram: 0x00399a00, name: sbss }
-        - { start: 0x29aa1c, type: bss, vram: 0x00399c00, name: bss  }
+        - { start: 0x29aa00, type: bss,  vram: 0x00399a00, name: sbss }
+        - { start: 0x29aa1c, type: bss,  vram: 0x00399c00, name: bss  }
         - { start: 0x29aa1c, type: .bss, vram: 0x01c5d380, name: os/tim2 }
-        - { start: 0x29aa1c, type: bss, vram: 0x01c5e000, name: unk }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c5e000, name: main/cdctrl }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c5f030, name: unk }
+    - [0x29aa00, databin] # pad
     - [0x29b000, databin] # .mfifo
+    - [0x2ab000, databin] # .reginfo
+    - [0x2ab018, databin] # .mdebug
     - [0x8aaf0d]

@@ -83,7 +83,9 @@ int Tim2Load(TIM2INFO *info_pp, int img_pos, int col_pos) {
         sceGsSyncPath(0, 0);
     }
 
-    info_pp->picturH->GsTex0 &= SCE_GS_SET_TEX0(0, 0x3f, 0x3F, 0xF, 0xF, 1, 0x3, 0, 0xF, 0x1, 0x1F, 0);
+    // Preserve TBP0, CBP, TCC and CLD from TEX0.
+    info_pp->picturH->GsTex0 &= SCE_GS_SET_TEX0(0, 0x3f, 0x3f, 0xf, 0xf, 1, 0x3, 0, 0xf, 0x1, 0x1f, 0);
+    // Now put our values in.
     info_pp->picturH->GsTex0 |= SCE_GS_SET_TEX0(img_pos, 0, SCE_GS_PSMCT32, 0, 0, 1, 0, col_pos, SCE_GS_PSMCT32, 0, 0, 1);
 
     return 1;
@@ -214,7 +216,7 @@ void Tim2Trans(void *adrs) {
     TIM2INFO tim2info;
 
     if (!GetTim2Info(adrs, &tim2info, 1)) 
-        printf("[0x%08x] is not tim2file\n\0\0\0\0\0\0\0", adrs);
+        printf("[0x%08x] is not tim2file\n\0\0\0\0\0\0\0", adrs); // Absurd padding.
     else
         Tim2LoadSet(&tim2info);
 }
@@ -233,8 +235,7 @@ int Tim2TransX(void *adrs, int ofs_num) {
             ret = -1;
         else
         {
-            info_x = malloc(max_page * 0x18);
-
+            info_x = (TIM2INFO*)malloc(max_page * sizeof(TIM2INFO));
             GetTim2Info(adrs, info_x, max_page);
 
             if (ofs_num != 0)
@@ -250,17 +251,17 @@ int Tim2TransX(void *adrs, int ofs_num) {
     return ret;
 }
 
-#ifndef NON_MATCHING
-INCLUDE_ASM(const s32, "os/tim2", GetModeMaxH);
-#else
 static int GetModeMaxH(int w, int mode, int *trsize_pp) {
-    int line1_size = 4 - (mode & 7);
+    int line1_size = w;
     int ret;
 
-    if (line1_size == 0)
-        line1_size *= w;
+    mode = (mode & 7);
+    mode = 4 - mode;
+
+    if (mode)
+        line1_size *= mode;
     else
-        line1_size = w / 2;
+        line1_size /= 2;
         
     ret = 0x7fff0 / line1_size & 0xfffffff0;
 
@@ -269,7 +270,6 @@ static int GetModeMaxH(int w, int mode, int *trsize_pp) {
 
     return ret;
 }
-#endif
 
 void Tim2Trans_TBP_MODE(void *adrs, int tbp, int mode) {
 	TIM2INFO tim2info;
@@ -285,9 +285,9 @@ void Tim2Trans_TBP_MODE(void *adrs, int tbp, int mode) {
 
     GetTim2Info(adrs, &tim2info, 1);
 
-    w = tim2info.picturH->ImageWidth;
-    h = tim2info.picturH->ImageHeight;
-    dbw = (*(sceGsTex0*)&tim2info.picturH->GsTex0).TBW;
+    w    = tim2info.picturH->ImageWidth;
+    h    = tim2info.picturH->ImageHeight;
+    dbw  = (*(sceGsTex0*)&tim2info.picturH->GsTex0).TBW;
     maxh = GetModeMaxH(w, mode, &trans_1size);
 
     tr_adr = (char*)tim2info.image_pp;
@@ -320,7 +320,7 @@ void Tim2TransColor_TBP(void *adrs, int tbp) {
     int mode;
     
     GetTim2Info(adrs, &tim2info, 1);
-    col_type = tim2info.picturH->ClutType & 0x1f;
+    col_type = tim2info.picturH->ClutType & 0x1F;
     mode = tim2ColorTypeTbl[col_type];
     
     w = 8;
@@ -340,3 +340,5 @@ void Tim2TransColor_TBP(void *adrs, int tbp) {
     sceGsExecLoadImage(&tp, (u_long128*)tr_adr);
     sceGsSyncPath(0, 0);
 }
+
+static char _pad_[2720]; /* bss pad - remove once RBuff (cdctrl.c) is added */
