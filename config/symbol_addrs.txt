@@ -231,6 +231,62 @@ tp = 0x01c5d440; // allow_duplicated:True
 tp = 0x01c5d4a0; // allow_duplicated:True
 tp = 0x01c5d500; // allow_duplicated:True
 
+// main/cdctrl.c
+PackIntGetDecodeSize        = 0x00105120; // type:func
+PackIntDecode               = 0x00105128; // type:func
+PackIntDecodeWait           = 0x00105250; // type:func
+CdctrlInit                  = 0x00105428; // type:func
+CdctrlQuit                  = 0x001054a0; // type:func
+CdctrlMasterVolSet          = 0x001054d0; // type:func
+CdctrlSerch                 = 0x001054e0; // type:func
+cdctrlReadSub               = 0x001055e0; // type:func
+intReadSub                  = 0x001057b8; // type:func
+cdctrlReadData              = 0x00105ca0; // type:func
+cdctrlReadDataOne           = 0x00105d58; // type:func
+CdctrlRead                  = 0x00105de0; // type:func
+CdctrlReadOne               = 0x00105e10; // type:func
+usrMemcpy                   = 0x00105e40; // type:func
+CdctrlMemIntgDecode         = 0x00105e80; // type:func
+CdctrlStatus                = 0x00106208; // type:func
+CdctrlReadWait              = 0x00106218; // type:func
+CdctrlGetFileSize           = 0x00106240; // type:func
+CdctrlWP2SetChannel         = 0x00106280; // type:func
+CdctrlWP2Set                = 0x00106310; // type:func
+CdctrlWP2SetFileSeek        = 0x001063f8; // type:func
+CdctrlWP2SetFileSeekChan    = 0x001064d0; // type:func
+CdctrlWP2Seek               = 0x001065c0; // type:func
+CdctrlWP2Play               = 0x00106600; // type:func
+CdctrlWP2PlayEndCheck       = 0x00106610; // type:func
+CdctrlWP2CheckBuffer        = 0x00106638; // type:func
+CdctrlWP2SetVolume          = 0x00106658; // type:func
+CdctrlWP2GetVolume          = 0x00106698; // type:func
+CdctrlWp2Stop               = 0x001066a8; // type:func
+CdctrlWp2FileEnd            = 0x001066b8; // type:func
+CdctrlWp2GetSample          = 0x001066e0; // type:func
+CdctrlWp2GetFrame           = 0x00106700; // type:func
+CdctrlFrame2WP2sample       = 0x00106740; // type:func
+CdctrlWp2GetSndTime         = 0x00106768; // type:func
+CdctrlSndTime2WP2sample     = 0x001067c8; // type:func
+CdctrlWp2GetSampleTmpBuf    = 0x00106818; // type:func
+CdctrlWp2GetSampleTmp       = 0x00106880; // type:func
+CdctrlWp2GetFrameTmp        = 0x00106888; // type:func
+CdctrlWp2GetSndTimeTmp      = 0x001068b0; // type:func
+CdctrlWp2CdSample2SndTime   = 0x001068e8; // type:func
+CdctrlWp2CdSample2Frame     = 0x00106938; // type:func
+CdctrlXTRset                = 0x00106960; // type:func
+GetIntAdrsCurrent           = 0x00106c58; // type:func
+GetIntSizeCurrent           = 0x00106c78; // type:func
+cdctrlSndFadeOut            = 0x00106c98; // type:func
+CdctrlSndFadeOut            = 0x00106d08; // type:func
+CdctrlSndFadeOutCheck       = 0x00106d20; // type:func
+CdctrlSndFadeOutWait        = 0x00106d30; // type:func
+
+current_intg_adrs           = 0x00399360; // size:0x4
+sndFadeTime                 = 0x00399370; // size:0x4
+RBuff                       = 0x01c5e000; // size:0x1011
+cdSampleTmp                 = 0x00399a34; // size:0x4
+cdctrl_str                  = 0x01c5f018; // size:0x18
+
 // main/main.c
 mainStart = 0x00121a68; // type:func
 

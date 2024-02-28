@@ -1,15 +1,51 @@
 #include "os/mtc.h"
 
-extern int mtcStackSizeTbl[];
-extern char* mtcStack[16];
+/* bss */
 extern MTC_TASK_CONB mtcTaskConB[16];
-extern struct SemaParam mtcSemaPara;
 extern struct ThreadParam th_para_Ctrl;
 extern char mtcStack_Ctrl[4096];
 
-int mtcCurrentTask;
-int mtcSemaEnd;
-short int th_id_Ctrl;
+extern char mtcStack_CTRL[4096];
+extern char mtcStack_MAIN[4096];
+extern char mtcStack_02[256];
+extern char mtcStack_03[2048];
+extern char mtcStack_04[4096];
+extern char mtcStack_05[16384];
+extern char mtcStack_06[256];
+extern char mtcStack_07[16384];
+extern char mtcStack_08[256];
+extern char mtcStack_09[256];
+extern char mtcStack_0A[4096];
+extern char mtcStack_0B[256];
+extern char mtcStack_0C[256];
+extern char mtcStack_0D[4096];
+extern char mtcStack_0E[256];
+extern char mtcStack_0F[4096];
+
+/* data */
+// Size for each stack
+extern int mtcStackSizeTbl[]/* = { 
+    0x1000, 0x1000, 0x100,  0x800,
+    0x1000, 0x4000, 0x100,  0x4000,
+    0x100,  0x100,  0x1000, 0x100,
+    0x100,  0x1000, 0x100,  0x1000
+}*/;
+
+extern char* mtcStack[16] /*= {
+    mtcStack_CTRL, mtcStack_MAIN, mtcStack_02, mtcStack_03,
+    mtcStack_04,   mtcStack_05,   mtcStack_06, mtcStack_07,
+    mtcStack_08,   mtcStack_09,   mtcStack_0A, mtcStack_0B,
+    mtcStack_0C,   mtcStack_0D,   mtcStack_0E, mtcStack_0F
+}*/;
+
+extern struct SemaParam mtcSemaPara /*= { 0, 0, 0, 0, 0, 0 }*/;
+
+/* sdata */
+extern int mtcCurrentTask;
+extern int mtcSemaEnd;
+
+/* sbss */
+extern short int th_id_Ctrl;
 
 static void mtcStackErrorCheck(int level) {
     if ( *(int*)mtcStack[level] != 0x572a8b4c ) {
@@ -114,7 +150,7 @@ void MtcWait(long int wt) {
     mtcStackErrorCheck(mtcCurrentTask);
 
     mtcTaskConB[mtcCurrentTask].status = MTC_COND_WAIT;
-    mtcTaskConB[mtcCurrentTask].wtime = wt;
+    mtcTaskConB[mtcCurrentTask].wtime  = wt;
 
     ChangeThreadPriority(th_id_Ctrl, MTC_CTRL_END);
 
