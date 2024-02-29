@@ -39,4 +39,10 @@ typedef struct { // 0x18
     /* 0x16 */ u_short volume;
 } CDCTRL_STR;
 
+u_int PackIntGetDecodeSize(u_char *fp_r);
+
+void intReadSub(void);
+
+void CdctrlMemIntgDecode(u_int rbuf, u_int setbuf);
+
 #endif

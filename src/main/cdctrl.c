@@ -1,8 +1,11 @@
 #include "main/cdctrl.h"
 
 /* sdata */
-extern void *current_intg_adrs;
-extern /* static */ int sndFadeTime;
+void *current_intg_adrs;
+/* static */ int sndFadeTime;
+
+/* Define in CdctrlWp2GetSampleTmpBuf */
+/* static */ int time_tmp_max;
 
 /* bss - static */
 extern unsigned char RBuff[4113];
@@ -11,7 +14,13 @@ extern CDCTRL_STR cdctrl_str;
 /* sbss - static */
 extern int cdSampleTmp;
 
+#if 1
 INCLUDE_ASM(const s32, "main/cdctrl", PackIntGetDecodeSize);
+#else
+u_int PackIntGetDecodeSize(u_char *fp_r) {
+    return *(u_int*)fp_r;
+}
+#endif
 
 INCLUDE_ASM(const s32, "main/cdctrl", PackIntDecode);
 
@@ -29,7 +38,15 @@ INCLUDE_RODATA(const s32, "main/cdctrl", D_00391AF0);
 
 INCLUDE_ASM(const s32, "main/cdctrl", cdctrlReadSub);
 
+INCLUDE_RODATA(const s32, "main/cdctrl", D_00391B50);
+INCLUDE_RODATA(const s32, "main/cdctrl", D_00391BE0);
+
 INCLUDE_ASM(const s32, "main/cdctrl", intReadSub);
+/*void intReadSub(void)
+{
+    (void)"INT FILE ERROR!![%s]\n";
+    (void)"int file tim2 round:%d file in\n";
+}*/
 
 INCLUDE_ASM(const s32, "main/cdctrl", cdctrlReadData);
 
@@ -41,17 +58,20 @@ INCLUDE_ASM(const s32, "main/cdctrl", CdctrlReadOne);
 
 INCLUDE_ASM(const s32, "main/cdctrl", usrMemcpy);
 
-INCLUDE_RODATA(const s32, "main/cdctrl", D_00391B50);
-
-INCLUDE_RODATA(const s32, "main/cdctrl", D_00391BE0);
-
 INCLUDE_RODATA(const s32, "main/cdctrl", D_00391C00);
 
 INCLUDE_RODATA(const s32, "main/cdctrl", D_00391C20);
 
 INCLUDE_RODATA(const s32, "main/cdctrl", D_00391C30);
 
+#if 1
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlMemIntgDecode);
+#else
+void CdctrlMemIntgDecode(u_int rbuf, u_int setbuf) {
+    (void)"INT FILE ERROR!![%s]\n";
+    (void)"int file tim2 round:%d file in\n";
+}
+#endif
 
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlStatus);
 
