@@ -2,12 +2,13 @@
 
 #include "os/system.h"
 
-PAD_SYSD sysPad[2];
+PAD_SYSD sysPad[2] = {};
 
-u_long128 pad_dma_buf[2][16];
-u_long128 ChangeDrawAreaPacket[12];
-sceDmaTag exl_dmatag;
-USR_MALLOC_STR usr_malloc_str[256];
+/* bss - static */
+extern u_long128 pad_dma_buf[2][16];
+extern u_long128 ChangeDrawAreaPacket[12];
+extern sceDmaTag exl_dmatag;
+extern USR_MALLOC_STR usr_malloc_str[256];
 
 void WorkClear(void *clr_adrs, int size) {
     u_char *clr_pp = (char*)clr_adrs;

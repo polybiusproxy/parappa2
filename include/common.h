@@ -30,4 +30,6 @@ typedef float f32;
 #define PR_ARRAYSIZE(arr)  (s32)(sizeof(arr) / sizeof(arr[0]))
 #define PR_CLEAR(x) { u_int i; char *p = (char*)&x; for (i = 0; i < sizeof(x); i++) *p++ = 0; }
 
+#define PR_ALIGN(x) __attribute__((aligned(x)))
+
 #endif /* COMMON_H */

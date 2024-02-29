@@ -282,6 +282,7 @@ CdctrlSndFadeOutCheck       = 0x00106d20; // type:func
 CdctrlSndFadeOutWait        = 0x00106d30; // type:func
 
 current_intg_adrs           = 0x00399360; // size:0x4
+time_tmp_max                = 0x0039936c; // size:0x4
 sndFadeTime                 = 0x00399370; // size:0x4
 RBuff                       = 0x01c5e000; // size:0x1011
 cdSampleTmp                 = 0x00399a34; // size:0x4
