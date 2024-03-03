@@ -17,6 +17,7 @@
 
 #include "os/mtc.h"
 #include "os/syssub.h"
+#include "os/cmngifpk.h"
 #include "main/main.h"
 
 #define SCREEN_WIDTH 640
@@ -43,10 +44,5 @@ void SetOsFuncAddr(void* func_pp);
 void osFunc(void);
 void systemCtrlMain(void* xx);
 void mallocInit(void);
-
-// TODO(poly): move to cmngifpk.c
-void CmnGifInit(void* buf_adr, int size);
-void CmnGifFlush(void);
-void CmnGifClear(void);
 
 #endif // SYSTEM_H

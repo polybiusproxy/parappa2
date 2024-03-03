@@ -40,6 +40,13 @@ typedef struct { // 0x18
 } CDCTRL_STR;
 
 u_int PackIntGetDecodeSize(u_char *fp_r);
+int PackIntDecode(u_char *fp_r, u_char *fp_w);
+int PackIntDecodeWait(u_char *fp_r, u_char *fp_w, int wait_hline);
+
+void CdctrlInit(void);
+void CdctrlQuit(void);
+void CdctrlMasterVolSet(u_int vol);
+int CdctrlSerch(FILE_STR *fstr_pp);
 
 void intReadSub(void);
 

@@ -288,6 +288,61 @@ RBuff                       = 0x01c5e000; // size:0x1011
 cdSampleTmp                 = 0x00399a34; // size:0x4
 cdctrl_str                  = 0x01c5f018; // size:0x18
 
+// main/stdat.c
+stDatFileSearch             = 0x00106d70; // type:func
+stDatFirstFileSearch        = 0x00106dc0; // type:func
+
+file_str_logo_file          = 0x001808f0; // size:0x2C
+file_str_menu_file          = 0x00180920; // size:0x2C
+file_str_extra_file         = 0x00180950; // size:0x1B8
+
+stdat_dat_st00              = 0x00180b08;
+stdat_dat_title             = 0x00180bd8;
+stdat_dat_st01              = 0x00180d78;
+stdat_dat_st02              = 0x001810b8;
+stdat_dat_st03              = 0x001813f8;
+stdat_dat_st04              = 0x00181738;
+stdat_dat_st05              = 0x00181a78;
+stdat_dat_st06              = 0x00181db8;
+stdat_dat_st07              = 0x001820f8;
+stdat_dat_st08              = 0x00182438;
+stdat_dat_st09              = 0x001825d8;
+stdat_dat_bonus             = 0x001826a8;
+stdat_dat_vs01              = 0x00182778;
+stdat_dat_vs02              = 0x00182848;
+stdat_dat_vs03              = 0x00182918;
+stdat_dat_vs04              = 0x001829e8;
+stdat_dat_vs05              = 0x00182ab8;
+stdat_dat_vs06              = 0x00182b88;
+stdat_dat_vs07              = 0x00182c58;
+stdat_dat_vs08              = 0x00182d28;
+
+stdat_rec                   = 0x00182df8; // size:0x460
+stdat_rec_num               = 0x00399430;
+
+// main/sprite.c
+SprInit                     = 0x0010f028; // type:func
+SprClear                    = 0x0010f060; // type:func
+SprPackSet                  = 0x0010f120; // type:func
+SprFlash                    = 0x0010f1d0; // type:func
+SprSetColor                 = 0x0010f270; // type:func
+SprDatPrint                 = 0x0010f2b8; // type:func
+SprDisp                     = 0x0010f450; // type:func
+SprDispAlp                  = 0x0010f5d0; // type:func
+SprDispZABnclr              = 0x0010f750; // type:func
+SprDispZBnclr               = 0x0010f768; // type:func
+SprDispZcheck               = 0x0010f780; // type:func
+SprDispAcheck               = 0x0010f798; // type:func
+SprDispAlphaSet             = 0x0010f7c8; // type:func
+SprBox                      = 0x0010f7e0; // type:func
+SprWindow                   = 0x0010f920; // type:func
+SprWindowDf                 = 0x0010f968; // type:func
+
+sprSetNum                   = 0x00399504;
+sprDmaC                     = 0x00399a44; // type:s32 size:0x4
+sprPacket                   = 0x01c65b80; // size:0x8000
+gifPkSpr                    = 0x01c6db80; // size:0x10
+
 // main/main.c
 mainStart = 0x00121a68; // type:func
 
