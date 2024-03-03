@@ -17,7 +17,8 @@ extern int cdSampleTmp;
 #if 1
 INCLUDE_ASM(const s32, "main/cdctrl", PackIntGetDecodeSize);
 #else
-u_int PackIntGetDecodeSize(u_char *fp_r) {
+u_int PackIntGetDecodeSize(u_char *fp_r)
+{
     return *(u_int*)fp_r;
 }
 #endif
@@ -67,7 +68,8 @@ INCLUDE_RODATA(const s32, "main/cdctrl", D_00391C30);
 #if 1
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlMemIntgDecode);
 #else
-void CdctrlMemIntgDecode(u_int rbuf, u_int setbuf) {
+void CdctrlMemIntgDecode(u_int rbuf, u_int setbuf)
+{
     (void)"INT FILE ERROR!![%s]\n";
     (void)"int file tim2 round:%d file in\n";
 }

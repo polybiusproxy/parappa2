@@ -10,15 +10,16 @@ extern u_long128 ChangeDrawAreaPacket[12];
 extern sceDmaTag exl_dmatag;
 extern USR_MALLOC_STR usr_malloc_str[256];
 
-void WorkClear(void *clr_adrs, int size) {
+void WorkClear(void *clr_adrs, int size)
+{
     u_char *clr_pp = (char*)clr_adrs;
 
-    while (size--) {
+    while (size--)
         *clr_pp++ = 0;
-    }
 }
 
-void GPadInit(void) {
+void GPadInit(void)
+{
     int i;
 
     WorkClear(pad, sizeof(pad));
@@ -27,25 +28,28 @@ void GPadInit(void) {
     scePadInit(0);
 
     // Open each controller port
-    for (i = 0; i < 2; i++) {
-        if (!scePadPortOpen(i, 0, pad_dma_buf[i])) {
+    for (i = 0; i < 2; i++)
+    {
+        if (!scePadPortOpen(i, 0, pad_dma_buf[i]))
             printf("ERROR: scePadPortOpen[%d]\n", i);
-        }
     }
 }
 
-void GPadExit(void) {
+void GPadExit(void)
+{
     int i;
 
     // Close each port
-    for (i = 0; i < 2; i++) {
+    for (i = 0; i < 2; i++)
+    {
         scePadPortClose(i, 0);
     }
 
     scePadEnd();
 }
 
-void GPadSysRead(void) {
+void GPadSysRead(void)
+{
     int i;
     int state;
 	int id;
@@ -181,65 +185,78 @@ void GPadSysRead(void) {
     }
 }
 
-void padMakeData(PADD *pad_pp, u_short paddata) {
+void padMakeData(PADD *pad_pp, u_short paddata)
+{
     pad_pp->old = pad_pp->shot;
     pad_pp->shot = paddata;
     pad_pp->one = (pad_pp->old ^ pad_pp->shot) & pad_pp->shot;
     pad_pp->off = (pad_pp->old ^ pad_pp->shot) & ~pad_pp->shot;
 }
 
-void pad0Clear(PADD *pad_pp) {
+void pad0Clear(PADD *pad_pp)
+{
     padMakeData(pad_pp, 0);
 }
 
-void padOneOffBitCLear(PADD *pad_pp) {
+void padOneOffBitCLear(PADD *pad_pp)
+{
     pad_pp->one = 0;
     pad_pp->off = 0;
 }
 
-void padNormalRead(PADD *pad_pp, u_char *rdata_pp) {
+void padNormalRead(PADD *pad_pp, u_char *rdata_pp)
+{
     padMakeData(pad_pp, ~((rdata_pp[2] << 8) | rdata_pp[3])); // Swap the endianness 
 }
 
-void padAnaRead(PADD *pad_pp, u_char *rdata_pp) {
+void padAnaRead(PADD *pad_pp, u_char *rdata_pp)
+{
     int i;
     u_char *temp = pad_pp->ana; /* TODO: figure out how to match this without this */
 
     rdata_pp += 4;
 
-    for (i = 0; i < PR_ARRAYSIZE(pad_pp->ana); i++) {
+    for (i = 0; i < PR_ARRAYSIZE(pad_pp->ana); i++)
+    {
         temp[i] = rdata_pp[i];
     }
 }
 
-void padAnaRead0Clear(PADD *pad_pp) {
+void padAnaRead0Clear(PADD *pad_pp)
+{
     int i;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++)
+    {
         pad_pp->ana[i] = 0x80;
     }
 }
 
-void padPrsRead(PADD *pad_pp, u_char *rdata_pp) {
+void padPrsRead(PADD *pad_pp, u_char *rdata_pp)
+{
     int i;
     u_char *temp = pad_pp->press; /* TODO: ALSO figure out how to match this without temp vars */
 
     rdata_pp += 8;
 
-    for (i = 0; i < PR_ARRAYSIZE(pad_pp->press); i++) {
+    for (i = 0; i < PR_ARRAYSIZE(pad_pp->press); i++)
+    {
         temp[i] = rdata_pp[i];
     }
 }
 
-void padPrsRead0Clear(PADD *pad_pp) {
+void padPrsRead0Clear(PADD *pad_pp)
+{
     int i;
 
-    for (i = 0; i < PR_ARRAYSIZE(pad_pp->press); i++) {
+    for (i = 0; i < PR_ARRAYSIZE(pad_pp->press); i++)
+    {
         pad_pp->press[i] = 0;
     }
 }
 
-void padPrsTreate(PADD *pad_pp) {
+void padPrsTreate(PADD *pad_pp)
+{
     u_short pad_pos[12] = {
         SCE_PADLright,
         SCE_PADLleft,
@@ -273,22 +290,28 @@ void padPrsTreate(PADD *pad_pp) {
     }
 }
 
-void padActSet(PADD *pad_pp, PAD_SYSD *sysPad_pp) {
-    if (pad_pp) {
+void padActSet(PADD *pad_pp, PAD_SYSD *sysPad_pp)
+{
+    if (pad_pp)
+    {
         sysPad_pp->act_direct[0] = pad_pp->padvib[0];
         sysPad_pp->act_direct[1] = pad_pp->padvib[1];
-    } else {
+    }
+    else
+    {
         sysPad_pp->act_direct[0] = 0;
         sysPad_pp->act_direct[1] = 0;
     }
 }
 
-void padActClear(PADD *pad_pp) {
+void padActClear(PADD *pad_pp)
+{
     pad_pp->padvib[0] = 0;
     pad_pp->padvib[1] = 0;
 }
 
-void padAnaMixPad(PADD *pad_pp) {
+void padAnaMixPad(PADD *pad_pp)
+{
     u_short old_shot = pad_pp->mshot;
 
     pad_pp->mshot = pad_pp->shot;
@@ -310,9 +333,12 @@ void padAnaMixPad(PADD *pad_pp) {
     pad_pp->mone = pad_pp->mshot & (old_shot ^ pad_pp->mshot);
 }
 
-void GPadRead(PADD *pad_pp) {
+void GPadRead(PADD *pad_pp)
+{
     int i = 0;
-    do {
+
+    do
+    {
         if (sysPad[i].rdata[0] != NULL)
             pad0Clear(pad_pp);
 
@@ -363,7 +389,8 @@ void GPadRead(PADD *pad_pp) {
     } while (i < 2);
 }
 
-PAD_PRESS_ENUM GetPadbit2PressId(u_short padbit) {
+PAD_PRESS_ENUM GetPadbit2PressId(u_short padbit)
+{
     BIT2PR bit2pr[12] = {
         { 0x8000, PAD_PR_Lleft }, { 0x2000, PAD_PR_Lright },
         { 0x1000, PAD_PR_Lup   }, { 0x4000, PAD_PR_Ldown  },
@@ -377,7 +404,8 @@ PAD_PRESS_ENUM GetPadbit2PressId(u_short padbit) {
     PAD_PRESS_ENUM ret = PAD_PR_None;
     u_int i;
 
-    for (i = 0; i < 12; i++) {
+    for (i = 0; i < 12; i++)
+    {
         if ((bit2pr[i].bit & padbit) != 0) 
         {
             ret = bit2pr[i].prn;
@@ -388,21 +416,24 @@ PAD_PRESS_ENUM GetPadbit2PressId(u_short padbit) {
     return ret;
 }
 
-u_char GetPadbit2PressPad(PADD *pad_pp, u_short padbit) {
+u_char GetPadbit2PressPad(PADD *pad_pp, u_short padbit)
+{
     if (GetPadbit2PressId(padbit) == PAD_PR_None)
         return 0;
     else
         return pad_pp->press[padbit];
 }
 
-void SetBackColor(u_char R, u_char G, u_char B) {
+void SetBackColor(u_char R, u_char G, u_char B)
+{
     DBufDc.clear0.rgbaq.R = R;
     DBufDc.clear0.rgbaq.G = G;
     DBufDc.clear0.rgbaq.B = B;
     DBufDc.clear1.rgbaq = DBufDc.clear0.rgbaq;
 }
 
-void ChangeDrawArea(sceGsDrawEnv1 *env_pp) {
+void ChangeDrawArea(sceGsDrawEnv1 *env_pp)
+{
     u_long giftag[2] = { SCE_GIF_SET_TAG(0, 1, 0, 0, SCE_GIF_PACKED, 1), SCE_GIF_PACKED_AD };
     sceGifPacket gifpk;
     sceDmaChan *cmnDmaC;
@@ -431,7 +462,8 @@ void ChangeDrawArea(sceGsDrawEnv1 *env_pp) {
     sceGsSyncPath(0,0);
 }
 
-void ChangeDrawAreaSetGifTag(sceGsDrawEnv1 *env_pp, sceGifPacket *gifpk_pp) {
+void ChangeDrawAreaSetGifTag(sceGsDrawEnv1 *env_pp, sceGifPacket *gifpk_pp)
+{
     sceGifPkAddGsAD(gifpk_pp, SCE_GS_FRAME_1, *(u_long*)&env_pp->frame1);
     sceGifPkAddGsAD(gifpk_pp, SCE_GS_FRAME_2, *(u_long*)&env_pp->frame1);
     sceGifPkAddGsAD(gifpk_pp, SCE_GS_XYOFFSET_1, *(u_long*)&env_pp->xyoffset1);
@@ -440,7 +472,8 @@ void ChangeDrawAreaSetGifTag(sceGsDrawEnv1 *env_pp, sceGifPacket *gifpk_pp) {
     sceGifPkAddGsAD(gifpk_pp, SCE_GS_SCISSOR_2, *(u_long*)&env_pp->scissor1);
 }
 
-void ChangeDrawArea2(sceGsDrawEnv1 *env_pp) {
+void ChangeDrawArea2(sceGsDrawEnv1 *env_pp)
+{
     u_long giftag[2] = { SCE_GIF_SET_TAG(0, 1, 0, 0, SCE_GIF_PACKED, 1), SCE_GIF_PACKED_AD };
     sceGifPacket gifpk;
     sceDmaChan *cmnDmaC;
@@ -466,7 +499,8 @@ void ChangeDrawArea2(sceGsDrawEnv1 *env_pp) {
     sceGsSyncPath(0,0);
 }
 
-void ClearFrameBufferGifTag(sceGsFrame *draw_pp, sceGifPacket *gifpk_pp, u_char r, u_char g, u_char b, u_char a) {
+void ClearFrameBufferGifTag(sceGsFrame *draw_pp, sceGifPacket *gifpk_pp, u_char r, u_char g, u_char b, u_char a)
+{
     sceGifPkAddGsAD(gifpk_pp, SCE_GS_TEXFLUSH, 0);
     sceGifPkAddGsAD(gifpk_pp, SCE_GS_FRAME_1, *(u_long*)draw_pp);
     sceGifPkAddGsAD(gifpk_pp, SCE_GS_TEST_1, SCE_GS_SET_TEST_1(1, 0, 0, 1, 0, 0, 1, 1));
@@ -513,7 +547,8 @@ void GGsSetLocalMoveImage(
     lp->trxdiraddr = SCE_GS_TRXDIR;
 }
 
-void GGsExecLocalMoveImage(sceGsMoveImage *lp) {
+void GGsExecLocalMoveImage(sceGsMoveImage *lp)
+{
     exl_dmatag.qwc = 5;
     exl_dmatag.id = 0;
     exl_dmatag.next = (sceDmaTag*)lp;
@@ -523,28 +558,35 @@ void GGsExecLocalMoveImage(sceGsMoveImage *lp) {
     sceDmaSend(sceDmaGetChan(SCE_DMA_GIF), &exl_dmatag);
 }
 
-u_int randMakeMax(u_int max) {
+u_int randMakeMax(u_int max)
+{
     u_int ret = (rand() & 0x7FFF) * max;
     return ret >> 15;
 }
 
-static char* ByteStringSub(char *s, unsigned int n) {
-    if (n >= 1000) {
+static char* ByteStringSub(char *s, unsigned int n)
+{
+    if (n >= 1000)
+    {
         s = ByteStringSub(s, n / 1000);
         *s++ = ',';
         return s + sprintf(s, "%03u", n % 1000);
-    } else {
+    }
+    else
+    {
         return s + sprintf(s, "%u", n % 1000);
     }
 }
 
-char* ByteString(unsigned int n) {
+char* ByteString(unsigned int n)
+{
     extern char s[50];
     memcpy(ByteStringSub(s, n), "(byte)", 7);
     return s;
 }
 
-u_int ReportHeapUsage(void) {
+u_int ReportHeapUsage(void)
+{
     struct mallinfo malloc_info = mallinfo();
 
     printf("_________________________________________\n");
@@ -559,11 +601,13 @@ u_int ReportHeapUsage(void) {
     return malloc_info.uordblks;
 }
 
-void usrMallcInit(void) {
+void usrMallcInit(void)
+{
     WorkClear(usr_malloc_str, sizeof(usr_malloc_str));
 }
 
-void* usrMalloc(u_int size) {
+void* usrMalloc(u_int size)
+{
     void *ret;
     int i;
 
@@ -592,7 +636,8 @@ void* usrMalloc(u_int size) {
     return 0;
 }
 
-void usrFree(void *adrs) {
+void usrFree(void *adrs)
+{
     int i;
 
     for (i = 0; i < 256; i++) 
@@ -610,14 +655,17 @@ void usrFree(void *adrs) {
     return;
 }
 
-void usrMallcReport(void) {
+void usrMallcReport(void)
+{
     int i;
     int cnt = 0;
 
     printf("--- usr malloc report ---\n");
 
-    for (i = 0; i < 256; i++) {
-        if (usr_malloc_str[i].adrs) {
+    for (i = 0; i < 256; i++)
+    {
+        if (usr_malloc_str[i].adrs)
+        {
             printf(" use  adr[%d] size[%d]\n", usr_malloc_str[i].adrs, usr_malloc_str[i].size);
             cnt++;
         }
@@ -626,7 +674,8 @@ void usrMallcReport(void) {
     printf("--- use cnt[%d] ---\n", cnt);
 }
 
-sceGsDrawEnv1* DrawGetDrawEnvP(DNUM_ENUM dnum) {
+sceGsDrawEnv1* DrawGetDrawEnvP(DNUM_ENUM dnum)
+{
     int ret;
 
     switch (dnum) 
@@ -659,7 +708,8 @@ sceGsDrawEnv1* DrawGetDrawEnvP(DNUM_ENUM dnum) {
     return drawEnvP[ret];
 }
 
-sceGsFrame* DrawGetFrameP(DNUM_ENUM dnum) {
+sceGsFrame* DrawGetFrameP(DNUM_ENUM dnum)
+{
     int ret;
 
     switch (dnum) 
@@ -692,7 +742,8 @@ sceGsFrame* DrawGetFrameP(DNUM_ENUM dnum) {
     return &drawEnvP[ret]->frame1;
 }
 
-int DrawGetFbpPos(DNUM_ENUM dnum) {
+int DrawGetFbpPos(DNUM_ENUM dnum)
+{
     int ret = 0;
 
     // TODO(poly): figure out what these values mean
@@ -728,7 +779,8 @@ int DrawGetFbpPos(DNUM_ENUM dnum) {
     return ret;
 }
 
-int DrawGetTbpPos(DNUM_ENUM dnum) {
+int DrawGetTbpPos(DNUM_ENUM dnum)
+{
     int ret = 0;
 
     // TODO(poly): figure out what these values mean

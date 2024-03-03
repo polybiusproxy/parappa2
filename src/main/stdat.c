@@ -113,7 +113,7 @@ STDAT_REC stdat_rec[19];
 
 int stdat_rec_num;
 
-static void stDatFileSearch(FILE_STR *fs_pp) 
+static void stDatFileSearch(FILE_STR *fs_pp)
 {
     if ((fs_pp != NULL) && (fs_pp->fname != NULL))
     {
@@ -122,7 +122,7 @@ static void stDatFileSearch(FILE_STR *fs_pp)
     }
 }
 
-void stDatFirstFileSearch(void) 
+void stDatFirstFileSearch(void)
 {
     int i, j, k;
 

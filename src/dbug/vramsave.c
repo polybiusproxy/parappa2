@@ -3,11 +3,13 @@
 #include <eetypes.h> /* tmp */
 #include <sifdev.h>
 
-u_int BekiDat(u_int size) {
+u_int BekiDat(u_int size)
+{
     u_int mot = 2;
     u_int i;
     
-    for (i = 1; size > mot; i++) {
+    for (i = 1; size > mot; i++)
+    {
         mot = mot << 1;
     }
 

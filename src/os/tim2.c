@@ -2,7 +2,8 @@
 
 int tim2ColorTypeTbl[] = { 0, 2, 1, 0, 20, 19 };
 
-int SPstrncmp(char *sr1, char *sr2, int num) {
+int SPstrncmp(char *sr1, char *sr2, int num)
+{
     while (num) 
     {
         if (*sr1 > *sr2)
@@ -27,7 +28,8 @@ INCLUDE_RODATA(const s32, "os/tim2", D_00391A30);
 #ifndef NON_MATCHING
 INCLUDE_ASM(const s32, "os/tim2", GetTim2Info);
 #else
-int GetTim2Info(void *tim2_pp, TIM2INFO *info_pp, int maxinfo) {
+int GetTim2Info(void *tim2_pp, TIM2INFO *info_pp, int maxinfo)
+{
     int i = 0;
 
     if (maxinfo < 1)
@@ -41,7 +43,8 @@ int GetTim2Info(void *tim2_pp, TIM2INFO *info_pp, int maxinfo) {
         info_pp->fileH = tim2_pp;
     }
 
-    if (!SPstrncmp(((TIM2_FILEHEADER*)tim2_pp)->FileId, "TIM2", 4) || !SPstrncmp(info_pp->fileH->FileId, "CLT2", 4)) {
+    if (!SPstrncmp(((TIM2_FILEHEADER*)tim2_pp)->FileId, "TIM2", 4) || !SPstrncmp(info_pp->fileH->FileId, "CLT2", 4))
+    {
         info_pp->image_pp = NULL;
         info_pp->fileH = NULL;
         info_pp->picturH = NULL;
@@ -64,7 +67,8 @@ INCLUDE_ASM(const s32, "os/tim2", Tim2SetLoadImageIX);
 
 INCLUDE_ASM(const s32, "os/tim2", Tim2SetLoadImageC);
 
-int Tim2Load(TIM2INFO *info_pp, int img_pos, int col_pos) {
+int Tim2Load(TIM2INFO *info_pp, int img_pos, int col_pos)
+{
     static sceGsLoadImage tp;
 
     if (Tim2SetLoadImageI(info_pp, img_pos, &tp, 0, 0))
@@ -91,7 +95,8 @@ int Tim2Load(TIM2INFO *info_pp, int img_pos, int col_pos) {
     return 1;
 }
 
-int MODE_TR_P(int mode, int ws, int hs) {
+int MODE_TR_P(int mode, int ws, int hs)
+{
     int rsize = ws * hs;
 
     if (mode == 1)
@@ -106,7 +111,8 @@ int MODE_TR_P(int mode, int ws, int hs) {
     return rsize;
 }
 
-int Tim2LoadSet(TIM2INFO *info_pp) {
+int Tim2LoadSet(TIM2INFO *info_pp)
+{
     static sceGsLoadImage tp;
     u_long img_pos = info_pp->picturH->GsTex0;
     u_long col_pos = img_pos;
@@ -187,7 +193,8 @@ int Tim2LoadSet(TIM2INFO *info_pp) {
     return 1;
 }
 
-int Tim2LoadSetX(TIM2INFO *info_pp, TIM2INFO *infoX_pp) {
+int Tim2LoadSetX(TIM2INFO *info_pp, TIM2INFO *infoX_pp)
+{
     static sceGsLoadImage tp;
     u_long col_pos = info_pp->picturH->GsTex0;
     u_long img_pos = col_pos;
@@ -212,7 +219,8 @@ int Tim2LoadSetX(TIM2INFO *info_pp, TIM2INFO *infoX_pp) {
     return 1;
 }
 
-void Tim2Trans(void *adrs) {
+void Tim2Trans(void *adrs)
+{
     TIM2INFO tim2info;
 
     if (!GetTim2Info(adrs, &tim2info, 1)) 
@@ -221,7 +229,8 @@ void Tim2Trans(void *adrs) {
         Tim2LoadSet(&tim2info);
 }
 
-int Tim2TransX(void *adrs, int ofs_num) {
+int Tim2TransX(void *adrs, int ofs_num)
+{
     TIM2INFO info;
     TIM2INFO *info_x;
     int max_page;
@@ -251,7 +260,8 @@ int Tim2TransX(void *adrs, int ofs_num) {
     return ret;
 }
 
-static int GetModeMaxH(int w, int mode, int *trsize_pp) {
+static int GetModeMaxH(int w, int mode, int *trsize_pp)
+{
     int line1_size = w;
     int ret;
 
@@ -271,7 +281,8 @@ static int GetModeMaxH(int w, int mode, int *trsize_pp) {
     return ret;
 }
 
-void Tim2Trans_TBP_MODE(void *adrs, int tbp, int mode) {
+void Tim2Trans_TBP_MODE(void *adrs, int tbp, int mode)
+{
 	TIM2INFO tim2info;
 	static sceGsLoadImage tp;
 	u_long dbw;
@@ -292,7 +303,8 @@ void Tim2Trans_TBP_MODE(void *adrs, int tbp, int mode) {
 
     tr_adr = (char*)tim2info.image_pp;
 
-    do {
+    do
+    {
         if (maxh < h)
             h_tmp = maxh;
         else
@@ -310,7 +322,8 @@ void Tim2Trans_TBP_MODE(void *adrs, int tbp, int mode) {
     } while (h > 0);
 }
 
-void Tim2TransColor_TBP(void *adrs, int tbp) {
+void Tim2TransColor_TBP(void *adrs, int tbp)
+{
     TIM2INFO tim2info;
     static sceGsLoadImage tp;
     short int w;
