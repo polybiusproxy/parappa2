@@ -29,10 +29,12 @@ sceGsDrawEnv1 drawEnvSp;
 sceGsDrawEnv1 drawEnvZbuff;
 sceGsDrawEnv1 drawEnvEnd;
 
-int main() {
+int main()
+{
     mallocInit();
 
-    while (1) {
+    while (1)
+    {
         MtcInit();
         initSystem();
 
@@ -65,7 +67,8 @@ INCLUDE_RODATA(const s32, "os/system", D_00391870);
 
 INCLUDE_RODATA(const s32, "os/system", D_00391890);
 
-int SetIopModule(void) {
+int SetIopModule(void)
+{
     u_int i;
 
     sceSifInitRpc(0);
@@ -81,8 +84,10 @@ int SetIopModule(void) {
     sceCdInit(0);
     sceCdMmode(SCECdDVD);
 
-    for (i = 0; i < PR_ARRAYSIZEU(iop_module); i++) {
-        if (sceSifLoadModule(iop_module[i], 0, NULL) < 0) {
+    for (i = 0; i < PR_ARRAYSIZEU(iop_module); i++)
+    {
+        if (sceSifLoadModule(iop_module[i], 0, NULL) < 0)
+        {
             printf("Can't load module [%s]\n", iop_module[i]);
             return 1;
         }
@@ -91,7 +96,8 @@ int SetIopModule(void) {
     return 0;
 }
 
-static void firstClrFrameBuffer(void) {
+static void firstClrFrameBuffer(void)
+{
     CLEAR_VRAM_DMA vclr_dma;
 
     vclr_dma.dmatag.qwc = 15;
@@ -119,7 +125,8 @@ static void firstClrFrameBuffer(void) {
     sceGsSyncPath(0, 0);
 }
 
-void initSystem(void) {
+void initSystem(void)
+{
     SetIopModule();
 
     sceDevVif0Reset();
@@ -133,9 +140,7 @@ void initSystem(void) {
     sceGsSyncV(0);
     sceGsResetGraph(0, SCE_GS_INTERLACE, SCE_GS_NTSC, SCE_GS_FRAME);
 
-    sceGsSetDefDBuffDc(
-        &DBufDc, SCE_GS_PSMCT32, SCREEN_WIDTH, SCREEN_HEIGHT / 2, SCE_GS_ZGEQUAL, SCE_GS_PSMZ32, SCE_GS_CLEAR
-    );
+    sceGsSetDefDBuffDc(&DBufDc, SCE_GS_PSMCT32, SCREEN_WIDTH, SCREEN_HEIGHT / 2, SCE_GS_ZGEQUAL, SCE_GS_PSMZ32, SCE_GS_CLEAR);
     SetBackColor(0, 0, 0);
 
     *T0_MODE = T_MODE_CLKS_M | T_MODE_CUE_M;
@@ -168,23 +173,26 @@ void initSystem(void) {
     CmnGifClear();
 
     SyoriLineInit(256);
-    while (!sceGsSyncV(0));
+    while (sceGsSyncV(0) == 0);
 
     usrMallcInit();
 }
 
-void exitSystem(void) {
+void exitSystem(void)
+{
     sceGsSyncPath(0, 0);
     GPadExit();
     sceCdInit(SCECdEXIT);
     sceSifExitCmd();
 }
 
-void SetOsFuncAddr(void* func_pp) {
+void SetOsFuncAddr(void* func_pp)
+{
     OsFuncAddr = func_pp;
 }
 
-void osFunc(void) {
+void osFunc(void)
+{
     int total_h_cnt;
 
     rand();
@@ -210,10 +218,13 @@ void osFunc(void) {
     outbuf_idx ^= 1;
     CmnGifClear();
 
-    if (outbuf_idx) {
+    if (outbuf_idx)
+    {
         sceGsSetHalfOffset(&DBufDc.draw11, 2048, 2048, oddeven_idx ^ 1);
         sceGsSetHalfOffset2(&DBufDc.draw12, 2048, 2048, oddeven_idx ^ 1);
-    } else {
+    }
+    else
+    {
         sceGsSetHalfOffset(&DBufDc.draw01, 2048, 2048, oddeven_idx ^ 1);
         sceGsSetHalfOffset2(&DBufDc.draw02, 2048, 2048, oddeven_idx ^ 1);
     }
@@ -230,17 +241,20 @@ void osFunc(void) {
         printf("swap dma error\n");
 }
 
-void systemCtrlMain(void* xx) {
+void systemCtrlMain(void* xx)
+{
     MtcExec(mainStart, 1);
     SetOsFuncAddr(osFunc);
 
-    while (1) {
+    while (1)
+    {
         (OsFuncAddr)();
         MtcWait(1);
     }
 }
 
-static int FullAllocAndFree(void) {
+static int FullAllocAndFree(void)
+{
     int stack_sizeX = _stack_size_addr;
     int endX = _end_addr;
 
@@ -250,7 +264,8 @@ static int FullAllocAndFree(void) {
     return heap_size;
 }
 
-void mallocInit(void) {
+void mallocInit(void)
+{
     int size = FullAllocAndFree();
     scePrintf("HEAP SIZE[%08x]\n", size);
 }
