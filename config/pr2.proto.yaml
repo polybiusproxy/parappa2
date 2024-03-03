@@ -52,8 +52,11 @@ segments:
         - [0x4f68, c, os/usrmem]
         - [0x5330, c, os/tim2]
 
-        - [0x6120, asm, main/cdctrl]
-        - [0x7d70, asm, unk]
+        - [0x6120,  asm, main/cdctrl]
+        - [0x7d70,  c, main/stdat]
+        - [0x7f28,  asm, main/scrctrl]
+        - [0x10028, c, main/sprite]
+        - [0x10980, asm, unk]
         
         - [0x79040, data, vutext] # .vutext
         
@@ -64,7 +67,10 @@ segments:
         - [0x7cb40, .data, os/syssub]
         - [0x7cbc0, data, os/system]
         - [0x818d8, .data, os/tim2]
-        - [0x818f0, data, unk]
+
+        - [0x818f0, data, main/stdat]
+        - [0x84258, data, main/scrctrl]
+        - [0x85b88, data, unk]
         
         - [0x291ed0, data, vudata] # .vudata
         
@@ -76,17 +82,22 @@ segments:
         - [0x292928, .rodata, os/cmngifpk]
         - [0x292968, .rodata, os/usrmem]
         - [0x292a30, .rodata, os/tim2]
+
         - [0x292a80, rodata, main/cdctrl]
-        - [0x292da8, rodata, unk]
+        - [0x292da8, .rodata, main/stdat]
+        - [0x293a60, rodata, main/scrctrl]
+        - [0x294018, .rodata, main/sprite]
+        - [0x294110, rodata, unk]
         
         - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
         - [0x299f00, rodatabin] # .lit4
         - [0x29a300, rodatabin] # .sdata
 
         - [0x29a318, .sdata, os/syssub] # .sdata
-        - [0x29a330, rodatabin] # .sdata
-        - [0x29a360, sdata, main/cdctrl]
-        - [0x29a378, rodatabin] # .sdata
+        - [0x29a330, rodatabin]
+        # - [0x29a360, sdata, main/cdctrl]
+        - [0x29a378, sdata, main/stdat]
+        - [0x29a438, rodatabin]
         
         # - [0x29a9d8, rodatabin] # .sbss / .bss
         
