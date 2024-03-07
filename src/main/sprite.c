@@ -3,9 +3,8 @@
 /* sdata - static */
 int sprSetNum;
 
-/* bss - static */
-u_long128 sprPacket[2048];
-sceGifPacket gifPkSpr;
+static u_long128 sprPacket[2048];
+static sceGifPacket gifPkSpr;
 
 /* sbss - static */
 sceDmaChan *sprDmaC;

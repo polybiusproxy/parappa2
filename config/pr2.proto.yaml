@@ -105,10 +105,19 @@ segments:
         
         # .sbss / .bss
         - { start: 0x29aa00, type: bss,  vram: 0x00399a00, name: sbss }
+        # - { start: 0x29aa00, type: .sbss, vram: 0x00399a44, name: main/sprite }
+        # - { start: 0x29aa00, type: bss,  vram: 0x00399a48, name: sbss_unk }
+
         - { start: 0x29aa1c, type: bss,  vram: 0x00399c00, name: bss  }
+        - { start: 0x29aa1c, type: bss, vram: 0x003a9d90, name: os/mtc  }
+        - { start: 0x29aa1c, type: bss,  vram: 0x003ba0c0, name: bss_unk }
         - { start: 0x29aa1c, type: .bss, vram: 0x01c5d380, name: os/tim2 }
         - { start: 0x29aa1c, type: bss,  vram: 0x01c5e000, name: main/cdctrl }
-        - { start: 0x29aa1c, type: bss,  vram: 0x01c5f030, name: unk }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c5f030, name: bss_unk2 }
+        - { start: 0x29aa1c, type: .bss, vram: 0x01c5f030, name: main/sprite }
+        - { start: 0x29aa1c, type: .bss, vram: 0x01c65b80, name: main/fadectrl }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c6dba0, name: bss_unk3 }
+        
     - [0x29aa00, databin] # pad
     - [0x29b000, databin] # .mfifo
     - [0x2ab000, databin] # .reginfo
