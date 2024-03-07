@@ -39,7 +39,7 @@ void DbgMsgClear(void)
     sceGifPkAddGsAD(&gifPacket, SCE_GS_TEXFLUSH, 0);
     sceGifPkAddGsAD(&gifPacket, SCE_GS_TEX0_1, tinfo.picturH->GsTex0);
     sceGifPkAddGsAD(&gifPacket, SCE_GS_TEX1_1, tinfo.picturH->GsTex1);
-    sceGifPkAddGsAD(&gifPacket, SCE_GS_CLAMP_1, 0);
+    sceGifPkAddGsAD(&gifPacket, SCE_GS_CLAMP_1, SCE_GS_SET_CLAMP_1(0, 0, 0, 0, 0, 0));
     sceGifPkAddGsAD(&gifPacket, SCE_GS_TEXCLUT, tinfo.picturH->GsTexClut);
     sceGifPkAddGsAD(&gifPacket, SCE_GS_ALPHA_1, SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0));
     sceGifPkAddGsAD(&gifPacket, SCE_GS_PRIM, SCE_GS_SET_PRIM(SCE_GS_PRIM_SPRITE, 0, 1, 0, 1, 0, 1, 0, 0));
@@ -152,7 +152,7 @@ void DbgMsgClearUserPkt(sceGifPacket* usrPacket_pp)
     sceGifPkAddGsAD(usrPacket_pp, SCE_GS_TEX0_1, tinfo.picturH->GsTex0);
     sceGifPkAddGsAD(usrPacket_pp, SCE_GS_TEX1_1, tinfo.picturH->GsTex1);
 
-    sceGifPkAddGsAD(usrPacket_pp, SCE_GS_CLAMP_1, 0);
+    sceGifPkAddGsAD(usrPacket_pp, SCE_GS_CLAMP_1, SCE_GS_SET_CLAMP_1(0, 0, 0, 0, 0, 0));
 
     sceGifPkAddGsAD(usrPacket_pp, SCE_GS_TEXCLUT, tinfo.picturH->GsTexClut);
     sceGifPkAddGsAD(usrPacket_pp, SCE_GS_ALPHA_1, SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0));

@@ -56,7 +56,8 @@ segments:
         - [0x7d70,  c, main/stdat]
         - [0x7f28,  asm, main/scrctrl]
         - [0x10028, c, main/sprite]
-        - [0x10980, asm, unk]
+        - [0x10980, c, main/fadectrl]
+        - [0x10a90, asm, unk]
         
         - [0x79040, data, vutext] # .vutext
         
@@ -70,7 +71,8 @@ segments:
 
         - [0x818f0, data, main/stdat]
         - [0x84258, data, main/scrctrl]
-        - [0x85b88, data, unk]
+        - [0x85b88, .data, main/fadectrl]
+        - [0x85ba0, data, unk]
         
         - [0x291ed0, data, vudata] # .vudata
         
@@ -87,7 +89,7 @@ segments:
         - [0x292da8, .rodata, main/stdat]
         - [0x293a60, rodata, main/scrctrl]
         - [0x294018, .rodata, main/sprite]
-        - [0x294110, rodata, unk]
+        - [0x294110, rodata, unk] # drawctrl.c rodata
         
         - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
         - [0x299f00, rodatabin] # .lit4
