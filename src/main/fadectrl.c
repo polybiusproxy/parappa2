@@ -3,8 +3,7 @@
 static tGS_BGCOLOR bgcolor_tmp[2] = {{}, {255, 255, 255, 0, 0}};
 int PAD_FADECTRL[] = { 0 }; /* pad */
 
-/* bss - static */
-FMODE_CTRL_STR fmode_ctrl_str;
+static FMODE_CTRL_STR fmode_ctrl_str;
 
 void FadeCtrlMain(void *x)
 {
@@ -27,7 +26,7 @@ void FadeCtrlMain(void *x)
             fade_make_str.alp = (tmp_time * 128) / fmode_ctrl_str.max_time;
             
             CG_FadeDisp(&fade_make_str, 100, NULL);
-            
+
             fmode_ctrl_str.current_time++;
             MtcWait(1);
         } while (fmode_ctrl_str.current_time < fmode_ctrl_str.max_time);

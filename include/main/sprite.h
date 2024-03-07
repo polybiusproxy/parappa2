@@ -15,17 +15,6 @@ typedef struct { // 0x18
     /* 0x14 */ u_int GsTexClut;
 } SPR_DAT;
 
-// REMINDER: Remove if not used.
-typedef struct { // 0x20
-    /* 0x00 */ u_long GsTex0;
-    /* 0x08 */ u_long GsTex1;
-    /* 0x10 */ u_int GsRegs;
-    /* 0x14 */ u_int GsTexClut;
-    /* 0x18 */ u_short w;
-    /* 0x1a */ u_short h;
-    /* 0x1c */ u_short pad[2];
-} TIM2_DAT;
-
 typedef struct { // 0x4
     /* 0x0 */ u_int ta0:8;
     /* 0x1 */ u_int res0:7;
