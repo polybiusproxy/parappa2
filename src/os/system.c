@@ -141,6 +141,7 @@ void initSystem(void)
     sceGsResetGraph(0, SCE_GS_INTERLACE, SCE_GS_NTSC, SCE_GS_FRAME);
 
     sceGsSetDefDBuffDc(&DBufDc, SCE_GS_PSMCT32, SCREEN_WIDTH, SCREEN_HEIGHT / 2, SCE_GS_ZGEQUAL, SCE_GS_PSMZ32, SCE_GS_CLEAR);
+    // SetBackColor(224, 138, 37);
     SetBackColor(0, 0, 0);
 
     *T0_MODE = T_MODE_CLKS_M | T_MODE_CUE_M;

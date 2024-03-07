@@ -40,7 +40,7 @@ char* mtcStack[16] = {
 
 struct SemaParam mtcSemaPara = { 0, 0, 0, 0, 0, 0 }; 
 
-int D_PAD[] = { 0, 0, 0, 0, 0, 0 }; /* pad */
+int PAD_MTC[] = { 0, 0, 0, 0, 0, 0 }; /* pad */
 
 /* sdata */
 extern int mtcCurrentTask;

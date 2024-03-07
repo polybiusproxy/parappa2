@@ -9,6 +9,31 @@
 #include "dbug/syori.h"
 
 typedef enum {
+    MTC_TASK_CTRL       = 0x0,
+    MTC_TASK_MAIN       = 0x1,
+    MTC_TASK_02         = 0x2,
+    MTC_TASK_03         = 0x3,
+    MTC_TASK_04         = 0x4,
+    MTC_TASK_05         = 0x5,
+    MTC_TASK_SCORECTRL  = 0x5,
+    MTC_TASK_06         = 0x6,
+    MTC_TASK_07         = 0x7,
+    MTC_TASK_DRAWCTRL   = 0x7,
+    MTC_TASK_08         = 0x8,
+    MTC_TASK_09         = 0x9,
+    MTC_TASK_0A         = 0x0A,
+    MTC_TASK_CDCTRL     = 0x0A,
+    MTC_TASK_0B         = 0x0B,
+    MTC_TASK_0C         = 0x0C,
+    MTC_TASK_0D         = 0x0D,
+    MTC_TASK_FACECTRL   = 0x0D, /* typo: fadectrl */
+    MTC_TASK_0E         = 0x0E,
+    MTC_TASK_0F         = 0x0F,
+    MTC_TASK_WIPECTRL   = 0x0F,
+    MTC_TASK_MAX        = 0x10
+} MTC_TASK_ENUM;
+
+typedef enum {
     MTC_TASK_SIZE_CTRL = 4096,
     MTC_TASK_SIZE_MAIN = 4096,
     MTC_TASK_SIZE_02 = 256,
