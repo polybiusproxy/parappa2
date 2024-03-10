@@ -42,8 +42,8 @@ struct SemaParam mtcSemaPara = { 0, 0, 0, 0, 0, 0 };
 int PAD_MTC[] = { 0, 0, 0, 0, 0, 0 }; /* pad */
 
 /* sdata */
-extern int mtcCurrentTask;
-extern int mtcSemaEnd;
+int mtcCurrentTask;
+int mtcSemaEnd;
 
 /* sbss */
 extern short int th_id_Ctrl;
