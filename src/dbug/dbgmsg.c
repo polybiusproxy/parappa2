@@ -3,7 +3,7 @@
 /* bss - static */
 static u_long128 dbgPacket[4096];
 static sceGifPacket gifPacket;
-static u_long rrrrr;
+u_long gggg;
 static TIM2INFO tinfo; /* bss, static */
 
 /* sbss - static */
