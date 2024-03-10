@@ -1,10 +1,15 @@
 #include "dbug/dbgmsg.h"
 
-u_long128 dbgPacket[4096];
-sceGifPacket gifPacket;
+/* bss - static */
+static u_long128 dbgPacket[4096];
+static sceGifPacket gifPacket;
+static u_long rrrrr;
+static TIM2INFO tinfo; /* bss, static */
+
+/* sbss - static */
 sceDmaChan* dbgDmaC;
 
-TIM2INFO tinfo;
+/* sbss - static */
 u_char MSGCOL[3];
 u_short MSGSIZE[2];
 u_int MSGZPOP;

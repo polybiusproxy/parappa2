@@ -11,7 +11,7 @@ sceDmaChan *sprDmaC;
 
 #define PR_TEX0(x) (*(sceGsTex0*)&x->GsTex0)
 #define PR_TEX1(x) (*(sceGsTex1*)&x->GsTex1)
-#define PR_REGS(x) (*(SPR_REGS*)&x->GsRegs)
+#define PR_REGS(x) (*(SPR_REGS *)&x->GsRegs)
 
 void SprInit(void)
 {

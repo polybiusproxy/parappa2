@@ -4,11 +4,10 @@
 
 PAD_SYSD sysPad[2] = {};
 
-/* bss - static */
-extern u_long128 pad_dma_buf[2][16];
-extern u_long128 ChangeDrawAreaPacket[12];
-extern sceDmaTag exl_dmatag;
-extern USR_MALLOC_STR usr_malloc_str[256];
+static u_long128 pad_dma_buf[2][16];
+static u_long128 ChangeDrawAreaPacket[12];
+static sceDmaTag exl_dmatag;
+static USR_MALLOC_STR usr_malloc_str[256];
 
 void WorkClear(void *clr_adrs, int size)
 {
@@ -337,7 +336,7 @@ void GPadRead(PADD *pad_pp)
 {
     int i = 0;
 
-    do
+    while (i < 2)
     {
         if (sysPad[i].rdata[0] != NULL)
             pad0Clear(pad_pp);
@@ -386,7 +385,7 @@ void GPadRead(PADD *pad_pp)
         
         pad_pp++;
         i++;
-    } while (i < 2);
+    }
 }
 
 PAD_PRESS_ENUM GetPadbit2PressId(u_short padbit)
@@ -580,7 +579,7 @@ static char* ByteStringSub(char *s, unsigned int n)
 
 char* ByteString(unsigned int n)
 {
-    extern char s[50];
+    static char s[50];
     memcpy(ByteStringSub(s, n), "(byte)", 7);
     return s;
 }

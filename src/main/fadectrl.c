@@ -16,7 +16,7 @@ void FadeCtrlMain(void *x)
 
     if (fmode_ctrl_str.current_time < fmode_ctrl_str.max_time)
     {
-        do 
+        while (fmode_ctrl_str.current_time < fmode_ctrl_str.max_time)
         {
             tmp_time = fmode_ctrl_str.current_time;
 
@@ -29,7 +29,7 @@ void FadeCtrlMain(void *x)
 
             fmode_ctrl_str.current_time++;
             MtcWait(1);
-        } while (fmode_ctrl_str.current_time < fmode_ctrl_str.max_time);
+        }
     }
 
     MtcExit();

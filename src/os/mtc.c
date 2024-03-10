@@ -1,26 +1,26 @@
 #include "os/mtc.h"
 
 /* bss */
-MTC_TASK_CONB mtcTaskConB[16];
-struct ThreadParam th_para_Ctrl;
-char mtcStack_Ctrl[MTC_TASK_SIZE_CTRL];
+static char mtcStack_CTRL[MTC_TASK_SIZE_CTRL];
+static char mtcStack_MAIN[MTC_TASK_SIZE_MAIN];
+static char mtcStack_02[MTC_TASK_SIZE_02];
+static char mtcStack_03[MTC_TASK_SIZE_03];
+static char mtcStack_04[MTC_TASK_SIZE_04];
+static char mtcStack_05[MTC_TASK_SIZE_05];
+static char mtcStack_06[MTC_TASK_SIZE_06];
+static char mtcStack_07[MTC_TASK_SIZE_07];
+static char mtcStack_08[MTC_TASK_SIZE_08];
+static char mtcStack_09[MTC_TASK_SIZE_09];
+static char mtcStack_0A[MTC_TASK_SIZE_0A];
+static char mtcStack_0B[MTC_TASK_SIZE_0B];
+static char mtcStack_0C[MTC_TASK_SIZE_0C];
+static char mtcStack_0D[MTC_TASK_SIZE_0D];
+static char mtcStack_0E[MTC_TASK_SIZE_0E];
+static char mtcStack_0F[MTC_TASK_SIZE_0F];
 
-extern char mtcStack_CTRL[MTC_TASK_SIZE_CTRL];
-extern char mtcStack_MAIN[MTC_TASK_SIZE_MAIN];
-extern char mtcStack_02[MTC_TASK_SIZE_02];
-extern char mtcStack_03[MTC_TASK_SIZE_03];
-extern char mtcStack_04[MTC_TASK_SIZE_04];
-extern char mtcStack_05[MTC_TASK_SIZE_05];
-extern char mtcStack_06[MTC_TASK_SIZE_06];
-extern char mtcStack_07[MTC_TASK_SIZE_07];
-extern char mtcStack_08[MTC_TASK_SIZE_08];
-extern char mtcStack_09[MTC_TASK_SIZE_09];
-extern char mtcStack_0A[MTC_TASK_SIZE_0A];
-extern char mtcStack_0B[MTC_TASK_SIZE_0B];
-extern char mtcStack_0C[MTC_TASK_SIZE_0C];
-extern char mtcStack_0D[MTC_TASK_SIZE_0D];
-extern char mtcStack_0E[MTC_TASK_SIZE_0E];
-extern char mtcStack_0F[MTC_TASK_SIZE_0F];
+static MTC_TASK_CONB mtcTaskConB[16];
+static char mtcStack_Ctrl[MTC_TASK_SIZE_CTRL];
+static struct ThreadParam th_para_Ctrl;
 
 // Size for each stack
 int mtcStackSizeTbl[] = { 
