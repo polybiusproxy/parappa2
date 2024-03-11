@@ -3,16 +3,17 @@
 /* bss - static */
 static u_long128 dbgPacket[4096];
 static sceGifPacket gifPacket;
-u_long gggg;
+u_long PAD_BSS_DBGMSG;
+
+/* sbss - static */
+extern sceDmaChan* dbgDmaC;
+
 static TIM2INFO tinfo; /* bss, static */
 
 /* sbss - static */
-sceDmaChan* dbgDmaC;
-
-/* sbss - static */
-u_char MSGCOL[3];
-u_short MSGSIZE[2];
-u_int MSGZPOP;
+extern u_char MSGCOL[3];
+extern u_short MSGSIZE[2];
+extern u_int MSGZPOP;
 
 void DbgMsgInit(void)
 {
