@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "name": "Linux-GCC",
+            "includePath": [
+                "${workspaceFolder}/include/**"
+            ],
+            "compilerPath": "${workspaceFolder}/tools/cc/ee-gcc2.96/bin/ee-gcc",
+            "cStandard": "c89"
+        }
+    ],
+    "version": 4
+}
