@@ -5,8 +5,10 @@ import os
 import shutil
 import subprocess
 import sys
-from pathlib import Path
-from typing import Dict, List, Set, Union
+import re
+
+from   pathlib import Path
+from   typing  import Dict, List, Set, Union
 
 import ninja_syntax
 
@@ -48,6 +50,23 @@ def clean():
     shutil.rmtree("assets", ignore_errors=True)
     shutil.rmtree("build", ignore_errors=True)
 
+pattern = re.compile(r'%(gp_rel)\(([^)]+)\)\(\$28\)')
+def remove_gprel():
+    for root, dirs, files in os.walk("asm/nonmatchings/"):
+        for filename in files:
+            filepath = os.path.join(root, filename)
+
+            with open(filepath, "r") as file:
+                content = file.read()
+
+            # Search for any %gp_rel access
+            if re.search(pattern, content):
+                # Reference found, remove
+                updated_content = re.sub(pattern, r'\2', content)
+
+                # Write the updated content back to the file
+                with open(filepath, "w") as file:
+                    file.write(updated_content)
 
 def write_permuter_settings():
     with open("permuter_settings.toml", "w") as f:
@@ -185,6 +204,12 @@ if __name__ == "__main__":
         help="Clean the 'src' folder",
         action="store_true",
     )
+    parser.add_argument(
+        "-nogp",
+        "--no-gprel-removing",
+        help="Do not remove gp_rel references on the disassembly",
+        action="store_true",
+    )
     args = parser.parse_args()
 
     try:
@@ -210,3 +235,7 @@ if __name__ == "__main__":
     build_stuff(linker_entries)
 
     write_permuter_settings()
+
+    # We're done with everything, now get rid of the %gp_rel references
+    if not args.no_gprel_removing:
+        remove_gprel()
