@@ -1,5 +1,5 @@
 spimdisasm
 rabbitizer
-splat64[mips]
+splat64[mips]>=0.22.3,<1.0.0
 tqdm
 ninja_syntax

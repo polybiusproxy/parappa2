@@ -1,10 +1,12 @@
 #include "os/usrmem.h"
 
-/* static */
-char usrMemoryData[25690112]; // 25 MB
-u_int usrMemPos[2048];
-int usrMemPosCnt;
-int usrMemPosEndCnt;
+/* static - bss */
+extern char usrMemoryData[25690112]; // 25 MB
+extern u_int usrMemPos[2048];
+
+/* static - sbss */
+extern int usrMemPosCnt;
+extern int usrMemPosEndCnt;
 
 void UsrMemClear(void)
 {

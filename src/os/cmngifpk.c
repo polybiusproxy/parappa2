@@ -1,13 +1,13 @@
 #include "os/cmngifpk.h"
 
 /* static--move to bss! */
-CMNGIF_PRI cmngif_pri[64];
-int cmngif_pri_cnt;
+extern CMNGIF_PRI cmngif_pri[64];
+extern int cmngif_pri_cnt;
 
-u_long128 *cmnGifPkBase, *cmnGifPkCurrent, *cmnGifPkEnd;
+extern u_long128 *cmnGifPkBase, *cmnGifPkCurrent, *cmnGifPkEnd;
 
-u_long128 cmnGifTr[65];
-sceGifPacket cmnGifPacket;
+extern u_long128 cmnGifTr[65];
+extern sceGifPacket cmnGifPacket;
 
 void CmnGifInit(void *buf_adr, int size)
 {

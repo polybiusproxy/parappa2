@@ -10,6 +10,7 @@ options:
     src_path: src
     build_path: build
     
+    extensions_path: tools/splat_ext
     symbol_addrs_path: config/symbol_addrs.txt
     undefined_funcs_auto_path: config/undefined_funcs_auto.txt
     undefined_syms_auto_path:  config/undefined_syms_auto.txt
@@ -29,8 +30,8 @@ options:
     include_macro_inc: no # don't write macro.inc to rodata files
     
     find_file_boundaries: False
-    ld_section_labels: [".text", ".data", ".rodata", ".sdata", ".bss"]
-    # section_order: [".text", ".data", ".rodata", ".sdata", ".sbss", ".bss"]
+    ld_section_labels: [".text", ".data", ".rodata", ".sdata", ".sbss", ".bss"]
+    section_order: [".text", ".data", ".rodata", ".sdata", ".sbss", ".bss"]
 segments:
     - [0, databin, elf_header]
     - name: main
@@ -97,19 +98,21 @@ segments:
         - [0x299f00, rodatabin] # .lit4
         - [0x29a300, rodatabin] # .sdata
         # - [0x29a308, sdata, dbug/vramsave]
-        - [0x29a310, sdata, os/mtc]
+        - [0x29a310, .sdata, os/mtc]
         - [0x29a318, .sdata, os/syssub]
-        - [0x29a330, rodatabin]
+        - [0x29a330, sdata]
         # - [0x29a360, sdata, main/cdctrl]
         - [0x29a378, sdata, main/stdat]
-        - [0x29a438, rodatabin]
+        - [0x29a438, sdata]
         
         # - [0x29a9d8, rodatabin] # .sbss / .bss
         
         # .sbss / .bss
-        - { start: 0x29aa00, type: bss,  vram: 0x00399a00, name: sbss }
-        # - { start: 0x29aa00, type: .sbss, vram: 0x00399a44, name: main/sprite }
-        # - { start: 0x29aa00, type: bss,  vram: 0x00399a48, name: sbss_unk }
+        - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a00, name: sbss }
+        - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a18, name: os/mtc }
+        - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a1c, name: os/cmngifpk } # makes it not match
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a2c, name: os/usrmem }
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a34, name: unk }
 
         - { start: 0x29aa1c, type: bss,  vram: 0x00399c00, name: bss            }
         - { start: 0x29aa1c, type: .bss, vram: 0x00399d60, name: dbug/dbgmsg    }

@@ -1,14 +1,14 @@
 #include "dbug/dbgmsg.h"
 
-/* bss - static */
 static u_long128 dbgPacket[4096];
 static sceGifPacket gifPacket;
-u_long PAD_BSS_DBGMSG;
+
+char padding_bss_dbgmsg[8];
 
 /* sbss - static */
 extern sceDmaChan* dbgDmaC;
 
-static TIM2INFO tinfo; /* bss, static */
+static TIM2INFO tinfo;
 
 /* sbss - static */
 extern u_char MSGCOL[3];
