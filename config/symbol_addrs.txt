@@ -65,7 +65,7 @@ mtcStack                    = 0x0017bad0; // type:s32 size:0x40
 mtcSemaPara                 = 0x0017bb10; // size:0x18
 mtcCurrentTask              = 0x00399310; // type:s32
 mtcSemaEnd                  = 0x00399314; // type:s32
-th_id_Ctrl                  = 0x00399a18; // type:s8
+th_id_Ctrl                  = 0x00399a18; // type:s8 size:0x2
 
 mtcStack_CTRL               = 0x003a9d90; // type:s8 size:0x1000
 mtcStack_MAIN               = 0x003aad90; // type:s8 size:0x1000
@@ -177,8 +177,8 @@ CmnGifADPacketMake2         = 0x00103dd0; // type:func
 CmnGifADPacketMakeTrans     = 0x00103ed0; // type:func
 
 cmngif_pri                  = 0x003dad50; // size:0x200
-cmngif_pri_cnt              = 0x00399a1c; // size:0x4
-cmnGifPkBase                = 0x00399a20; // size:0x4
+cmngif_pri_cnt              = 0x00399a1c; // type:s32 size:0x4
+cmnGifPkBase                = 0x00399a20; // type:s32 size:0x4
 cmnGifPkCurrent             = 0x00399a24; // size:0x4
 cmnGifPkEnd                 = 0x00399a28; // size:0x4
 cmnGifTr                    = 0x003daf50; // size:0x410
