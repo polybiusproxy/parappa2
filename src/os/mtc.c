@@ -45,7 +45,7 @@ int PAD_MTC[] = { 0, 0, 0, 0, 0, 0 }; /* pad */
 int mtcCurrentTask = 0;
 int mtcSemaEnd = 0;
 
-/* sbss */
+/* sbss - static */
 extern short int th_id_Ctrl;
 
 static void mtcStackErrorCheck(int level)

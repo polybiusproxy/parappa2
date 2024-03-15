@@ -95,24 +95,38 @@ segments:
         - [0x294110, rodata, unk] # drawctrl.c rodata
         
         - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
-        - [0x299f00, rodatabin] # .lit4
+
+        - [0x299f00, lit4, unk] # .lit4
+
         - [0x29a300, rodatabin] # .sdata
         # - [0x29a308, sdata, dbug/vramsave]
         - [0x29a310, .sdata, os/mtc]
         - [0x29a318, .sdata, os/syssub]
         - [0x29a330, sdata]
-        # - [0x29a360, sdata, main/cdctrl]
+        - [0x29a360, sdata, main/cdctrl]
         - [0x29a378, sdata, main/stdat]
         - [0x29a438, sdata]
         
         # - [0x29a9d8, rodatabin] # .sbss / .bss
         
         # .sbss / .bss
-        - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a00, name: sbss }
+        - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a00, name: dbug/dbgmsg }
         - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a18, name: os/mtc }
-        - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a1c, name: os/cmngifpk } # makes it not match
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a1c, name: os/cmngifpk }
         #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a2c, name: os/usrmem }
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a34, name: unk }
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a34, name: main/cdctrl }
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a38, name: main/scrctrl }
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a44, name: main/sprite }
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a48, name: main/subt }
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a4c, name: main/drawctrl }
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a80, name: main/mbar }
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a98, name: main/wipe }
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399aa0, name: main/mcctrl }
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399aac, name: main/p3str }
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399abc, name: menu/menu }
+
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399ac4, name: unk } # menu/menu_mdl
+        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399bd0, name: gcc }
 
         - { start: 0x29aa1c, type: bss,  vram: 0x00399c00, name: bss            }
         - { start: 0x29aa1c, type: .bss, vram: 0x00399d60, name: dbug/dbgmsg    }
