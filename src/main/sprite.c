@@ -7,7 +7,7 @@ static u_long128 sprPacket[2048];
 static sceGifPacket gifPkSpr;
 
 /* sbss - static */
-sceDmaChan *sprDmaC;
+extern sceDmaChan *sprDmaC;
 
 #define PR_TEX0(x) (*(sceGsTex0*)&x->GsTex0)
 #define PR_TEX1(x) (*(sceGsTex1*)&x->GsTex1)
