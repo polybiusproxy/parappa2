@@ -60,7 +60,8 @@ segments:
         - [0x7f28,  asm, main/scrctrl]
         - [0x10028, c, main/sprite]
         - [0x10980, c, main/fadectrl]
-        - [0x10a90, asm, unk]
+        - [0x10a90, c, main/subt]
+        - [0x115e8, asm]
         
         - [0x79040, data, vutext] # .vutext
         
@@ -75,7 +76,8 @@ segments:
         - [0x818f0, data, main/stdat]
         - [0x84258, data, main/scrctrl]
         - [0x85b88, .data, main/fadectrl]
-        - [0x85ba0, data, unk]
+        - [0x85ba0, data, main/subt]
+        - [0x86478, data, unk]
         
         - [0x291ed0, data, vudata] # .vudata
         
@@ -105,13 +107,16 @@ segments:
         - [0x29a330, sdata]
         - [0x29a360, sdata, main/cdctrl]
         - [0x29a378, sdata, main/stdat]
-        - [0x29a438, sdata]
+        - [0x29a438, sdata] # main/scrctrl
+        #- [0x29a504, sdata] # main/sprite
+        #- [0x29a508, sdata, main/subt]
+        #- [0x29a518, sdata] # main/drawctrl
         
         # - [0x29a9d8, rodatabin] # .sbss / .bss
         
         # .sbss / .bss
-        - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a00, name: dbug/dbgmsg }
-        - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a18, name: os/mtc }
+        - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a00, name: sbss } # dbug/dbgmsg
+        - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a18, name: unk } # os/mtc
         #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a1c, name: os/cmngifpk }
         #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a2c, name: os/usrmem }
         #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a34, name: main/cdctrl }
