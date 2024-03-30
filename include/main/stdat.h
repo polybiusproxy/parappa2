@@ -5,6 +5,7 @@
 
 #include "os/mtc.h"
 #include "main/cdctrl.h"
+#include "main/subt.h"
 
 typedef enum {
     PSTEP_SERIAL = 0,
@@ -19,7 +20,6 @@ typedef enum {
 // Temp typedefs!
 typedef int EVENTREC;
 typedef int SCR_MAIN;
-typedef int JIMAKU_STR;
 typedef int TAPLVL_STR;
 
 typedef struct { // 0xd0
