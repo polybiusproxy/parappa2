@@ -40,14 +40,14 @@ void SubtFlash(void)
 void SubtMcodeSet(int code)
 {
     sceGifPkAddGsAD(&subtPkSpr, SCE_GS_TEX0_1, SubtGsTex0[code]);
-    sceGifPkAddGsAD(&subtPkSpr, SCE_GS_TEX1_1, SCE_GS_SET_TEX1_1(0, 0, 0, 1, 1, 0, 0));
+    sceGifPkAddGsAD(&subtPkSpr, SCE_GS_TEX1_1, SCE_GS_SET_TEX1(0, 0, 0, 1, 1, 0, 0));
     sceGifPkAddGsAD(&subtPkSpr, SCE_GS_TEXA, SCE_GS_SET_TEXA(0, 1, 128));
 }
 
 MCODE_DAT* codeKanjiCheck(u_char dat0, u_char dat1)
 {
     u_short      code     = dat0 | (dat1 << 8);
-    MCODE_KANJI *kcode_pp = &kanji_pp->mcode_kanji;
+    MCODE_KANJI *kcode_pp = kanji_pp->mcode_kanji;
     int          i        = 0;
 
     for (i = 0; i < kanji_pp->mcode_max; i++, kcode_pp++)
@@ -247,8 +247,7 @@ void SubtMenuCtrlPrint(u_char *msg_pp, int xp, int yp, int lang)
 int SubtMsgDataKaijyouCnt(u_char *msg_pp, int jap_flag)
 {
     u_char *tmp_pp;
-    u_char  dat0;
-    u_char  dat1;
+    u_char  dat0, dat1;
     int     ret = 1;
 
     if (*msg_pp == '\0')
@@ -257,7 +256,7 @@ int SubtMsgDataKaijyouCnt(u_char *msg_pp, int jap_flag)
     {
         tmp_pp = msg_pp;
 
-        for (; *tmp_pp != '\0';)
+        while (*tmp_pp != '\0')
         {
             dat0 = tmp_pp[0];
             dat1 = tmp_pp[1];
@@ -285,55 +284,60 @@ int SubtMsgDataKaijyouCnt(u_char *msg_pp, int jap_flag)
     return ret;
 }
 
-#ifndef NON_MATCHING
-INCLUDE_ASM(const s32, "main/subt", SubtMsgDataPos);
-#else
+// TODO: Ugly match, find a way to make it cleaner
 u_char* SubtMsgDataPos(/* a0 4 */ u_char *msg_pp, /* s3 19 */ int jap_flag, /* s2 18 */ int pos)
 {
     u_char *tmp_pp;
-    u_char  dat0;
-    u_char  dat1;
+    u_char  dat0, dat1;
+    u_char  x,    y;
     int     ret = 0;
 
     if (*msg_pp == '\0')
         return NULL;
-    else
+    
+    goto ok;
+
+fail:
+    return tmp_pp;
+    
+ok:
+    tmp_pp = msg_pp;
+    
+    x = 0x40;
+    y = 0x81;
+    
+    if (pos == 0)
+        goto fail;
+
+    while (*tmp_pp != '\0')
     {
-        tmp_pp = msg_pp;
+        dat0 = tmp_pp[0];
+        dat1 = tmp_pp[1];
 
-        for (; *tmp_pp != '\0';)
+        tmp_pp++;
+
+        /* New line */
+        if (dat0 == x)
         {
-            dat0 = tmp_pp[0];
-            dat1 = tmp_pp[1];
-
+            ret++;
+        }
+        /* Japanese subt. new line */
+        else if (jap_flag)
+        {
+            euc2sjis(&dat0, &dat1);
             tmp_pp++;
 
-            /* New line */
-            if (dat0 == '@')
-            {
+            // '@' (SHIFT-JIS)
+            if ( dat0 == y && dat1 == 0x97 )
                 ret++;
-            }
-            /* Japanese subt. new line */
-            else if (jap_flag)
-            {
-                euc2sjis(&dat0, &dat1);
-                tmp_pp++;
-
-                // '@' (SHIFT-JIS)
-                if ( dat0 == 0x81 && dat1 == 0x97 )
-                    ret++;
-
-                if (ret == pos)
-                    return tmp_pp;
-            }
         }
+
+        if (ret == pos)
+            goto fail;
     }
 
     return NULL;
-
-    //return NULL;
 }
-#endif
 
 #ifndef NON_MATCHING
 INCLUDE_ASM(const s32, "main/subt", SubtTapPrintWake);
@@ -373,7 +377,7 @@ void SubtCtrlPrintBoxyWipe(/* a0 4 */ JIMAKU_STR *jstr_pp, /* a1 5 */ int line,
 	/* s3 19 */ JIMAKU_STR *jstr_tmp_pp = &jstr_pp[line];
     /* s0 16 */ int lang_f;
 
-    for ( i = 0; i < jstr_tmp_pp->jimaku_dat_pp; i++ )
+    for ( i = 0; i < jstr_tmp_pp->size; i++ )
     {
         if ((time >= jstr_tmp_pp->jimaku_dat_pp[i].starTime) &&
             (time <  jstr_tmp_pp->jimaku_dat_pp[i].endTime))

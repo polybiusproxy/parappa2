@@ -15,6 +15,8 @@ build.ninja
 iso/
 SLPS_150.17*
 
+compile_commands.json
+
 *.bin
 *.ld
 *.o

@@ -36,9 +36,9 @@ COMPILE_CMD = (
 
 WIBO_VER = "0.6.11"
 
-def exec_shell(command: List[str]) -> str:
+def exec_shell(command: List[str], stdout = subprocess.PIPE) -> str:
     ret = subprocess.run(
-        command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+        command, stdout=stdout, stderr=subprocess.PIPE, text=True
     )
     return ret.stdout
 
@@ -239,3 +239,5 @@ if __name__ == "__main__":
     # We're done with everything, now get rid of the %gp_rel references
     if not args.no_gprel_removing:
         remove_gprel()
+
+    exec_shell(["ninja", "-t", "compdb"], open("compile_commands.json", "w"))
