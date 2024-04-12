@@ -2,9 +2,9 @@
 
 /* static--move to bss! */
 extern CMNGIF_PRI cmngif_pri[64];
-extern int cmngif_pri_cnt;
+static int cmngif_pri_cnt;
 
-extern u_long128 *cmnGifPkBase, *cmnGifPkCurrent, *cmnGifPkEnd;
+static u_long128 *cmnGifPkBase, *cmnGifPkCurrent, *cmnGifPkEnd;
 
 extern u_long128 cmnGifTr[65];
 extern sceGifPacket cmnGifPacket;

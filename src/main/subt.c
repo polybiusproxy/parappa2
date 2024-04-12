@@ -9,7 +9,7 @@ int SUBT_POSY;
 /* static */ int subtSetNum;
 
 /* sbss */
-/* static */ MCODE_STR *kanji_pp;
+static MCODE_STR *kanji_pp;
 
 /* bss - static */
 sceGifPacket subtPkSpr;
@@ -23,7 +23,7 @@ void SubtInit(void)
 
 void* SubtKanjiSet(void *adrs)
 {
-	void *ret = kanji_pp;
+    void *ret = kanji_pp;
 
     kanji_pp = adrs;
     return ret;
@@ -33,7 +33,7 @@ INCLUDE_ASM(const s32, "main/subt", SubtClear);
 
 void SubtFlash(void)
 {
-    if (subtSetNum)
+    if (subtSetNum != 0)
         CmnGifCloseCmnPk(&subtPkSpr, 9);
 }
 

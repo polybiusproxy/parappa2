@@ -54,7 +54,7 @@ segments:
         - [0x4f68, c, os/usrmem]
         - [0x5330, c, os/tim2]
 
-        - [0x6120,  asm, main/cdctrl]
+        - [0x6120,  c, main/cdctrl]
         - [0x7d70,  c, main/stdat]
         - [0x7f28,  asm, main/scrctrl]
         - [0x10028, c, main/sprite]
@@ -89,7 +89,7 @@ segments:
         - [0x292968, .rodata, os/usrmem]
         - [0x292a30, .rodata, os/tim2]
 
-        - [0x292a80, rodata, main/cdctrl]
+        - [0x292a80, .rodata, main/cdctrl]
         - [0x292da8, .rodata, main/stdat]
         - [0x293a60, rodata, main/scrctrl]
         - [0x294018, .rodata, main/sprite]
@@ -119,13 +119,13 @@ segments:
         
         # .sbss / .bss
         - { start: 0x29aa00, type: sbss, vram: 0x00399a00, name: dbug/dbgmsg } # dbug/dbgmsg
-        - { start: 0x29aa00, type: sbss, vram: 0x00399a18, name: os/mtc }
-        - { start: 0x29aa00, type: sbss, vram: 0x00399a1c, name: os/cmngifpk }
-        - { start: 0x29aa00, type: sbss, vram: 0x00399a2c, name: os/usrmem }
-        - { start: 0x29aa00, type: sbss, vram: 0x00399a34, name: main/cdctrl }
+        - { start: 0x29aa00, type: .sbss, vram: 0x00399a18, name: os/mtc }
+        - { start: 0x29aa00, type: .sbss, vram: 0x00399a1c, name: os/cmngifpk }
+        - { start: 0x29aa00, type: .sbss, vram: 0x00399a2c, name: os/usrmem }
+        - { start: 0x29aa00, type: .sbss, vram: 0x00399a34, name: main/cdctrl }
         - { start: 0x29aa00, type: sbss, vram: 0x00399a38, name: main/scrctrl }
-        - { start: 0x29aa00, type: sbss, vram: 0x00399a44, name: main/sprite }
-        - { start: 0x29aa00, type: sbss, vram: 0x00399a48, name: main/subt }
+        - { start: 0x29aa00, type: .sbss, vram: 0x00399a44, name: main/sprite }
+        - { start: 0x29aa00, type: .sbss, vram: 0x00399a48, name: main/subt }
         - { start: 0x29aa00, type: sbss, vram: 0x00399a4c, name: main/drawctrl }
         - { start: 0x29aa00, type: sbss, vram: 0x00399a80, name: main/mbar }
         - { start: 0x29aa00, type: sbss, vram: 0x00399a98, name: main/wipe }

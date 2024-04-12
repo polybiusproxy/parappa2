@@ -5,6 +5,9 @@
 
 #include <eetypes.h>
 #include <libcdvd.h>
+#include <stdio.h>
+
+#include "os/syssub.h"
 
 typedef enum {
     FRMODE_PC = 0,
@@ -51,5 +54,9 @@ int CdctrlSerch(FILE_STR *fstr_pp);
 void intReadSub(void);
 
 void CdctrlMemIntgDecode(u_int rbuf, u_int setbuf);
+
+// TODO(poly): move to iop_mdl/wp2cd_rpc.c once splitted
+int WP2Init(void);
+int WP2Ctrl(int command, int data0);
 
 #endif

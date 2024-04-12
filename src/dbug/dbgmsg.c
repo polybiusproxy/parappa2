@@ -6,7 +6,7 @@ static sceGifPacket gifPacket;
 char padding_bss_dbgmsg[8];
 
 /* sbss - static */
-extern sceDmaChan* dbgDmaC;
+extern sceDmaChan *dbgDmaC;
 
 static TIM2INFO tinfo;
 

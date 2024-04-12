@@ -12,22 +12,47 @@ extern unsigned char RBuff[4113];
 extern CDCTRL_STR cdctrl_str;
 
 /* sbss - static */
-extern int cdSampleTmp;
+static int cdSampleTmp;
 
-#if 1
-INCLUDE_ASM(const s32, "main/cdctrl", PackIntGetDecodeSize);
-#else
+/* .lit4 */
+float D_00398F00;
+float D_00398F04;
+float D_00398F08;
+float D_00398F0C;
+
+/* Concats two shorts into an integer; for use on the WP2_SETMASTERVOL command */
+#define WP2_CONCAT(x, y)        ((x << 16) | (y & 0xffff))
+
+// WP2 commands
+#define WP2_INIT                0x000e /* Arg -> Mode          */
+#define WP2_SDINIT              0x000d /* Arg -> Status        */
+#define WP2_SETMASTERVOL        0x000a /* Arg -> Volume        */
+#define WP2_BGMSETTRPOINT       0x0016 /* Arg -> Transfer pos  */
+#define WP2_BGMINIT             0x8000 /* Arg -> Block size    */
+
 u_int PackIntGetDecodeSize(u_char *fp_r)
 {
     return *(u_int*)fp_r;
 }
-#endif
 
 INCLUDE_ASM(const s32, "main/cdctrl", PackIntDecode);
 
 INCLUDE_ASM(const s32, "main/cdctrl", PackIntDecodeWait);
 
-INCLUDE_ASM(const s32, "main/cdctrl", CdctrlInit);
+// INCLUDE_ASM(const s32, "main/cdctrl", CdctrlInit);
+void CdctrlInit(void)
+{
+    WorkClear(&cdctrl_str, sizeof(cdctrl_str));
+
+    printf("in wp2 init\n");
+    WP2Init();
+    printf("out wp2 init\n");
+
+    WP2Ctrl(WP2_INIT, SCECdDVD);
+    WP2Ctrl(WP2_SDINIT, 0);
+    WP2Ctrl(WP2_SETMASTERVOL, WP2_CONCAT(0x3fff, 0x3fff));
+    WP2Ctrl(WP2_BGMINIT, 0x300);
+}
 
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlQuit);
 
@@ -36,18 +61,11 @@ INCLUDE_ASM(const s32, "main/cdctrl", CdctrlMasterVolSet);
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlSerch);
 
 INCLUDE_RODATA(const s32, "main/cdctrl", D_00391AF0);
-
 INCLUDE_ASM(const s32, "main/cdctrl", cdctrlReadSub);
 
+INCLUDE_RODATA(const s32, "main/cdctrl", D_00391B40);
 INCLUDE_RODATA(const s32, "main/cdctrl", D_00391B50);
-INCLUDE_RODATA(const s32, "main/cdctrl", D_00391BE0);
-
 INCLUDE_ASM(const s32, "main/cdctrl", intReadSub);
-/*void intReadSub(void)
-{
-    (void)"INT FILE ERROR!![%s]\n";
-    (void)"int file tim2 round:%d file in\n";
-}*/
 
 INCLUDE_ASM(const s32, "main/cdctrl", cdctrlReadData);
 
@@ -59,21 +77,12 @@ INCLUDE_ASM(const s32, "main/cdctrl", CdctrlReadOne);
 
 INCLUDE_ASM(const s32, "main/cdctrl", usrMemcpy);
 
+INCLUDE_RODATA(const s32, "main/cdctrl", D_00391BE0);
 INCLUDE_RODATA(const s32, "main/cdctrl", D_00391C00);
-
 INCLUDE_RODATA(const s32, "main/cdctrl", D_00391C20);
-
 INCLUDE_RODATA(const s32, "main/cdctrl", D_00391C30);
-
-#if 1
+INCLUDE_RODATA(const s32, "main/cdctrl", D_00391C40); // jumptable
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlMemIntgDecode);
-#else
-void CdctrlMemIntgDecode(u_int rbuf, u_int setbuf)
-{
-    (void)"INT FILE ERROR!![%s]\n";
-    (void)"int file tim2 round:%d file in\n";
-}
-#endif
 
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlStatus);
 
@@ -85,6 +94,7 @@ INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWP2SetChannel);
 
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWP2Set);
 
+INCLUDE_RODATA(const s32, "main/cdctrl", D_00391CC0);
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWP2SetFileSeek);
 
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWP2SetFileSeekChan);
@@ -114,8 +124,6 @@ INCLUDE_ASM(const s32, "main/cdctrl", CdctrlFrame2WP2sample);
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWp2GetSndTime);
 
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlSndTime2WP2sample);
-
-INCLUDE_RODATA(const s32, "main/cdctrl", D_00391CC0);
 
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWp2GetSampleTmpBuf);
 
