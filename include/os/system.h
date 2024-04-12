@@ -14,6 +14,7 @@
 #include <libgraph.h>
 #include <devvif0.h>
 #include <devvu0.h>
+#include <sifcmd.h>
 
 #include "os/mtc.h"
 #include "os/syssub.h"
@@ -30,12 +31,12 @@ typedef struct { // 0x100
     /* 0xa0 */ sceGsClear clear;
 } CLEAR_VRAM_DMA;
 
-sceGsDBuffDc DBufDc;
-int outbuf_idx;
+extern sceGsDBuffDc DBufDc;
+extern int outbuf_idx;
 
-sceGsDrawEnv1* drawEnvP[5];
+extern sceGsDrawEnv1* drawEnvP[5];
 
-PADD pad[2];
+extern PADD pad[2];
 
 int SetIopModule(void);
 void initSystem(void);

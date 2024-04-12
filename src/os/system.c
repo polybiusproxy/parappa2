@@ -14,20 +14,21 @@
         "cdrom0:\\IRX\\TAPCTRL.IRX;1",
 };*/
 
-extern char* iop_module[11];
+extern u_char* iop_module[11];
 
 int _end_addr;
 int _stack_size_addr;
 
 int oddeven_idx;
 
-u_long128 GifPkCommon[8192];
+extern u_long128 GifPkCommon[8192];
 
 void (*OsFuncAddr)();
 
-sceGsDrawEnv1 drawEnvSp;
-sceGsDrawEnv1 drawEnvZbuff;
-sceGsDrawEnv1 drawEnvEnd;
+/* static */
+extern sceGsDrawEnv1 drawEnvSp;
+extern sceGsDrawEnv1 drawEnvZbuff;
+extern sceGsDrawEnv1 drawEnvEnd;
 
 int main()
 {
