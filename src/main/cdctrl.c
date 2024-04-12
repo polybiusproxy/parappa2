@@ -1,4 +1,6 @@
 #include "main/cdctrl.h"
+#include <libcdvd.h>
+#include <sifdev.h>
 
 /* sdata */
 void *current_intg_adrs;
@@ -21,14 +23,15 @@ float D_00398F08;
 float D_00398F0C;
 
 /* Concats two shorts into an integer; for use on the WP2_SETMASTERVOL command */
-#define WP2_CONCAT(x, y)        ((x << 16) | (y & 0xffff))
+#define WP2_CONCAT(x, y)        ((x << 16) | (y))
 
 // WP2 commands
-#define WP2_INIT                0x000e /* Arg -> Mode          */
-#define WP2_SDINIT              0x000d /* Arg -> Status        */
-#define WP2_SETMASTERVOL        0x000a /* Arg -> Volume        */
-#define WP2_BGMSETTRPOINT       0x0016 /* Arg -> Transfer pos  */
-#define WP2_BGMINIT             0x8000 /* Arg -> Block size    */
+#define WP2_INIT                0x000e /* Arg -> Mode           */
+#define WP2_QUIT                0x0001 /*        No args        */
+#define WP2_SDINIT              0x000d /* Arg -> Status         */
+#define WP2_SETMASTERVOL        0x000a /* Arg -> Volume         */
+#define WP2_BGMSETTRPOINT       0x0016 /* Arg -> Transfer pos   */
+#define WP2_BGMINIT             0x8000 /* Arg -> Block size     */
 
 u_int PackIntGetDecodeSize(u_char *fp_r)
 {
@@ -39,7 +42,6 @@ INCLUDE_ASM(const s32, "main/cdctrl", PackIntDecode);
 
 INCLUDE_ASM(const s32, "main/cdctrl", PackIntDecodeWait);
 
-// INCLUDE_ASM(const s32, "main/cdctrl", CdctrlInit);
 void CdctrlInit(void)
 {
     WorkClear(&cdctrl_str, sizeof(cdctrl_str));
@@ -54,11 +56,71 @@ void CdctrlInit(void)
     WP2Ctrl(WP2_BGMINIT, 0x300);
 }
 
-INCLUDE_ASM(const s32, "main/cdctrl", CdctrlQuit);
+void CdctrlQuit(void)
+{
+    WorkClear(&cdctrl_str, sizeof(cdctrl_str));
+    WP2Ctrl(WP2_QUIT, 0);
+}
 
-INCLUDE_ASM(const s32, "main/cdctrl", CdctrlMasterVolSet);
+void CdctrlMasterVolSet(u_int vol)
+{
+    WP2Ctrl(WP2_SETMASTERVOL, WP2_CONCAT(vol, vol));
+}
 
+#ifndef NON_MATCHING
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlSerch);
+#else
+int CdctrlSerch(FILE_STR *fstr_pp)
+{
+    int rfd;
+    int readsize;
+    int ret;
+
+    if (fstr_pp->search == 0)
+    {
+        if (fstr_pp->frmode == FRMODE_CD)
+        {
+            ret = sceCdSearchFile(&fstr_pp->fpCd, fstr_pp->fname);
+            if (ret == 0)
+            {
+                printf("CD SEARCH ERROR!![%s]\n", fstr_pp->fname);
+                return 0;
+            }
+
+            fstr_pp->search = 1;
+        }
+        else
+        {
+            rfd = sceOpen(fstr_pp->fname, 1);
+            if (rfd < 0)
+            {
+                printf("Can\'t open %s\n", fstr_pp->fname);
+                return 0;
+            }
+
+            readsize = sceLseek(rfd, 0, 2);
+            if (readsize > 0)
+            {
+                printf("Can\'t open %s\n", fstr_pp->fname);
+            }
+            else
+            {
+                fstr_pp->search = 1;
+                fstr_pp->fpCd.size = readsize;
+            }
+
+            ret = (readsize >= 0);
+            sceClose(rfd);
+        }
+    }
+    else
+    {
+        ret = 1;
+    }
+
+    return ret;
+}
+#endif
 
 INCLUDE_RODATA(const s32, "main/cdctrl", D_00391AF0);
 INCLUDE_ASM(const s32, "main/cdctrl", cdctrlReadSub);
