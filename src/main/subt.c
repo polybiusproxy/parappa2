@@ -112,7 +112,7 @@ void SubtMsgPrint(/* s0 16 */ u_char *msg_pp, /* -0xac(sp) */ int xp, /* -0xa8(s
     if (*msg_pp != '\0')
     {
         cnt_all = 0;
-        WorkClear(subt_code, sizeof(SUBT_CODE));
+        WorkClear(subt_code, sizeof(subt_code));
 
         tmp_pp = msg_pp;
         hsize = 13; // 0xD
