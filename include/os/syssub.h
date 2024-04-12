@@ -9,7 +9,9 @@
 #include <libgraph.h>
 #include <libgifpk.h>
 
+#include <stdlib.h>
 #include <malloc.h>
+#include <string.h>
 
 typedef enum {
     PAD_ENUM_NONE = 0,

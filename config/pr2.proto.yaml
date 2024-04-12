@@ -26,7 +26,7 @@ options:
     disasm_unknown: True
     named_regs_for_c_funcs: False
     gp_value: 0x3A0EF0
-    subalign: 8
+    #subalign: 4
     include_macro_inc: no # don't write macro.inc to rodata files
     
     find_file_boundaries: False
@@ -38,7 +38,7 @@ segments:
       start: 0x1000
       vram: 0x100000
       bss_size: 0x18F4434
-      # subalign: null
+      subalign: null
       subsegments:
         - [0x1000, asm, sce/crt0]
         - [0x10c8, asm, sce/tmp]
@@ -97,7 +97,11 @@ segments:
         
         - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
 
-        - [0x299f00, lit4, unk] # .lit4
+        - [0x299f00, lit4, unk] #, main/cdctrl] # .lit4
+        #- [0x299f10, lit4, main/scrctrl]
+        #- [0x299f14, lit4, main/drawctrl]
+        #- [0x299f38, lit4, main/effect]
+        #- [0x299f40, lit4]
 
         - [0x29a300, rodatabin] # .sdata
         # - [0x29a308, sdata, dbug/vramsave]
@@ -114,23 +118,23 @@ segments:
         # - [0x29a9d8, rodatabin] # .sbss / .bss
         
         # .sbss / .bss
-        - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a00, name: sbss } # dbug/dbgmsg
-        - { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a18, name: unk } # os/mtc
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a1c, name: os/cmngifpk }
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a2c, name: os/usrmem }
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a34, name: main/cdctrl }
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a38, name: main/scrctrl }
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a44, name: main/sprite }
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a48, name: main/subt }
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a4c, name: main/drawctrl }
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a80, name: main/mbar }
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399a98, name: main/wipe }
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399aa0, name: main/mcctrl }
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399aac, name: main/p3str }
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399abc, name: menu/menu }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399a00, name: dbug/dbgmsg } # dbug/dbgmsg
+        - { start: 0x29aa00, type: sbss, vram: 0x00399a18, name: os/mtc }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399a1c, name: os/cmngifpk }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399a2c, name: os/usrmem }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399a34, name: main/cdctrl }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399a38, name: main/scrctrl }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399a44, name: main/sprite }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399a48, name: main/subt }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399a4c, name: main/drawctrl }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399a80, name: main/mbar }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399a98, name: main/wipe }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399aa0, name: main/mcctrl }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399aac, name: main/p3str }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399abc, name: menu/menu }
 
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399ac4, name: unk } # menu/menu_mdl
-        #- { start: 0x29aa00, type: ps2_sbss, vram: 0x00399bd0, name: gcc }
+        - { start: 0x29aa00, type: sbss, vram: 0x00399ac4, name: unk } # menu/menu_mdl
+        - { start: 0x29aa00, type: sbss, vram: 0x00399bd0, name: gcc }
 
         - { start: 0x29aa1c, type: bss,  vram: 0x00399c00, name: bss            }
         - { start: 0x29aa1c, type: .bss, vram: 0x00399d60, name: dbug/dbgmsg    }

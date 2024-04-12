@@ -119,7 +119,7 @@ def build_stuff(linker_entries: List[LinkerEntry]):
     ninja.rule(
         "as",
         description="as $in",
-        command=f"cpp {COMMON_INCLUDES} $in -o  - | iconv -f=UTF-8 -t=EUC-JP $in | {cross}as -no-pad-sections -EL -march=5900 -mabi=eabi -Iinclude -o $out",
+        command=f"cpp {COMMON_INCLUDES} $in -o  - | iconv -f=UTF-8 -t=EUC-JP $in | {cross}as -no-pad-sections -EL -march=5900 -mabi=eabi -Iinclude -o $out && python3 tools/buildtools/elf_patcher.py $out gas",
     )
 
     ninja.rule(
@@ -240,4 +240,5 @@ if __name__ == "__main__":
     if not args.no_gprel_removing:
         remove_gprel()
 
-    exec_shell(["ninja", "-t", "compdb"], open("compile_commands.json", "w"))
+    if not os.path.isfile("compile_commands.json"):
+        exec_shell(["ninja", "-t", "compdb"], open("compile_commands.json", "w"))

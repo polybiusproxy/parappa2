@@ -11,7 +11,7 @@ static USR_MALLOC_STR usr_malloc_str[256];
 
 void WorkClear(void *clr_adrs, int size)
 {
-    u_char *clr_pp = (char*)clr_adrs;
+    u_char *clr_pp = (u_char*)clr_adrs;
 
     while (size--)
         *clr_pp++ = 0;
