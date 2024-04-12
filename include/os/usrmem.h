@@ -4,6 +4,8 @@
 #include "common.h"
 #include <eetypes.h>
 
+#include <stdio.h>
+
 void UsrMemClear(void);
 void UsrMemClearTop(void);
 void UsrMemClearEnd(void);

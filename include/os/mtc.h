@@ -6,6 +6,8 @@
 #include <libgraph.h>
 #include <eekernel.h>
 
+#include <stdio.h>
+
 #include "dbug/syori.h"
 
 typedef enum {

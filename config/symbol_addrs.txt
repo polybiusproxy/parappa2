@@ -199,9 +199,7 @@ UsrMemEndAlloc                      = 0x00104258; // type:func
 UsrMemFree                          = 0x00104300; // type:func
 UsrMemEndFree                       = 0x00104318; // type:func
 
-// 25 MB of RAM!!!
 usrMemoryData                       = 0x003db380; // size:0x1880000
-
 usrMemPos                           = 0x01c5b380; // size:0x2000
 usrMemPosCnt                        = 0x00399a2c; // size:0x4
 usrMemPosEndCnt                     = 0x00399a30; // size:0x4
@@ -287,6 +285,22 @@ sndFadeTime                         = 0x00399370; // size:0x4
 RBuff                               = 0x01c5e000; // size:0x1011
 cdSampleTmp                         = 0x00399a34; // size:0x4
 cdctrl_str                          = 0x01c5f018; // size:0x18
+
+D_00391AF0                          = 0x00391af0; // force_not_migration:True
+D_00391B40                          = 0x00391b40; // force_not_migration:True
+D_00391B50                          = 0x00391b50; // force_not_migration:True
+D_00391BE0                          = 0x00391be0; // force_not_migration:True
+D_00391C00                          = 0x00391c00; // force_not_migration:True
+D_00391C20                          = 0x00391c20; // force_not_migration:True
+D_00391C30                          = 0x00391c30; // force_not_migration:True
+D_00391C40                          = 0x00391c40; // force_not_migration:True
+D_00391CC0                          = 0x00391cc0; // force_not_migration:True
+
+// temp
+D_00398F00                          = 0x00398f00; // type:f32
+D_00398F04                          = 0x00398f04; // type:f32
+D_00398F08                          = 0x00398f08; // type:f32
+D_00398F0C                          = 0x00398f0c; // type:f32
 
 // main/stdat.c
 stDatFileSearch                     = 0x00106d70; // type:func
@@ -534,6 +548,14 @@ CG_FadeDisp                         = 0x001179f8; // type:func
 
 // main/main.c
 mainStart                           = 0x00121a68; // type:func
+
+// iop_mdl/wp2cd_rpc.c
+WP2Init                             = 0x0013fdb8; // type:func
+WP2Ctrl                             = 0x0013fe40; // type:func
+
+// iop_mdl/tapctrl_rpc.c
+TapCtInit                           = 0x00140010; // type:func
+TapCt                               = 0x00140098; // type:func
 
 //
 //

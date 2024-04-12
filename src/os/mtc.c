@@ -1,6 +1,5 @@
 #include "os/mtc.h"
 
-/* bss */
 static char mtcStack_CTRL[MTC_TASK_SIZE_CTRL];
 static char mtcStack_MAIN[MTC_TASK_SIZE_MAIN];
 static char mtcStack_02[MTC_TASK_SIZE_02];
@@ -46,7 +45,7 @@ int mtcCurrentTask = 0;
 int mtcSemaEnd = 0;
 
 /* sbss - static */
-extern short int th_id_Ctrl;
+static short int th_id_Ctrl;
 
 static void mtcStackErrorCheck(int level)
 {

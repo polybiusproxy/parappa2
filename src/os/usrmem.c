@@ -5,8 +5,8 @@ extern char usrMemoryData[25690112]; // 25 MB
 extern u_int usrMemPos[2048];
 
 /* static - sbss */
-extern int usrMemPosCnt;
-extern int usrMemPosEndCnt;
+static int usrMemPosCnt;
+static int usrMemPosEndCnt;
 
 void UsrMemClear(void)
 {
