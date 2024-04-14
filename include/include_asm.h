@@ -11,7 +11,6 @@
         "\t.globl\t" #NAME "\n"                                        \
         "\t.ent\t" #NAME "\n" #NAME ":\n"                              \
 		"\t.set noreorder\n"                                           \
-        "\t.set noat\n"                                                \
         "\t.include \"asm/" BASE_FOLDER "/" FOLDER "/" #NAME ".s\"\n"  \
         "\t.end\t" #NAME);
 #define INCLUDE_ASM(TYPE, FOLDER, NAME, ARGS...) INCLUDE_ASM_INTERNAL(TYPE, "nonmatchings", FOLDER, NAME, ARGS)

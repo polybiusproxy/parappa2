@@ -1,8 +1,9 @@
 #include "main/cdctrl.h"
 
 /* sdata */
-void *current_intg_adrs;
-/* static */ int sndFadeTime;
+void *current_intg_adrs = 0;
+static int sndFadeTime = 0;
+static int _pad_sdata_cdctrl_ = 0;
 
 /* bss - static */
 extern unsigned char RBuff[4113];
@@ -10,6 +11,12 @@ extern CDCTRL_STR cdctrl_str;
 
 /* sbss - static */
 static int cdSampleTmp;
+
+/* .lit4 */
+//float D_00398F00;
+//float D_00398F04;
+//float D_00398F08;
+//float D_00398F0C;
 
 /* Concats two shorts into an integer; for use on the WP2_SETMASTERVOL command */
 #define WP2_CONCAT(x, y)        ((x << 16) | (y))
@@ -121,13 +128,12 @@ int CdctrlSerch(FILE_STR *fstr_pp)
 }
 
 //INCLUDE_RODATA(const s32, "main/cdctrl", D_00391AF0);
-static int cdctrlReadSub(/* s2 18 */ FILE_STR *fstr_pp, /* s1 17 */ int ofs, /* s3 19 */ int size, /* s5 21 */ int buf)
+static int cdctrlReadSub(FILE_STR *fstr_pp, int ofs, int size, int buf)
 {
     if (fstr_pp->frmode == FRMODE_CD)
     {
-        sceCdRMode cdmode = { .spindlctrl = SCECdSpinNom };
-
-        int read_lsn = fstr_pp->fpCd.lsn + (ofs / 2048);
+        sceCdRMode cdmode   = { .spindlctrl = SCECdSpinNom };
+        int        read_lsn = fstr_pp->fpCd.lsn + (ofs / 2048);
 
         if (!sceCdSeek(read_lsn))
         {
@@ -459,7 +465,7 @@ long int CdctrlSndTime2WP2sample(float tempo, long int beat)
 
 void CdctrlWp2GetSampleTmpBuf(void)
 {
-    static int time_tmp_max;
+    static int time_tmp_max = 0;
     int time_tmp = *T0_COUNT;
 
     cdSampleTmp = WP2Ctrl(WP2_GETTIME, WP2_NONE);

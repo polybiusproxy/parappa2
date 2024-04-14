@@ -354,4 +354,4 @@ void Tim2TransColor_TBP(void *adrs, int tbp)
     sceGsSyncPath(0, 0);
 }
 
-static char _pad_[2720]; /* bss pad - remove once RBuff (cdctrl.c) is added */
+static char _pad_[2720]; /* bss pad - TODO: remove once RBuff (cdctrl.c) is added */
