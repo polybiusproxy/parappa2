@@ -111,7 +111,8 @@ static STDAT_DAT stdat_dat_st01[] =
 
 STDAT_REC stdat_rec[19];
 
-int stdat_rec_num;
+/* sdata */
+int stdat_rec_num; /* = 14; */
 
 static void stDatFileSearch(FILE_STR *fs_pp)
 {
