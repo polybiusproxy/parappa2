@@ -11,11 +11,6 @@ extern CDCTRL_STR cdctrl_str;
 /* sbss - static */
 static int cdSampleTmp;
 
-/* .lit4 */
-float D_00398F00;
-float D_00398F08;
-float D_00398F0C;
-
 /* Concats two shorts into an integer; for use on the WP2_SETMASTERVOL command */
 #define WP2_CONCAT(x, y)        ((x << 16) | (y))
 #define WP2_NONE                (0)
@@ -348,7 +343,7 @@ void CdctrlWP2SetChannel(u_char Lchan, u_char Rchan)
     cdctrl_str.wp2chan[0] = Lchan;
     cdctrl_str.wp2chan[1] = Rchan;
 
-    printf("channel change L[%d] R[%d]\n", Lchan, Rchan);
+    printf("channel change L[%d] R[%d]\n\0", Lchan, Rchan);
 }
 
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWP2Set);
@@ -449,14 +444,13 @@ int CdctrlFrame2WP2sample(int frame)
     return (frame * 75) / 24;
 }
 
-INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWp2GetSndTime);
-#if 0
-long int CdctrlWp2GetSndTime(/* f20 58 */ float tempo)
+long int CdctrlWp2GetSndTime(float tempo)
 {
     float beat = WP2Ctrl(WP2_GETTIME, WP2_NONE);
-    return (int)((beat * 1875.0f) / (tempo * 16.0f));
+
+    beat = (tempo * 16.0f * beat) / 1875.0f;
+    return (int)beat;
 }
-#endif
 
 long int CdctrlSndTime2WP2sample(float tempo, long int beat)
 {
@@ -489,9 +483,21 @@ int CdctrlWp2GetFrameTmp(void)
     return (frame * 24) / 75;
 }
 
-INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWp2GetSndTimeTmp);
+long int CdctrlWp2GetSndTimeTmp(float tempo)
+{
+    float beat = cdSampleTmp;
 
-INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWp2CdSample2SndTime);
+    beat = (beat * tempo * 16.0f) / 1875.0f;
+    return (int)beat;
+}
+
+long int CdctrlWp2CdSample2SndTime(long int samplecnt, float tempo)
+{
+    float beat = samplecnt;
+
+    beat = (beat * tempo * 16.0f) / 1875.0f;
+    return (int)beat;
+}
 
 long int CdctrlWp2CdSample2Frame(long int samplecnt)
 {
