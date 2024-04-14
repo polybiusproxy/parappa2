@@ -1,4 +1,5 @@
 #include "main/cdctrl.h"
+#include <stdio.h>
 
 /* sdata */
 void *current_intg_adrs = 0;
@@ -6,7 +7,6 @@ static int sndFadeTime = 0;
 static int _pad_sdata_cdctrl_ = 0;
 
 /* bss - static */
-extern unsigned char RBuff[4113];
 extern CDCTRL_STR cdctrl_str;
 
 /* sbss - static */
@@ -46,7 +46,88 @@ u_int PackIntGetDecodeSize(u_char *fp_r)
     return *(u_int*)fp_r;
 }
 
+#define N		 4096	/* Size of ring buffer */
+#define F		   18	/* Upper limit for match_length */
+#define THRESHOLD	2   /* encode string into position and length
+						   if match_length is greater than this */
+
+/* bss - static */
+extern unsigned char RBuff[N + F - 1]; /* Ring buffer for INT decompression */
+
 INCLUDE_ASM(const s32, "main/cdctrl", PackIntDecode);
+#if 0
+#define read(x)  if (fp_r < moto_size) break; x = *fp_r++;
+#define write(x) if (fp_w < fp_w_end) break; *fp_w++ = x;
+
+// INCLUDE_ASM(const s32, "main/cdctrl", PackIntDecode);
+int PackIntDecode(/* a3 7 */ u_char *fp_r, /* a1 5 */ u_char *fp_w)
+{
+    
+    
+    /* t1 9 */ int c1;
+    /* a2 6 */ int c2;
+    /* a0 4 */ int c;
+
+
+    /* a0 4 */ u_int moto_size = *(u_int*)fp_r;
+    /* t3 11 */ int rp = N - F;
+    /* t4 12 */ unsigned int flags = 0;
+    /* t5 13 */ u_char *fp_w_end;
+
+    /* t0 8 */ int i;
+
+    asm("sync");
+    moto_size = *(u_int*)fp_r;
+
+    fp_w_end = ((u_int)fp_w | 0x20000000) + fp_r;
+
+    for (i = 0; i < N - F; i++)
+    {
+        RBuff[i] = '\0';
+    }
+
+    //rp = N - F;
+    //flags = 0;
+
+    for (;;)
+    {
+        if (((flags >>= 1) & 256) == 0)
+        {
+            read(c);
+            flags = c | 0xff00; /* Use higher byte cleverly to count eight */
+        }
+
+        if (flags & 1)
+        {
+            read(c);
+            write(c);
+
+            RBuff[rp++] = c;
+            rp &= (N - 1);
+        }
+        else
+        {
+            read(c1);
+            read(c2);
+
+            c1 |= ((c2 & 0xf0) << 4);
+            c2 = (c2 & 0x0f) + THRESHOLD;
+
+            for (i = 0; i <= c2; i++)
+            {
+                c = RBuff[(c1 + c2) & (N - 1)];
+                write(c);
+
+                RBuff[rp++] = c;
+                rp &= (N - 1);
+            }
+        }
+    }
+
+    asm("sync");
+    return 0;
+}
+#endif
 
 INCLUDE_ASM(const s32, "main/cdctrl", PackIntDecodeWait);
 
