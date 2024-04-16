@@ -11,8 +11,9 @@
 #include <stdio.h>
 
 #include "os/syssub.h"
-#include "os/mtc.h"
 #include "os/usrmem.h"
+#include "os/tim2.h"
+#include "os/mtc.h"
 
 typedef enum {
     FRMODE_PC = 0,
@@ -117,8 +118,22 @@ void CdctrlSndFadeOut(int time);
 int CdctrlSndFadeOutCheck(void);
 void CdctrlSndFadeOutWait(int time);
 
+// TODO(poly): move to main/etc.c once splitted
+typedef enum {
+    TRND_R1 = 0,
+    TRND_R2 = 1,
+    TRND_R3 = 2,
+    TRND_R4 = 3,
+    TRND_MAX = 4
+} TAP_ROUND_ENUM;
+
+TAP_ROUND_ENUM GetHatRound(void);
+
 // TODO(poly): move to iop_mdl/wp2cd_rpc.c once splitted
 int WP2Init(void);
 int WP2Ctrl(int command, int data0);
+
+// TODO(poly): move to iop_mdl/tapctrl_rpc.c once splitted
+int TapCt(int command, int data1, int data2);
 
 #endif
