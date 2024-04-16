@@ -546,6 +546,9 @@ mcode_dat_pp                        = 0x01c6dc30; // size:0x6400
 // main/effect.c
 CG_FadeDisp                         = 0x001179f8; // type:func
 
+// main/etc.c
+GetHatRound                         = 0x0011c118; // type:func
+
 // main/main.c
 mainStart                           = 0x00121a68; // type:func
 

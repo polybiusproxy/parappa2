@@ -61,6 +61,7 @@ int PackIntDecode(u_char *fp_r, u_char *fp_w)
 {
     u_int        moto_size;     /* Decode size                                  */
     int          rp    = N - F; /* Ring buffer position                         */
+
     unsigned int flags = 0;     /* LZSS flags                                   */
     u_char      *fp_w_end;      /* End of write buffer (buffer + decode size)   */
 
@@ -272,7 +273,6 @@ int CdctrlSerch(FILE_STR *fstr_pp)
     return ret;
 }
 
-//INCLUDE_RODATA(const s32, "main/cdctrl", D_00391AF0);
 static int cdctrlReadSub(FILE_STR *fstr_pp, int ofs, int size, int buf)
 {
     if (fstr_pp->frmode == FRMODE_CD)
@@ -337,30 +337,27 @@ static int cdctrlReadSub(FILE_STR *fstr_pp, int ofs, int size, int buf)
     return 0;
 }
 
-INCLUDE_RODATA(const s32, "main/cdctrl", D_00391B40);
-INCLUDE_RODATA(const s32, "main/cdctrl", D_00391B50);
-#ifndef NON_MATCHING
-INCLUDE_ASM(const s32, "main/cdctrl", intReadSub);
-#else
+#define PACK(x) ((PACKINT_FILE_STR*)x)
+
 void intReadSub(void)
 {
-    /* s5 21 */ int read_pos;
-    /* s0 16 */ u_char *read_tmp_pp;
-    /* s4 20 */ u_char *head_read_pp;
-    /* s0 16 */ //int i;
-    /* s2 18 */ //int i;
-    /* s0 16 */ //int i;
-    /* v0 2 */ //int i;
+    int     read_pos;
+    u_char *read_tmp_pp;
+    u_char *head_read_pp;
 
-    head_read_pp = usrMalloc(0x2000);
+    read_pos = 0;
+    head_read_pp = usrMalloc(8192);
+
     printf("intg in!!!\n");
 
     while (1)
     {
+        /* Read 2048 bytes into our header buffer */
         while (!cdctrlReadSub(cdctrl_str.fstr_pp, read_pos, 2048, (int)head_read_pp))
             MtcWait(1);
 
-        if (((PACKINT_FILE_STR*)head_read_pp)->id != 0x44332211)
+        /* Check if we loaded a valid INT */
+        if (PACK(head_read_pp)->id != 0x44332211)
         {
             printf("INT FILE ERROR!![%s]\n", cdctrl_str.fstr_pp->fname);
             while (1)
@@ -369,14 +366,134 @@ void intReadSub(void)
 
         FlushCache(0);
 
-        if (((PACKINT_FILE_STR*)head_read_pp)->head_size > 2048)
+        if (PACK(head_read_pp)->head_size > 2048)
         {
-            if ( cdctrlReadSub(cdctrl_str.fstr_pp, (int)read_pos + 2048, v5 >> 11 << 11, (int)&head_read_pp->adr[504]) )
+            while (!cdctrlReadSub(cdctrl_str.fstr_pp, read_pos + 2048, ((PACK(head_read_pp)->head_size - 1) / 2048) * 2048, (int)(head_read_pp + 2048)))
+                MtcWait(1);
+        }
+
+        read_pos += PACK(head_read_pp)->head_size + PACK(head_read_pp)->name_size;
+        FlushCache(0);
+
+        /* Check if there's data present */
+        if (PACK(head_read_pp)->data_size != 0)
+        {
+            /* If we don't have a temp buffer, allocate it ourselves */
+            if (cdctrl_str.tmp_area != NULL)
+            {
+                read_tmp_pp = (u_char*)(cdctrl_str.tmp_area - PACK(head_read_pp)->data_size);
+                printf("buf use:%08x size:%08x\n", cdctrl_str.tmp_area - PACK(head_read_pp)->data_size, PACK(head_read_pp)->data_size);
+            }
+            else
+            {
+                read_tmp_pp = usrMalloc(PACK(head_read_pp)->data_size);
+            }
+
+            /* Read the data... */
+            FlushCache(0);
+            while (!cdctrlReadSub(cdctrl_str.fstr_pp, read_pos, PACK(head_read_pp)->data_size, (int)read_tmp_pp))
+                MtcWait(1);
+
+            /* ...and decode it */
+            FlushCache(0);
+            PackIntDecodeWait(read_tmp_pp, (u_char*)UsrMemAllocNext(), 230);
+
+            FlushCache(0);
+            if (cdctrl_str.tmp_area == NULL)
+                usrFree(read_tmp_pp);
+
+            read_pos += PACK(head_read_pp)->data_size;
+        }
+
+        /* Handle the decoded data */
+        switch (PACK(head_read_pp)->ftype)
+        {
+            /* TIM2 textures */
+            case FT_VRAM:
+            {
+                int i;
+                printf("int file tim2 file in\n");
+
+                for (i = 0; i < PACK(head_read_pp)->fnum; i++)
+                {
+                    Tim2Trans((void*)PACK(head_read_pp)->adr[i] + UsrMemAllocNext());
+                }
+
+                printf("int file tim2 file out\n");
                 break;
+            }
+
+            /* Sounds */
+            case FT_SND:
+            {
+                int i;
+                printf("int file snd file in\n");
+
+                /* TODO: name TAPCT commands */
+                while (TapCt(0x8070, 0, 0))
+                    MtcWait(1);
+
+                for (i = 0; i < PACK(head_read_pp)->fnum / 2; i++)
+                {
+                    TapCt(i | 0x8030, PACK(head_read_pp)->adr[i] + UsrMemAllocNext(),
+                        PACK(head_read_pp)->adr[i + 1] - PACK(head_read_pp)->adr[i]);
+
+                    TapCt(i | 0x8040, PACK(head_read_pp)->adr[i + PACK(head_read_pp)->fnum / 2] + UsrMemAllocNext(),
+                        PACK(head_read_pp)->adr[i + 1 + PACK(head_read_pp)->fnum / 2] - PACK(head_read_pp)->adr[i + PACK(head_read_pp)->fnum / 2]);
+                }
+
+                while (TapCt(0x8070, 0, 0))
+                    MtcWait(1);
+
+                printf("int file snd file out\n");
+                break;
+            }
+
+            /* PaRappa's hat textures (TIM2) */
+            case FT_R1:
+            case FT_R2:
+            case FT_R3:
+            case FT_R4:
+            {
+                int i;
+
+                if (GetHatRound() == PACK(head_read_pp)->ftype - 4)
+                {
+                    printf("int file tim2 round:%d file in\n", PACK(head_read_pp)->ftype - 3);
+
+                    for (i = 0; i < PACK(head_read_pp)->fnum; i++)
+                    {
+                        Tim2Trans((void*)PACK(head_read_pp)->adr[i] + UsrMemAllocNext());
+                    }
+
+                    printf("int file tim2 roud file out\n");
+                }
+
+                break;
+            }
+
+            /* Models, animations, etc. */
+            case FT_ONMEM:
+            {
+                int i;
+                printf("mem cnt [%d]\n", PACK(head_read_pp)->fnum);
+
+                for (i = 0; i < PACK(head_read_pp)->fnum; i++)
+                {
+                    UsrMemAlloc(PACK(head_read_pp)->adr[i + 1] - PACK(head_read_pp)->adr[i]);
+                }
+            }
+
+            default:
+            {
+                printf("intg exit!!\n");
+                usrFree(head_read_pp);
+                return;
+            }
         }
     }
 }
-#endif
+//#endif
 
 #ifndef NON_MATCHING
 INCLUDE_ASM(const s32, "main/cdctrl", cdctrlReadData);
@@ -456,12 +573,127 @@ void usrMemcpy(/* a0 4 */ void *sakip, /* a1 5 */ void *motop, /* a2 6 */ int si
 }
 #endif
 
-INCLUDE_RODATA(const s32, "main/cdctrl", D_00391BE0);
-INCLUDE_RODATA(const s32, "main/cdctrl", D_00391C00);
-INCLUDE_RODATA(const s32, "main/cdctrl", D_00391C20);
-INCLUDE_RODATA(const s32, "main/cdctrl", D_00391C30);
-INCLUDE_RODATA(const s32, "main/cdctrl", D_00391C40); // jumptable
-INCLUDE_ASM(const s32, "main/cdctrl", CdctrlMemIntgDecode);
+void CdctrlMemIntgDecode(u_int rbuf, u_int setbuf)
+{
+    u_char *head_read_pp;
+    u_int   next_rp;
+
+    current_intg_adrs   = (void*)setbuf;
+    head_read_pp        = usrMalloc(8192);
+    next_rp             = PACK(rbuf)->head_size;
+
+    while (1)
+    {
+        /* Copy the INT to our buffer */
+        usrMemcpy(head_read_pp, (void*)rbuf, PACK(rbuf)->head_size);
+        FlushCache(0);
+        
+        /* Check if we loaded a valid INT */
+        if (PACK(head_read_pp)->id != 0x44332211)
+        {
+            printf("INT FILE ERROR!![%s]\n", cdctrl_str.fstr_pp->fname);
+            while (1)
+                MtcWait(1);
+        }
+
+        rbuf += PACK(head_read_pp)->head_size + PACK(head_read_pp)->name_size;
+        FlushCache(0);
+
+        /* Check if there's data present */
+        if (PACK(head_read_pp)->data_size != 0)
+        {
+            /* Decode the data */
+            PackIntDecodeWait((u_char*)rbuf, (u_char*)UsrMemAllocNext(), 230);
+            rbuf += PACK(head_read_pp)->data_size;
+        }
+
+        FlushCache(0);
+
+        /* Handle the decoded data */
+        switch (PACK(head_read_pp)->ftype)
+        {
+            /* TIM2 textures */
+            case FT_VRAM:
+            {
+                int i;
+                printf("tim trans in\n");
+
+                for (i = 0; i < PACK(head_read_pp)->fnum; i++)
+                {
+                    Tim2Trans((void*)PACK(head_read_pp)->adr[i] + UsrMemAllocNext());
+                }
+
+                printf("tim trans out\n");
+                break;
+            }
+
+            /* Sounds */
+            case FT_SND:
+            {
+                int i;
+
+                for (i = 0; i < PACK(head_read_pp)->fnum / 2; i++)
+                {
+                    /* TODO: name TAPCT commands */
+                    TapCt(i | 0x8030, PACK(head_read_pp)->adr[i] + UsrMemAllocNext(),
+                        PACK(head_read_pp)->adr[i+1] - PACK(head_read_pp)->adr[i]);
+
+                    TapCt(i | 0x8040, PACK(head_read_pp)->adr[i + PACK(head_read_pp)->fnum / 2] + UsrMemAllocNext(),
+                        PACK(head_read_pp)->adr[i+1+PACK(head_read_pp)->fnum / 2] - PACK(head_read_pp)->adr[i + PACK(head_read_pp)->fnum / 2]);
+                }
+
+                while (TapCt(0x8070, 0, 0))
+                    MtcWait(1);
+
+                break;
+            }
+
+            /* PaRappa's hat textures (TIM2) */
+            case FT_R1:
+            case FT_R2:
+            case FT_R3:
+            case FT_R4:
+            {
+                int i;
+
+                if (GetHatRound() == PACK(head_read_pp)->ftype - 4)
+                {
+                    printf("int file tim2 round:%d file in\n", PACK(head_read_pp)->ftype - 3);
+
+                    for (i = 0; i < PACK(head_read_pp)->fnum; i++)
+                    {
+                        Tim2Trans((void*)PACK(head_read_pp)->adr[i] + UsrMemAllocNext());
+                    }
+
+                    printf("int file tim2 roud file out\n");
+                }
+
+                break;
+            }
+
+            /* Models, animations, etc. */
+            case FT_ONMEM:
+            {
+                int i;
+                printf("mem cnt [%d]\n", PACK(head_read_pp)->fnum);
+
+                for (i = 0; i < PACK(head_read_pp)->fnum; i++)
+                {
+                    UsrMemAlloc(PACK(head_read_pp)->adr[i+1] - PACK(head_read_pp)->adr[i]);
+                }
+
+                break;
+            }
+
+            default:
+            {
+                printf("intg exit!!\n");
+                usrFree(head_read_pp);
+                return;
+            }
+        }
+    }
+}
 
 int CdctrlStatus(void)
 {
