@@ -1,5 +1,4 @@
 #include "main/cdctrl.h"
-#include <stdio.h>
 
 /* sdata */
 void *current_intg_adrs = 0;
@@ -47,59 +46,50 @@ u_int PackIntGetDecodeSize(u_char *fp_r)
 }
 
 #define N		 4096	/* Size of ring buffer */
-#define F		   18	/* Upper limit for match_length */
-#define THRESHOLD	2   /* encode string into position and length
-						   if match_length is greater than this */
+#define F		   18	/* Upper limit */
+#define THRESHOLD	2
 
 /* bss - static */
 extern unsigned char RBuff[N + F - 1]; /* Ring buffer for INT decompression */
 
-INCLUDE_ASM(const s32, "main/cdctrl", PackIntDecode);
-#if 0
-#define read(x)  if (fp_r < moto_size) break; x = *fp_r++;
-#define write(x) if (fp_w < fp_w_end) break; *fp_w++ = x;
+#define read()  *(fp_r)++;
+#define write(x) *(fp_w)++ = (x);
 
-// INCLUDE_ASM(const s32, "main/cdctrl", PackIntDecode);
-int PackIntDecode(/* a3 7 */ u_char *fp_r, /* a1 5 */ u_char *fp_w)
+#define UNCACHED(addr) (u_char*)((u_int)(addr) | 0x20000000)
+
+int PackIntDecode(u_char *fp_r, u_char *fp_w)
 {
+    u_int        moto_size;     /* Decode size                                  */
+    int          rp    = N - F; /* Ring buffer position                         */
+    unsigned int flags = 0;     /* LZSS flags                                   */
+    u_char      *fp_w_end;      /* End of write buffer (buffer + decode size)   */
+
+    int          i, c, c1, c2;
     
-    
-    /* t1 9 */ int c1;
-    /* a2 6 */ int c2;
-    /* a0 4 */ int c;
+    asm("sync.l");
 
-
-    /* a0 4 */ u_int moto_size = *(u_int*)fp_r;
-    /* t3 11 */ int rp = N - F;
-    /* t4 12 */ unsigned int flags = 0;
-    /* t5 13 */ u_char *fp_w_end;
-
-    /* t0 8 */ int i;
-
-    asm("sync");
     moto_size = *(u_int*)fp_r;
+    fp_w = UNCACHED(fp_w);
+    fp_w_end = fp_w + moto_size;
 
-    fp_w_end = ((u_int)fp_w | 0x20000000) + fp_r;
+    fp_r += 8;
 
     for (i = 0; i < N - F; i++)
     {
-        RBuff[i] = '\0';
+        RBuff[i] = 0;
     }
 
-    //rp = N - F;
-    //flags = 0;
-
-    for (;;)
+    while (fp_w != fp_w_end)
     {
         if (((flags >>= 1) & 256) == 0)
         {
-            read(c);
-            flags = c | 0xff00; /* Use higher byte cleverly to count eight */
+            c = read();
+            flags = c | 0xff00;
         }
 
         if (flags & 1)
         {
-            read(c);
+            c = read();
             write(c);
 
             RBuff[rp++] = c;
@@ -107,29 +97,103 @@ int PackIntDecode(/* a3 7 */ u_char *fp_r, /* a1 5 */ u_char *fp_w)
         }
         else
         {
-            read(c1);
-            read(c2);
+            c1 = read();
+            c2 = read();
 
             c1 |= ((c2 & 0xf0) << 4);
             c2 = (c2 & 0x0f) + THRESHOLD;
 
             for (i = 0; i <= c2; i++)
             {
-                c = RBuff[(c1 + c2) & (N - 1)];
+                c = RBuff[(c1 + i) & (N - 1)];
                 write(c);
-
+                
                 RBuff[rp++] = c;
                 rp &= (N - 1);
             }
         }
     }
 
-    asm("sync");
+    asm("sync.l");
     return 0;
 }
-#endif
 
-INCLUDE_ASM(const s32, "main/cdctrl", PackIntDecodeWait);
+int PackIntDecodeWait(u_char *fp_r, u_char *fp_w, int wait_hline)
+{
+    u_int        moto_size;     /* Decode size                                  */
+    u_char      *fp_w_end;      /* End of write buffer (buffer + decode size)   */
+
+    int          rp    = N - F; /* Ring buffer position                         */
+    unsigned int flags = 0;     /* LZSS flags                                   */
+
+    int          i, c, c1, c2;
+    
+    printf("decode moto[%08x] saki[%08x]\n", fp_r, fp_w);
+    asm("sync.l");
+
+    moto_size = *(u_int*)fp_r;
+    fp_w = UNCACHED(fp_w);
+    fp_w_end = fp_w + moto_size;
+
+    fp_r += 8;
+
+    for (i = 0; i < N - F; i++)
+    {
+        RBuff[i] = 0;
+    }
+
+    while (1)
+    {
+        if (fp_w > fp_w_end)
+        {
+            printf(" over data pointer\n");
+            break;
+        }
+
+        if (fp_w == fp_w_end)
+        {
+            break;
+        }
+
+        if (wait_hline < *T0_COUNT)
+            MtcWait(1);
+
+        if (((flags >>= 1) & 256) == 0)
+        {
+            c = read();
+            flags = c | 0xff00;
+        }
+
+        if (flags & 1)
+        {
+            c = read();
+            write(c);
+
+            RBuff[rp++] = c;
+            rp &= (N - 1);
+        }
+        else
+        {
+            c1 = read();
+            c2 = read();
+
+            c1 |= ((c2 & 0xf0) << 4);
+            c2 = (c2 & 0x0f) + THRESHOLD;
+
+            for (i = 0; i <= c2; i++)
+            {
+                c = RBuff[(c1 + i) & (N - 1)];
+                write(c);
+                
+                RBuff[rp++] = c;
+                rp &= (N - 1);
+            }
+        }
+    }
+
+    asm("sync.l");
+    return 0;
+}
 
 void CdctrlInit(void)
 {
