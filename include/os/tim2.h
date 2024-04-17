@@ -2,8 +2,11 @@
 #define TIM2_H
 
 #include "common.h"
+
 #include <eetypes.h>
 #include <libgraph.h>
+
+#include <stdio.h>
 
 typedef struct { // 0x10
     /* 0x0 */ char FileId[4];

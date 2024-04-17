@@ -51,7 +51,7 @@ static void mtcStackErrorCheck(int level)
 {
     if ( *(int*)mtcStack[level] != 0x572a8b4c )
     {
-        printf("stack over level[%d]\n\0\0\0", level);
+        printf("stack over level[%d]\n", level);
         while (1)
             sceGsSyncV(0);
     }

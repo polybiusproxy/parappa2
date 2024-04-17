@@ -16,7 +16,7 @@ options:
     undefined_syms_auto_path:  config/undefined_syms_auto.txt
     
     # compiler 
-    compiler: GCC
+    compiler: EEGCC
     platform: ps2
 
     ld_bss_contains_common: True

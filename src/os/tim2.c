@@ -224,7 +224,7 @@ void Tim2Trans(void *adrs)
     TIM2INFO tim2info;
 
     if (!GetTim2Info(adrs, &tim2info, 1)) 
-        printf("[0x%08x] is not tim2file\n\0\0\0\0\0\0\0", adrs); // Absurd padding.
+        printf("[0x%08x] is not tim2file\n", adrs); // Absurd padding.
     else
         Tim2LoadSet(&tim2info);
 }
