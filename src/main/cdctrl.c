@@ -2,8 +2,6 @@
 
 /* sdata */
 void *current_intg_adrs = 0;
-static int sndFadeTime = 0;
-static int _pad_sdata_cdctrl_ = 0;
 
 /* bss - static */
 extern CDCTRL_STR cdctrl_str;
@@ -726,7 +724,7 @@ void CdctrlWP2SetChannel(u_char Lchan, u_char Rchan)
     cdctrl_str.wp2chan[0] = Lchan;
     cdctrl_str.wp2chan[1] = Rchan;
 
-    printf("channel change L[%d] R[%d]\n\0", Lchan, Rchan);
+    printf("channel change L[%d] R[%d]\n", Lchan, Rchan);
 }
 
 INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWP2Set);
@@ -899,6 +897,8 @@ int GetIntSizeCurrent(u_short num)
     return UsrMemGetSize(num);
 }
 
+static int sndFadeTime = 0;
+
 INCLUDE_ASM(const s32, "main/cdctrl", cdctrlSndFadeOut);
 void cdctrlSndFadeOut(void *x);
 
@@ -920,3 +920,6 @@ void CdctrlSndFadeOutWait(int time)
     while (!CdctrlSndFadeOutCheck())
         MtcWait(1);
 }
+
+/* VRAM 0x00399374 on the NTSC-J proto */
+int _sdata_pad_cdctrl_ = 0;
