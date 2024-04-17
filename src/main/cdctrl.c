@@ -899,8 +899,19 @@ int GetIntSizeCurrent(u_short num)
 
 static int sndFadeTime = 0;
 
-INCLUDE_ASM(const s32, "main/cdctrl", cdctrlSndFadeOut);
-void cdctrlSndFadeOut(void *x);
+static void cdctrlSndFadeOut(void *x)
+{
+    int timer;
+
+    for (timer = 0; timer < sndFadeTime; timer++)
+    {
+        CdctrlMasterVolSet(((sndFadeTime - timer) * 0x3fff) / sndFadeTime);
+        MtcWait(1);
+    }
+
+    sndFadeTime = 0;
+    MtcExit();
+}
 
 void CdctrlSndFadeOut(int time)
 {
