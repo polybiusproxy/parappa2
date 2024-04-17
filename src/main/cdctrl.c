@@ -35,6 +35,7 @@ static int cdSampleTmp;
 #define WP2_START               0x8005 /* Arg -> Seek position  */
 #define WP2_SEEK                0x8007 /*        No args        */
 #define WP2_GETMODE             0x800b /*        No args        */
+#define WP2_SETMODE             0x800c /* Arg -> Mode           */
 #define WP2_GETTIME             0x8010 /*        No args        */
 #define WP2_READBUF             0x8017 /*        No args        */
 
@@ -757,10 +758,55 @@ void CdctrlWP2Set(FILE_STR *fstr_pp)
 }
 #endif
 
-INCLUDE_RODATA(const s32, "main/cdctrl", D_00391CC0);
-INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWP2SetFileSeek);
+void CdctrlWP2SetFileSeek(FILE_STR *fstr_pp, int seek_pos)
+{
+    /* Stop the current WP2 playing */
+    CdctrlWP2SetVolume(0);
+    WP2Ctrl(WP2_STOP, WP2_NONE);
 
-INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWP2SetFileSeekChan);
+    if (cdctrl_str.fstr_pp != fstr_pp)
+    {
+        cdctrl_str.fstr_pp = fstr_pp;
+        printf("!!max chan [%d]\n", fstr_pp->mchan);
+
+        WP2Ctrl(WP2_SETMODE, cdctrl_str.fstr_pp->mchan);
+        if (fstr_pp->frmode == FRMODE_PC)
+            WP2Ctrl(0x8014, (int)cdctrl_str.fstr_pp->fname);
+        else
+            WP2Ctrl(0x8014, (int)&cdctrl_str.fstr_pp->fpCd);
+
+        cdctrl_str.wp2chan[1] = 0;
+        cdctrl_str.wp2chan[0] = 0;
+    }
+
+    /* Seek and preload */
+    WP2Ctrl(WP2_SEEK, seek_pos);
+    WP2Ctrl(WP2_PRELOADBACK, WP2_NONE);
+}
+
+void CdctrlWP2SetFileSeekChan(FILE_STR *fstr_pp, int seek_pos, u_char Lch, u_char Rch)
+{
+    /* Stop the current WP2 playing */
+    CdctrlWP2SetVolume(0);
+    WP2Ctrl(WP2_STOP, WP2_NONE);
+
+    cdctrl_str.fstr_pp = fstr_pp;
+    printf("!!max chan [%d]\n", fstr_pp->mchan);
+
+    WP2Ctrl(WP2_SETMODE, cdctrl_str.fstr_pp->mchan);
+    if (fstr_pp->frmode == FRMODE_PC)
+        WP2Ctrl(0x8014, (int)cdctrl_str.fstr_pp->fname);
+    else
+        WP2Ctrl(0x8014, (int)&cdctrl_str.fstr_pp->fpCd);
+
+    cdctrl_str.wp2chan[1] = 0;
+    cdctrl_str.wp2chan[0] = 0;
+
+    /* Seek, set the channels, and preload */
+    WP2Ctrl(WP2_SEEK, seek_pos);
+    CdctrlWP2SetChannel(Lch, Rch);
+    WP2Ctrl(WP2_PRELOADBACK, WP2_NONE);
+}
 
 void CdctrlWP2Seek(int seek_pos)
 {

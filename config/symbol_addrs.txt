@@ -286,22 +286,6 @@ RBuff                               = 0x01c5e000; // size:0x1011
 cdSampleTmp                         = 0x00399a34; // size:0x4
 cdctrl_str                          = 0x01c5f018; // size:0x18
 
-D_00391AF0                          = 0x00391af0; // force_not_migration:True
-D_00391B40                          = 0x00391b40; // force_not_migration:True
-D_00391B50                          = 0x00391b50; // force_not_migration:True
-D_00391BE0                          = 0x00391be0; // force_not_migration:True
-D_00391C00                          = 0x00391c00; // force_not_migration:True
-D_00391C20                          = 0x00391c20; // force_not_migration:True
-D_00391C30                          = 0x00391c30; // force_not_migration:True
-D_00391C40                          = 0x00391c40; // force_not_migration:True
-D_00391CC0                          = 0x00391cc0; // force_not_migration:True
-
-// temp
-D_00398F00                          = 0x00398f00; // type:f32
-D_00398F04                          = 0x00398f04; // type:f32
-D_00398F08                          = 0x00398f08; // type:f32
-D_00398F0C                          = 0x00398f0c; // type:f32
-
 // main/stdat.c
 stDatFileSearch                     = 0x00106d70; // type:func
 stDatFirstFileSearch                = 0x00106dc0; // type:func
