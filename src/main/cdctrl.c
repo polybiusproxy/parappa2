@@ -9,41 +9,6 @@ extern CDCTRL_STR cdctrl_str;
 /* sbss - static */
 static int cdSampleTmp;
 
-/* .lit4 */
-//float D_00398F00;
-//float D_00398F04;
-//float D_00398F08;
-//float D_00398F0C;
-
-/* Concats two shorts into an integer; for use on the WP2_SETMASTERVOL command */
-#define WP2_CONCAT(x, y)        ((x << 16) | (y))
-#define WP2_NONE                (0)
-
-// WP2 commands
-#define WP2_QUIT                0x0001 /*        No args        */
-#define WP2_CLOSE               0x0003 /*        No args        */
-#define WP2_PRELOAD             0x0004 /*        No args        */
-#define WP2_STOP                0x0006 /*        No args        */
-#define WP2_SETVOLDIRECT        0x0009 /* Arg -> Direct volume  */
-#define WP2_SETMASTERVOL        0x000a /* Arg -> Master volume  */
-#define WP2_SDINIT              0x000d /* Arg -> Status         */
-#define WP2_INIT                0x000e /* Arg -> Mode           */
-#define WP2_SETCHANNEL          0x000f /* Arg -> Channels       */
-#define WP2_PRELOADBACK         0x0015 /*        No args        */
-#define WP2_BGMSETTRPOINT       0x0016 /* Arg -> Transfer pos   */
-#define WP2_BGMINIT             0x8000 /* Arg -> Block size     */
-#define WP2_START               0x8005 /* Arg -> Seek position  */
-#define WP2_SEEK                0x8007 /*        No args        */
-#define WP2_GETMODE             0x800b /*        No args        */
-#define WP2_SETMODE             0x800c /* Arg -> Mode           */
-#define WP2_GETTIME             0x8010 /*        No args        */
-#define WP2_READBUF             0x8017 /*        No args        */
-
-u_int PackIntGetDecodeSize(u_char *fp_r)
-{
-    return *(u_int*)fp_r;
-}
-
 #define N		 4096	/* Size of ring buffer */
 #define F		   18	/* Upper limit */
 #define THRESHOLD	2
@@ -55,6 +20,11 @@ extern unsigned char RBuff[N + F - 1]; /* Ring buffer for INT decompression */
 #define write(x) *(fp_w)++ = (x);
 
 #define UNCACHED(addr) (u_char*)((u_int)(addr) | 0x20000000)
+
+u_int PackIntGetDecodeSize(u_char *fp_r)
+{
+    return *(u_int*)fp_r;
+}
 
 int PackIntDecode(u_char *fp_r, u_char *fp_w)
 {
@@ -194,6 +164,30 @@ int PackIntDecodeWait(u_char *fp_r, u_char *fp_w, int wait_hline)
     asm("sync.l");
     return 0;
 }
+
+/* Concats two shorts into an integer; for use on the WP2_SETMASTERVOL command */
+#define WP2_CONCAT(x, y)        ((x << 16) | (y))
+#define WP2_NONE                (0)
+
+// WP2 commands
+#define WP2_QUIT                0x0001 /*        No args        */
+#define WP2_CLOSE               0x0003 /*        No args        */
+#define WP2_PRELOAD             0x0004 /*        No args        */
+#define WP2_STOP                0x0006 /*        No args        */
+#define WP2_SETVOLDIRECT        0x0009 /* Arg -> Direct volume  */
+#define WP2_SETMASTERVOL        0x000a /* Arg -> Master volume  */
+#define WP2_SDINIT              0x000d /* Arg -> Status         */
+#define WP2_INIT                0x000e /* Arg -> Mode           */
+#define WP2_SETCHANNEL          0x000f /* Arg -> Channels       */
+#define WP2_PRELOADBACK         0x0015 /*        No args        */
+#define WP2_BGMSETTRPOINT       0x0016 /* Arg -> Transfer pos   */
+#define WP2_BGMINIT             0x8000 /* Arg -> Block size     */
+#define WP2_START               0x8005 /* Arg -> Seek position  */
+#define WP2_SEEK                0x8007 /*        No args        */
+#define WP2_GETMODE             0x800b /*        No args        */
+#define WP2_SETMODE             0x800c /* Arg -> Mode           */
+#define WP2_GETTIME             0x8010 /*        No args        */
+#define WP2_READBUF             0x8017 /*        No args        */
 
 void CdctrlInit(void)
 {
@@ -492,35 +486,36 @@ void intReadSub(void)
         }
     }
 }
-//#endif
 
-#ifndef NON_MATCHING
-INCLUDE_ASM(const s32, "main/cdctrl", cdctrlReadData);
-#else
 void cdctrlReadData(void *x)
 {
     while (!CdctrlSerch(cdctrl_str.fstr_pp))
         MtcWait(1);
 
-    if (cdctrl_str.fstr_pp->ftmode == FTMODE_INTG)
+    switch (cdctrl_str.fstr_pp->ftmode)
     {
-        intReadSub();
-        current_intg_adrs = (void*)cdctrl_str.read_area;
-    }
-    else if (cdctrl_str.fstr_pp->ftmode == FTMODE_ETC)
-    {
-        while (!cdctrlReadSub(cdctrl_str.fstr_pp, 0, cdctrl_str.fstr_pp->fpCd.size, cdctrl_str.read_area))
-            MtcWait(1);
+        case FTMODE_INTG:
+        {
+            intReadSub();
+            current_intg_adrs = (void*)cdctrl_str.read_area;
+            break;
+        }
+
+        case FTMODE_ETC:
+        {
+            while (!cdctrlReadSub(cdctrl_str.fstr_pp, 0, cdctrl_str.fstr_pp->fpCd.size, cdctrl_str.read_area))
+                MtcWait(1);
+            
+            break;
+        }
     }
 
     FlushCache(0);
-
     MtcWait(1);
-    cdctrl_str.status = 0;
 
+    cdctrl_str.status = 0;
     MtcExit();
 }
-#endif
 
 static void cdctrlReadDataOne(void *x)
 {
@@ -561,13 +556,16 @@ INCLUDE_ASM(const s32, "main/cdctrl", usrMemcpy);
 // さき(saki) -> Destination / もと(moto) -> Source
 void usrMemcpy(/* a0 4 */ void *sakip, /* a1 5 */ void *motop, /* a2 6 */ int size)
 {
-    /* a2 6 */ int i;
-    /* a1 5 */ int *m_pp = motop;
-    /* a0 4 */ int *s_pp = sakip;
+    int     i;
+    int *s_pp = sakip;
+    int *m_pp = motop;
 
-    for (i = size >> 2; i != 1 /* ? */; i--)
+    for (i = (size >> 2) - 1; i != 1; i--)
     {
         *s_pp = *m_pp;
+
+        s_pp++;
+        m_pp++;
     }
 }
 #endif
@@ -728,35 +726,31 @@ void CdctrlWP2SetChannel(u_char Lchan, u_char Rchan)
     printf("channel change L[%d] R[%d]\n", Lchan, Rchan);
 }
 
-INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWP2Set);
-#if 0
 void CdctrlWP2Set(FILE_STR *fstr_pp)
 {
-    cdctrl_str.fstr_pp = fstr_pp;
     cdctrl_str.status = 1;
     cdctrl_str.error_status = 0;
+    cdctrl_str.fstr_pp = fstr_pp;
     
+    WP2Ctrl(WP2_SETMODE, fstr_pp->mchan);
 
-    WP2Ctrl(0x800c, fstr_pp->mchan);
+    while (!CdctrlSerch(cdctrl_str.fstr_pp));
 
-    while (!CdctrlSerch(fstr_pp));
-    WP2Ctrl(0x16, 0);
-
+    WP2Ctrl(WP2_BGMSETTRPOINT, WP2_NONE);
     if (fstr_pp->frmode == FRMODE_PC)
-        WP2Ctrl(0x8013, cdctrl_str.fstr_pp->fname);
+        WP2Ctrl(0x8013, (int)cdctrl_str.fstr_pp->fname);
     else
-        WP2Ctrl(0x8013, &cdctrl_str.fstr_pp->fpCd);
+        WP2Ctrl(0x8013, (int)&cdctrl_str.fstr_pp->fpCd);
 
     CdctrlWP2SetVolume(0);
     
     cdctrl_str.read_area = WP2Ctrl(0x8011,0);
-    cdctrl_str.wp2chan[1] = 1;
     cdctrl_str.wp2chan[0] = 0;
+    cdctrl_str.wp2chan[1] = 1;
 
-    WP2Ctrl(WP2_SETCHANNEL, 1);
-    WP2Ctrl(WP2_PRELOADBACK, 0);
+    WP2Ctrl(WP2_SETCHANNEL, WP2_CONCAT(cdctrl_str.wp2chan[0], cdctrl_str.wp2chan[1]));
+    WP2Ctrl(WP2_PRELOADBACK, WP2_NONE);
 }
-#endif
 
 void CdctrlWP2SetFileSeek(FILE_STR *fstr_pp, int seek_pos)
 {
@@ -836,6 +830,8 @@ INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWP2SetVolume);
 void CdctrlWP2SetVolume(u_short vol)
 {
     cdctrl_str.volume = vol;
+    vol <<= 8;
+    
     WP2Ctrl(WP2_SETVOLDIRECT, WP2_CONCAT(vol, vol));
 }
 #endif
