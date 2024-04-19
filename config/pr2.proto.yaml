@@ -56,7 +56,7 @@ segments:
 
         - [0x6120,  c, main/cdctrl]
         - [0x7d70,  c, main/stdat]
-        - [0x7f28,  asm, main/scrctrl]
+        - [0x7f28,  c, main/scrctrl]
         - [0x10028, c, main/sprite]
         - [0x10980, c, main/fadectrl]
         - [0x10a90, c, main/subt]
@@ -91,7 +91,7 @@ segments:
 
         - [0x292a80, .rodata, main/cdctrl]
         - [0x292da8, .rodata, main/stdat]
-        - [0x293a60, rodata, main/scrctrl]
+        - [0x293a60, .rodata, main/scrctrl]
         - [0x294018, .rodata, main/sprite]
         - [0x294110, rodata, unk] # drawctrl.c rodata
         

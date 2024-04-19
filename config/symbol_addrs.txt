@@ -448,7 +448,7 @@ bonusScoreDraw                      = 0x0010eb70; // type:func
 set_lero_gifset                     = 0x0010ed78; // type:func
 LessonRoundDisp                     = 0x0010ee70; // type:func
 
-dbg_tbl_msg                         = 0x00392f70; // type:s32 size:0x44
+// dbg_tbl_msg                         = 0x00187410; // type:s32 size:0x44
 
 FLT_00398F10                        = 0x00398f10; // type:f32
 
@@ -467,6 +467,8 @@ dbgmsg_on_off                       = 0x00399500;
 follow_scr_tap_memory_cnt           = 0x00399a38;
 follow_scr_tap_memory_cnt_load      = 0x00399a3c;
 commake_str_cnt                     = 0x00399a40;
+
+D_00392F70                          = 0x00392f70; // force_migration:True
 
 // main/sprite.c
 SprInit                             = 0x0010f028; // type:func
