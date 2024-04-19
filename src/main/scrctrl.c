@@ -1,5 +1,30 @@
 #include "common.h"
 
+/* sdata */
+/* static */ int titleStartKey;
+/* static */ int fadeoutStartKey;
+/* static */ int gameEndWaitLoop;
+/* static */ int replayGuiOffFlag;
+/* static */ int jimakuWakuOff;
+int currentTblNumber;
+int vs_tapdat_tmp_cnt;
+int scrJimakuLine;
+int scrDrawLine;
+int scrMbarLine;
+int scrRefLineTime;
+
+/* sdata - static */
+/* implement on ScrCtrlMainLoop */
+int dbgmsg_on_off;
+
+/* sbss - static */
+int follow_scr_tap_memory_cnt;
+int follow_scr_tap_memory_cnt_load;
+int commake_str_cnt;
+
+/* .lit4 */
+float FLT_00398F10;
+
 INCLUDE_ASM(const s32, "main/scrctrl", GetCurrentTblNumber);
 
 INCLUDE_ASM(const s32, "main/scrctrl", RANK_LEVEL2DISP_LEVEL);
@@ -204,6 +229,7 @@ INCLUDE_ASM(const s32, "main/scrctrl", SetIndvDrawTblLine);
 
 INCLUDE_ASM(const s32, "main/scrctrl", otehonSetCheck);
 
+// INCLUDE_RODATA(const s32, "main/scrctrl", D_00392F70);
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlMainLoop);
 
 INCLUDE_ASM(const s32, "main/scrctrl", GetTimeType);
@@ -222,7 +248,7 @@ INCLUDE_ASM(const s32, "main/scrctrl", SetIndvCdChannel);
 
 INCLUDE_ASM(const s32, "main/scrctrl", CheckIndvCdChannel);
 
-INCLUDE_RODATA(const s32, "main/scrctrl", dbg_tbl_msg);
+// INCLUDE_RODATA(const s32, "main/scrctrl", dbg_tbl_msg);
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlInit);
 
