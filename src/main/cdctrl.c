@@ -550,17 +550,15 @@ void CdctrlReadOne(FILE_STR *fstr_pp, u_int buf, int tmpbuf)
     MtcExec(cdctrlReadDataOne, MTC_TASK_CDCTRL);
 }
 
-#ifndef NON_MATCHING
-INCLUDE_ASM(const s32, "main/cdctrl", usrMemcpy);
-#else
+
 // さき(saki) -> Destination / もと(moto) -> Source
-void usrMemcpy(/* a0 4 */ void *sakip, /* a1 5 */ void *motop, /* a2 6 */ int size)
+void usrMemcpy(void *sakip, void *motop, int size)
 {
-    int     i;
+    int     i = size / sizeof(int);
     int *s_pp = sakip;
     int *m_pp = motop;
 
-    for (i = (size >> 2) - 1; i != 1; i--)
+    while (--i != -1)
     {
         *s_pp = *m_pp;
 
@@ -568,7 +566,6 @@ void usrMemcpy(/* a0 4 */ void *sakip, /* a1 5 */ void *motop, /* a2 6 */ int si
         m_pp++;
     }
 }
-#endif
 
 void CdctrlMemIntgDecode(u_int rbuf, u_int setbuf)
 {
