@@ -151,6 +151,10 @@ iop_module                          = 0x0017bbc0; // type:s32 size:0x2C
 DBufDc                              = 0x0017bbf0; // size:0x330
 drawEnvP                            = 0x0017bf20; // type:s32 size:0x14
 pad                                 = 0x0017bf38; // size:0x48
+global_data                         = 0x0017bf80; // size:0x338
+game_status                         = 0x0017c2b8; // size:0xD0
+mc_rep_str                          = 0x0017c388; // size:0x4528
+ingame_common_str                   = 0x001808b0; // size:0x28
 
 _end_addr                           = 0x00399334; // type:s32
 _stack_size_addr                    = 0x00399338; // type:s32
@@ -452,7 +456,21 @@ LessonRoundDisp                     = 0x0010ee70; // type:func
 
 FLT_00398F10                        = 0x00398f10; // type:f32
 
-thnum_tbl                           = 0x00183320; // size:0x8
+exh_str_normal                      = 0x00183258;
+exh_str_original                    = 0x001832a8;
+exh_str_hane                        = 0x001832e0;
+exh_str_hook                        = 0x00183310;
+thnum_tbl                           = 0x00183320; // size:0x10
+tcl_ctrl                            = 0x00183330; // size:0x840
+scrprgstr                           = 0x00183b70;
+scrprgstr_hook                      = 0x00183b88;
+tim2spr_tbl                         = 0x00183b90; // size:0x40
+bn_num_type                         = 0x00183bd0;
+lero_tim2_pt                        = 0x00183c10;
+lero_pos_str                        = 0x00183c68;
+scr_snd_dbuff                       = 0x00183d58;
+score_str                           = 0x00183d70; // size:0x14
+vs_tapdat_tmp                       = 0x00183d88; // size:0xE00
 
 titleStartKey                       = 0x00399438;
 fadeoutStartKey                     = 0x0039943c;
@@ -466,11 +484,19 @@ scrDrawLine                         = 0x00399458;
 scrMbarLine                         = 0x0039945c;
 scrRefLineTime                      = 0x00399460;
 dbgmsg_on_off                       = 0x00399500;
+
 follow_scr_tap_memory_cnt           = 0x00399a38;
 follow_scr_tap_memory_cnt_load      = 0x00399a3c;
 commake_str_cnt                     = 0x00399a40;
 
+scr_sndtap_pp                       = 0x01c5f030;
 score_indv_str                      = 0x01c5f040; // size:0x4A24
+follow_scr_tap_memory               = 0x01c63a68;
+tap_groupe_str                      = 0x01c64668;
+commake_str                         = 0x01c646b8;
+exam_check                          = 0x01c647b8; // size:0x1344
+yaku_tmp_buf                        = 0x01c65b00;
+bng_str                             = 0x01c65b28; // size:0x4C
 
 D_00392F70                          = 0x00392f70; // force_migration:True
 

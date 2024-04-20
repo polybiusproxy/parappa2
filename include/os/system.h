@@ -26,7 +26,7 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 448
 
-GLOBAL_DATA global_data;
+extern GLOBAL_DATA global_data;
 
 typedef struct { // 0x100
     /* 0x00 */ sceDmaTag dmatag;
