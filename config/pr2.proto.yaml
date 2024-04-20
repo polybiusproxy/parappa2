@@ -37,7 +37,7 @@ segments:
       type: code
       start: 0x1000
       vram: 0x100000
-      bss_size: 0x18F4434
+      bss_size: 0x18F4434 # should be 1 byte less?
       subalign: null
       subsegments:
         - [0x1000, asm, sce/crt0]
@@ -76,7 +76,7 @@ segments:
         - [0x84258, data, main/scrctrl]
         - [0x85b88, .data, main/fadectrl]
         - [0x85ba0, data, main/subt]
-        - [0x86478, data, unk]
+        - [0x86478, data]
         
         - [0x291ed0, data, vudata] # .vudata
         
@@ -93,12 +93,12 @@ segments:
         - [0x292da8, .rodata, main/stdat]
         - [0x293a60, .rodata, main/scrctrl]
         - [0x294018, .rodata, main/sprite]
-        - [0x294110, rodata, unk] # drawctrl.c rodata
+        - [0x294110, rodata] # drawctrl.c rodata
         
         - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
 
         - [0x299f00, .lit4, main/cdctrl] # .lit4
-        - [0x299f10, lit4, unk] #main/scrctrl]
+        - [0x299f10, lit4] #main/scrctrl]
         #- [0x299f14, lit4, main/drawctrl]
         #- [0x299f38, lit4, main/effect]
         #- [0x299f40, lit4]
@@ -145,10 +145,12 @@ segments:
         - { start: 0x29aa1c, type: bss,  vram: 0x003db380, name: os/usrmem      }
         - { start: 0x29aa1c, type: .bss, vram: 0x01c5d380, name: os/tim2        }
         - { start: 0x29aa1c, type: bss,  vram: 0x01c5e000, name: main/cdctrl    }
-        - { start: 0x29aa1c, type: bss,  vram: 0x01c5f030, name: bss_unk2       }
-        - { start: 0x29aa1c, type: .bss, vram: 0x01c5f030, name: main/sprite    }
-        - { start: 0x29aa1c, type: .bss, vram: 0x01c65b80, name: main/fadectrl  }
-        - { start: 0x29aa1c, type: bss,  vram: 0x01c6dba0, name: bss_unk3       }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c5f030, name: main/scrctrl   }
+        - { start: 0x29aa1c, type: .bss, vram: 0x01c65b80, name: main/sprite    }
+        - { start: 0x29aa1c, type: .bss, vram: 0x01c6db90, name: main/fadectrl  }
+        - { start: 0x29aa1c, type: .bss, vram: 0x01c6dba0, name: main/subt      }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c6e030, name: main/drawctrl  }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c6fef0, name: bss_unk        } # main/effect
         
     - [0x29aa00, databin] # pad
     - [0x29b000, databin] # .mfifo

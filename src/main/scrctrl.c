@@ -1,4 +1,7 @@
-#include "common.h"
+#include "main/scrctrl.h"
+
+/* data */
+extern u_int thnum_tbl[4];
 
 /* sdata */
 /* static */ int titleStartKey;
@@ -17,6 +20,9 @@ int scrRefLineTime;
 /* implement on ScrCtrlMainLoop */
 int dbgmsg_on_off;
 
+/* bss */
+extern SCORE_INDV_STR score_indv_str[5];
+
 /* sbss - static */
 int follow_scr_tap_memory_cnt;
 int follow_scr_tap_memory_cnt_load;
@@ -25,7 +31,10 @@ int commake_str_cnt;
 /* .lit4 */
 float FLT_00398F10;
 
-INCLUDE_ASM(const s32, "main/scrctrl", GetCurrentTblNumber);
+int GetCurrentTblNumber(void)
+{
+    return currentTblNumber;
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", RANK_LEVEL2DISP_LEVEL);
 
@@ -50,6 +59,7 @@ INCLUDE_ASM(const s32, "main/scrctrl", ScrTapReq);
 INCLUDE_ASM(const s32, "main/scrctrl", ScrTapReqStop);
 
 INCLUDE_ASM(const s32, "main/scrctrl", exam_tbl_updownInit);
+void exam_tbl_updownInit(SCORE_INDV_STR *sindv_pp);
 
 INCLUDE_ASM(const s32, "main/scrctrl", exam_tbl_updownSet);
 
@@ -84,10 +94,64 @@ INCLUDE_ASM(const s32, "main/scrctrl", ScrDrawTimeGet);
 INCLUDE_ASM(const s32, "main/scrctrl", ScrDrawTimeGetFrame);
 
 INCLUDE_ASM(const s32, "main/scrctrl", KeyCntClear);
+void KeyCntClear(int *key_pp);
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlCurrentSearch);
+SCRREC* ScrCtrlCurrentSearch(SCORE_INDV_STR *sindv_pp, int index, int frame);
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvInit);
+void ScrCtrlIndvInit(STDAT_DAT *sdat_pp)
+{
+	int             i, j;
+	int             dare;
+
+	SCORE_INDV_STR *sindv_pp;
+    GLOBAL_PLY     *gply_pp;
+
+    WorkClear(score_indv_str, sizeof(score_indv_str));
+    sindv_pp = score_indv_str;
+
+    for (i = 0; i < 5; i++, sindv_pp++)
+    {
+        dare = -1;
+        gply_pp = global_data.global_ply;
+        
+        for (j = 0; j < 4; j++)
+        {
+            if (gply_pp[j].player_code == PR_BIT(i))
+            {
+                dare = j;
+                break;
+            }
+        }
+
+        if (dare >= 0)
+        {
+            KeyCntClear(sindv_pp->keyCnt);
+            tapReqGroupTapClear(Pcode2Pindex(sindv_pp->plycode));
+
+            sindv_pp->keyCntCom = 0;
+            sindv_pp->status = 1;
+            sindv_pp->plycode = PR_BIT(i);
+            sindv_pp->global_ply = &gply_pp[dare];
+            sindv_pp->top_scr_ctrlpp = sdat_pp->scr_pp->scr_ctrl_pp;
+            
+            sindv_pp->current_scrrec_pp = ScrCtrlCurrentSearch(sindv_pp, global_data.draw_tbl_top, 0);
+            sindv_pp->useLine = global_data.draw_tbl_top;
+            
+            sindv_pp->global_ply->exam_tbl_up = 0;
+            sindv_pp->global_ply->exam_tbl_dw = 0;
+
+            exam_tbl_updownInit(sindv_pp);
+
+            for (j = 0; j < 24; j++)
+            {
+                sindv_pp->sjob[j] = -1;
+            }
+
+            sindv_pp->tapset_pos = -1;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlExamClear);
 
@@ -149,7 +213,38 @@ INCLUDE_ASM(const s32, "main/scrctrl", otehon_all_make);
 
 INCLUDE_ASM(const s32, "main/scrctrl", treateTimeChange);
 
-INCLUDE_ASM(const s32, "main/scrctrl", thnum_get);
+//INCLUDE_ASM(const s32, "main/scrctrl", thnum_get);
+int thnum_get(int p96_num, CK_TH_ENUM ckth)
+{
+    u_int thnum_data;
+    int   ck_bit;
+    int   ck_dat;
+    int   ret_cnt;
+    int   i;
+
+    ck_bit = -1;
+    ret_cnt = 0;
+    thnum_data = thnum_tbl[ckth];
+
+    for (i = 0; i <= p96_num; i++)
+    {
+        ck_dat = (thnum_data >> (23 - i % 24)) & 1;
+        
+        if (ck_bit < 0)
+        {
+            if (ck_dat == 0)
+                ret_cnt = 1;
+        }
+        else if (ck_dat != ck_bit)
+        {
+            ret_cnt++;
+        }
+        
+        ck_bit = ck_dat;
+    }
+
+    return ret_cnt;
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", MapNormalNumGet);
 
