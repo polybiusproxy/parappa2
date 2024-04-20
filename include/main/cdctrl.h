@@ -109,8 +109,9 @@ void CdctrlReadOne(FILE_STR *fstr_pp, u_int buf, int tmpbuf);
 void usrMemcpy(void *sakip, void *motop, int size);
 
 void CdctrlMemIntgDecode(u_int rbuf, u_int setbuf);
-int CdctrlStatus(void);
 
+int CdctrlStatus(void);
+void CdctrlWP2SetChannel(u_char Lchan, u_char Rchan);
 void CdctrlWP2SetVolume(u_short vol);
 
 void CdctrlWp2GetSampleTmpBuf(void);

@@ -3,6 +3,7 @@
 /* data */
 extern u_int thnum_tbl[4];
 extern SCR_SND_DBUFF scr_snd_dbuff;
+extern SCORE_STR score_str;
 
 /* sdata */
 /* static */ int titleStartKey;
@@ -23,6 +24,7 @@ int dbgmsg_on_off;
 
 /* bss */
 extern SCORE_INDV_STR score_indv_str[5];
+extern SCR_TAP_MEMORY follow_scr_tap_memory[256];
 
 /* sbss - static */
 int follow_scr_tap_memory_cnt;
@@ -127,11 +129,36 @@ INCLUDE_ASM(const s32, "main/scrctrl", vsTapdatSet);
 
 INCLUDE_ASM(const s32, "main/scrctrl", vsTapdatSetMoto);
 
-INCLUDE_ASM(const s32, "main/scrctrl", followTapInit);
+void followTapInit(void)
+{
+    follow_scr_tap_memory_cnt = 0;
+    follow_scr_tap_memory_cnt_load = 0;
+    WorkClear(follow_scr_tap_memory, sizeof(follow_scr_tap_memory));
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", followTapSave);
 
 INCLUDE_ASM(const s32, "main/scrctrl", followTapLoad);
+#if 0
+static SCR_TAP_MEMORY* followTapLoad(int pos,int time)
+{
+    if (follow_scr_tap_memory_cnt > pos)
+    {
+        if (follow_scr_tap_memory[pos].ofs_frame > time)
+        {
+            return NULL;
+        }
+    }
+
+    if (follow_scr_tap_memory_cnt_load == pos)
+    {
+        follow_scr_tap_memory_cnt_load = pos + 1;
+        return follow_scr_tap_memory + pos;
+    }
+
+    return NULL;
+}
+#endif
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrLincChangTbl);
 
@@ -377,17 +404,40 @@ INCLUDE_ASM(const s32, "main/scrctrl", otehonSetCheck);
 // INCLUDE_RODATA(const s32, "main/scrctrl", D_00392F70);
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlMainLoop);
 
-INCLUDE_ASM(const s32, "main/scrctrl", GetTimeType);
+GET_TIME_TYPE GetTimeType(int scr_line)
+{
+    return score_str.stdat_dat_pp->scr_pp->scr_ctrl_pp[scr_line].gtime_type;
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", GetTimeOfset);
+int GetTimeOfset(int scr_line)
+{
+    return score_str.stdat_dat_pp->scr_pp->scr_ctrl_pp[scr_line].ofsCdtime;
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", GetSubtLine);
+int GetSubtLine(int scr_line)
+{
+    return score_str.stdat_dat_pp->scr_pp->scr_ctrl_pp[scr_line].subtLine;
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", GetDrawLine);
+int GetDrawLine(int scr_line)
+{
+    return score_str.stdat_dat_pp->scr_pp->scr_ctrl_pp[scr_line].drawLine;
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", GetLineTempo);
+float GetLineTempo(int scr_line)
+{
+    return score_str.stdat_dat_pp->scr_pp->scr_ctrl_pp[scr_line].tempo;
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", SetLineChannel);
+void SetLineChannel(int scr_line)
+{
+    SCR_CTRL *scr_ctrl_pp = score_str.stdat_dat_pp->scr_pp->scr_ctrl_pp + scr_line;
+
+    if (scr_ctrl_pp->gtime_type != GTIME_VSYNC)
+    {
+        CdctrlWP2SetChannel(scr_ctrl_pp->cdChan[0], scr_ctrl_pp->cdChan[1]);
+    }
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", SetIndvCdChannel);
 
@@ -397,19 +447,40 @@ INCLUDE_ASM(const s32, "main/scrctrl", CheckIndvCdChannel);
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlInit);
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlQuit);
+void ScrCtrlQuit(void)
+{
+    useAllClearKeySnd();
+    TapCt(0x120, 0, 0);
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlInitCheck);
+    MtcKill(5);
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlGoLoop);
+int ScrCtrlInitCheck(void)
+{
+    return score_str.ready_flag;
+}
+
+void ScrCtrlGoLoop(void)
+{
+    score_str.go_loop_flag = 1;
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrEndCheckScore);
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrEndCheckTitle);
+int ScrEndCheckTitle(void)
+{
+    return titleStartKey;
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrEndCheckFadeOut);
+int ScrEndCheckFadeOut(void)
+{
+    return fadeoutStartKey;
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrEndWaitLoop);
+int ScrEndWaitLoop(void)
+{
+    return gameEndWaitLoop;
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", bonusGameInit);
 
@@ -419,20 +490,50 @@ INCLUDE_ASM(const s32, "main/scrctrl", bonusPointSave);
 
 INCLUDE_ASM(const s32, "main/scrctrl", bngTapEventCheck);
 
-INCLUDE_ASM(const s32, "main/scrctrl", bonusGameParaReq);
+void bonusGameParaReq(BNG_ACT_P_ENUM actnum)
+{
+    bngTapEventCheck(score_indv_str + 2, actnum, 0);
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", bonusGameKoamaReq);
+static void bonusGameKoamaReq(int kotamaNum, BNG_ACT_K_ENUM actnum)
+{
+    bngTapEventCheck(score_indv_str + 1, actnum + kotamaNum, kotamaNum + 1);
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", bonus_minus_point_sub);
+static int bonus_minus_point_sub(int wtime)
+{
+    if (wtime < 8)
+        return 9;
 
-INCLUDE_ASM(const s32, "main/scrctrl", bonus_pls_point_sub);
+    if (wtime < 13)
+        return 13;
+
+    if (wtime < 20)
+        return 18;
+
+    return 24;
+}
+
+static int bonus_pls_point_sub(int wtime)
+{
+    if (wtime < 3)
+        return 26;
+
+    if (wtime < 6)
+        return 15;
+
+    if (wtime < 9)
+        return 9;
+
+    return 5;
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", bonusGameCtrl);
 
 static u_long hex2dec(u_long data)
 {
     u_long ret = 0;
-    u_int i;
+    u_int  i;
 
     for (i = 0; data != 0;)
     {
