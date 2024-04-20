@@ -260,6 +260,40 @@ typedef enum {
     CK_TH_MAX = 3
 } CK_TH_ENUM;
 
+typedef enum {
+    DLVL_COOL = 0,
+    DLVL_GOOD = 1,
+    DLVL_BAD = 2,
+    DLVL_AWFUL = 3,
+    DLVL_MAX = 4,
+    DLVL_HK_COOL = 0,
+    DLVL_HK_GOOD = 1,
+    DLVL_HK_BAD1 = 2,
+    DLVL_HK_BAD2 = 3,
+    DLVL_HK_BAD3 = 4,
+    DLVL_HK_MAX = 5
+} DISP_LEVEL;
+
+typedef struct { // 0x8
+	/* 0x0 */ int time;
+	/* 0x4 */ short int KeyIndex;
+} COMMAKE_STR;
+
+typedef struct { // 0x18
+	/* 0x00 */ int bank[2];
+	/* 0x08 */ SNDREC *sndrec_pp[2];
+	/* 0x10 */ void *data_top;
+	/* 0x14 */ u_int next_index;
+} SCR_SND_DBUFF;
+
+typedef struct { // 0x14
+	/* 0x00 */ STDAT_DAT *stdat_dat_pp;
+	/* 0x04 */ void *int_top;
+	/* 0x08 */ int ready_flag;
+	/* 0x0c */ int go_loop_flag;
+	/* 0x10 */ int mbar_flag;
+} SCORE_STR;
+
 typedef struct { // 0xed4
     /* 0x000 */ int status;
     /* 0x004 */ PLAYER_CODE plycode;
