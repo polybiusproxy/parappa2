@@ -93,6 +93,13 @@ typedef struct { // 0x8
     /* 0x4 */ short int chan[2];
 } SCR_CHAN_AUTO;
 
+typedef enum {
+    GTIME_CD0 = 0,
+    GTIME_CD1 = 1,
+    GTIME_CD2 = 2,
+    GTIME_VSYNC = 3
+} GET_TIME_TYPE;
+
 typedef struct { // 0x2c
     /* 0x00 */ char gtime_type;
     /* 0x01 */ char cdChan[2];
@@ -324,6 +331,68 @@ typedef struct { // 0xed4
     /* 0xecc */ TAP_FOLLOW_ENUM tap_follow_enum;
     /* 0xed0 */ int cansel_flag;
 } SCORE_INDV_STR;
+
+typedef enum {
+    BNGAPE_NONE = -1,
+    BNGAPE_A = 0,
+    BNGAPE_O = 1,
+    BNGAPE_X = 2,
+    BNGAPE_H = 3,
+    BNGAPE_A_NG = 4,
+    BNGAPE_O_NG = 5,
+    BNGAPE_X_NG = 6,
+    BNGAPE_H_NG = 7
+} BNG_ACT_P_ENUM;
+
+
+typedef enum {
+    BNGAKE_NONE = -1,
+    BNGAKE_1_TOP = 0,
+    BNGAKE_A11 = 0,
+    BNGAKE_O11 = 1,
+    BNGAKE_X11 = 2,
+    BNGAKE_H11 = 3,
+    BNGAKE_1_TOP_2 = 4,
+    BNGAKE_A12 = 4,
+    BNGAKE_O12 = 5,
+    BNGAKE_X12 = 6,
+    BNGAKE_H12 = 7,
+    BNGAKE_1_TOP_3 = 8,
+    BNGAKE_A13 = 8,
+    BNGAKE_O13 = 9,
+    BNGAKE_X13 = 10,
+    BNGAKE_H13 = 11,
+    BNGAKE_2_TOP = 12,
+    BNGAKE_A2 = 12,
+    BNGAKE_O2 = 13,
+    BNGAKE_X2 = 14,
+    BNGAKE_H2 = 15,
+    BNGAKE_3_TOP = 16,
+    BNGAKE_A31 = 16,
+    BNGAKE_O31 = 17,
+    BNGAKE_X31 = 18,
+    BNGAKE_H31 = 19,
+    BNGAKE_3_TOP_2 = 20,
+    BNGAKE_A32 = 20,
+    BNGAKE_O32 = 21,
+    BNGAKE_X32 = 22,
+    BNGAKE_H32 = 23,
+    BNGAKE_3_TOP_3 = 24,
+    BNGAKE_A33 = 24,
+    BNGAKE_O33 = 25,
+    BNGAKE_X33 = 26,
+    BNGAKE_H33 = 27,
+    BNGAKE_4_TOP = 28,
+    BNGAKE_A4 = 28,
+    BNGAKE_O4 = 29,
+    BNGAKE_X4 = 30,
+    BNGAKE_H4 = 31,
+    BNGAKE_5_TOP = 32,
+    BNGAKE_A5 = 32,
+    BNGAKE_O5 = 33,
+    BNGAKE_X5 = 34,
+    BNGAKE_H5 = 35
+} BNG_ACT_K_ENUM;
 
 int GetCurrentTblNumber(void);
 
