@@ -2,6 +2,7 @@
 
 /* data */
 extern u_int thnum_tbl[4];
+extern SCR_SND_DBUFF scr_snd_dbuff;
 
 /* sdata */
 /* static */ int titleStartKey;
@@ -36,19 +37,72 @@ int GetCurrentTblNumber(void)
     return currentTblNumber;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", RANK_LEVEL2DISP_LEVEL);
+DISP_LEVEL RANK_LEVEL2DISP_LEVEL(RANK_LEVEL lvl)
+{
+    DISP_LEVEL lvl_tbl[17] =
+    {
+        DLVL_COOL,  DLVL_COOL,
+        DLVL_GOOD,  DLVL_GOOD,  DLVL_GOOD,
+        DLVL_BAD,   DLVL_BAD,   DLVL_BAD,
+        DLVL_AWFUL, DLVL_AWFUL, DLVL_AWFUL,
+        DLVL_MAX,   DLVL_MAX,   DLVL_MAX,
+        DLVL_MAX,   DLVL_MAX,   DLVL_MAX
+    };
 
-INCLUDE_ASM(const s32, "main/scrctrl", RANK_LEVEL2DISP_LEVEL_HK);
+    return lvl_tbl[lvl];
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrTapDbuffCtrlInit);
+DISP_LEVEL RANK_LEVEL2DISP_LEVEL_HK(RANK_LEVEL lvl)
+{
+    DISP_LEVEL lvl_tbl[15] =
+    {
+        DLVL_COOL,  DLVL_COOL,
+        DLVL_GOOD,  DLVL_GOOD,  DLVL_GOOD,
+        DLVL_BAD,   DLVL_BAD,   DLVL_BAD,
+        DLVL_AWFUL, DLVL_AWFUL, DLVL_AWFUL,
+        DLVL_MAX,   DLVL_MAX,   DLVL_MAX, 5
+    };
+
+    return lvl_tbl[lvl];
+}
+
+void ScrTapDbuffCtrlInit(void *data_top, int bk0, int bk1)
+{
+    scr_snd_dbuff.bank[0]      = bk0;
+    scr_snd_dbuff.bank[1]      = bk1;
+
+    scr_snd_dbuff.data_top     = data_top;
+    scr_snd_dbuff.next_index   = 0;
+
+    scr_snd_dbuff.sndrec_pp[0] = NULL;
+    scr_snd_dbuff.sndrec_pp[1] = NULL;
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrTapDbuffSet);
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrTapDbuffSetSp);
+void ScrTapDbuffSetSp(SNDREC *sndrec_pp, int id)
+{
+    u_int ret;
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrTapDbuffClear);
+    if (id > -1)
+    {
+        scr_snd_dbuff.next_index = id;
+        ScrTapDataTrans(sndrec_pp, scr_snd_dbuff.bank[id & 1 ^ 1], scr_snd_dbuff.data_top);
+        scr_snd_dbuff.sndrec_pp[id & 1 ^ 1] = sndrec_pp;
+    }
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrTapCtrlInit);
+void ScrTapDbuffClear(void)
+{
+    scr_snd_dbuff.next_index = 0;
+    scr_snd_dbuff.sndrec_pp[0] = NULL;
+    scr_snd_dbuff.sndrec_pp[1] = NULL;
+}
+
+void ScrTapCtrlInit(void *data_top)
+{
+    ScrTapDbuffCtrlInit(data_top, 1, 2);
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrTapDataTrans);
 
@@ -64,10 +118,6 @@ void exam_tbl_updownInit(SCORE_INDV_STR *sindv_pp);
 INCLUDE_ASM(const s32, "main/scrctrl", exam_tbl_updownSet);
 
 INCLUDE_ASM(const s32, "main/scrctrl", exam_tbl_updownChange);
-
-INCLUDE_RODATA(const s32, "main/scrctrl", D_00392A60);
-
-INCLUDE_RODATA(const s32, "main/scrctrl", D_00392AA8);
 
 INCLUDE_ASM(const s32, "main/scrctrl", vsTapdatSetMemorySave);
 
@@ -379,7 +429,24 @@ INCLUDE_ASM(const s32, "main/scrctrl", bonus_pls_point_sub);
 
 INCLUDE_ASM(const s32, "main/scrctrl", bonusGameCtrl);
 
-INCLUDE_ASM(const s32, "main/scrctrl", hex2dec);
+static u_long hex2dec(u_long data)
+{
+    u_long ret = 0;
+    u_int i;
+
+    for (i = 0; data != 0;)
+    {
+        ret |= (data % 10) << (i * 4);
+        data /= 10;
+
+        i++;
+        
+        if (i >= 16)
+            return ret;
+    }
+
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", bnNumberDisp);
 
