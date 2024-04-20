@@ -16,8 +16,8 @@ static int cdSampleTmp;
 /* bss - static */
 extern unsigned char RBuff[N + F - 1]; /* Ring buffer for INT decompression */
 
-#define read()  *(fp_r)++;
-#define write(x) *(fp_w)++ = (x);
+#define lzss_read()  *(fp_r)++;
+#define lzss_write(x) *(fp_w)++ = (x);
 
 #define UNCACHED(addr) (u_char*)((u_int)(addr) | 0x20000000)
 
@@ -53,22 +53,22 @@ int PackIntDecode(u_char *fp_r, u_char *fp_w)
     {
         if (((flags >>= 1) & 256) == 0)
         {
-            c = read();
+            c = lzss_read();
             flags = c | 0xff00;
         }
 
         if (flags & 1)
         {
-            c = read();
-            write(c);
+            c = lzss_read();
+            lzss_write(c);
 
             RBuff[rp++] = c;
             rp &= (N - 1);
         }
         else
         {
-            c1 = read();
-            c2 = read();
+            c1 = lzss_read();
+            c2 = lzss_read();
 
             c1 |= ((c2 & 0xf0) << 4);
             c2 = (c2 & 0x0f) + THRESHOLD;
@@ -76,7 +76,7 @@ int PackIntDecode(u_char *fp_r, u_char *fp_w)
             for (i = 0; i <= c2; i++)
             {
                 c = RBuff[(c1 + i) & (N - 1)];
-                write(c);
+                lzss_write(c);
                 
                 RBuff[rp++] = c;
                 rp &= (N - 1);
@@ -130,22 +130,22 @@ int PackIntDecodeWait(u_char *fp_r, u_char *fp_w, int wait_hline)
 
         if (((flags >>= 1) & 256) == 0)
         {
-            c = read();
+            c = lzss_read();
             flags = c | 0xff00;
         }
 
         if (flags & 1)
         {
-            c = read();
-            write(c);
+            c = lzss_read();
+            lzss_write(c);
 
             RBuff[rp++] = c;
             rp &= (N - 1);
         }
         else
         {
-            c1 = read();
-            c2 = read();
+            c1 = lzss_read();
+            c2 = lzss_read();
 
             c1 |= ((c2 & 0xf0) << 4);
             c2 = (c2 & 0x0f) + THRESHOLD;
@@ -153,7 +153,7 @@ int PackIntDecodeWait(u_char *fp_r, u_char *fp_w, int wait_hline)
             for (i = 0; i <= c2; i++)
             {
                 c = RBuff[(c1 + i) & (N - 1)];
-                write(c);
+                lzss_write(c);
                 
                 RBuff[rp++] = c;
                 rp &= (N - 1);

@@ -6,21 +6,9 @@
 #include "os/mtc.h"
 #include "main/cdctrl.h"
 #include "main/subt.h"
+#include "main/etc.h"
 
-typedef enum {
-    PSTEP_SERIAL = 0,
-    PSTEP_HOOK = 1,
-    PSTEP_GAME = 2,
-    PSTEP_BONUS = 3,
-    PSTEP_VS = 4,
-    PSTEP_XTR = 5,
-    PSTEP_MAX = 6
-} PLAY_STEP;
-
-// Temp typedefs!
-typedef int EVENTREC;
-typedef int SCR_MAIN;
-typedef int TAPLVL_STR;
+struct SCR_MAIN;
 
 typedef struct { // 0xd0
     /* 0x00 */ PLAY_STEP play_step;
@@ -28,7 +16,7 @@ typedef struct { // 0xd0
     /* 0x08 */ float tempo;
     /* 0x0c */ int stage;
     /* 0x10 */ EVENTREC *ev_pp;
-    /* 0x14 */ SCR_MAIN *scr_pp;
+    /* 0x14 */ struct SCR_MAIN *scr_pp;
     /* 0x18 */ JIMAKU_STR *jimaku_str_pp;
     /* 0x1c */ FILE_STR intfile;
     /* 0x48 */ FILE_STR sndfile[3];

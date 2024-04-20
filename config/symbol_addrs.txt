@@ -452,6 +452,8 @@ LessonRoundDisp                     = 0x0010ee70; // type:func
 
 FLT_00398F10                        = 0x00398f10; // type:f32
 
+thnum_tbl                           = 0x00183320; // size:0x8
+
 titleStartKey                       = 0x00399438;
 fadeoutStartKey                     = 0x0039943c;
 gameEndWaitLoop                     = 0x00399440;
@@ -467,6 +469,8 @@ dbgmsg_on_off                       = 0x00399500;
 follow_scr_tap_memory_cnt           = 0x00399a38;
 follow_scr_tap_memory_cnt_load      = 0x00399a3c;
 commake_str_cnt                     = 0x00399a40;
+
+score_indv_str                      = 0x01c5f040; // size:0x4A24
 
 D_00392F70                          = 0x00392f70; // force_migration:True
 
@@ -527,13 +531,14 @@ subtSetNum                          = 0x00399510;
 kanji_pp                            = 0x00399a48; // size:0x4
 subtPkSpr                           = 0x01c6dba0; // size:0x10
 subt_code                           = 0x01c6dbb0; // size:0x80
-mcode_dat_pp                        = 0x01c6dc30; // size:0x6400
+mcode_dat_pp                        = 0x01c6dc30; // size:0x400
 
 // main/effect.c
 CG_FadeDisp                         = 0x001179f8; // type:func
 
 // main/etc.c
 GetHatRound                         = 0x0011c118; // type:func
+Pcode2Pindex                        = 0x0011c8d0; // type:func
 
 // main/main.c
 mainStart                           = 0x00121a68; // type:func

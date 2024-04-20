@@ -19,10 +19,14 @@
 #include "os/mtc.h"
 #include "os/syssub.h"
 #include "os/cmngifpk.h"
+
 #include "main/main.h"
+#include "main/etc.h"
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 448
+
+GLOBAL_DATA global_data;
 
 typedef struct { // 0x100
     /* 0x00 */ sceDmaTag dmatag;
@@ -38,7 +42,7 @@ extern sceGsDrawEnv1* drawEnvP[5];
 
 extern PADD pad[2];
 
-int SetIopModule(void);
+int  SetIopModule(void);
 void initSystem(void);
 void exitSystem(void);
 void SetOsFuncAddr(void* func_pp);

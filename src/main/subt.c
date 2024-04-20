@@ -8,13 +8,12 @@ int SUBT_POSX;
 int SUBT_POSY;
 /* static */ int subtSetNum;
 
-/* sbss */
 static MCODE_STR *kanji_pp;
 
 /* bss - static */
-sceGifPacket subtPkSpr;
-SUBT_CODE subt_code[16];
-MCODE_DAT *mcode_dat_pp[256];
+static sceGifPacket subtPkSpr;
+static SUBT_CODE subt_code[16];
+static MCODE_DAT *mcode_dat_pp[256];
 
 void SubtInit(void)
 {
