@@ -396,6 +396,13 @@ typedef enum {
 
 int GetCurrentTblNumber(void);
 
+void ScrTapDataTrans(SNDREC *sndrec_pp, int bank, void *data_top);
+
 void tapReqGroupTapClear(PLAYER_INDEX pindex);
+void selectIndvTapResetPlay(int num);
+
+// TODO(poly): move to main/mcctrl.c once splitted
+void mccReqLvlSet(u_int lvl);
+u_int mccReqLvlGet(void);
 
 #endif

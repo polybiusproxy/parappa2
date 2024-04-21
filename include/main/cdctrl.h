@@ -111,11 +111,37 @@ void usrMemcpy(void *sakip, void *motop, int size);
 void CdctrlMemIntgDecode(u_int rbuf, u_int setbuf);
 
 int CdctrlStatus(void);
+void CdctrlReadWait(void);
+u_int CdctrlGetFileSize(FILE_STR *fstr_pp);
 void CdctrlWP2SetChannel(u_char Lchan, u_char Rchan);
+void CdctrlWP2Set(FILE_STR *fstr_pp);
+void CdctrlWP2SetFileSeek(FILE_STR *fstr_pp, int seek_pos);
+void CdctrlWP2SetFileSeekChan(FILE_STR *fstr_pp, int seek_pos, u_char Lch, u_char Rch);
+void CdctrlWP2Seek(int seek_pos);
+void CdctrlWP2Play(void);
+int CdctrlWP2PlayEndCheck(void);
+int CdctrlWP2CheckBuffer(void);
 void CdctrlWP2SetVolume(u_short vol);
+u_short CdctrlWP2GetVolume(void);
+void CdctrlWp2Stop(void);
+void CdctrlWp2FileEnd(void);
 
+int CdctrlWp2GetSample(void);
+int CdctrlWp2GetFrame(void);
+int CdctrlFrame2WP2sample(int frame);
+long int CdctrlWp2GetSndTime(float tempo);
+long int CdctrlSndTime2WP2sample(float tempo, long int beat);
 void CdctrlWp2GetSampleTmpBuf(void);
 int CdctrlWp2GetSampleTmp(void);
+int CdctrlWp2GetFrameTmp(void);
+long int CdctrlWp2GetSndTimeTmp(float tempo);
+long int CdctrlWp2CdSample2SndTime(long int samplecnt, float tempo);
+long int CdctrlWp2CdSample2Frame(long int samplecnt);
+
+void CdctrlXTRset(FILE_STR *fstr_pp, u_int usebuf);
+
+void* GetIntAdrsCurrent(u_short num);
+int GetIntSizeCurrent(u_short num);
 
 void CdctrlSndFadeOut(int time);
 int CdctrlSndFadeOutCheck(void);
