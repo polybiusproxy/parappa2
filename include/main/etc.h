@@ -1,6 +1,8 @@
 #ifndef ETC_H
 #define ETC_H
 
+#include <eetypes.h>
+
 // Typedef structs that I'm too lazy to define here
 // -----------------------------------------------
 typedef int EVENTREC;
@@ -304,6 +306,14 @@ typedef enum {
     GPLAY_TBLCNG_REQ = 1
 } GPLAY_FLAG_ENUM;
 
+typedef enum {
+    PARA_PLAYER_NUM = 0,
+    TEACHER_PLAYER_NUM = 1,
+    BOXY_PLAYER_NUM = 2,
+    NON_PLAYER_NUM = 3,
+    MAX_PLAYER_NUM = 4
+} PLAYER_ENUM;
+
 typedef struct { // 0xb8
     /* 0x00 */ PLAYER_CODE player_code;
     /* 0x04 */ RANK_LEVEL rank_level;
@@ -350,6 +360,7 @@ typedef struct { // 0x338
 
 TAP_ROUND_ENUM GetHatRound(void);
 PLAYER_INDEX Pcode2Pindex(PLAYER_CODE pc);
+int GetIndex2KeyCode(int index);
 int inCmnHook2GameCheck(int pack_id);
 
 #endif
