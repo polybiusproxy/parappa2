@@ -259,6 +259,12 @@ typedef enum
     TAP_FOLLOW_MAX
 } TAP_FOLLOW_ENUM;
 
+typedef struct { // 0x3
+    /* 0x0 */ u_char th_num;
+    /* 0x1 */ u_char key;
+    /* 0x2 */ u_char p96_num;
+} TAP_EXAM_DATA;
+
 typedef enum {
     CK_TH_NOCK = -1,
     CK_TH_NORMAL = 0,
@@ -266,6 +272,32 @@ typedef enum {
     CK_TH_HANE = 2,
     CK_TH_MAX = 3
 } CK_TH_ENUM;
+
+typedef struct { // 0x10
+    /* 0x0 */ int now_score;
+    /* 0x4 */ int exam_score[3];
+} MC_REP_SCR;
+
+typedef struct { // 0x66c
+    /* 0x000 */ int ofs_tick;
+    /* 0x004 */ int tapset_level;
+    /* 0x008 */ int tapstr_level;
+    /* 0x00c */ TAPSET *tapset_pp;
+    /* 0x010 */ int vs_use;
+    /* 0x014 */ int vs_tapdat_cnt;
+    /* 0x018 */ TAPDAT *vs_tapdat_pp;
+    /* 0x01c */ SCRDAT *scrdat_pp;
+    /* 0x020 */ CK_TH_ENUM ckth;
+    /* 0x024 */ SCR_TAP_MEMORY *stm_pp;
+    /* 0x028 */ int ted_num;
+    /* 0x02c */ TAP_EXAM_DATA ted[256];
+    /* 0x32c */ int oth_num;
+    /* 0x330 */ TAP_EXAM_DATA oth[256];
+    /* 0x630 */ int top_ofs;
+    /* 0x634 */ int end_ofs;
+    /* 0x638 */ int each_point[12];
+    /* 0x668 */ int otehon_all;
+} EXAM_CHECK;
 
 typedef enum {
     DLVL_COOL = 0,
