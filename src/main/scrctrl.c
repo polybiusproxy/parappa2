@@ -120,6 +120,7 @@ void exam_tbl_updownInit(SCORE_INDV_STR *sindv_pp);
 INCLUDE_ASM(const s32, "main/scrctrl", exam_tbl_updownSet);
 
 INCLUDE_ASM(const s32, "main/scrctrl", exam_tbl_updownChange);
+int exam_tbl_updownChange(/* a0 4 */ SCORE_INDV_STR *sindv_pp, /* t1 9 */ TAP_CTRL_LEVEL_ENUM clv, /* a2 6 */ TAP_ROUND_ENUM round, /* a3 7 */ int coolf);
 
 INCLUDE_ASM(const s32, "main/scrctrl", vsTapdatSetMemorySave);
 
@@ -140,7 +141,7 @@ INCLUDE_ASM(const s32, "main/scrctrl", followTapSave);
 
 INCLUDE_ASM(const s32, "main/scrctrl", followTapLoad);
 #if 0
-static SCR_TAP_MEMORY* followTapLoad(int pos,int time)
+static SCR_TAP_MEMORY* followTapLoad(int pos, int time)
 {
     if (follow_scr_tap_memory_cnt > pos)
     {
@@ -170,11 +171,48 @@ INCLUDE_ASM(const s32, "main/scrctrl", ScrDrawTimeGet);
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrDrawTimeGetFrame);
 
-INCLUDE_ASM(const s32, "main/scrctrl", KeyCntClear);
-void KeyCntClear(int *key_pp);
+void KeyCntClear(int *key_pp)
+{
+    int i;
+
+    for (i = 0; i <= 6; i++, key_pp++)
+    {
+        *key_pp = -1;
+    }
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlCurrentSearch);
-SCRREC* ScrCtrlCurrentSearch(SCORE_INDV_STR *sindv_pp, int index, int frame);
+SCRREC* ScrCtrlCurrentSearch(/* a0 4 */ SCORE_INDV_STR *sindv_pp, /* a3 7 */ int index, /* a2 6 */ int frame);
+#if 0
+{
+    SCRREC *scrrec_pp = sindv_pp->top_scr_ctrlpp[index].scrrec_pp;
+
+    if (!scrrec_pp)
+    {
+        printf("ScrCtrlCurrentSearch index[%d] is NULL line!!\n", index);
+        return NULL;
+    }
+
+    if (index >= score_str.stdat_dat_pp->scr_pp->scr_ctrl_num)
+    {
+        while (1)
+        {
+            if (scrrec_pp->job - 7 < 2)
+                break;
+
+            if (scrrec_pp->data >= frame)
+                break;
+
+            scrrec_pp++;
+        }
+
+        return scrrec_pp;
+    }
+
+    printf("ScrCtrlCurrentSearch index[%d] is over!!\n", index);
+    return NULL;
+}
+#endif
 
 void ScrCtrlIndvInit(STDAT_DAT *sdat_pp)
 {
@@ -232,7 +270,11 @@ void ScrCtrlIndvInit(STDAT_DAT *sdat_pp)
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlExamClear);
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlExamClearIndv);
+void ScrCtrlExamClearIndv(SCR_EXAM_STR *sexam_pp)
+{
+    sexam_pp->exam_do = EXAM_DO_NON;
+    sexam_pp->exam_start = -1;
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvNextTime);
 
@@ -241,8 +283,92 @@ INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvNextReadLine);
 INCLUDE_ASM(const s32, "main/scrctrl", getLvlTblRand);
 
 INCLUDE_ASM(const s32, "main/scrctrl", tapLevelChangeSub);
+int tapLevelChangeSub(void);
 
-INCLUDE_ASM(const s32, "main/scrctrl", tapLevelChange);
+void tapLevelChange(SCORE_INDV_STR *sindv_pp)
+{
+    int add_move;
+    int old_num;
+
+    int tmp_lv;
+    int tmp_hklv;
+
+    if ((sindv_pp->global_ply->flags & GPLAY_TBLCNG_REQ) == 0)
+        return;
+
+    tmp_lv = exam_tbl_updownChange(sindv_pp, global_data.tap_ctrl_level, global_data.roundL, (RANK_LEVEL2DISP_LEVEL(sindv_pp->global_ply->rank_level) == DLVL_COOL));
+
+    sindv_pp->global_ply->exam_tbl_up = 0;
+    sindv_pp->global_ply->exam_tbl_dw = 0;
+
+    exam_tbl_updownInit(sindv_pp);
+
+    printf("----- LEVEL CHANGE ----\n");
+    printf(" CTRL LEVEL before[%d]\n", global_data.tap_ctrl_level);
+
+    add_move = tmp_lv + global_data.tap_ctrl_level;
+
+    if (add_move < 0)
+        add_move = TCT_LV00;
+
+    if (add_move > 15)
+        add_move = TCT_LV15;
+
+    global_data.tap_ctrl_level = add_move;
+
+    printf("            after [%d]\n\n", add_move);
+    printf(" PLAY LEVEL before[%d]\n", global_data.tapLevel);
+
+    old_num  = global_data.tapLevel;
+    add_move = tapLevelChangeSub();
+
+    if ( global_data.demo_flagL != DEMOF_REPLAY )
+    {
+        if ( global_data.tapLevelCtrl == LM_AUTO )
+        {
+            if (sindv_pp->scrdat_pp != NULL)
+            {
+                tmp_hklv = inCmnHook2GameCheck(sindv_pp->scrdat_pp->sndrec_num);
+                if (tmp_hklv >= 0)
+                {
+                    add_move = tmp_hklv;
+                    global_data.tapLevel = tmp_hklv;
+                }
+            }
+        }
+
+        /* Stage 8 specific logic */
+        if (global_data.play_step == PSTEP_GAME && global_data.play_stageL == 8)
+        {
+            if (sindv_pp->scrdat_pp != NULL)
+            {
+                if ((u_int)(sindv_pp->scrdat_pp->sndrec_num - 24) < 3 )
+                {
+                  add_move = old_num;
+                  printf("st8 sp same num:%d sndLine:%d\n", old_num, sindv_pp->scrdat_pp->sndrec_num);
+                }
+            }
+            else
+            {
+                add_move = old_num;
+                printf("st8 sp same num:%d\n", old_num);
+            }
+        }
+
+        mccReqLvlSet(add_move);
+    }
+    else
+    {
+        add_move = mccReqLvlGet();
+    }
+
+    global_data.tapLevel = add_move;
+
+    if (old_num != add_move)
+        selectIndvTapResetPlay(1);
+
+    printf("            after [%d]\n\n", add_move);
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvNextRead);
 
@@ -269,6 +395,7 @@ INCLUDE_ASM(const s32, "main/scrctrl", targetTimeGet);
 INCLUDE_ASM(const s32, "main/scrctrl", useIndevSndKill);
 
 INCLUDE_ASM(const s32, "main/scrctrl", useAllClearKeySnd);
+void useAllClearKeySnd(void);
 
 INCLUDE_ASM(const s32, "main/scrctrl", useIndevSndKillOther);
 
@@ -489,6 +616,7 @@ INCLUDE_ASM(const s32, "main/scrctrl", bonusGameCntPls);
 INCLUDE_ASM(const s32, "main/scrctrl", bonusPointSave);
 
 INCLUDE_ASM(const s32, "main/scrctrl", bngTapEventCheck);
+void bngTapEventCheck(/* s1 17 */ SCORE_INDV_STR *sindv_pp, /* t0 8 */ int num, /* s3 19 */ int id);
 
 void bonusGameParaReq(BNG_ACT_P_ENUM actnum)
 {

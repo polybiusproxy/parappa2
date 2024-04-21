@@ -299,6 +299,11 @@ typedef enum
     PAD_TYPE_MAX
 } PAD_TYPE;
 
+typedef enum {
+    GPLAY_NONE = 0,
+    GPLAY_TBLCNG_REQ = 1
+} GPLAY_FLAG_ENUM;
+
 typedef struct { // 0xb8
     /* 0x00 */ PLAYER_CODE player_code;
     /* 0x04 */ RANK_LEVEL rank_level;
@@ -311,7 +316,7 @@ typedef struct { // 0xb8
     /* 0x34 */ int exam_tbl_dw;
     /* 0x38 */ int exam_tbl_updown[25];
     /* 0x9c */ int tap_lvl_tmp;
-    /* 0xa0 */ u_int flags;
+    /* 0xa0 */ u_int flags; /* use with GPLAY_FLAG_ENUM */
     /* 0xa4 */ u_int vsDraw;
     /* 0xa8 */ u_int vsWin;
     /* 0xac */ u_int vsLost;
@@ -345,5 +350,6 @@ typedef struct { // 0x338
 
 TAP_ROUND_ENUM GetHatRound(void);
 PLAYER_INDEX Pcode2Pindex(PLAYER_CODE pc);
+int inCmnHook2GameCheck(int pack_id);
 
 #endif
