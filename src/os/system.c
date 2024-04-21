@@ -75,8 +75,8 @@ int SetIopModule(void)
     sceSifInitRpc(0);
     sceCdInit(0);
 
-    while (sceSifRebootIop("cdrom0:\\IRX\\IOPRP23.IMG;1") == 0);
-    while (sceSifSyncIop() == 0);
+    while (!sceSifRebootIop("cdrom0:\\IRX\\IOPRP23.IMG;1"));
+    while (!sceSifSyncIop());
 
     sceSifInitRpc(0);
     sceSifLoadFileReset();

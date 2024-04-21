@@ -322,9 +322,9 @@ void tapLevelChange(SCORE_INDV_STR *sindv_pp)
     old_num  = global_data.tapLevel;
     add_move = tapLevelChangeSub();
 
-    if ( global_data.demo_flagL != DEMOF_REPLAY )
+    if (global_data.demo_flagL != DEMOF_REPLAY)
     {
-        if ( global_data.tapLevelCtrl == LM_AUTO )
+        if (global_data.tapLevelCtrl == LM_AUTO)
         {
             if (sindv_pp->scrdat_pp != NULL)
             {
@@ -342,10 +342,10 @@ void tapLevelChange(SCORE_INDV_STR *sindv_pp)
         {
             if (sindv_pp->scrdat_pp != NULL)
             {
-                if ((u_int)(sindv_pp->scrdat_pp->sndrec_num - 24) < 3 )
+                if ((u_int)(sindv_pp->scrdat_pp->sndrec_num - 24) < 3)
                 {
-                  add_move = old_num;
-                  printf("st8 sp same num:%d sndLine:%d\n", old_num, sindv_pp->scrdat_pp->sndrec_num);
+                    add_move = old_num;
+                    printf("st8 sp same num:%d sndLine:%d\n", old_num, sindv_pp->scrdat_pp->sndrec_num);
                 }
             }
             else
