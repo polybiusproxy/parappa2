@@ -265,6 +265,11 @@ typedef struct { // 0x3
     /* 0x2 */ u_char p96_num;
 } TAP_EXAM_DATA;
 
+typedef struct { // 0x18
+    /* 0x00 */ u_char per[17];
+    /* 0x14 */ int pls_point;
+} TAPLVL_DAT;
+
 typedef enum {
     CK_TH_NOCK = -1,
     CK_TH_NORMAL = 0,

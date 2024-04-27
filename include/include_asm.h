@@ -7,8 +7,8 @@
 #define INCLUDE_ASM_INTERNAL(TYPE, BASE_FOLDER, FOLDER, NAME, ARGS...) \
     __asm__(                                                           \
         ".section .text\n"                                             \
-        "\t.set noreorder\n"                                           \
         "\t.set noat\n"                                                \
+        "\t.set noreorder\n"                                           \
         "\t.include \"asm/" BASE_FOLDER "/" FOLDER "/" #NAME ".s\"\n"  \
         "\t.set reorder\n"                                             \
         "\t.set at\n"                                                  \
@@ -20,7 +20,7 @@
 #ifndef INCLUDE_RODATA
 #define INCLUDE_RODATA_INTERNAL(TYPE, BASE_FOLDER, FOLDER, NAME, ARGS...) \
     __asm__(                                                              \
-	    ".section .rodata\n"                                              \
+        ".section .rodata\n"                                              \
         "\t.include \"asm/" BASE_FOLDER "/" FOLDER "/" #NAME ".s\"\n"     \
         ".section .text");
 #define INCLUDE_RODATA(TYPE, FOLDER, NAME, ARGS...) INCLUDE_RODATA_INTERNAL(TYPE, "nonmatchings", FOLDER, NAME, ARGS)

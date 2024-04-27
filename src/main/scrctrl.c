@@ -268,7 +268,22 @@ void ScrCtrlIndvInit(STDAT_DAT *sdat_pp)
     }
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlExamClear);
+void ScrCtrlExamClear(SCR_EXAM_STR *sexam_pp)
+{
+    int i;
+
+    sexam_pp->exam_enum = EXAM_NONE;
+    sexam_pp->exam_start = -1;
+    sexam_pp->exam_do = EXAM_DO_NON;
+
+    for (i = 0; i < 18; i++)
+    {
+        sexam_pp->scr_exam_job[i].goto_time = -1;
+        sexam_pp->scr_exam_job[i].goto_line = SCRLINE_NODATA;
+        sexam_pp->scr_exam_job[i].goto_job_time = -1;
+        sexam_pp->scr_exam_job[i].goto_job = -1;
+    }
+}
 
 void ScrCtrlExamClearIndv(SCR_EXAM_STR *sexam_pp)
 {
@@ -280,7 +295,27 @@ INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvNextTime);
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvNextReadLine);
 
-INCLUDE_ASM(const s32, "main/scrctrl", getLvlTblRand);
+int getLvlTblRand(TAPLVL_DAT *taplvl_dat_pp)
+{
+    int rand_tmp;
+    int ret;
+    int i;
+    int check;
+
+    ret = 0;
+    rand_tmp = randMakeMax(100);
+    check = 0;
+
+    for (i = 0; i < 17; i++, ret++)
+    {
+        check += taplvl_dat_pp->per[i];
+
+        if (check > rand_tmp)
+            break;
+    }
+
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", tapLevelChangeSub);
 int tapLevelChangeSub(void);
@@ -394,8 +429,6 @@ INCLUDE_ASM(const s32, "main/scrctrl", targetTimeGet);
 
 INCLUDE_ASM(const s32, "main/scrctrl", useIndevSndKill);
 
-INCLUDE_ASM(const s32, "main/scrctrl", useAllClearKeySnd)
-#if 0 /* Matches, but we need to match ScrExamSetCheck */
 void useAllClearKeySnd(void)
 {
     int i;
@@ -405,7 +438,6 @@ void useAllClearKeySnd(void)
         TapCt(0xe0, i, 0);
     }
 }
-#endif
 
 INCLUDE_ASM(const s32, "main/scrctrl", useIndevSndKillOther);
 
@@ -537,113 +569,8 @@ INCLUDE_RODATA(const s32, "main/scrctrl", D_00392D88);
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrMoveSetSub);
 
+/* Big function! Decompiler discretion advised */
 INCLUDE_ASM(const s32, "main/scrctrl", ScrExamSetCheck);
-#if 0
-int ScrExamSetCheck(/* s3 19 */ SCORE_INDV_STR *sindv_pp, /* -0xd0(sp) */ int Pnum, /* -0xcc(sp) */ int ctime_next, /* s4 20 */ int indvTime)
-{
-    /* -0xc8(sp) */ TAPSET *tapset_pp;
-    /* v1 3 */ int yaruyaru;
-    /* s1 17 */ SCR_EXAM_STR *scex_pp;
-    /* v0 2 */ MC_REP_SCR *mcr_scr_pp;
-    /* a1 5 */ int i;
-    /* -0xf0(sp) */ MC_REP_SCR mcr_scr;
-    /* a2 6 */ // int i; SCOPE
-    /* -0xc4(sp) */ int rank_moto;
-    /* fp 30 */ int rank_saki;
-    /* a2 6 */ PLAYER_ENUM player_enum_tmp;
-    /* s0 16 */ int bline;
-    /* a3 7 */ int exp;
-    /* s0 16 */ int nexton;
-    /* -0xc0(sp) */ int hantei_flag;
-    /* s4 20 */ GLOBAL_PLY *gplay_my;
-    /* s2 18 */ GLOBAL_PLY *gplay_enemy;
-    /* s6 22 */ int my_ply;
-    /* s7 23 */ int ene_ply;
-    /* s0 16 */ int pointx;
-    /* s5 21 */ // int pointx; SCOPE
-    /* a2 6 */ int jobnum;
-    /* a3 7 */ int endbatle;
-    /* a0 4 */ int battle_cnt;
-    /* v0 2 */ int line_change;
-    /* s0 16 */ int men_ctrl_enum;
-    /* s2 18 */ int goto_time;
-    /* s0 16 */ int goto_line;
-    /* s2 18 */ int sub_job;
-    /* s0 16 */ int sub_time;
-    /* s1 17 */ int ttype;
-    /* s0 16 */ int tmp_cdsample;
-    /* v0 2 */ SCR_EXAM_JOB *sej_pp;
-    /* s0 16 */ SCORE_INDV_STR *sub_in_pp;
-    /* -0xe0(sp) */ u_char chantmp[2];
-
-    
-
-    tapset_pp = IndvGetTapSetAdrs(sindv_pp);
-    if (!tapset_pp)
-        return 0;
-
-    //if (sindv_pp->scr_exam_str.exam_enum != EXAM_CANCEL)
-    //    return 0;
-
-    if (indvTime < tapset_pp->taptimeEnd)
-        return 0;
-
-    if (sindv_pp->tap_follow_enum == TAP_FOLLOW_SAVE)
-    {
-        followTapSave(sindv_pp);
-    }
-
-    scex_pp = &sindv_pp->scr_exam_str;
-
-    /*if (sindv_pp->scr_exam_str.exam_enum == EXAM_BONUS)
-    {
-        sindv_pp->scr_exam_str.exam_enum = scex_pp->exam_enum;
-    }*/
-
-    rank_moto = sindv_pp->global_ply->rank_level;
-
-    switch (scex_pp->exam_enum)
-    {
-        case EXAM_COOL:
-        {
-            if (sindv_pp->scr_exam_str.exam_point < sindv_pp->scr_exam_str.exam_coolP)
-                rank_moto = levelDownRank(rank_moto);
-            else
-                rank_moto = levelUpRank(rank_moto);
-
-            break;
-        }
-
-        case EXAM_GOOD:
-        {
-            if (sindv_pp->scr_exam_str.exam_point < sindv_pp->scr_exam_str.exam_coolP)
-            {
-
-            }
-
-            break;
-        }
-
-        case EXAM_BAD:
-        case EXAM_AWFUL:
-        {
-            break;
-        }
-
-        case EXAM_HOOK:
-        {
-            break;
-        }
-
-        case EXAM_VS:
-        {
-            break;
-        }
-    }
-
-    return 0;
-}
-#endif
 
 INCLUDE_ASM(const s32, "main/scrctrl", subjobEvent);
 
