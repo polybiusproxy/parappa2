@@ -165,11 +165,9 @@ int PackIntDecodeWait(u_char *fp_r, u_char *fp_w, int wait_hline)
     return 0;
 }
 
-/* Concats two shorts into an integer; for use on the WP2_SETMASTERVOL command */
-#define WP2_CONCAT(x, y)        ((x << 16) | (y))
+// WP2 commands
 #define WP2_NONE                (0)
 
-// WP2 commands
 #define WP2_QUIT                0x0001 /*        No args        */
 #define WP2_CLOSE               0x0003 /*        No args        */
 #define WP2_PRELOAD             0x0004 /*        No args        */
@@ -199,7 +197,7 @@ void CdctrlInit(void)
 
     WP2Ctrl(WP2_INIT, SCECdDVD);
     WP2Ctrl(WP2_SDINIT, WP2_NONE);
-    WP2Ctrl(WP2_SETMASTERVOL, WP2_CONCAT(0x3fff, 0x3fff));
+    WP2Ctrl(WP2_SETMASTERVOL, PR_CONCAT(0x3fff, 0x3fff));
     WP2Ctrl(WP2_BGMINIT, 0x300);
 }
 
@@ -211,7 +209,7 @@ void CdctrlQuit(void)
 
 void CdctrlMasterVolSet(u_int vol)
 {
-    WP2Ctrl(WP2_SETMASTERVOL, WP2_CONCAT(vol, vol));
+    WP2Ctrl(WP2_SETMASTERVOL, PR_CONCAT(vol, vol));
 }
 
 int CdctrlSerch(FILE_STR *fstr_pp)
@@ -428,10 +426,10 @@ void intReadSub(void)
 
                 for (i = 0; i < PACK(head_read_pp)->fnum / 2; i++)
                 {
-                    TapCt(i | 0x8030, PACK(head_read_pp)->adr[i] + UsrMemAllocNext(),
+                    TapCt(0x8030 | i, PACK(head_read_pp)->adr[i] + UsrMemAllocNext(),
                         PACK(head_read_pp)->adr[i + 1] - PACK(head_read_pp)->adr[i]);
 
-                    TapCt(i | 0x8040, PACK(head_read_pp)->adr[i + PACK(head_read_pp)->fnum / 2] + UsrMemAllocNext(),
+                    TapCt(0x8040 | i, PACK(head_read_pp)->adr[i + PACK(head_read_pp)->fnum / 2] + UsrMemAllocNext(),
                         PACK(head_read_pp)->adr[i + 1 + PACK(head_read_pp)->fnum / 2] - PACK(head_read_pp)->adr[i + PACK(head_read_pp)->fnum / 2]);
                 }
 
@@ -629,10 +627,10 @@ void CdctrlMemIntgDecode(u_int rbuf, u_int setbuf)
                 for (i = 0; i < PACK(head_read_pp)->fnum / 2; i++)
                 {
                     /* TODO: name TAPCT commands */
-                    TapCt(i | 0x8030, PACK(head_read_pp)->adr[i] + UsrMemAllocNext(),
+                    TapCt(0x8030 | i, PACK(head_read_pp)->adr[i] + UsrMemAllocNext(),
                         PACK(head_read_pp)->adr[i+1] - PACK(head_read_pp)->adr[i]);
 
-                    TapCt(i | 0x8040, PACK(head_read_pp)->adr[i + PACK(head_read_pp)->fnum / 2] + UsrMemAllocNext(),
+                    TapCt(0x8040 | i, PACK(head_read_pp)->adr[i + PACK(head_read_pp)->fnum / 2] + UsrMemAllocNext(),
                         PACK(head_read_pp)->adr[i+1+PACK(head_read_pp)->fnum / 2] - PACK(head_read_pp)->adr[i + PACK(head_read_pp)->fnum / 2]);
                 }
 
@@ -716,7 +714,7 @@ void CdctrlWP2SetChannel(u_char Lchan, u_char Rchan)
         cdctrl_str.wp2chan[1] == Rchan)
         return;
 
-    WP2Ctrl(WP2_SETCHANNEL, WP2_CONCAT(Lchan, Rchan));
+    WP2Ctrl(WP2_SETCHANNEL, PR_CONCAT(Lchan, Rchan));
     cdctrl_str.wp2chan[0] = Lchan;
     cdctrl_str.wp2chan[1] = Rchan;
 
@@ -741,11 +739,11 @@ void CdctrlWP2Set(FILE_STR *fstr_pp)
 
     CdctrlWP2SetVolume(0);
     
-    cdctrl_str.read_area = WP2Ctrl(0x8011,0);
+    cdctrl_str.read_area = WP2Ctrl(0x8011, 0);
     cdctrl_str.wp2chan[0] = 0;
     cdctrl_str.wp2chan[1] = 1;
 
-    WP2Ctrl(WP2_SETCHANNEL, WP2_CONCAT(cdctrl_str.wp2chan[0], cdctrl_str.wp2chan[1]));
+    WP2Ctrl(WP2_SETCHANNEL, PR_CONCAT(cdctrl_str.wp2chan[0], cdctrl_str.wp2chan[1]));
     WP2Ctrl(WP2_PRELOADBACK, WP2_NONE);
 }
 

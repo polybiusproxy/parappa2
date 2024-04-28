@@ -559,6 +559,9 @@ subtPkSpr                           = 0x01c6dba0; // size:0x10
 subt_code                           = 0x01c6dbb0; // size:0x80
 mcode_dat_pp                        = 0x01c6dc30; // size:0x400
 
+// main/drawctrl.c
+DrawCtrlTblChange                   = 0x00115e68; // type:func
+
 // main/effect.c
 CG_FadeDisp                         = 0x001179f8; // type:func
 
@@ -571,6 +574,8 @@ inCmnHook2GameCheck                 = 0x0011ccd0; // type:func
 // main/mcctrl.c
 mccReqLvlSet                        = 0x0011eed8; // type:func
 mccReqLvlGet                        = 0x0011ef10; // type:func
+mccReqVSOTHSAVEset                  = 0x0011f0a0; // type:func
+mccReqVSOTHSAVEget                  = 0x0011f110; // type:func
 
 // main/main.c
 mainStart                           = 0x00121a68; // type:func

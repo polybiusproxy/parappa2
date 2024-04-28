@@ -7,6 +7,8 @@
 #include "os/system.h"
 #include "main/subt.h"
 #include "main/cdctrl.h"
+#include "main/mcctrl.h"
+#include "main/drawctrl.h"
 #include "main/stdat.h"
 #include "main/etc.h"
 
@@ -210,6 +212,12 @@ typedef enum
     EXAM_DO_END_GO_RET
 } EXAM_DO_ENUM;
 
+typedef struct { // 0x3
+    /* 0x0 */ u_char th_num;
+    /* 0x1 */ u_char key;
+    /* 0x2 */ u_char p96_num;
+} TAP_EXAM_DATA;
+
 typedef struct { // 0xd4
     /* 0x00 */ int sndrec_num;
     /* 0x04 */ int score_lng;
@@ -259,17 +267,6 @@ typedef enum
     TAP_FOLLOW_MAX
 } TAP_FOLLOW_ENUM;
 
-typedef struct { // 0x3
-    /* 0x0 */ u_char th_num;
-    /* 0x1 */ u_char key;
-    /* 0x2 */ u_char p96_num;
-} TAP_EXAM_DATA;
-
-typedef struct { // 0x18
-    /* 0x00 */ u_char per[17];
-    /* 0x14 */ int pls_point;
-} TAPLVL_DAT;
-
 typedef enum {
     CK_TH_NOCK = -1,
     CK_TH_NORMAL = 0,
@@ -277,11 +274,6 @@ typedef enum {
     CK_TH_HANE = 2,
     CK_TH_MAX = 3
 } CK_TH_ENUM;
-
-typedef struct { // 0x10
-    /* 0x0 */ int now_score;
-    /* 0x4 */ int exam_score[3];
-} MC_REP_SCR;
 
 typedef struct { // 0x66c
     /* 0x000 */ int ofs_tick;
@@ -337,6 +329,48 @@ typedef struct { // 0x14
 	/* 0x0c */ int go_loop_flag;
 	/* 0x10 */ int mbar_flag;
 } SCORE_STR;
+
+typedef enum {
+    TCL_DO_NONE = 0,
+    TCL_DO_COOLHF_TOP = 1,
+    TCL_DO_COOLHF_OVER = 1,
+    TCL_DO_COOLHF_MORE = 2,
+    TCL_DO_COOLHF_UPTO = 3,
+    TCL_DO_COOLHF_UNDER = 4,
+    TCL_DO_OTH_TOP = 5,
+    TCL_DO_OTH_OVER = 5,
+    TCL_DO_OTH_MORE = 6,
+    TCL_DO_OTH_UPTO = 7,
+    TCL_DO_OTH_UNDER = 8,
+    TCL_DO_ZERO_TOP = 9,
+    TCL_DO_ZERO_OVER = 9,
+    TCL_DO_ZERO_MORE = 10,
+    TCL_DO_ZERO_UPTO = 11,
+    TCL_DO_ZERO_UNDER = 12,
+    TCL_DO_COOL_TOP = 13,
+    TCL_DO_COOL_OVER = 13,
+    TCL_DO_COOL_MORE = 14,
+    TCL_DO_COOL_UPTO = 15,
+    TCL_DO_COOL_UNDER = 16,
+    TCL_DO_OTH2COOL_TOP = 17,
+    TCL_DO_OTH2COOL_OVER = 17,
+    TCL_DO_OTH2COOL_MORE = 18,
+    TCL_DO_OTH2COOL_UPTO = 19,
+    TCL_DO_OTH2COOL_UNDER = 20,
+    TCL_DO_OTHHF_TOP = 21,
+    TCL_DO_OTHHF_OVER = 21,
+    TCL_DO_OTHHF_MORE = 22,
+    TCL_DO_OTHHF_UPTO = 23,
+    TCL_DO_OTHHF_UNDER = 24,
+    TCL_DO_MAX = 25
+} TCL_DO_ENUM;
+
+typedef struct { // 0x10
+    /* 0x0 */ TCL_DO_ENUM tcl_do_enum_down;
+    /* 0x4 */ TCL_DO_ENUM tcl_do_enum_up;
+    /* 0x8 */ int min;
+    /* 0xc */ int max;
+} TCL_CTRL;
 
 typedef struct { // 0xed4
     /* 0x000 */ int status;
@@ -435,11 +469,13 @@ int GetCurrentTblNumber(void);
 
 void ScrTapDataTrans(SNDREC *sndrec_pp, int bank, void *data_top);
 
+/* static - temp */
+TAPSET* IndvGetTapSetAdrs(SCORE_INDV_STR *sindv_pp);
+
 void tapReqGroupTapClear(PLAYER_INDEX pindex);
 void selectIndvTapResetPlay(int num);
 
-// TODO(poly): move to main/mcctrl.c once splitted
-void mccReqLvlSet(u_int lvl);
-u_int mccReqLvlGet(void);
+int GetDrawLine(int scr_line);
+float GetLineTempo(int scr_line);
 
 #endif
