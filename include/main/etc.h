@@ -6,8 +6,16 @@
 // Typedef structs that I'm too lazy to define here
 // -----------------------------------------------
 typedef int EVENTREC;
-typedef int TAPLVL_STR;
 // -----------------------------------------------
+
+typedef struct { // 0x18
+    /* 0x00 */ u_char per[17];
+    /* 0x14 */ int pls_point;
+} TAPLVL_DAT;
+
+typedef struct { // 0x180
+    /* 0x000 */ TAPLVL_DAT taplvl_dat[16];
+} TAPLVL_STR;
 
 typedef enum
 {
