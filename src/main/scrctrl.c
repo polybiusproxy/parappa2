@@ -1,6 +1,4 @@
 #include "main/scrctrl.h"
-#include "main/etc.h"
-#include "os/system.h"
 
 /* data */
 extern u_int thnum_tbl[4];
@@ -26,10 +24,11 @@ int scrRefLineTime;
 /* implement on ScrCtrlMainLoop */
 int dbgmsg_on_off;
 
-/* bss */
-extern SCORE_INDV_STR score_indv_str[5];
-/* static */ extern SNDTAP *scr_sndtap_pp[4];
+/* bss - static */
+/* not static */ extern SCORE_INDV_STR score_indv_str[5];
+extern SNDTAP *scr_sndtap_pp[4];
 extern SCR_TAP_MEMORY follow_scr_tap_memory[256];
+extern TAP_GROUPE_STR tap_groupe_str[5];
 
 /* sbss - static */
 int follow_scr_tap_memory_cnt;
@@ -355,7 +354,7 @@ void vsTapdatSetMoto(SCORE_INDV_STR *sindv_pp)
 
             vs_tapdat_tmp[vs_tapdat_tmp_cnt].time = tapdat_pp->time;
             vs_tapdat_tmp[vs_tapdat_tmp_cnt].tapct[0].actor = -1;
-            vs_tapdat_tmp[vs_tapdat_tmp_cnt].tapct[0].sound = 0xffff;
+            vs_tapdat_tmp[vs_tapdat_tmp_cnt].tapct[0].sound = -1;
 
             vs_tapdat_tmp_cnt++;
         }
@@ -554,9 +553,9 @@ void ScrCtrlExamClear(SCR_EXAM_STR *sexam_pp)
 {
     int i;
 
-    sexam_pp->exam_enum = EXAM_NONE;
+    sexam_pp->exam_enum  = EXAM_NONE;
     sexam_pp->exam_start = -1;
-    sexam_pp->exam_do = EXAM_DO_NON;
+    sexam_pp->exam_do    = EXAM_DO_NON;
 
     for (i = 0; i < 18; i++)
     {
@@ -777,8 +776,6 @@ void otherIndvPause(int num)
     }
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", otherIndvTapReset);
-#if 0 /* Matching */
 void otherIndvTapReset(int num)
 {
     int             i;
@@ -802,19 +799,95 @@ void otherIndvTapReset(int num)
         }
     }
 }
-#endif
 
-INCLUDE_ASM(const s32, "main/scrctrl", selectIndvTapResetPlay);
+void selectIndvTapResetPlay(int num)
+{
+    SCORE_INDV_STR *sindv_pp = &score_indv_str[num];
+    TAPSET         *tapset_pp;
 
-INCLUDE_ASM(const s32, "main/scrctrl", IndivMoveChange);
+    if (sindv_pp->status & 1)
+    {
+        tapset_pp = IndvGetTapSetAdrs(sindv_pp);
+        if (tapset_pp != NULL && tapset_pp->coolup != -1)
+        {
+            KeyCntClear(sindv_pp->keyCnt);
 
-INCLUDE_ASM(const s32, "main/scrctrl", useIndevAllMove);
+            sindv_pp->keyCntCom = 0;
+            sindv_pp->scr_tap_memory_cnt = 0;
+            sindv_pp->scr_tap_vib_on = 0;
+            sindv_pp->cansel_flag = 0;
 
-INCLUDE_ASM(const s32, "main/scrctrl", useIndevCodeGet);
+            tapReqGroupTapClear(Pcode2Pindex(sindv_pp->plycode));
+        }
+    }
+}
+
+void IndivMoveChange(SCORE_INDV_STR *sindv_pp, int goto_time, SCRLINE_ENUM goto_line)
+{
+    int j;
+
+    KeyCntClear(sindv_pp->keyCnt);
+    tapReqGroupTapClear(Pcode2Pindex(sindv_pp->plycode));
+
+    sindv_pp->top_scr_ctrlpp = score_str.stdat_dat_pp->scr_pp->scr_ctrl_pp;
+    sindv_pp->current_scrrec_pp = ScrCtrlCurrentSearch(sindv_pp, goto_line, goto_time);
+
+    for (j = 0; j < 24; j++)
+    {
+        sindv_pp->sjob[j] = -1;
+    }
+
+    sindv_pp->useLine = goto_line;
+    sindv_pp->tapset_pos = -1;
+
+    ScrCtrlIndvNextRead(sindv_pp, 1);
+}
+
+void useIndevAllMove(int goto_time, SCRLINE_ENUM goto_line)
+{
+    int             i;
+    SCORE_INDV_STR *sindv_pp = score_indv_str;
+
+    for (i = 0; i < 5; i++, sindv_pp++)
+    {
+        if (sindv_pp->status & 1)
+        {
+            sindv_pp->plycode = PR_BIT(i);
+            sindv_pp->status = 1;
+
+            IndivMoveChange(sindv_pp, goto_time, goto_line);
+        }
+    }
+}
+
+static int useIndevCodeGet(void)
+{
+    int             i;
+    int             ret      = 0;
+    SCORE_INDV_STR *sindv_pp = score_indv_str;
+
+    for (i = 0; i < 5; i++, sindv_pp++)
+    {
+        if (sindv_pp->status & 1)
+            ret |= PR_BIT(i);
+    }
+
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", targetTimeGet);
 
-INCLUDE_ASM(const s32, "main/scrctrl", useIndevSndKill);
+void useIndevSndKill(void)
+{
+    int             i;
+    SCORE_INDV_STR *sindv_pp = score_indv_str;
+
+    for (i = 0; i < 5; i++, sindv_pp++)
+    {
+        if (sindv_pp->status & 1)
+            TapCt(0xe0, i, 0);
+    }
+}
 
 void useAllClearKeySnd(void)
 {
@@ -826,23 +899,157 @@ void useAllClearKeySnd(void)
     }
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", useIndevSndKillOther);
+int useIndevSndKillOther(int num)
+{
+    int             i;
+    SCORE_INDV_STR *sindv_pp = score_indv_str;
 
-INCLUDE_ASM(const s32, "main/scrctrl", TapKeyCheckNum);
+    for (i = 0; i < 5; i++, sindv_pp++)
+    {
+        if (i != num)
+        {
+            if (sindv_pp->status & 1)
+                TapCt(0xe0, i, 0);
+        }
+    }
 
-INCLUDE_ASM(const s32, "main/scrctrl", TapKeyGetDatPP);
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "main/scrctrl", tapReqGroupInit);
+int TapKeyCheckNum(TAPSET *tapset_pp, int keyId, int ng_f)
+{
+    int     i;
+    int     ret;
 
-INCLUDE_ASM(const s32, "main/scrctrl", tapReqGroupTapClear);
+    int     tmp_size;
+    TAPDAT *tmp_tapdat_pp;
 
-INCLUDE_ASM(const s32, "main/scrctrl", tapReqGroup);
+    ret = 0;
+
+    if (ng_f)
+    {
+        tmp_size      = tapset_pp->tapdatNG_size;
+        tmp_tapdat_pp = tapset_pp->tapdatNG_pp;
+    }
+    else
+    {
+        tmp_size      = tapset_pp->tapdat_size;
+        tmp_tapdat_pp = tapset_pp->tapdat_pp;
+    }
+
+    for (i = 0; i < tmp_size; i++)
+    {
+        if (tmp_tapdat_pp[i].KeyIndex == keyId)
+            ret++;
+    }
+
+    return ret;
+}
+
+TAPDAT* TapKeyGetDatPP(TAPSET *tapset_pp, int keyId, int keyCnt, int ng_f, u_char *keyNumSave)
+{
+    int     i;
+    int     cnt;
+    int     tmp_size;
+    TAPDAT *tmp_tapdat_pp;
+
+    cnt = 0;
+    *keyNumSave = 0;
+
+    if (ng_f)
+    {
+        tmp_size      = tapset_pp->tapdatNG_size;
+        tmp_tapdat_pp = tapset_pp->tapdatNG_pp;
+    }
+    else
+    {
+        tmp_size      = tapset_pp->tapdat_size;
+        tmp_tapdat_pp = tapset_pp->tapdat_pp;
+    }
+
+    for (i = 0; i < tmp_size; i++)
+    {
+        if (tmp_tapdat_pp[i].KeyIndex == keyId)
+        {
+            if (cnt == keyCnt)
+            {
+                *keyNumSave = i;
+                return &tmp_tapdat_pp[i];
+            }
+
+            cnt++;
+        }
+    }
+
+    return NULL;
+}
+
+void tapReqGroupInit(void)
+{
+    WorkClear(tap_groupe_str, sizeof(tap_groupe_str));
+}
+
+void tapReqGroupTapClear(PLAYER_INDEX pindex)
+{
+    WorkClear(&tap_groupe_str[pindex], sizeof(TAP_GROUPE_STR));
+}
+
+void tapReqGroup(TAPCT *tapct_pp, PLAYER_INDEX pindex, int sndId, u_char *tappress_pp)
+{
+    if (pindex >= PINDEX_MAX)
+        printf("tap group PINDEX over[%d]\n", pindex);
+
+    tap_groupe_str[pindex].timer       = 0;
+    tap_groupe_str[pindex].sndId       = sndId;
+    tap_groupe_str[pindex].tapct_pp    = tapct_pp;
+    tap_groupe_str[pindex].tappress_pp = tappress_pp;
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", tapReqGroupPoll);
+#if 0
+void tapReqGroupPoll(void)
+{
+    /* s4 20 */ int i;
+    /* s3 19 */ int j;
+    /* s5 21 */ int end_frameT;
+    /* s1 17 */ TAP_GROUPE_STR *tgs_pp = tap_groupe_str;
+
+    for (i = 0; i < 5; i++, tgs_pp++)
+    {
+        end_frameT = 0;
+
+        if (tgs_pp->tapct_pp != NULL)
+        {
+            for (j = 0; i < 5; j++)
+            {
+                if (tgs_pp->tapct_pp[j].frame != -1)
+                {
+                    if (tgs_pp->tapct_pp[j].frame == tgs_pp->timer)
+                    {
+                        if (tgs_pp->tapct_pp[j].actor != -1)
+                            DrawTapReqTbl(tgs_pp->tapct_pp[j].actor, i, tgs_pp->tappress_pp);
+                        if (tgs_pp->tapct_pp[j].sound != -1)
+                            ScrTapReq(tgs_pp->sndId, i, tgs_pp->tapct_pp[j].sound);
+                    }
+                }
+                else if (tgs_pp->tapct_pp[j].frame > tgs_pp->timer)
+                {
+                    end_frameT = 1;
+                }
+            }
+
+            if (end_frameT)
+                tgs_pp->timer++;
+            else
+                WorkClear(tgs_pp, sizeof(TAP_GROUPE_STR));
+        }
+    }
+}
+#endif
 
 INCLUDE_ASM(const s32, "main/scrctrl", tapEventCheck);
 
-int otehon_all_make(EXAM_CHECK *ec_pp)
+static int otehon_all_make(EXAM_CHECK *ec_pp)
 {
     int i;
     int ret = 0;
@@ -858,9 +1065,30 @@ int otehon_all_make(EXAM_CHECK *ec_pp)
     return ret;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", treateTimeChange);
+static int thnum_get(int p96_num, CK_TH_ENUM ckth);
 
-int thnum_get(int p96_num, CK_TH_ENUM ckth)
+INCLUDE_ASM(const s32, "main/scrctrl", treateTimeChange);
+#if 0
+static int treateTimeChange(/* s0 16 */ int time)
+{
+    /* s1 17 */ int thnum_ofs;
+    /* a0 4 */ int thnum_now;
+    int ret;
+
+    thnum_ofs = thnum_get(24, CK_TH_NORMAL);
+    thnum_now = thnum_get((time + 96) / 4, CK_TH_NORMAL);
+
+    if (thnum_now & 1)
+        return -1;
+
+    if (thnum_now >= thnum_ofs)
+        return ((thnum_now - thnum_ofs) / 2) * 24;
+    
+    return -1;
+}
+#endif
+
+static int thnum_get(int p96_num, CK_TH_ENUM ckth)
 {
     u_int thnum_data;
     int   ck_bit;
@@ -892,15 +1120,78 @@ int thnum_get(int p96_num, CK_TH_ENUM ckth)
     return ret_cnt;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", MapNormalNumGet);
+static int MapNormalNumGet(int time)
+{
+    return thnum_get(time / 4, CK_TH_NORMAL);
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", on_th_make);
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_normal_add);
+/* TODO(poly): Make these static once .data is migrated */
+/* static */ int exh_normal_add(EXAM_CHECK *ec_pp)
+{
+    int i;
+    int ret = 0;
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_normal_sub);
+    for (i = 0; i < ec_pp->ted_num; i++)
+    {
+        if ((ec_pp->ted[i].th_num & 1) == 0)
+        {
+            if (GetIndex2KeyCode(ec_pp->ted[i].key) & ec_pp->otehon_all)
+                ret++;
+        }
+    }
+
+    return ret;
+}
+
+/* static */ int exh_normal_sub(EXAM_CHECK *ec_pp)
+{
+    int i;
+    int ret = 0;
+
+    for (i = 0; i < ec_pp->ted_num; i++)
+    {
+        if (GetIndex2KeyCode(ec_pp->ted[i].key) & ec_pp->otehon_all)
+            ret -= ec_pp->ted[i].th_num & 1;
+    }
+
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", exh_nombar_sub);
+#if 0
+static int exh_nombar_sub(/* s2 18 */ EXAM_CHECK *ec_pp)
+{
+    /* s1 17 */ int i;
+    /* s0 16 */ int ret = 0;
+    /* a0 4 */  int bai;
+
+    for (i = 0; i < ec_pp->ted_num; i++)
+    {
+        if ((GetIndex2KeyCode(ec_pp->ted[i].key) & ec_pp->otehon_all) == 0)
+            ret--;
+    }
+
+    bai = 0;
+
+    for (i = 0; i < 4U; i++)
+    {
+        bai += (ec_pp->otehon_all >> i) & 1;
+    }
+
+    if (bai == 1)
+        ret *= 3;
+    if (bai == 2)
+        ret *= 2;
+    if (bai == 5)
+        ret /= 2;
+    if (bai == 6)
+        ret /= 2;
+
+    return ret;
+}
+#endif
 
 INCLUDE_ASM(const s32, "main/scrctrl", exh_mbar_key_out);
 
