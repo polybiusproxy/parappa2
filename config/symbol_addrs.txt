@@ -567,6 +567,7 @@ CG_FadeDisp                         = 0x001179f8; // type:func
 
 // main/etc.c
 GetHatRound                         = 0x0011c118; // type:func
+TimeCallbackTimeSetChanTempo        = 0x0011c808; // type:func
 Pcode2Pindex                        = 0x0011c8d0; // type:func
 GetIndex2KeyCode                    = 0x0011c990; // type:func
 inCmnHook2GameCheck                 = 0x0011ccd0; // type:func
