@@ -403,6 +403,13 @@ typedef struct { // 0xed4
     /* 0xed0 */ int cansel_flag;
 } SCORE_INDV_STR;
 
+typedef struct { // 0x10
+    /* 0x0 */ int timer;
+    /* 0x4 */ int sndId;
+    /* 0x8 */ TAPCT *tapct_pp;
+    /* 0xc */ u_char *tappress_pp;
+} TAP_GROUPE_STR;
+
 typedef enum {
     BNGAPE_NONE = -1,
     BNGAPE_A = 0,
@@ -468,6 +475,8 @@ typedef enum {
 int GetCurrentTblNumber(void);
 
 void ScrTapDataTrans(SNDREC *sndrec_pp, int bank, void *data_top);
+
+void ScrCtrlIndvNextRead(SCORE_INDV_STR *sindv_pp, int tap_res_f);
 
 /* static - temp */
 TAPSET* IndvGetTapSetAdrs(SCORE_INDV_STR *sindv_pp);
