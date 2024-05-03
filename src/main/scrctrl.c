@@ -526,7 +526,7 @@ void ScrCtrlIndvInit(STDAT_DAT *sdat_pp)
             tapReqGroupTapClear(Pcode2Pindex(sindv_pp->plycode));
 
             sindv_pp->keyCntCom = 0;
-            sindv_pp->status = 1;
+            sindv_pp->status = SCS_USE;
             sindv_pp->plycode = PR_BIT(i);
             sindv_pp->global_ply = &gply_pp[dare];
             sindv_pp->top_scr_ctrlpp = sdat_pp->scr_pp->scr_ctrl_pp;
@@ -749,7 +749,7 @@ void allIndvNextContinue(void)
 
     for (i = 0; i < 5; i++, sindv_pp++)
     {
-        intIndvStatusSet(sindv_pp, 128, 32, 128);
+        intIndvStatusSet(sindv_pp, SCS_PAUSE, SCS_PAUSE_END, SCS_PAUSE);
     }
 }
 
@@ -760,7 +760,7 @@ void allIndvGoContinue(void)
 
     for (i = 0; i < 5; i++, sindv_pp++)
     {
-        intIndvStatusSet(sindv_pp, 32, 0, 32);
+        intIndvStatusSet(sindv_pp, SCS_PAUSE_END, 0, SCS_PAUSE_END);
     }
 }
 
@@ -772,7 +772,7 @@ void otherIndvPause(int num)
     for (i = 0; i < 5; i++, sindv_pp++)
     {
         if (i != num)
-            intIndvStatusSet(sindv_pp, 1, 128, 0);
+            intIndvStatusSet(sindv_pp, SCS_USE, SCS_PAUSE, 0);
     }
 }
 
@@ -785,7 +785,7 @@ void otherIndvTapReset(int num)
     {
         if (i != num)
         {
-            if (sindv_pp->status & 1)
+            if (sindv_pp->status & SCS_USE)
             {
                 KeyCntClear(sindv_pp->keyCnt);
                 
@@ -805,7 +805,7 @@ void selectIndvTapResetPlay(int num)
     SCORE_INDV_STR *sindv_pp = &score_indv_str[num];
     TAPSET         *tapset_pp;
 
-    if (sindv_pp->status & 1)
+    if (sindv_pp->status & SCS_USE)
     {
         tapset_pp = IndvGetTapSetAdrs(sindv_pp);
         if (tapset_pp != NULL && tapset_pp->coolup != -1)
@@ -850,10 +850,10 @@ void useIndevAllMove(int goto_time, SCRLINE_ENUM goto_line)
 
     for (i = 0; i < 5; i++, sindv_pp++)
     {
-        if (sindv_pp->status & 1)
+        if (sindv_pp->status & SCS_USE)
         {
             sindv_pp->plycode = PR_BIT(i);
-            sindv_pp->status = 1;
+            sindv_pp->status = SCS_USE;
 
             IndivMoveChange(sindv_pp, goto_time, goto_line);
         }
@@ -868,7 +868,7 @@ static int useIndevCodeGet(void)
 
     for (i = 0; i < 5; i++, sindv_pp++)
     {
-        if (sindv_pp->status & 1)
+        if (sindv_pp->status & SCS_USE)
             ret |= PR_BIT(i);
     }
 
@@ -884,7 +884,7 @@ void useIndevSndKill(void)
 
     for (i = 0; i < 5; i++, sindv_pp++)
     {
-        if (sindv_pp->status & 1)
+        if (sindv_pp->status & SCS_USE)
             TapCt(0xe0, i, 0);
     }
 }
@@ -908,7 +908,7 @@ int useIndevSndKillOther(int num)
     {
         if (i != num)
         {
-            if (sindv_pp->status & 1)
+            if (sindv_pp->status & SCS_USE)
                 TapCt(0xe0, i, 0);
         }
     }
@@ -1268,7 +1268,6 @@ void allTimeCallbackTimeSetChanTempo(int time)
         if (scr_main_pp->scr_ctrl_pp[i].gtime_type == GTIME_VSYNC)
         {
             scr_main_pp->scr_ctrl_pp[i].lineTime = time;
-
             TimeCallbackTimeSetChanTempo(i, time, GetLineTempo(i));
 
             scr_main_pp->scr_ctrl_pp[i].lineTimeFrame = (time * 3600.0f + GetLineTempo(i) * 96.0f * 0.5f) / (GetLineTempo(i) * 96.0f);
@@ -1277,8 +1276,62 @@ void allTimeCallbackTimeSetChanTempo(int time)
 }
 
 INCLUDE_ASM(const s32, "main/scrctrl", SetIndvDrawTblLine);
+#if 0
+int SetIndvDrawTblLine(/* s0 16 */ SCORE_INDV_STR *sindv_pp)
+{
+    /* a1 5 */ TAPSET *tapset_pp;
+    /* a2 6 */ int ctime;
+
+    if ((sindv_pp->status & SCS_USE) && (sindv_pp->status & 158))
+    {
+        {
+            if (sindv_pp->top_scr_ctrlpp[sindv_pp->useLine].gtime_type != GTIME_VSYNC)
+            {
+                tapset_pp = IndvGetTapSetAdrs(sindv_pp);
+                ctime     = sindv_pp->top_scr_ctrlpp[sindv_pp->useLine].lineTime;
+
+                if (tapset_pp != NULL)
+                {
+                    if (global_data.play_step != PSTEP_VS)
+                    {
+                        if (ctime < sindv_pp->current_time + tapset_pp->taptimeStart)
+                            return 0;
+                    }
+
+                    if (ctime < sindv_pp->current_time + tapset_pp->taptimeEnd)
+                        currentTblNumber = sindv_pp->scrdat_pp->drawofs[global_data.tapLevel];
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+#endif
 
 INCLUDE_ASM(const s32, "main/scrctrl", otehonSetCheck);
+#if 0
+static int otehonSetCheck(void)
+{
+    /* s0 16 */ SCORE_INDV_STR *sindv_pp = score_indv_str;
+    /* v0 2 */ TAPSET *tapset_pp;
+    /* s1 17 */ int i;
+
+    for (i = 0; i < 5; i++)
+    {
+        if (sindv_pp[i].status & 1)
+            return 0;
+
+        tapset_pp = IndvGetTapSetAdrs(sindv_pp);
+
+        if (tapset_pp != NULL)
+        {
+            if (sindv_pp[i].top_scr_ctrlpp[sindv_pp->useLine].lineTime >= sindv_pp[i].current_time)
+                return 1;
+        }
+    }
+}
+#endif
 
 // INCLUDE_RODATA(const s32, "main/scrctrl", D_00392F70);
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlMainLoop);
@@ -1344,7 +1397,25 @@ void ScrCtrlGoLoop(void)
     score_str.go_loop_flag = 1;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrEndCheckScore);
+int ScrEndCheckScore(void)
+{
+    int             i;
+    SCORE_INDV_STR *sindv_pp = score_indv_str;
+
+    for (i = 0; i < 5; i++, sindv_pp++)
+    {
+        if (sindv_pp->status & SCS_USE)
+        {
+            if (sindv_pp->status & SCS_END)
+            {
+                printf("end end end[%d] line time[%d]\n", i, sindv_pp->top_scr_ctrlpp[i].lineTime);
+                return 1;
+            }
+        }
+    }
+
+    return 0;
+}
 
 int ScrEndCheckTitle(void)
 {
