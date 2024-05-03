@@ -1258,7 +1258,23 @@ INCLUDE_ASM(const s32, "main/scrctrl", ScrTimeRenew);
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrMbarReq);
 
-INCLUDE_ASM(const s32, "main/scrctrl", allTimeCallbackTimeSetChanTempo);
+void allTimeCallbackTimeSetChanTempo(int time)
+{
+    int       i;
+    SCR_MAIN *scr_main_pp = score_str.stdat_dat_pp->scr_pp;
+
+    for (i = 0; i < scr_main_pp->scr_ctrl_num; i++)
+    {
+        if (scr_main_pp->scr_ctrl_pp[i].gtime_type == GTIME_VSYNC)
+        {
+            scr_main_pp->scr_ctrl_pp[i].lineTime = time;
+
+            TimeCallbackTimeSetChanTempo(i, time, GetLineTempo(i));
+
+            scr_main_pp->scr_ctrl_pp[i].lineTimeFrame = (time * 3600.0f + GetLineTempo(i) * 96.0f * 0.5f) / (GetLineTempo(i) * 96.0f);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", SetIndvDrawTblLine);
 
