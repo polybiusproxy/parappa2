@@ -372,8 +372,18 @@ typedef struct { // 0x10
     /* 0xc */ int max;
 } TCL_CTRL;
 
+typedef enum {
+    SCS_USE = 1,
+    SCS_END = 2,
+    SCS_END_REQ = 4,
+    SCS_KILL_REQ = 8,
+    SCS_WAIT = 16,
+    SCS_PAUSE_END = 32,
+    SCS_PAUSE = 128
+} SCR_CTRL_STATUS_ENUM;
+
 typedef struct { // 0xed4
-    /* 0x000 */ int status;
+    /* 0x000 */ int status; /* for use with SCR_CTRL_STATUS_ENUM */
     /* 0x004 */ PLAYER_CODE plycode;
     /* 0x008 */ SCR_CTRL *top_scr_ctrlpp;
     /* 0x00c */ SCRREC *current_scrrec_pp;
