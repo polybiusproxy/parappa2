@@ -436,6 +436,8 @@ typedef struct { // 0x338
 } GLOBAL_DATA;
 
 TAP_ROUND_ENUM GetHatRound(void);
+int GlobalSndSampleGet(void);
+u_int TimeCallbackTimeGetChan(int chan);
 void TimeCallbackTimeSetChanTempo(int chan, u_int time, float tempo);
 PLAYER_INDEX Pcode2Pindex(PLAYER_CODE pc);
 int GetIndex2KeyCode(int index);

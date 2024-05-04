@@ -567,7 +567,9 @@ DrawCtrlTblChange                   = 0x00115e68; // type:func
 CG_FadeDisp                         = 0x001179f8; // type:func
 
 // main/etc.c
+GlobalSndSampleGet                  = 0x0011c108; // type:func
 GetHatRound                         = 0x0011c118; // type:func
+TimeCallbackTimeGetChan             = 0x0011c790; // type:func
 TimeCallbackTimeSetChanTempo        = 0x0011c808; // type:func
 Pcode2Pindex                        = 0x0011c8d0; // type:func
 GetIndex2KeyCode                    = 0x0011c990; // type:func
@@ -581,6 +583,9 @@ mccReqVSOTHSAVEget                  = 0x0011f110; // type:func
 
 // main/main.c
 mainStart                           = 0x00121a68; // type:func
+
+// main/p3str.c
+getTopSeekPos                       = 0x00122208; // type:func
 
 // iop_mdl/wp2cd_rpc.c
 WP2Init                             = 0x0013fdb8; // type:func

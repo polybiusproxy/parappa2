@@ -37,9 +37,6 @@ int follow_scr_tap_memory_cnt;
 int follow_scr_tap_memory_cnt_load;
 int commake_str_cnt;
 
-/* .lit4 */
-float FLT_00398F10;
-
 int GetCurrentTblNumber(void)
 {
     return currentTblNumber;
@@ -855,7 +852,7 @@ void useIndevAllMove(int goto_time, SCRLINE_ENUM goto_line)
         if (sindv_pp->status & SCS_USE)
         {
             sindv_pp->plycode = PR_BIT(i);
-            sindv_pp->status = SCS_USE;
+            sindv_pp->status  = SCS_USE;
 
             IndivMoveChange(sindv_pp, goto_time, goto_line);
         }
@@ -1256,7 +1253,41 @@ INCLUDE_ASM(const s32, "main/scrctrl", subjobEvent);
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvJob);
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrTimeRenew);
+static void ScrTimeRenew(SCR_MAIN *scr_main_pp)
+{
+    int   i;
+    int   samplecnt;
+    float tempo;
+
+    for (i = 0; i < scr_main_pp->scr_ctrl_num; i++)
+    {
+        if (scr_main_pp->scr_ctrl_pp[i].gtime_type == GTIME_VSYNC)
+        {
+            scr_main_pp->scr_ctrl_pp[i].lineTime =  ((TimeCallbackTimeGetChan(i) * 96.0f * GetLineTempo(i) + 1800.0f)  / 3600.0f);
+            scr_main_pp->scr_ctrl_pp[i].lineTime += ((GetLineTempo(i) * 96.0f * scr_main_pp->scr_ctrl_pp[i].ofsCdtime) / 60000.0f);
+
+            if (scr_main_pp->scr_ctrl_pp[i].lineTime < 0)
+                scr_main_pp->scr_ctrl_pp[i].lineTime = 0;
+
+            scr_main_pp->scr_ctrl_pp[i].lineTimeFrame = TimeCallbackTimeGetChan(i);
+        }
+        else
+        {
+            samplecnt = GlobalSndSampleGet() + ((scr_main_pp->scr_ctrl_pp[i].ofsCdtime * 48) / 256);
+
+            if (global_data.play_step == PSTEP_XTR)
+                samplecnt = CdctrlWp2GetSampleTmp() - getTopSeekPos();
+
+            if (samplecnt < 0)
+                samplecnt = 0;
+
+            tempo = GetLineTempo(i);
+
+            scr_main_pp->scr_ctrl_pp[i].lineTime = CdctrlWp2CdSample2SndTime(samplecnt, tempo);
+            scr_main_pp->scr_ctrl_pp[i].lineTimeFrame = CdctrlWp2CdSample2Frame(samplecnt);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrMbarReq);
 
