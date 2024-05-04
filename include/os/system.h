@@ -27,6 +27,7 @@
 #define SCREEN_HEIGHT 448
 
 extern GLOBAL_DATA global_data;
+extern INGAME_COMMON_STR ingame_common_str;
 
 typedef struct { // 0x100
     /* 0x00 */ sceDmaTag dmatag;

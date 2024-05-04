@@ -341,6 +341,75 @@ typedef struct { // 0xb8
     /* 0xb0 */ long int vsScore;
 } GLOBAL_PLY;
 
+typedef enum {
+    HKLV_SNDREC_NOUSE = 0,
+    HKLV_SNDREC_01 = 1,
+    HKLV_SNDREC_02 = 2,
+    HKLV_SNDREC_03 = 3,
+    HKLV_SNDREC_04 = 4,
+    HKLV_SNDREC_05 = 5,
+    HKLV_SNDREC_06 = 6,
+    HKLV_SNDREC_07 = 7,
+    HKLV_SNDREC_08 = 8,
+    HKLV_SNDREC_09 = 9,
+    HKLV_SNDREC_10 = 10,
+    HKLV_SNDREC_11 = 11,
+    HKLV_SNDREC_12 = 12,
+    HKLV_SNDREC_13 = 13,
+    HKLV_SNDREC_14 = 14,
+    HKLV_SNDREC_15 = 15,
+    HKLV_SNDREC_16 = 16,
+    HKLV_SNDREC_17 = 17,
+    HKLV_SNDREC_18 = 18,
+    HKLV_SNDREC_19 = 19,
+    HKLV_SNDREC_20 = 20,
+    HKLV_SNDREC_21 = 21,
+    HKLV_SNDREC_22 = 22,
+    HKLV_SNDREC_23 = 23,
+    HKLV_SNDREC_24 = 24,
+    HKLV_SNDREC_S8_NOUSE = 0,
+    HKLV_SNDREC_S8_01 = 1,
+    HKLV_SNDREC_S8_02 = 2,
+    HKLV_SNDREC_S8_03 = 3,
+    HKLV_SNDREC_S8_04 = 4,
+    HKLV_SNDREC_S8_05 = 5,
+    HKLV_SNDREC_S8_06 = 6,
+    HKLV_SNDREC_S8_07 = 7,
+    HKLV_SNDREC_S8_08 = 8,
+    HKLV_SNDREC_S8_09 = 9,
+    HKLV_SNDREC_S8_10 = 10,
+    HKLV_SNDREC_S8_11 = 11,
+    HKLV_SNDREC_S8_12 = 12,
+    HKLV_SNDREC_S8_13 = 13,
+    HKLV_SNDREC_S8_14 = 14,
+    HKLV_SNDREC_S8_15 = 15,
+    HKLV_SNDREC_S8_16 = 16,
+    HKLV_SNDREC_S8_17 = 17,
+    HKLV_SNDREC_S8_18 = 18,
+    HKLV_SNDREC_S8_18BAD = 19,
+    HKLV_SNDREC_S8_18AWFUL = 20,
+    HKLV_SNDREC_S8_19 = 21,
+    HKLV_SNDREC_S8_19BAD = 22,
+    HKLV_SNDREC_S8_19AWFUL = 23,
+    HKLV_SNDREC_S8_20 = 24,
+    HKLV_SNDREC_S8_20BAD = 25,
+    HKLV_SNDREC_S8_20AWFUL = 26,
+    HKLV_SNDREC_S8_21 = 27,
+    HKLV_SNDREC_S8_22 = 28,
+    HKLV_SNDREC_S8_23 = 29,
+    HKLV_SNDREC_S8_24 = 30
+} HKLV_SNDREC_ENUM;
+
+typedef struct { // 0x28
+    /* 0x00 */ long int SingleScore;
+    /* 0x08 */ long int BonusScore;
+    /* 0x10 */ int BonusStage;
+    /* 0x14 */ int bonusType;
+    /* 0x18 */ HKLV_SNDREC_ENUM HookLine;
+    /* 0x1c */ int HookLevel;
+    /* 0x20 */ int HookClrCnt;
+} INGAME_COMMON_STR;
+
 typedef struct { // 0x338
     /* 0x000 */ PLAY_MODE play_modeL;
     /* 0x004 */ PLAY_TYPE play_typeL;

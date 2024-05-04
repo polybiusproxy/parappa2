@@ -560,6 +560,7 @@ subt_code                           = 0x01c6dbb0; // size:0x80
 mcode_dat_pp                        = 0x01c6dc30; // size:0x400
 
 // main/drawctrl.c
+DrawVramClear                       = 0x00114200; // type:func
 DrawCtrlTblChange                   = 0x00115e68; // type:func
 
 // main/effect.c
@@ -709,6 +710,9 @@ __umoddi3                           = 0x0016a798; // type:func
 // sce/ee/gcc/src/newlib/libc/stdlib/malloc.c
 malloc                              = 0x0016f9e8; // type:func
 free                                = 0x0016fa10; // type:func
+
+// sce/ee/gcc/src/newlib/libc/machine/r5900/memset.S
+memset                              = 0x00170534; // type:func
 
 // sce/ee/gcc/src/newlib/libc/stdlib/mstats.c
 mallinfo                            = 0x00170608; // type:func

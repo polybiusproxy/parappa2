@@ -3,6 +3,8 @@
 /* data */
 extern u_int thnum_tbl[4];
 extern TCL_CTRL tcl_ctrl[4][33];
+extern LERO_TIM2_PT lero_tim2_pt[7];
+extern LERO_POS_STR lero_pos_str[10][2];
 extern SCR_SND_DBUFF scr_snd_dbuff;
 extern SCORE_STR score_str;
 extern TAPDAT vs_tapdat_tmp[64];
@@ -1455,28 +1457,24 @@ static int bonus_minus_point_sub(int wtime)
 {
     if (wtime < 8)
         return 9;
-
-    if (wtime < 13)
+    else if (wtime < 13)
         return 13;
-
-    if (wtime < 20)
+    else if (wtime < 20)
         return 18;
-
-    return 24;
+    else
+        return 24;
 }
 
 static int bonus_pls_point_sub(int wtime)
 {
     if (wtime < 3)
         return 26;
-
-    if (wtime < 6)
+    else if (wtime < 6)
         return 15;
-
-    if (wtime < 9)
+    else if (wtime < 9)
         return 9;
-
-    return 5;
+    else
+        return 5;
 }
 
 INCLUDE_ASM(const s32, "main/scrctrl", bonusGameCtrl);
@@ -1501,9 +1499,95 @@ static u_long hex2dec(u_long data)
 }
 
 INCLUDE_ASM(const s32, "main/scrctrl", bnNumberDisp);
+void bnNumberDisp(sceGifPacket *gif_pp, long int score, short int x, short int y, int keta, int tate, int type);
 
-INCLUDE_ASM(const s32, "main/scrctrl", bonusScoreDraw);
+static void bonusScoreDraw(void)
+{
+    long int     scr_stg;
+    long int     scr_bn;
+    long int     scr_add;
 
-INCLUDE_ASM(const s32, "main/scrctrl", set_lero_gifset);
+    sceGifPacket bn_gif;
+    VCLR_PARA    vclr_para = {};
+
+    DrawVramClear(&vclr_para, 0, 0, 0, DNUM_VRAM2);
+    ChangeDrawArea(DrawGetDrawEnvP(DNUM_VRAM2));
+
+    CmnGifADPacketMake(&bn_gif, NULL);
+
+    sceGifPkAddGsAD(&bn_gif, SCE_GS_TEXFLUSH, 0);
+    sceGifPkAddGsAD(&bn_gif, SCE_GS_TEST_1, 0x30000);
+    sceGifPkAddGsAD(&bn_gif, SCE_GS_TEXA, 0x8000008000);
+    sceGifPkAddGsAD(&bn_gif, SCE_GS_CLAMP_1, 5);
+    sceGifPkAddGsAD(&bn_gif, SCE_GS_PABE, 0);
+    sceGifPkAddGsAD(&bn_gif, SCE_GS_TEXA, 0x8000008000);
+
+    scr_bn = ingame_common_str.BonusScore;
+    scr_stg = ingame_common_str.SingleScore;
+    scr_add = scr_stg + scr_bn;
+
+    bnNumberDisp(&bn_gif, scr_stg,  0,  0, 5, 1, 0);
+    bnNumberDisp(&bn_gif, scr_stg, 96, 32, 5, 0, 1);
+
+    bnNumberDisp(&bn_gif, scr_bn,  32,  0, 5, 1, 0);
+    bnNumberDisp(&bn_gif, scr_bn,  96, 56, 5, 0, 1);
+
+    bnNumberDisp(&bn_gif, scr_add, 64,  0, 5, 1, 0);
+    bnNumberDisp(&bn_gif, scr_add, 96, 80, 5, 0, 1);
+
+    bnNumberDisp(&bn_gif, ingame_common_str.BonusStage, 96,  0, 1, 0, 0);
+    bnNumberDisp(&bn_gif, ingame_common_str.BonusStage, 128, 0, 1, 0, 1);
+
+    CmnGifADPacketMakeTrans(&bn_gif);
+}
+
+static void set_lero_gifset(sceGifPacket *gifpk_pp, LERO_TIM2_PT *let2_pp, short int xp, short int yp)
+{
+    sceGifPkAddGsAD(gifpk_pp, SCE_GS_UV,   SCE_GS_SET_UV(let2_pp->u0 << 4, let2_pp->v0 << 4));
+    sceGifPkAddGsAD(gifpk_pp, SCE_GS_XYZ2, SCE_GS_SET_XYZ2((xp + 2048) << 4,
+                                                           (yp + 2048) << 4, 1));
+
+    sceGifPkAddGsAD(gifpk_pp, SCE_GS_UV,   SCE_GS_SET_UV(let2_pp->u1 << 4, let2_pp->v1 << 4));
+    sceGifPkAddGsAD(gifpk_pp, SCE_GS_XYZ2, SCE_GS_SET_XYZ2((xp + 2048 + let2_pp->w) << 4, 
+                                                           (yp + 2048 + let2_pp->h) << 4, 1));
+}
 
 INCLUDE_ASM(const s32, "main/scrctrl", LessonRoundDisp);
+#if 0
+static void LessonRoundDisp(SCRRJ_LESSON_ROUND_ENUM type)
+{
+    sceGifPacket gifpk;
+    TIM2_DAT *tim2_dat_pp;
+    int i;
+
+    if (type < SCRRJ_LR_MAX)
+    {
+        tim2_dat_pp = lessonTim2InfoGet();
+
+        // Preserve CBP from our TEX0
+        tim2_dat_pp->GsTex0 &= SCE_GS_SET_TEX0(0x3fff, 0x3f, 0x3f, 0xf, 0xf, 0x1, 0x3, 0, 0xf, 0x1, 0x1f, 0x7)
+                             | lessonCl2InfoGet(type)->GsTex0 & SCE_GS_SET_TEX0(0, 0, 0, 0, 0, 0, 0, 0x3fff, 0, 0, 0, 0);
+
+        CmnGifOpenCmnPk(&gifpk);
+        ChangeDrawAreaSetGifTag(DrawGetDrawEnvP(DNUM_DRAW), &gifpk);
+
+        sceGifPkAddGsAD(&gifpk, SCE_GS_TEXFLUSH, 0);
+        sceGifPkAddGsAD(&gifpk, SCE_GS_TEST_1, 0x3000d);
+        sceGifPkAddGsAD(&gifpk, SCE_GS_TEXA, 0x8000008000);
+        sceGifPkAddGsAD(&gifpk, SCE_GS_CLAMP_1, 5);
+        sceGifPkAddGsAD(&gifpk, SCE_GS_PABE, 0);
+        sceGifPkAddGsAD(&gifpk, SCE_GS_TEXA, 0x8000008000);
+        sceGifPkAddGsAD(&gifpk, SCE_GS_ALPHA_1, 0x44);
+        sceGifPkAddGsAD(&gifpk, SCE_GS_TEX0_1, tim2_dat_pp->GsTex0);
+        sceGifPkAddGsAD(&gifpk, SCE_GS_TEX1_1, tim2_dat_pp->GsTex1);
+        sceGifPkAddGsAD(&gifpk, SCE_GS_PRIM, 0x156);
+
+        for (i = 0; i < 2; i++)
+        {
+            set_lero_gifset(&gifpk, &lero_tim2_pt[lero_pos_str[type][i].tim2_num], lero_pos_str[type][i].posx, lero_pos_str[type][i].posy);
+        }
+
+        CmnGifCloseCmnPk(&gifpk, 2);
+    }
+}
+#endif

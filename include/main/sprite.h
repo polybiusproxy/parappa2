@@ -8,6 +8,48 @@
 #include <libdma.h>
 #include <libgraph.h>
 
+typedef struct { // 0x4
+    /* 0x0 */ u_char r;
+    /* 0x1 */ u_char g;
+    /* 0x2 */ u_char b;
+    /* 0x3 */ u_char a;
+} VCLR_PARA;
+
+typedef struct { // 0xc
+    /* 0x0 */ u_short u0;
+    /* 0x2 */ u_short v0;
+    /* 0x4 */ u_short u1;
+    /* 0x6 */ u_short v1;
+    /* 0x8 */ u_short w;
+    /* 0xa */ u_short h;
+} LERO_TIM2_PT;
+
+enum {
+    LERO_ENUM_1 = 0,
+    LERO_ENUM_2 = 1,
+    LERO_ENUM_3 = 2,
+    LERO_ENUM_4 = 3,
+    LERO_ENUM_5 = 4,
+    LERO_ENUM_LESSON = 5,
+    LERO_ENUM_ROUND = 6
+};
+
+typedef struct { // 0xc
+    /* 0x0 */ int tim2_num;
+    /* 0x4 */ int posx;
+    /* 0x8 */ int posy;
+} LERO_POS_STR;
+
+typedef struct { // 0x20
+    /* 0x00 */ u_long GsTex0;
+    /* 0x08 */ u_long GsTex1;
+    /* 0x10 */ u_int GsRegs;
+    /* 0x14 */ u_int GsTexClut;
+    /* 0x18 */ u_short w;
+    /* 0x1a */ u_short h;
+    /* 0x1c */ u_short pad[2];
+} TIM2_DAT;
+
 typedef struct { // 0x18
     /* 0x00 */ u_long GsTex0;
     /* 0x08 */ u_long GsTex1;
