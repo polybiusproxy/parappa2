@@ -8,6 +8,7 @@
 #include "main/subt.h"
 #include "main/cdctrl.h"
 #include "main/mcctrl.h"
+#include "main/sprite.h"
 #include "main/drawctrl.h"
 #include "main/stdat.h"
 #include "main/etc.h"
@@ -81,6 +82,26 @@ typedef enum {
     _L = 5,
     _R = 6
 } KEY_INDEX_ENUM;
+
+typedef enum {
+    SCRRJ_TITLE_JUMP = 0,
+    SCRRJ_TITLE_START = 1,
+    SCRRJ_TITLE_JUMP_DERA = 2
+} SCRRJ_TITLE_ENUM;
+
+typedef enum {
+    SCRRJ_LR_LESSON_1 = 0,
+    SCRRJ_LR_LESSON_2 = 1,
+    SCRRJ_LR_LESSON_3 = 2,
+    SCRRJ_LR_LESSON_4 = 3,
+    SCRRJ_LR_LESSON_5 = 4,
+    SCRRJ_LR_ROUND_1 = 5,
+    SCRRJ_LR_ROUND_2 = 6,
+    SCRRJ_LR_ROUND_3 = 7,
+    SCRRJ_LR_ROUND_4 = 8,
+    SCRRJ_LR_ROUND_5 = 9,
+    SCRRJ_LR_MAX = 10
+} SCRRJ_LESSON_ROUND_ENUM;
 
 typedef struct { // 0x10
     /* 0x0 */ short int job;
@@ -496,5 +517,9 @@ void selectIndvTapResetPlay(int num);
 
 int GetDrawLine(int scr_line);
 float GetLineTempo(int scr_line);
+
+/* TODO(poly): move to main/mbar.h */
+TIM2_DAT* lessonTim2InfoGet(void);
+TIM2_DAT* lessonCl2InfoGet(SCRRJ_LESSON_ROUND_ENUM type);
 
 #endif
