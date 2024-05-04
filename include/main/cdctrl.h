@@ -4,7 +4,7 @@
 #include "common.h"
 
 #include <eetypes.h>
-#include <libcdvd.h>
+#include <../libcdvd.h>
 #include <sifdev.h>
 #include <eekernel.h>
 

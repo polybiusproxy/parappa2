@@ -522,4 +522,7 @@ float GetLineTempo(int scr_line);
 TIM2_DAT* lessonTim2InfoGet(void);
 TIM2_DAT* lessonCl2InfoGet(SCRRJ_LESSON_ROUND_ENUM type);
 
+/* TODO(poly): move to main/p3str.h */
+int getTopSeekPos(void);
+
 #endif

@@ -101,8 +101,8 @@ segments:
         - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
 
         - [0x299f00, .lit4, main/cdctrl] # .lit4
-        - [0x299f10, lit4] #main/scrctrl]
-        #- [0x299f14, lit4, main/drawctrl]
+        - [0x299f10, .lit4, main/scrctrl]
+        - [0x299f14, lit4] # main/drawctrl]
         #- [0x299f38, lit4, main/effect]
         #- [0x299f40, lit4]
 
