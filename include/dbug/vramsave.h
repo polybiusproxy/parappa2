@@ -1,7 +1,17 @@
 #ifndef VRAMSAVE_H
 #define VRAMSAVE_H
 
+#include "common.h"
+
 #include <eetypes.h>
+#include <libgraph.h>
+#include <sifdev.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "os/tim2.h"
+
+#define BMP(x) ((BMP_HEADER*)x)
 
 typedef struct { // 0x38
     /* 0x00 */ u_char pad[2];
@@ -20,7 +30,7 @@ typedef struct { // 0x38
     /* 0x2c */ u_int YpixcelPerMeter;
     /* 0x30 */ u_int numberOfColors;
     /* 0x34 */ u_int colorsImportant;
-    /* 0x38 */ u_char imageData[];
+    /* 0x38 */ u_char imageData[0];
 } BMP_HEADER;
 
 #endif // VRAMSAVE_H

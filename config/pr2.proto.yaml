@@ -61,7 +61,22 @@ segments:
         - [0x10980, c, main/fadectrl]
         - [0x10a90, c, main/subt]
         - [0x115e8, asm, main/drawctrl]
-        - [0x17b70, asm] # main/effect
+        - [0x17b70, asm, main/effect]
+        - [0x19160, asm, main/mbar]
+        - [0x1ccc8, asm, main/pack]
+        - [0x1cec0, asm, main/etc]
+        - [0x1dd58, asm, main/wipe]
+        - [0x1fce8, asm, main/mcctrl]
+        - [0x20720, asm, main/main]
+        - [0x22dc8, asm, main/cmnfile]
+        - [0x22f68, asm, main/p3str]
+        - [0x23c50, asm, main/commake]
+        - [0x24a10, asm, menu]
+        - [0x40db8, asm, iop_mdl]
+        - [0x41130, asm, prlib]
+
+        - [0x55b58, asm, sce/sdk]
+        - [0x662d0, asm, sce/newlib]
         
         - [0x79040, data, vutext] # .vutext
         
@@ -107,7 +122,7 @@ segments:
         #- [0x299f40, lit4]
 
         - [0x29a300, sdata] # .sdata
-        - [0x29a308, sdata, dbug/vramsave]
+        - [0x29a308, .sdata, dbug/vramsave]
         - [0x29a310, .sdata, os/mtc]
         - [0x29a318, .sdata, os/syssub]
         - [0x29a330, sdata]

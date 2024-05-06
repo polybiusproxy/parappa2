@@ -57,6 +57,11 @@ typedef struct { // 0x18
     /* 0x14 */ u_long *image_pp;
 } TIM2INFO;
 
+typedef struct { // 0x40
+    /* 0x00 */ TIM2_FILEHEADER t2h;
+    /* 0x10 */ TIM2_PICTUREHEADER t2p;
+} TIM2SETINFO;
+
 int SPstrncmp(char *sr1, char *sr2, int num);
 int GetTim2Info(void *tim2_pp, TIM2INFO *info_pp, int maxinfo);
 
