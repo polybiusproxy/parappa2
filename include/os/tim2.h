@@ -7,6 +7,7 @@
 #include <libgraph.h>
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct { // 0x10
     /* 0x0 */ char FileId[4];

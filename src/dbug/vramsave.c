@@ -74,13 +74,15 @@ void VramSaveBMP(u_char *fname, int wsize, int hsize, int id)
 {
     int fd;
     u_char fname_tmp[64];
+    
     u_char *dst1_pp;
     u_char *tr_pp;
     u_char *img_pp;
-    int i;
-    int j;
     u_char *moto_pp;
     u_char *imgtr_pp;
+
+    int i;
+    int j;
     
     sprintf(fname_tmp, "host:%s", fname);
     printf("vram save BMP [%s]\n", fname_tmp);
@@ -153,19 +155,18 @@ void VramSaveBMP(u_char *fname, int wsize, int hsize, int id)
 
 void VramSaveBMPDouble(u_char *fname, int wsize, int hsize, int id)
 {
-    int fd;
+    int    fd;
     u_char fname_tmp[64];
-    u_char *dst1_pp;
-    u_char *dst2_pp;
+
     u_char *tr_pp;
-    u_char *img_pp;
-    u_char *img2_pp;
+
+    u_char *dst1_pp,  *dst2_pp;
+    u_char *img_pp,   *img2_pp;
+    u_char *moto_pp,  *moto2_pp;
+    u_char *imgtr_pp, *imgtr2_pp;
+
     int i;
     int j;
-    u_char *moto_pp;
-    u_char *moto2_pp;
-    u_char *imgtr_pp;
-    u_char *imgtr2_pp;
 
     sprintf(fname_tmp, "host:%s", fname);
     printf("vram save BMP Double[%s]\n", fname_tmp);
@@ -277,17 +278,17 @@ void VramTmpSave(u_char *save_pp, int wsize, int hsize, int id)
 
 void VramTmpSaveOutBMP(u_char *fname, int wsize, int hsize, int id, u_char *dst1_pp, u_char *dst2_pp) 
 {
-    int fd;
+    int    fd;
     u_char fname_tmp[64];
+
     u_char *tr_pp;
-    u_char *img_pp;
-    u_char *img2_pp;
+
+    u_char *img_pp,   *img2_pp;
+    u_char *moto_pp,  *moto2_pp;
+    u_char *imgtr_pp, *imgtr2_pp;
+
     int i;
     int j;
-    u_char *moto_pp;
-    u_char *moto2_pp;
-    u_char *imgtr_pp;
-    u_char *imgtr2_pp;
 
     sprintf(fname_tmp, "host:%s", fname);
     printf("vram save BMP Double[%s]\n", fname_tmp);
