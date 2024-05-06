@@ -36,6 +36,9 @@ SyoriLineReset                      = 0x00100840; // type:func
 SyoriLineCnt                        = 0x00100848; // type:func
 SyoriLineDisp                       = 0x00100850; // type:func
 
+tim2setinfo                         = 0x0017b9e0; // size:0x40
+gs_simage                           = 0x0017ba20; // size:0x70
+
 // dbug/vramsave.c
 BekiDat                             = 0x00100858; // type:func
 VramSave                            = 0x00100890; // type:func
@@ -609,7 +612,9 @@ sceGsSetDefClear                    = 0x00154f48; // type:func
 sceGsSetDefLoadImage                = 0x001554e8; // type:func
 sceGsSyncV                          = 0x00155138; // type:func
 sceGsSyncPath                       = 0x001551d0; // type:func
+sceGsSetDefStoreImage               = 0x001556d0; // type:func
 sceGsExecLoadImage                  = 0x00155810; // type:func
+sceGsExecStoreImage                 = 0x00155990; // type:func
 sceGsSetHalfOffset                  = 0x001560c0; // type:func
 sceGsSetHalfOffset2                 = 0x00156148; // type:func
 sceGsSetDefDBuffDc                  = 0x001561d0; // type:func
@@ -686,6 +691,7 @@ sceOpen                             = 0x0015d2f8; // type:func
 sceClose                            = 0x0015d580; // type:func
 sceLseek                            = 0x0015d700; // type:func
 sceRead                             = 0x0015d938; // type:func
+sceWrite                            = 0x0015dba8; // type:func
 
 // iopreset.c
 sceSifSyncIop                       = 0x00160f28; // type:func

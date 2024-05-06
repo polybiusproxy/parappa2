@@ -26,6 +26,9 @@ u_int PackIntGetDecodeSize(u_char *fp_r)
     return *(u_int*)fp_r;
 }
 
+// ==========================================
+//                  UNUSED
+// ==========================================
 int PackIntDecode(u_char *fp_r, u_char *fp_w)
 {
     u_int        moto_size;     /* Decode size                                  */
@@ -343,7 +346,7 @@ void intReadSub(void)
 
     while (1)
     {
-        /* Read 2048 bytes into our header buffer */
+        /* Read 2048 bytes (power of two reads are faster) into our header buffer */
         while (!cdctrlReadSub(cdctrl_str.fstr_pp, read_pos, 2048, (int)head_read_pp))
             MtcWait(1);
 
