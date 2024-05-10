@@ -23,49 +23,196 @@ int SPstrncmp(char *sr1, char *sr2, int num)
     return 0;
 }
 
-INCLUDE_RODATA(const s32, "os/tim2", D_00391A30);
-
-#ifndef NON_MATCHING
-INCLUDE_ASM(const s32, "os/tim2", GetTim2Info);
-#else
 int GetTim2Info(void *tim2_pp, TIM2INFO *info_pp, int maxinfo)
 {
-    int i = 0;
+    int   i;
+    void *current_pp;
+    int   mm_ofs;
+    int   k_size;
+    int   pictures;
 
-    if (maxinfo < 1)
-        info_pp->fileH = tim2_pp;
-    else 
+    for (i = 0; i < maxinfo; i++)
     {
-        for (; i < maxinfo; i++) {
-            info_pp[i].fileH = NULL;
-        }
+        info_pp[i].fileH = NULL;
+    }   
 
-        info_pp->fileH = tim2_pp;
-    }
+    info_pp->fileH = tim2_pp;
 
-    if (!SPstrncmp(((TIM2_FILEHEADER*)tim2_pp)->FileId, "TIM2", 4) || !SPstrncmp(info_pp->fileH->FileId, "CLT2", 4))
+    if (SPstrncmp(TIM2(tim2_pp)->FileId, "TIM2", 4) && SPstrncmp(info_pp->fileH->FileId, "CLT2", 4))
     {
-        info_pp->image_pp = NULL;
         info_pp->fileH = NULL;
         info_pp->picturH = NULL;
         info_pp->mipmapH = NULL;
         info_pp->exH = NULL;
         info_pp->clut_pp = NULL;
+        info_pp->image_pp = NULL;
         return 0;
     }
 
-    if (info_pp->fileH->Pictures < maxinfo)
-        maxinfo = info_pp->fileH->Pictures;
+    pictures = info_pp->fileH->Pictures;
+    if (maxinfo > pictures)
+        maxinfo = pictures;
+
+    current_pp = tim2_pp + sizeof(TIM2_FILEHEADER);
+    
+    for(i = 0; i < maxinfo; i++)
+    {
+        info_pp->fileH = tim2_pp;
+        info_pp->picturH = NULL;
+        info_pp->mipmapH = NULL;
+        info_pp->exH = NULL;
+        info_pp->clut_pp = NULL;
+        info_pp->image_pp = NULL;
+
+        if (TIM2(tim2_pp)->FormatId != 0)
+            info_pp->picturH = (TIM2_PICTUREHEADER*)PR_ALIGN(current_pp, 128);
+        else
+            info_pp->picturH = (TIM2_PICTUREHEADER*)PR_ALIGN(current_pp, sizeof(TIM2_FILEHEADER));
+
+        current_pp = info_pp->picturH + 1;
+
+        mm_ofs = 0;
+        
+        if (info_pp->picturH->MipMapTextures > 1)
+        {
+            info_pp->mipmapH = current_pp;
+
+            mm_ofs = 32;
+            if (info_pp->picturH->MipMapTextures > 4)
+                mm_ofs = 48;
+
+            current_pp += mm_ofs;
+        }
+
+        k_size = info_pp->picturH->HeaderSize - 48 - mm_ofs;
+        if (k_size != 0)
+        {
+            info_pp->exH = current_pp;
+            current_pp += k_size;
+        }
+
+        if (info_pp->picturH->ImageSize != 0)
+        {
+            if (TIM2(info_pp->fileH)->FormatId != 0)
+                info_pp->image_pp = (u_long*)PR_ALIGN(current_pp, 128);
+            else
+                info_pp->image_pp = (u_long*)PR_ALIGN(current_pp, sizeof(TIM2_FILEHEADER));
+            
+            current_pp = (char*)info_pp->image_pp + info_pp->picturH->ImageSize;
+        }
+
+        if (info_pp->picturH->ClutSize != 0)
+        {
+            if (TIM2(info_pp->fileH)->FormatId != 0)
+                info_pp->clut_pp = (u_long*)PR_ALIGN(current_pp, 128);
+            else
+                info_pp->clut_pp = (u_long*)PR_ALIGN(current_pp, sizeof(TIM2_FILEHEADER));
+
+            current_pp = (char*)info_pp->clut_pp + info_pp->picturH->ClutSize;
+
+            {
+                int ct_tbl[4] = {0, 2, 1, 0};
+
+                info_pp->picturH->GsTex0 &= SCE_GS_SET_TEX0(0x3fff, 0x3f, 0x3f, 0xf, 0xf, 0x1, 0x3, 0x3fff, 8, 0x1, 0x1f, 0x7);
+                info_pp->picturH->GsTex0 |= SCE_GS_SET_TEX0(0, 0, 0, 0, 0, 0, 0, 0, ct_tbl[info_pp->picturH->ClutType & 3], 0, 0, 0);
+            }
+        }
+
+        info_pp++;
+    }
+
+    return pictures;
 }
-#endif
 
-INCLUDE_ASM(const s32, "os/tim2", HsizeAdj);
+static int HsizeAdj(int w, int h, int mode)
+{
+    int tr_h = 8;
+    
+    if (mode >= 0)
+    {
+        if (mode >= 3)
+        {
+            if (mode < 21)
+            {
+                if (mode >= 19)
+                    tr_h = 16;
+            }
+        }
+    }
 
-INCLUDE_ASM(const s32, "os/tim2", Tim2SetLoadImageI);
+    return ((h + tr_h - 1) / tr_h) * tr_h;
+}
 
-INCLUDE_ASM(const s32, "os/tim2", Tim2SetLoadImageIX);
+int Tim2SetLoadImageI(TIM2INFO *info_pp, int img_pos, sceGsLoadImage *img_pp, int ofsx, int ofsy)
+{
+    u_long    dbw   = info_pp->picturH->GsTex0;
+    short int dpsm;
+    short int w;
+    short int h;
 
-INCLUDE_ASM(const s32, "os/tim2", Tim2SetLoadImageC);
+    dbw  = PR_TEX0(info_pp->picturH).TBW;
+    dpsm = tim2ColorTypeTbl[info_pp->picturH->ImageType];
+
+    w = info_pp->picturH->ImageWidth;
+    h = info_pp->picturH->ImageHeight;
+    
+    h = HsizeAdj(w, h, dpsm);
+    sceGsSetDefLoadImage(img_pp, img_pos, dbw & 0x3f, dpsm, ofsx, ofsy, w, h);
+
+    return w * h;
+}
+
+int Tim2SetLoadImageIX(TIM2INFO *info_pp, int img_pos, sceGsLoadImage *img_pp, TIM2INFO *infoX_pp)
+{
+    u_long    dbw   = info_pp->picturH->GsTex0;
+    short int dpsm;
+    short int w;
+    short int h;
+    int       ofsx;
+    int       ofsy;
+
+    dbw  = PR_TEX0(info_pp->picturH).TBW;
+    dpsm = tim2ColorTypeTbl[info_pp->picturH->ImageType];
+
+    w = infoX_pp->picturH->ImageWidth;
+    h = infoX_pp->picturH->ImageHeight;
+
+    ofsx = PR_REGS(infoX_pp->picturH).ta0;
+    ofsy = PR_REGS(infoX_pp->picturH).ta1;
+    
+    h = HsizeAdj(w, h, dpsm);
+    sceGsSetDefLoadImage(img_pp, img_pos, dbw & 0x3f, dpsm, ofsx, ofsy, w, h);
+
+    return w * h;
+}
+
+int Tim2SetLoadImageC(TIM2INFO *info_pp, int col_pos, sceGsLoadImage *img_pp, int ofsx, int ofsy)
+{
+    int       col_type;
+    short int dpsm;
+    short int w;
+    short int h;
+
+    col_type = info_pp->picturH->ClutType & 0x1f;
+
+    if (col_type)
+    {
+        dpsm = tim2ColorTypeTbl[col_type];
+        w    = 8;
+        h    = 2;
+
+        if (info_pp->picturH->ImageType == TIM2_IDTEX8)
+        {
+            w = 16;
+            h = 16;
+        }
+
+        h = HsizeAdj(w, h, dpsm);
+        sceGsSetDefLoadImage(img_pp, col_pos, 1, dpsm, ofsx, ofsy, w, h);
+    }
+    
+    return col_type;
+}
 
 int Tim2Load(TIM2INFO *info_pp, int img_pos, int col_pos)
 {
@@ -124,8 +271,8 @@ int Tim2LoadSet(TIM2INFO *info_pp)
     int dtbp;
     int adrs;
 
-    col_pos = (*(sceGsTex0*)&info_pp->picturH->GsTex0).CBP;
-    img_pos = (*(sceGsTex0*)&info_pp->picturH->GsTex0).TBP0;
+    col_pos = PR_TEX0(info_pp->picturH).CBP;
+    img_pos = PR_TEX0(info_pp->picturH).TBP0;
 
     if (Tim2SetLoadImageI(info_pp, img_pos, &tp, 0, 0))
     {
@@ -199,8 +346,8 @@ int Tim2LoadSetX(TIM2INFO *info_pp, TIM2INFO *infoX_pp)
     u_long col_pos = info_pp->picturH->GsTex0;
     u_long img_pos = col_pos;
 
-    col_pos = (*(sceGsTex0*)&info_pp->picturH->GsTex0).CBP;
-    img_pos = (*(sceGsTex0*)&info_pp->picturH->GsTex0).TBP0;
+    col_pos = PR_TEX0(info_pp->picturH).CBP;
+    img_pos = PR_TEX0(info_pp->picturH).TBP0;
 
     if (Tim2SetLoadImageIX(info_pp, img_pos, &tp, infoX_pp))
     {
@@ -241,7 +388,9 @@ int Tim2TransX(void *adrs, int ofs_num)
         max_page = info.fileH->Pictures;
 
         if (ofs_num >= max_page)
+        {
             ret = -1;
+        }
         else
         {
             info_x = (TIM2INFO*)malloc(max_page * sizeof(TIM2INFO));
@@ -298,7 +447,7 @@ void Tim2Trans_TBP_MODE(void *adrs, int tbp, int mode)
 
     w    = tim2info.picturH->ImageWidth;
     h    = tim2info.picturH->ImageHeight;
-    dbw  = (*(sceGsTex0*)&tim2info.picturH->GsTex0).TBW;
+    dbw  = PR_TEX0(tim2info.picturH).TBW;
     maxh = GetModeMaxH(w, mode, &trans_1size);
 
     tr_adr = (char*)tim2info.image_pp;
@@ -339,7 +488,7 @@ void Tim2TransColor_TBP(void *adrs, int tbp)
     w = 8;
     h = 2;
     
-    if (tim2info.picturH->ImageType == 5) 
+    if (tim2info.picturH->ImageType == TIM2_IDTEX8) 
     {
         w = 16;
         h = 16;

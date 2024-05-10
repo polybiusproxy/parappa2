@@ -8,6 +8,10 @@
 #include <libdma.h>
 #include <libgraph.h>
 
+#define PR_TEX0(x) (*(sceGsTex0*)&x->GsTex0)
+#define PR_TEX1(x) (*(sceGsTex1*)&x->GsTex1)
+#define PR_REGS(x) (*(SPR_REGS *)&x->GsRegs)
+
 typedef struct { // 0x4
     /* 0x0 */ u_char r;
     /* 0x1 */ u_char g;
@@ -24,7 +28,8 @@ typedef struct { // 0xc
     /* 0xa */ u_short h;
 } LERO_TIM2_PT;
 
-enum {
+enum
+{
     LERO_ENUM_1 = 0,
     LERO_ENUM_2 = 1,
     LERO_ENUM_3 = 2,

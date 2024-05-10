@@ -221,7 +221,7 @@ int CdctrlSerch(FILE_STR *fstr_pp)
     int rfd;
     int readsize;
 
-    if (fstr_pp->search != 0)
+    if (fstr_pp->search)
         return 1;
 
     if (fstr_pp->frmode == FRMODE_CD)
