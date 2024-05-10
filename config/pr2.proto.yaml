@@ -40,8 +40,8 @@ segments:
       bss_size: 0x18F4434 # should be 1 byte less?
       subalign: null
       subsegments:
-        - [0x1000, asm, sce/crt0]
-        - [0x10c8, asm, sce/tmp]
+        - [0x1000, asm, sdk/crt0]
+        - [0x10c8, asm, sdk/tmp]
         
         - [0x1130, c, dbug/dbgmsg]
         - [0x1838, c, dbug/syori]
@@ -75,8 +75,8 @@ segments:
         - [0x40db8, asm, iop_mdl]
         - [0x41130, asm, prlib]
 
-        - [0x55b58, asm, sce/sdk]
-        - [0x662d0, asm, sce/newlib]
+        - [0x55b58, asm, sdk/scelib]
+        - [0x662d0, asm, sdk/newlib]
         
         - [0x79040, data, vutext] # .vutext
         
@@ -125,7 +125,8 @@ segments:
         - [0x29a308, .sdata, dbug/vramsave]
         - [0x29a310, .sdata, os/mtc]
         - [0x29a318, .sdata, os/syssub]
-        - [0x29a330, sdata]
+        - [0x29a330, sdata, os/system]
+        - [0x29a350, .sdata, os/tim2]
         - [0x29a360, .sdata, main/cdctrl]
         - [0x29a378, sdata, main/stdat]
         - [0x29a438, sdata] # main/scrctrl
