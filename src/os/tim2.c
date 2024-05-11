@@ -40,11 +40,11 @@ int GetTim2Info(void *tim2_pp, TIM2INFO *info_pp, int maxinfo)
 
     if (SPstrncmp(TIM2(tim2_pp)->FileId, "TIM2", 4) && SPstrncmp(info_pp->fileH->FileId, "CLT2", 4))
     {
-        info_pp->fileH = NULL;
-        info_pp->picturH = NULL;
-        info_pp->mipmapH = NULL;
-        info_pp->exH = NULL;
-        info_pp->clut_pp = NULL;
+        info_pp->fileH    = NULL;
+        info_pp->picturH  = NULL;
+        info_pp->mipmapH  = NULL;
+        info_pp->exH      = NULL;
+        info_pp->clut_pp  = NULL;
         info_pp->image_pp = NULL;
         return 0;
     }
@@ -55,19 +55,19 @@ int GetTim2Info(void *tim2_pp, TIM2INFO *info_pp, int maxinfo)
 
     current_pp = tim2_pp + sizeof(TIM2_FILEHEADER);
     
-    for(i = 0; i < maxinfo; i++)
+    for(i = 0; i < maxinfo; i++, info_pp++)
     {
-        info_pp->fileH = tim2_pp;
-        info_pp->picturH = NULL;
-        info_pp->mipmapH = NULL;
-        info_pp->exH = NULL;
-        info_pp->clut_pp = NULL;
+        info_pp->fileH    = tim2_pp;
+        info_pp->picturH  = NULL;
+        info_pp->mipmapH  = NULL;
+        info_pp->exH      = NULL;
+        info_pp->clut_pp  = NULL;
         info_pp->image_pp = NULL;
 
         if (TIM2(tim2_pp)->FormatId != 0)
-            info_pp->picturH = (TIM2_PICTUREHEADER*)PR_ALIGN(current_pp, 128);
+            info_pp->picturH = (TIM2_PICTUREHEADER*)PR_ALIGNU(current_pp, 128);
         else
-            info_pp->picturH = (TIM2_PICTUREHEADER*)PR_ALIGN(current_pp, sizeof(TIM2_FILEHEADER));
+            info_pp->picturH = (TIM2_PICTUREHEADER*)PR_ALIGNU(current_pp, sizeof(TIM2_FILEHEADER));
 
         current_pp = info_pp->picturH + 1;
 
@@ -94,9 +94,9 @@ int GetTim2Info(void *tim2_pp, TIM2INFO *info_pp, int maxinfo)
         if (info_pp->picturH->ImageSize != 0)
         {
             if (TIM2(info_pp->fileH)->FormatId != 0)
-                info_pp->image_pp = (u_long*)PR_ALIGN(current_pp, 128);
+                info_pp->image_pp = (u_long*)PR_ALIGNU(current_pp, 128);
             else
-                info_pp->image_pp = (u_long*)PR_ALIGN(current_pp, sizeof(TIM2_FILEHEADER));
+                info_pp->image_pp = (u_long*)PR_ALIGNU(current_pp, sizeof(TIM2_FILEHEADER));
             
             current_pp = (char*)info_pp->image_pp + info_pp->picturH->ImageSize;
         }
@@ -104,21 +104,20 @@ int GetTim2Info(void *tim2_pp, TIM2INFO *info_pp, int maxinfo)
         if (info_pp->picturH->ClutSize != 0)
         {
             if (TIM2(info_pp->fileH)->FormatId != 0)
-                info_pp->clut_pp = (u_long*)PR_ALIGN(current_pp, 128);
+                info_pp->clut_pp = (u_long*)PR_ALIGNU(current_pp, 128);
             else
-                info_pp->clut_pp = (u_long*)PR_ALIGN(current_pp, sizeof(TIM2_FILEHEADER));
+                info_pp->clut_pp = (u_long*)PR_ALIGNU(current_pp, sizeof(TIM2_FILEHEADER));
 
             current_pp = (char*)info_pp->clut_pp + info_pp->picturH->ClutSize;
 
             {
                 int ct_tbl[4] = {0, 2, 1, 0};
+                int Ct = info_pp->picturH->ClutType & 3;
 
                 info_pp->picturH->GsTex0 &= SCE_GS_SET_TEX0(0x3fff, 0x3f, 0x3f, 0xf, 0xf, 0x1, 0x3, 0x3fff, 8, 0x1, 0x1f, 0x7);
-                info_pp->picturH->GsTex0 |= SCE_GS_SET_TEX0(0, 0, 0, 0, 0, 0, 0, 0, ct_tbl[info_pp->picturH->ClutType & 3], 0, 0, 0);
+                info_pp->picturH->GsTex0 |= SCE_GS_SET_TEX0(0, 0, 0, 0, 0, 0, 0, 0, ct_tbl[Ct], 0, 0, 0);
             }
         }
-
-        info_pp++;
     }
 
     return pictures;
@@ -296,7 +295,7 @@ int Tim2LoadSet(TIM2INFO *info_pp)
     for (i = 1; i < info_pp->picturH->MipMapTextures; i++)
     {
         adrs += info_pp->mipmapH->Size[i - 1];
-        adrs = adrs + 0xF & -0x10; // Why do this?
+        adrs = PR_ALIGN(adrs, 16);
 
         ws >>= 1;
         hs >>= 1;
