@@ -31,7 +31,9 @@ typedef float f32;
 #define PR_CLEAR(x) { u_int i; char *p = (char*)&x; for (i = 0; i < sizeof(x); i++) *p++ = 0; }
 #define PR_CONCAT(x, y) ((x << 16) | (y))
 #define PR_BIT(x) (1 << x)
-#define PR_ALIGN(size, align) ((u_int)(size + (align - 1)) & ~(align - 1))
+
+#define PR_ALIGNU(size, align) ((u_int)(size + (align - 1)) & ~(align - 1))
+#define PR_ALIGN(size, align) ((size + (align - 1)) & ~(align - 1))
 
 #define PR_ALIGNED(x) __attribute__((aligned(x)))
 
