@@ -5,6 +5,7 @@
 
 #include "os/syssub.h"
 #include "os/system.h"
+
 #include "main/subt.h"
 #include "main/cdctrl.h"
 #include "main/mcctrl.h"
@@ -12,6 +13,7 @@
 #include "main/drawctrl.h"
 #include "main/stdat.h"
 #include "main/etc.h"
+#include "main/p3str.h"
 
 typedef struct { // 0x6
     /* 0x0 */ u_short prg;
@@ -317,20 +319,6 @@ typedef struct { // 0x66c
     /* 0x668 */ int otehon_all;
 } EXAM_CHECK;
 
-typedef enum {
-    DLVL_COOL = 0,
-    DLVL_GOOD = 1,
-    DLVL_BAD = 2,
-    DLVL_AWFUL = 3,
-    DLVL_MAX = 4,
-    DLVL_HK_COOL = 0,
-    DLVL_HK_GOOD = 1,
-    DLVL_HK_BAD1 = 2,
-    DLVL_HK_BAD2 = 3,
-    DLVL_HK_BAD3 = 4,
-    DLVL_HK_MAX = 5
-} DISP_LEVEL;
-
 typedef struct { // 0x8
 	/* 0x0 */ int time;
 	/* 0x4 */ short int KeyIndex;
@@ -402,6 +390,34 @@ typedef enum {
     SCS_PAUSE_END = 32,
     SCS_PAUSE = 128
 } SCR_CTRL_STATUS_ENUM;
+
+typedef enum {
+    SCRSUBJ_CDSND_ON = 0,
+    SCRSUBJ_CDSND_OFF = 1,
+    SCRSUBJ_DRAW_CHANGE = 2,
+    SCRSUBJ_TAP_RESET = 3,
+    SCRSUBJ_EFFECT = 4,
+    SCRSUBJ_REVERS = 5,
+    SCRSUBJ_SPU_ON = 6,
+    SCRSUBJ_SPU_ON2 = 7,
+    SCRSUBJ_SPU_ON3 = 8,
+    SCRSUBJ_SPU_ON4 = 9,
+    SCRSUBJ_TITLE = 10,
+    SCRSUBJ_LOOP = 11,
+    SCRSUBJ_FADEOUT = 12,
+    SCRSUBJ_ENDLOOP = 13,
+    SCRSUBJ_SPUTRANS = 14,
+    SCRSUBJ_STOP_MENDERER = 15,
+    SCRSUBJ_BONUS_GAME = 16,
+    SCRSUBJ_BONUS_GAME_END = 17,
+    SCRSUBJ_LESSON = 18,
+    SCRSUBJ_VS_RESET = 19,
+    SCRSUBJ_CDSND_READY = 20,
+    SCRSUBJ_CDSND_REQ = 21,
+    SCRSUBJ_SPU_OFF = 22,
+    SCRSUBJ_JIMAKU_OFF = 23,
+    SCRSUBJ_MAX = 24
+} SCRSUBJ_ENUM;
 
 typedef struct { // 0xed4
     /* 0x000 */ int status; /* for use with SCR_CTRL_STATUS_ENUM */
@@ -506,7 +522,6 @@ typedef enum {
 int GetCurrentTblNumber(void);
 
 void ScrTapDataTrans(SNDREC *sndrec_pp, int bank, void *data_top);
-
 void ScrCtrlIndvNextRead(SCORE_INDV_STR *sindv_pp, int tap_res_f);
 
 /* static - temp */
@@ -518,11 +533,31 @@ void selectIndvTapResetPlay(int num);
 int GetDrawLine(int scr_line);
 float GetLineTempo(int scr_line);
 
+GET_TIME_TYPE GetTimeType(int scr_line);
+int GetTimeOfset(int scr_line);
+
+int CheckIndvCdChannel(/* s1 17 */ SCORE_INDV_STR *sindv_pp, /* s0 16 */ u_char *chantmp);
+
 /* TODO(poly): move to main/mbar.h */
+typedef enum {
+    MBAR_NONE = 0,
+    MBAR_TEACHER = 393,
+    MBAR_PARAPPA = 745,
+    MBAR_TEACHER_HOOK = 393,
+    MBAR_PARAPPA_HOOK = 1769,
+    MBAR_TEACHER_VS = 105,
+    MBAR_PARAPPA_VS = 553,
+    MBAR_BOXY_VS = 2089
+} MBAR_REQ_ENUM;
+
 TIM2_DAT* lessonTim2InfoGet(void);
 TIM2_DAT* lessonCl2InfoGet(SCRRJ_LESSON_ROUND_ENUM type);
+void MbarSetCtrlTime(int mctime);
+void MbarReq(MBAR_REQ_ENUM mm_req, TAPSET *ts_pp, int curr_time, SCR_TAP_MEMORY *tm_pp, int tm_cnt, int lang, int tapdat_size, TAPDAT *tapdat_pp, GUI_CURSOR_ENUM guic);
+void vsAnimationReset(int ply, long int scr);
 
-/* TODO(poly): move to main/p3str.h */
-int getTopSeekPos(void);
+
+/* TODO(poly): move to prlib/menderer.h */
+void PrDecelerateMenderer(float);
 
 #endif

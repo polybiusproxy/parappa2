@@ -563,8 +563,103 @@ subt_code                           = 0x01c6dbb0; // size:0x80
 mcode_dat_pp                        = 0x01c6dc30; // size:0x400
 
 // main/drawctrl.c
+UseGsRegSet                         = 0x001105e8; // type:func
+UseGsSetXyOffset                    = 0x00110610; // type:func
+outsideDrawSceneClear               = 0x00110668; // type:func
+outsideDrawSceneReq                 = 0x00110680; // type:func
+getOutsideCtrlScene                 = 0x001106f0; // type:func
+bra_tap_GetNext                     = 0x00110738; // type:func
+bra_title_GetNext                   = 0x001107d8; // type:func
+bra_ret_GetNext                     = 0x00110878; // type:func
+XAnimationLinkOption                = 0x00110918; // type:func
+XAnimationPositionLink              = 0x00110bd0; // type:func
+XAnimationPositionUnLink            = 0x00110c10; // type:func
+BallThrowSetFrame                   = 0x00110c58; // type:func
+BallThrowInit                       = 0x00110c60; // type:func
+BallThrowInitDare                   = 0x00110cb8; // type:func
+vs06BomAdr                          = 0x00110cd8; // type:func
+BallThrowReq                        = 0x00110da0; // type:func
+BallThrowTarget                     = 0x00110e58; // type:func
+BallThrowPoll                       = 0x00110e78; // type:func
+BallThrowPollScene                  = 0x00111300; // type:func
+MozaikuPollSceneInit                = 0x00111330; // type:func
+MozaikuPollSceneReq                 = 0x00111338; // type:func
+MozaikuPollScene                    = 0x00111368; // type:func
+DrawTmpBuffInit                     = 0x00111428; // type:func
+DrawTmpBuffQuit                     = 0x00111460; // type:func
+DrawTmpBuffGetArea                  = 0x001114d0; // type:func
+DrawObjdatInit                      = 0x00111530; // type:func
+DrawObjdatReset                     = 0x00111630; // type:func
+DrawSceneInit                       = 0x00111738; // type:func
+DrawObjCtrlInit                     = 0x001117f8; // type:func
+DrawObjStrInit                      = 0x00111808; // type:func
+DrawObjTapStrInit                   = 0x00111888; // type:func
+DrawObjStrReq                       = 0x00111890; // type:func
+DrawObjStrTapReq                    = 0x001118d8; // type:func
+DrawObjTapStrTapReq                 = 0x00111920; // type:func
+DrawObjStrTapQuit                   = 0x00111b68; // type:func
+DrawObjTapStrTapQuit                = 0x00111bb0; // type:func
+DrawObjStrKill                      = 0x00111c68; // type:func
+GetSpfTimeCtrl                      = 0x00111ca8; // type:func
+camOtherKill                        = 0x00111d30; // type:func
+posAniOtherKill                     = 0x00111d70; // type:func
+DrawObjStrDisp                      = 0x00111db8; // type:func
+DrawObjStrDispTap                   = 0x00112538; // type:func
+DrawSceneReset                      = 0x00112cf0; // type:func
+DrawSceneFirstSet                   = 0x00112e30; // type:func
+Cl2MixTrans                         = 0x00112ee8; // type:func
+DrawObjPrReq                        = 0x001133a0; // type:func
+DrawObjStrTapTimeNext               = 0x00113a40; // type:func
+DrawObjTapCtrl                      = 0x00113ad8; // type:func
+DrawSceneObjData                    = 0x00113bd8; // type:func
+DrawDoubleDispIn                    = 0x00113e20; // type:func
 DrawVramClear                       = 0x00114200; // type:func
+DrawMoveDispIn                      = 0x00114358; // type:func
+DrawAlphaBlendDisp                  = 0x00114620; // type:func
+DrawMozaikuDisp                     = 0x001146a8; // type:func
+DrawFadeDisp                        = 0x00114750; // type:func
+DrawPlphaIndex8Disp                 = 0x00114900; // type:func
+DrawTim2DIsp                        = 0x00114c58; // type:func
+DrawNoodlesDisp                     = 0x00114cd8; // type:func
+DrawVramLocalCopy                   = 0x00114f40; // type:func
+DrawVramLocalCopy2                  = 0x00115000; // type:func
+drawUseDrDispCheckInit              = 0x001150c8; // type:func
+drawDispCheckSub                    = 0x001150d8; // type:func
+drawUseDispCheck                    = 0x00115110; // type:func
+drawDrDispCheck                     = 0x00115130; // type:func
+DrawScenectrlReq                    = 0x00115150; // type:func
+MendererCtrlInit                    = 0x001152a0; // type:func
+MendererCtrlTitle                   = 0x001152b0; // type:func
+MendererCtrlTitleDera               = 0x001152d0; // type:func
+MendererCtrl                        = 0x001152f0; // type:func
+mendRatioTitleGet                   = 0x001154c0; // type:func
+MendererCtrlTitleDisp               = 0x001155c8; // type:func
+MendererReq                         = 0x00115600; // type:func
+GetMendererEnum                     = 0x00115608; // type:func
+MendererCtrlScene                   = 0x00115610; // type:func
+sceneConditionCheck                 = 0x00115698; // type:func
+DrawCtrlMain                        = 0x00115790; // type:func
+DrawSceneStrInit                    = 0x00115b08; // type:func
+DrawSceneStrReset                   = 0x00115b90; // type:func
+resetDrawSceneObjData               = 0x00115c30; // type:func
+DrawCtrlInit                        = 0x00115c88; // type:func
+DrawCtrlQuit                        = 0x00115d70; // type:func
+DrawCtrlTimeSet                     = 0x00115e40; // type:func
 DrawCtrlTblChange                   = 0x00115e68; // type:func
+DrawTapReqTbl                       = 0x00115eb8; // type:func
+ddbg_event_sel                      = 0x00115f40; // type:func
+ddbg_event_msg                      = 0x00115fa8; // type:func
+ddbg_scene_msg                      = 0x00116000; // type:func
+ddbg_event_check                    = 0x00116010; // type:func
+ddbg_scene_check                    = 0x00116020; // type:func
+ddbg_bmp_check                      = 0x00116030; // type:func
+ddbg_event_sub                      = 0x00116040; // type:func
+ddbg_event_sub_bmp                  = 0x00116228; // type:func
+ddbg_tap_check                      = 0x00116628; // type:func
+ddbg_scene_sub                      = 0x00116740; // type:func
+ddbg_tctrl_sub                      = 0x001167f0; // type:func
+DrawCtrlMainDebug                   = 0x001168b8; // type:func
+DrawCtrlInitDebug                   = 0x00116ad0; // type:func
 
 // main/effect.c
 CG_FadeDisp                         = 0x001179f8; // type:func
@@ -588,15 +683,42 @@ mccReqVSOTHSAVEget                  = 0x0011f110; // type:func
 mainStart                           = 0x00121a68; // type:func
 
 // main/p3str.c
+adrd_common_clr                     = 0x00121f68; // type:func
+adrd_common_ck                      = 0x00121fb0; // type:func
+p3strImage2RealPos                  = 0x00121fc0; // type:func
+p3StrInit                           = 0x00122098; // type:func
 getTopSeekPos                       = 0x00122208; // type:func
+getADRDnum                          = 0x00122218; // type:func
+p3StrInitSd                         = 0x00122238; // type:func
+p3StrQuitSdEach                     = 0x00122448; // type:func
+p3StrDispDs                         = 0x00122588; // type:func
+p3str_sort_init                     = 0x00122900; // type:func
+p3str_sort_set                      = 0x00122928; // type:func
+p3str_sort_disp                     = 0x00122980; // type:func
+p3StrPoll                           = 0x00122ac0; // type:func
+p3StrQuitSd                         = 0x00122bc8; // type:func
+
+current_time_old                    = 0x003996e0;
+p3str_pp                            = 0x00399aac;
+adrd_common                         = 0x00399ab0;
+adrd_common_cnt                     = 0x00399ab4;
+p3str_sort_cnt                      = 0x00399ab8;
+
+p3str_sort                          = 0x01c77640; // size:0x108
 
 // iop_mdl/wp2cd_rpc.c
 WP2Init                             = 0x0013fdb8; // type:func
 WP2Ctrl                             = 0x0013fe40; // type:func
 
+sbuff                               = 0x01c828c0; // allow_duplicated:True
+gCd                                 = 0x01c829c0; // size:0x28 // allow_duplicated:True
+
 // iop_mdl/tapctrl_rpc.c
 TapCtInit                           = 0x00140010; // type:func
 TapCt                               = 0x00140098; // type:func
+
+sbuff                               = 0x01c82a00; // allow_duplicated:True
+gCd                                 = 0x01c82a40; // size:0x28 // allow_duplicated:True
 
 //
 //
@@ -684,6 +806,8 @@ sceSifExitCmd                       = 0x0015b738; // type:func
 
 // sifrpc.c
 sceSifInitRpc                       = 0x0015bb88; // type:func
+sceSifBindRpc                       = 0x0015c1f8; // type:func
+sceSifCallRpc                       = 0x0015c3c8; // type:func
 
 // filestub.c
 sceFsReset                          = 0x0015d2c0; // type:func
@@ -736,3 +860,6 @@ rand                                = 0x00171188; // type:func
 
 // sce/ee/gcc/src/newlib/libc/stdio/sprintf.c
 sprintf                             = 0x00171650; // type:func
+
+// sce/ee/gcc/src/newlib/libc/machine/r5900/strcpy.S
+strcpy                              = 0x00171aa0; // type:func

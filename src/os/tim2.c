@@ -431,15 +431,15 @@ static int GetModeMaxH(int w, int mode, int *trsize_pp)
 
 void Tim2Trans_TBP_MODE(void *adrs, int tbp, int mode)
 {
-	TIM2INFO tim2info;
-	static sceGsLoadImage tp;
-	u_long dbw;
-	short int w;
-	short int h;
-	short int maxh;
-	short int ofsy = 0;
-	u_char *tr_adr;
-	int trans_1size;
+    TIM2INFO tim2info;
+    static sceGsLoadImage tp;
+    u_long dbw;
+    short int w;
+    short int h;
+    short int maxh;
+    short int ofsy = 0;
+    u_char *tr_adr;
+    int trans_1size;
     short int h_tmp;
 
     GetTim2Info(adrs, &tim2info, 1);

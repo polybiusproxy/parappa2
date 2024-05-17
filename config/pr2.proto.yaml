@@ -26,7 +26,7 @@ options:
     disasm_unknown: True
     named_regs_for_c_funcs: False
     gp_value: 0x3A0EF0
-    #subalign: 4
+    # subalign: 4
     include_macro_inc: no # don't write macro.inc to rodata files
     
     find_file_boundaries: False
@@ -40,19 +40,19 @@ segments:
       bss_size: 0x18F4434 # should be 1 byte less?
       subalign: null
       subsegments:
-        - [0x1000, asm, sdk/crt0]
-        - [0x10c8, asm, sdk/tmp]
+        - [0x1000,  asm, sdk/crt0]
+        - [0x10c8,  asm, sdk/tmp]
         
-        - [0x1130, c, dbug/dbgmsg]
-        - [0x1838, c, dbug/syori]
-        - [0x1858, c, dbug/vramsave]
+        - [0x1130,  c, dbug/dbgmsg]
+        - [0x1838,  c, dbug/syori]
+        - [0x1858,  c, dbug/vramsave]
         
-        - [0x24a0, c, os/mtc]
-        - [0x29a0, c, os/syssub]
-        - [0x40a8, c, os/system]
-        - [0x4850, c, os/cmngifpk]
-        - [0x4f68, c, os/usrmem]
-        - [0x5330, c, os/tim2]
+        - [0x24a0,  c, os/mtc]
+        - [0x29a0,  c, os/syssub]
+        - [0x40a8,  c, os/system]
+        - [0x4850,  c, os/cmngifpk]
+        - [0x4f68,  c, os/usrmem]
+        - [0x5330,  c, os/tim2]
 
         - [0x6120,  c, main/cdctrl]
         - [0x7d70,  c, main/stdat]
@@ -69,10 +69,11 @@ segments:
         - [0x1fce8, asm, main/mcctrl]
         - [0x20720, asm, main/main]
         - [0x22dc8, asm, main/cmnfile]
-        - [0x22f68, asm, main/p3str]
+        - [0x22f68, c, main/p3str]
         - [0x23c50, asm, main/commake]
         - [0x24a10, asm, menu]
-        - [0x40db8, asm, iop_mdl]
+        - [0x40db8, c, iop_mdl/wp2cd_rpc]
+        - [0x41010, c, iop_mdl/tapctrl_rpc]
         - [0x41130, asm, prlib]
 
         - [0x55b58, asm, sdk/scelib]
@@ -112,6 +113,11 @@ segments:
         - [0x294018, .rodata, main/sprite]
         - [0x294110, rodata, main/drawctrl]
         - [0x294400, rodata] # main/effect
+        - [0x294b60, .rodata, main/p3str]
+        - [0x294c00, rodata]
+        - [0x297708, .rodata, iop_mdl/wp2cd_rpc]
+        - [0x297728, .rodata, iop_mdl/tapctrl_rpc]
+        - [0x297748, rodata, prlib] # prlib
         
         - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
 
@@ -133,6 +139,8 @@ segments:
         #- [0x29a504, sdata] # main/sprite
         #- [0x29a508, sdata, main/subt]
         #- [0x29a518, sdata] # main/drawctrl
+        - [0x29a6e0, sdata, main/p3str]
+        - [0x29a6f0, sdata]
         
         # - [0x29a9d8, rodatabin] # .sbss / .bss
         
@@ -149,7 +157,7 @@ segments:
         - { start: 0x29aa00, type: sbss, vram: 0x00399a80, name: main/mbar }
         - { start: 0x29aa00, type: sbss, vram: 0x00399a98, name: main/wipe }
         - { start: 0x29aa00, type: sbss, vram: 0x00399aa0, name: main/mcctrl }
-        - { start: 0x29aa00, type: sbss, vram: 0x00399aac, name: main/p3str }
+        - { start: 0x29aa00, type: .sbss, vram: 0x00399aac, name: main/p3str }
         - { start: 0x29aa00, type: sbss, vram: 0x00399abc, name: menu/menu }
 
         - { start: 0x29aa00, type: sbss, vram: 0x00399ac4, name: unk } # menu/menu_mdl
@@ -169,7 +177,25 @@ segments:
         - { start: 0x29aa1c, type: .bss, vram: 0x01c6db90, name: main/fadectrl  }
         - { start: 0x29aa1c, type: .bss, vram: 0x01c6dba0, name: main/subt      }
         - { start: 0x29aa1c, type: bss,  vram: 0x01c6e030, name: main/drawctrl  }
-        - { start: 0x29aa1c, type: bss,  vram: 0x01c6fef0, name: bss_unk        } # main/effect
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c6fef0, name: tmp            } # main/effect
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c6ffc0, name: main/mbar      }
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c72000, name: main/pack      }
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c73018, name: main/etc       }
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c730e8, name: main/mcctrl    }
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c77630, name: main/main      }
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c77640, name: main/p3str     }
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c77700, name: main/commake   }
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c778c8, name: menu/menu      }
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c77a50, name: menu/menusub   }
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c81100, name: menu/p3mc      }
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c81540, name: menu/memc      }
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c81880, name: menu/menufont  }
+        - { start: 0x29aa1c, type: .bss,  vram: 0x01c828c0, name: iop_mdl/wp2cd_rpc  }
+        - { start: 0x29aa1c, type: .bss,  vram: 0x01c82a00, name: iop_mdl/tapctrl_rpc  }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c82a70, name: tmp2  } # prlib
+
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c88500, name: sdk/scelib  }
+        # - { start: 0x29aa1c, type: bss,  vram: 0x01c8df00, name: sdk/newlib  }
         
     - [0x29aa00, databin] # pad
     - [0x29b000, databin] # .mfifo

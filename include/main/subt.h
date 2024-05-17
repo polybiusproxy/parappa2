@@ -4,6 +4,7 @@
 #include "common.h"
 
 #include "os/cmngifpk.h"
+#include "main/etc.h"
 
 enum
 {
@@ -55,13 +56,6 @@ typedef struct { // 0x4
 
 typedef MCODE_DAT MCODE_ASCII;
 typedef u_char *MESS[2];
-
-// TODO: Find a place for this enum (not here).
-typedef enum {
-    LANG_ENGLISH = 0,
-    LANG_JAPANESE = 1,
-    LANG_MAX = 2
-} LANGUAGE_TYPE;
 
 #define CHECK_LANG(lang) (lang == LANG_JAPANESE)
 
