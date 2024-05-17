@@ -597,6 +597,7 @@ int ScrCtrlIndvNextTime(/* a0 4 */ SCORE_INDV_STR *sindv_pp, /* a1 5 */ int Ncnt
 #endif
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvNextReadLine);
+int ScrCtrlIndvNextReadLine(/* t0 8 */ SCORE_INDV_STR *sindv_pp, /* t2 10 */ int ckf);
 
 int getLvlTblRand(TAPLVL_DAT *taplvl_dat_pp)
 {
@@ -734,6 +735,184 @@ void tapLevelChange(SCORE_INDV_STR *sindv_pp)
 }
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvNextRead);
+#if 0
+void ScrCtrlIndvNextRead(/* s0 16 */ SCORE_INDV_STR *sindv_pp, /* a1 5 */ int tap_res_f)
+{
+    int i;
+    /* s2 18 */ int endf;
+    /* v1 3 */ int j;
+    /* a3 7 */ short int Rsub;
+    /* t0 8 */ int Rdata;
+    /* t1 9 */ int sj_data1;
+    /* t2 10 */ int sj_data2;
+    /* a0 4 */ int xx;
+    /* t4 12 */ int yari_ff;
+
+    SCRREC *scrrec_pp;
+
+    sindv_pp->keyCntCom = 0;
+    sindv_pp->scr_tap_memory_cnt = 0;
+    sindv_pp->scr_tap_vib_on = 0;
+    sindv_pp->cansel_flag = 0;
+
+    if (tap_res_f)
+    {
+        KeyCntClear(sindv_pp->keyCnt);
+        tapReqGroupTapClear(Pcode2Pindex(sindv_pp->plycode));
+    }
+
+    ScrCtrlExamClearIndv(&sindv_pp->scr_exam_str);
+
+    if ((sindv_pp->status & 1) == 0)
+    {
+        sindv_pp->scrdat_pp = NULL;
+        sindv_pp->sndId = -1;
+
+        for (i = 0; i < 24; i++)
+        {
+            sindv_pp->sjob[i] = -1;
+        }
+
+        ScrCtrlExamClear(&sindv_pp->scr_exam_str);
+        return;
+    }
+
+    if (sindv_pp->tapset_pos == -1 || ScrCtrlIndvNextReadLine(sindv_pp, 0))
+    {
+        ScrCtrlExamClear(&sindv_pp->scr_exam_str);
+
+        scrrec_pp = sindv_pp->current_scrrec_pp;
+        sindv_pp->scrdat_pp = NULL;
+        sindv_pp->sndId = -1;
+
+        for (i = 0; i < 24; i++)
+        {
+            sindv_pp->sjob[i] = -1;
+        }
+
+        while (1)
+        {
+            if (scrrec_pp->job == 7)
+                break;
+
+            if (scrrec_pp->job != 0)
+            {
+                if (scrrec_pp->sub & sindv_pp->plycode)
+                {
+                    sindv_pp->current_time = scrrec_pp->data;
+                    sindv_pp->cursor_num = scrrec_pp->jobd1;
+                    sindv_pp->tap_follow_enum = TAP_FOLLOW_NONE;
+
+                    endf = 0;
+                    
+                    scrrec_pp++;
+
+                    while (1)
+                    {
+                        Rsub = scrrec_pp->sub;
+                        Rdata = scrrec_pp->data;
+                        sj_data1 = scrrec_pp->jobd1;
+                        sj_data2 = scrrec_pp->jobd2;
+
+                        switch (scrrec_pp->job)
+                        {
+                        case 0:
+                        case 7:
+                        case 8:
+                            endf = 1;
+                            break;
+                        case 2:
+                            sindv_pp->scr_exam_str.vsPlayer = Rdata;
+                            sindv_pp->scr_exam_str.exam_enum = Rsub;
+                            sindv_pp->scr_exam_str.exam_start = 0;
+                            break;
+                        case 3:
+                            sindv_pp->scr_exam_str.scr_exam_job[0].goto_time = Rdata;
+                            sindv_pp->scr_exam_str.scr_exam_job[0].goto_line = Rsub;
+                            break;
+                        case 4:
+                            sindv_pp->scr_exam_str.scr_exam_job[0].goto_job_time = Rdata;
+                            sindv_pp->scr_exam_str.scr_exam_job[0].goto_job = Rsub;
+                            break;
+                        case 5:
+                            sindv_pp->scr_exam_str.scr_exam_job[1].goto_time = Rdata;
+                            sindv_pp->scr_exam_str.scr_exam_job[1].goto_line = Rsub;
+                            break;
+                        case 6:
+                            sindv_pp->scr_exam_str.scr_exam_job[1].goto_job_time = Rdata;
+                            sindv_pp->scr_exam_str.scr_exam_job[1].goto_job = Rsub;
+                            break;
+                        case 9:
+                            if (Rsub == 9)
+                            {
+                                yari_ff = 0;
+
+                                for (j = 0; j < 4; i++)
+                                {
+                                    if (sindv_pp->sjob[j] != -1)
+                                    {
+                                        sindv_pp->sjob_data[j][0] = sj_data1;
+                                        sindv_pp->sjob_data[j][1] = sj_data2;
+                                        yari_ff = 1;
+                                    }
+                                }
+
+                                if (!yari_ff)
+                                    printf("ERROR! SUBJOB_NO_ID OVER!\n");
+                            }
+                            else
+                            {
+                                sindv_pp->sjob[Rsub] = Rdata;
+                                sindv_pp->sjob_data[Rsub][0] = sj_data1;
+                                sindv_pp->sjob_data[Rsub][1] = sj_data2;
+                            }
+                            break;
+                        case 0xB:
+                            sindv_pp->scr_exam_str.scr_exam_job[2].goto_line = sj_data1;
+                            sindv_pp->scr_exam_str.scr_exam_job[2].goto_job_time = Rdata;
+                            sindv_pp->scr_exam_str.scr_exam_job[2].goto_job = Rsub;
+                            break;
+                        case 0xC:
+                            sindv_pp->scr_exam_str.scr_exam_job[3].goto_line = sj_data1;
+                            sindv_pp->scr_exam_str.scr_exam_job[3].goto_job_time = Rdata;
+                            sindv_pp->scr_exam_str.scr_exam_job[3].goto_job = Rsub;
+                            break;
+                        case 0xD:
+                            sindv_pp->scr_exam_str.scr_exam_job[sj_data2].goto_line = Rsub;
+                            sindv_pp->scr_exam_str.scr_exam_job[sj_data2].goto_time = Rdata;
+                            break;
+                        case 0xE:
+                            sindv_pp->scr_exam_str.scr_exam_job[sj_data2].goto_job = Rsub;
+                            sindv_pp->scr_exam_str.scr_exam_job[sj_data2].goto_job_time = Rdata;
+                            break;
+                        default:
+                            break;
+                        }
+
+                        if (endf)
+                        {
+                            if (sindv_pp->global_ply == NULL)
+                                printf("global_play is NULL [%d]\n", sindv_pp->plycode);
+                            else
+                                tapLevelChange(sindv_pp);
+
+                            ScrCtrlIndvNextReadLine(sindv_pp, 0);
+                            return;
+                        }
+
+                        scrrec_pp++;
+                    }
+                }
+
+                scrrec_pp++;
+            }
+        }
+
+        sindv_pp->status |= 8;
+        sindv_pp->current_time = scrrec_pp->data;
+    }
+}
+#endif
 
 void intIndvStatusSet(SCORE_INDV_STR *sindv_pp, u_int CKF, u_int STF, u_int UNF)
 {
@@ -875,6 +1054,7 @@ static int useIndevCodeGet(void)
 }
 
 INCLUDE_ASM(const s32, "main/scrctrl", targetTimeGet);
+int targetTimeGet(/* a0 4 */ int line, /* a1 5 */ int time, /* a2 6 */ int codeAll);
 
 void useIndevSndKill(void)
 {
@@ -1226,6 +1406,7 @@ TAPSET* IndvGetTapSetAdrs(/* a0 4 */ SCORE_INDV_STR *sindv_pp);
 INCLUDE_ASM(const s32, "main/scrctrl", nextExamTime);
 
 INCLUDE_ASM(const s32, "main/scrctrl", GetSindvPcodeLine);
+SCORE_INDV_STR* GetSindvPcodeLine(/* a0 4 */ PLAYER_CODE pcode);
 
 INCLUDE_ASM(const s32, "main/scrctrl", ExamScoreCheck);
 
@@ -1244,12 +1425,209 @@ INCLUDE_RODATA(const s32, "main/scrctrl", D_00392D40);
 INCLUDE_RODATA(const s32, "main/scrctrl", D_00392D88);
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrMoveSetSub);
+#if 0
+void ScrMoveSetSub(SCORE_INDV_STR *sindv_pp, /* s0 16 */ int Pnum, /* s4 20 */ int sub_job, /* s1 17 */ int sub_time, /* s6 22 */ int goto_job, /* s7 23 */ int goto_time, /* fp 30 */ int start_move_line, /* s3 19 */ int start_move_time)
+{
+    /* s1 17 */ int ttype;
+    /* s0 16 */ int tmp_cdsample;
+    /* s2 18 */ int target_move_time;
+    /* s0 16 */ SCORE_INDV_STR *sub_in_pp;
+    /* -0xb0(sp) */ u_char chantmp[2];
+
+    target_move_time = targetTimeGet(goto_job, goto_time, useIndevCodeGet());
+
+    useIndevAllMove(goto_time, goto_job);
+    useIndevSndKill();
+
+    sindv_pp->wakeUpTime = sub_time;
+    sindv_pp->wakeUpGoTime = goto_time;
+    sindv_pp->wakeUpWaitLine = sub_job;
+    sindv_pp->status |= SCS_WAIT;
+    otherIndvPause(Pnum);
+
+    sub_in_pp = score_indv_str + 4;
+    sub_in_pp->status = 1;
+    sub_in_pp->plycode = PCODE_MOVE;
+    sub_in_pp->global_ply = NULL;
+
+    IndivMoveChange(sub_in_pp, 0, sub_job);
+
+    sub_in_pp->retStartLine = start_move_line;
+    sub_in_pp->refStartTime = start_move_time;
+    sub_in_pp->refTartegLine = goto_job;
+    sub_in_pp->refTargetTime = target_move_time;
+
+    if (GetTimeType(sub_job) != GTIME_VSYNC)
+        GlobalTimeJobChange(FGF_CD);
+    else
+        GlobalTimeJobChange(FGF_VSYNC);
+
+    TimeCallbackTimeSetChanTempo(sub_job, 0, GetLineTempo(sub_job));
+
+    sub_in_pp->top_scr_ctrlpp[sub_job].lineTime = 0;
+    sub_in_pp->top_scr_ctrlpp[sub_job].lineTimeFrame = 0;
+
+    ScrLincChangTbl(sub_job);
+    tapEventCheck(sub_in_pp, 0, 0, 4);
+
+    ttype = GetTimeType(sub_job);
+    if (ttype == GTIME_VSYNC)
+    {
+        if (GetTimeType(start_move_line) != GTIME_VSYNC)
+            CdctrlWp2Stop();
+    }
+    else
+    {
+        printf("file seek\n");
+
+        tmp_cdsample = CdctrlSndTime2WP2sample(GetLineTempo(sub_job), goto_time);
+        tmp_cdsample -= (GetTimeOfset(goto_job) * 48) / 256;
+
+        CheckIndvCdChannel(sindv_pp, chantmp);
+        CdctrlWP2SetFileSeekChan(&score_str.stdat_dat_pp->sndfile[ttype], tmp_cdsample, chantmp[0], chantmp[1]);
+    }
+}
+#endif
 
 /* Big function! Decompiler discretion advised */
 /*      https://decomp.me/scratch/woLno        */
 INCLUDE_ASM(const s32, "main/scrctrl", ScrExamSetCheck);
 
 INCLUDE_ASM(const s32, "main/scrctrl", subjobEvent);
+#if 0
+void subjobEvent(/* s1 17 */ SCORE_INDV_STR *sindv_pp, /* s6 22 */ int ctime_next)
+{
+    int i;
+    /* s3 19 */ int j;
+    /* s4 20 */ int cont_job;
+    /* a0 4 */ int drline;
+    /* v0 2 */ int time_tmp;
+    /* s0 16 */ int next_time;
+    /* s0 16 */ //int next_time;
+    /* s0 16 */ //int next_time;
+    /* v1 3 */ SCRDAT *scrdat_pp;
+    /* s0 16 */ //int next_time;
+    /* v0 2 */ SCORE_INDV_STR *cngSindv_pp;
+
+    for (i = 0; i < 5; i++, sindv_pp++)
+    {
+        for (j = 0; j < 24; i++)
+        {
+            cont_job = 0;
+
+            if (sindv_pp->sjob[j] != -1)
+            {
+                if (sindv_pp->sjob[j] < ctime_next)
+                {
+                    switch (j)
+                    {
+                        case SCRSUBJ_CDSND_ON:
+                            CdctrlWP2SetVolume(120);
+                            break;
+                        case SCRSUBJ_CDSND_OFF:
+                            CdctrlWP2SetVolume(0);
+                            break;
+                        case SCRSUBJ_DRAW_CHANGE:
+                            ScrLincChangTbl(sindv_pp->useLine);
+                            break;
+                        case SCRSUBJ_EFFECT:
+                            TapCt(0xB0, sindv_pp->sjob_data[j][0], sindv_pp->sjob_data[j][1]);
+                            break;
+                        case SCRSUBJ_REVERS:
+                            drline = sindv_pp->retStartLine;
+                            if (sindv_pp->sjob_data[j][0] / 2 < ctime_next)
+                                drline = sindv_pp->refTartegLine;
+                            
+                            time_tmp = 1;
+                            cont_job = 1;
+
+                            if ((sindv_pp->refTargetTime - sindv_pp->refStartTime) * (ctime_next / sindv_pp->sjob_data[j][0]))
+                                time_tmp = (sindv_pp->refTargetTime - sindv_pp->refStartTime) * (ctime_next / sindv_pp->sjob_data[j][0]);
+
+                            ScrLincChangTblRef(drline, time_tmp + sindv_pp->refStartTime);
+                            break;
+
+                        case SCRSUBJ_SPU_ON:
+                        case SCRSUBJ_SPU_ON2:
+                        case SCRSUBJ_SPU_ON3:
+                        case SCRSUBJ_SPU_ON4:
+                            ScrTapReq(-1, sindv_pp->sjob_data[j][0], sindv_pp->sjob_data[j][1]);
+                            break;
+
+                        case SCRSUBJ_TITLE:
+                            // TODO
+                            break;
+                        case SCRSUBJ_LOOP:
+                            cont_job = 1;
+                            TimeCallbackTimeSetChanTempo(sindv_pp->useLine, GetLineTempo(sindv_pp->useLine), sindv_pp->sjob_data[j][0]);
+                            break;
+                        case SCRSUBJ_FADEOUT:
+                            cont_job = 1;
+                            fadeoutStartKey = 1;
+                            break;
+                        case SCRSUBJ_ENDLOOP:
+                            gameEndWaitLoop = 1;
+                            break;
+                        case SCRSUBJ_SPUTRANS:
+                            if (sindv_pp->sjob_data[j][0])
+                                ScrTapDbuffSetSp(&score_str.stdat_dat_pp->scr_pp->sndrec_pp[sindv_pp->sjob_data[j][0]], sindv_pp->sndId);
+                            break;
+                        case SCRSUBJ_STOP_MENDERER:
+                        {
+                            int next_time = ScrCtrlIndvNextTime(sindv_pp, 1) - sindv_pp->current_time;
+
+                            PrDecelerateMenderer((((next_time * 3600.0f) + (GetLineTempo(sindv_pp->useLine) * 96.0f * 0.5f)) / (GetLineTempo(sindv_pp->useLine) * 96.0f)));
+                            printf("SCRSUBJ_STOP_MENDERER req\n");
+                            break;
+                        }
+                        case SCRSUBJ_BONUS_GAME:
+                            cont_job = 1LL;
+                            bonusGameCtrl(ctime_next);
+                            break;
+                        case SCRSUBJ_BONUS_GAME_END:
+                            bonusPointSave();
+                            bonusScoreDraw();
+                            break;
+
+                        case SCRSUBJ_LESSON:
+                            LessonRoundDisp(sindv_pp->sjob_data[j][0]);
+                            cont_job = (sindv_pp->sjob_data[j][1] < 180);
+                            break;
+                        case SCRSUBJ_VS_RESET:
+                            cngSindv_pp = GetSindvPcodeLine(PCODE_TEACHER);
+                            if (cngSindv_pp)
+                                cngSindv_pp->global_ply->score = 500;
+                            
+                            vsAnimationReset(1, 500);
+
+                            cngSindv_pp = GetSindvPcodeLine(PCODE_PARA);
+                            if (cngSindv_pp)
+                                cngSindv_pp->global_ply->score = 500;
+                            
+                            vsAnimationReset(0, 500);
+                            break;
+                        case SCRSUBJ_CDSND_READY:
+                            CdctrlWP2Set(&score_str.stdat_dat_pp->sndfile[sindv_pp->sjob_data[j][0]]);
+                            break;
+                        case SCRSUBJ_CDSND_REQ:
+                            CdctrlWP2Play();
+                            CdctrlWP2SetVolume(sindv_pp->sjob_data[j][0]);
+                            break;
+                        case SCRSUBJ_SPU_OFF:
+                            ScrTapReqStop(sindv_pp->sjob_data[j][0]);
+                            break;
+                        case SCRSUBJ_JIMAKU_OFF:
+                            jimakuWakuOff = 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }
+}
+#endif
 
 INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvJob);
 
@@ -1289,7 +1667,77 @@ static void ScrTimeRenew(SCR_MAIN *scr_main_pp)
     }
 }
 
+#ifndef NON_MATCHING
 INCLUDE_ASM(const s32, "main/scrctrl", ScrMbarReq);
+#else
+void ScrMbarReq(/* s5 21 */ int mbarTime)
+{
+    /* s6 22 */ int i;
+    /* s2 18 */ SCORE_INDV_STR *sindv_pp;
+    /* s1 17 */ TAPSET *tapset_pp;
+    /* s0 16 */ int dare;
+    /* s4 20 */ int tapdat_size;
+    /* s3 19 */ TAPDAT *tapdat_pp;
+
+    MbarSetCtrlTime(mbarTime);
+
+    sindv_pp = score_indv_str;
+
+    for (i = 0; i < 5; i++, sindv_pp++)
+    {
+        if (sindv_pp->status & 1)
+        {
+            if ((sindv_pp->status & 158) == 0)
+            {
+                tapset_pp = IndvGetTapSetAdrs(sindv_pp);
+                if (tapset_pp != NULL)
+                {
+                    tapdat_size = tapset_pp->tapdat_size;
+                    tapdat_pp = tapset_pp->tapdat_pp;
+
+                    if (global_data.play_step == PSTEP_VS)
+                    {
+                        dare = MBAR_PARAPPA_VS;
+
+                        if (sindv_pp->plycode == PCODE_TEACHER)
+                            dare = MBAR_TEACHER_VS;
+                        if (sindv_pp->plycode == PCODE_BOXY)
+                        {
+                            dare = MBAR_BOXY_VS;
+                            if (mbarTime < sindv_pp->current_time + tapset_pp->taptimeEnd)
+                                MbarReset();
+                        }
+                    }
+                    else
+                    {
+                        if (global_data.play_step == PSTEP_HOOK)
+                            dare = MBAR_PARAPPA_HOOK;
+                        else
+                            dare = MBAR_PARAPPA;
+                        
+                        if (sindv_pp->plycode != PCODE_PARA)
+                            dare = MBAR_TEACHER;
+                    }
+
+                    if (tapset_pp->tapscode == TAPSCODE_ANSWER)
+                    {
+                        tapdat_pp = vs_tapdat_tmp;
+                        tapdat_size = vs_tapdat_tmp_cnt;
+                    }
+
+                    if ((dare == MBAR_PARAPPA) || (dare == MBAR_PARAPPA_HOOK))
+                    {
+                        if (mbarTime < sindv_pp->current_time)
+                            dare = MBAR_NONE;
+                    }
+
+                    MbarReq(dare, tapset_pp, sindv_pp->current_time, sindv_pp->scr_tap_memory, sindv_pp->scr_tap_memory_cnt, game_status.language_type, tapdat_size, tapdat_pp, sindv_pp->cursor_num);
+                }
+            }
+        }
+    }
+}
+#endif
 
 void allTimeCallbackTimeSetChanTempo(int time)
 {
@@ -1407,6 +1855,7 @@ void SetLineChannel(int scr_line)
 INCLUDE_ASM(const s32, "main/scrctrl", SetIndvCdChannel);
 
 INCLUDE_ASM(const s32, "main/scrctrl", CheckIndvCdChannel);
+int CheckIndvCdChannel(/* s1 17 */ SCORE_INDV_STR *sindv_pp, /* s0 16 */ u_char *chantmp);
 
 // INCLUDE_RODATA(const s32, "main/scrctrl", dbg_tbl_msg);
 

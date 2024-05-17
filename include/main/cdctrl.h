@@ -17,6 +17,8 @@
 
 #include "main/etc.h"
 
+#include "iop_mdl/wp2cd_rpc.h"
+
 typedef enum {
     FRMODE_PC = 0,
     FRMODE_CD = 1,
@@ -146,10 +148,6 @@ int GetIntSizeCurrent(u_short num);
 void CdctrlSndFadeOut(int time);
 int CdctrlSndFadeOutCheck(void);
 void CdctrlSndFadeOutWait(int time);
-
-// TODO(poly): move to iop_mdl/wp2cd_rpc.c once splitted
-int WP2Init(void);
-int WP2Ctrl(int command, int data0);
 
 // TODO(poly): move to iop_mdl/tapctrl_rpc.c once splitted
 int TapCt(int command, int data1, int data2);

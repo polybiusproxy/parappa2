@@ -435,9 +435,64 @@ typedef struct { // 0x338
     /* 0x334 */ PLAY_STEP play_step;
 } GLOBAL_DATA;
 
+typedef enum {
+    LANG_ENGLISH = 0,
+    LANG_JAPANESE = 1,
+    LANG_MAX = 2
+} LANGUAGE_TYPE;
+
+typedef enum {
+    VIBRATION_OFF = 0,
+    VIBRATION_ON = 1,
+    VIBRATION_MAX = 2
+} VIBRATION_ENUM;
+
+typedef enum {
+    SUBTITLE_OFF = 0,
+    SUBTITLE_ON = 1,
+    SUBTITLE_MAX = 2
+} SUBTITLE_ENUM;
+
+typedef enum {
+    DLVL_COOL = 0,
+    DLVL_GOOD = 1,
+    DLVL_BAD = 2,
+    DLVL_AWFUL = 3,
+    DLVL_MAX = 4,
+    DLVL_HK_COOL = 0,
+    DLVL_HK_GOOD = 1,
+    DLVL_HK_BAD1 = 2,
+    DLVL_HK_BAD2 = 3,
+    DLVL_HK_BAD3 = 4,
+    DLVL_HK_MAX = 5
+} DISP_LEVEL;
+
+typedef struct { // 0xd0
+    /* 0x00 */ PLAY_MODE play_modeG;
+    /* 0x04 */ PLAY_TYPE play_typeG;
+    /* 0x08 */ TAP_ROUND_ENUM roundG;
+    /* 0x0c */ PLAY_TABLE_MODE play_table_modeG;
+    /* 0x10 */ int play_stageG;
+    /* 0x14 */ DEMO_FLAG_ENUM demo_flagG;
+    /* 0x18 */ int playReadPos;
+    /* 0x1c */ LANGUAGE_TYPE language_type;
+    /* 0x20 */ VIBRATION_ENUM vibration;
+    /* 0x24 */ SUBTITLE_ENUM subtitle;
+    /* 0x28 */ u_int stClearBit;
+    /* 0x2c */ int endingFlag;
+    /* 0x30 */ u_int stClrCntCool[9];
+    /* 0x54 */ u_int stClrCntGood[9];
+    /* 0x78 */ u_int stClrCntVs[9];
+    /* 0xa0 */ long int scoreG[4];
+    /* 0xc0 */ long int bonusG;
+    /* 0xc8 */ DISP_LEVEL disp_level;
+    /* 0xcc */ LEVEL_VS_ENUM level_vs_enumG;
+} GAME_STATUS;
+
 TAP_ROUND_ENUM GetHatRound(void);
 int GlobalSndSampleGet(void);
 u_int TimeCallbackTimeGetChan(int chan);
+void GlobalTimeJobChange(TIME_GET_FLAG tfg);
 void TimeCallbackTimeSetChanTempo(int chan, u_int time, float tempo);
 PLAYER_INDEX Pcode2Pindex(PLAYER_CODE pc);
 int GetIndex2KeyCode(int index);
