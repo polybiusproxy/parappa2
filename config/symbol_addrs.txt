@@ -662,7 +662,26 @@ DrawCtrlMainDebug                   = 0x001168b8; // type:func
 DrawCtrlInitDebug                   = 0x00116ad0; // type:func
 
 // main/effect.c
+CG_WaveInit                         = 0x00116b70; // type:func
+CG_WaveInitEasy                     = 0x00116b78; // type:func
+UG_WaveDisp                         = 0x00116c20; // type:func
+CG_WaveDisp                         = 0x00116f18; // type:func
+UG_AlpDisp                          = 0x00116f78; // type:func
+CG_AlpDisp                          = 0x00117260; // type:func
+UG_MozaikuDisp                      = 0x001172c0; // type:func
+CG_MozaikuDisp                      = 0x001174a0; // type:func
+UG_FadeDisp                         = 0x00117500; // type:func
+UG_FadeDisp2                        = 0x00117738; // type:func
 CG_FadeDisp                         = 0x001179f8; // type:func
+UG_NoodlesDisp                      = 0x00117a58; // type:func
+CG_NoodlesDisp                      = 0x00117e20; // type:func
+FD_MonocroDisp                      = 0x00117e90; // type:func
+
+gs_simage_EFFECTTMP                           = 0x01c6fef0; // size:0x70
+gs_loadimg                          = 0x01c6ff60; // size:0x60
+
+FLT_00398F38                        = 0x00398f38;
+FLT_00398F3C                        = 0x00398f3c;
 
 // main/etc.c
 GlobalSndSampleGet                  = 0x0011c108; // type:func

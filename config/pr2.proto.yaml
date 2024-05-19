@@ -61,7 +61,7 @@ segments:
         - [0x10980, c, main/fadectrl]
         - [0x10a90, c, main/subt]
         - [0x115e8, asm, main/drawctrl]
-        - [0x17b70, asm, main/effect]
+        - [0x17b70, c, main/effect]
         - [0x19160, asm, main/mbar]
         - [0x1ccc8, asm, main/pack]
         - [0x1cec0, asm, main/etc]
@@ -94,7 +94,7 @@ segments:
         - [0x85b88, .data, main/fadectrl]
         - [0x85ba0, data, main/subt]
         - [0x86478, data, main/drawctrl]
-        - [0x87288, data]
+        - [0x87288, data] # main/mbar
         
         - [0x291ed0, data, vudata] # .vudata
         
@@ -112,7 +112,8 @@ segments:
         - [0x293a60, .rodata, main/scrctrl]
         - [0x294018, .rodata, main/sprite]
         - [0x294110, rodata, main/drawctrl]
-        - [0x294400, rodata] # main/effect
+        - [0x294400, .rodata, main/effect]
+        - [0x294430, rodata] # main/mbar
         - [0x294b60, .rodata, main/p3str]
         - [0x294c00, rodata]
         - [0x297708, .rodata, iop_mdl/wp2cd_rpc]
@@ -123,9 +124,9 @@ segments:
 
         - [0x299f00, .lit4, main/cdctrl] # .lit4
         - [0x299f10, .lit4, main/scrctrl]
-        - [0x299f14, lit4] # main/drawctrl]
-        #- [0x299f38, lit4, main/effect]
-        #- [0x299f40, lit4]
+        - [0x299f14, lit4] # main/drawctrl
+        - [0x299f38, lit4, main/effect]
+        - [0x299f40, lit4] # main/mbar
 
         - [0x29a300, sdata] # .sdata
         - [0x29a308, .sdata, dbug/vramsave]
