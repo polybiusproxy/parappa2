@@ -56,9 +56,9 @@ void PrCleanupScene(PR_SCENEHANDLE scene);
 void PrSetSceneEnv(PR_SCENEHANDLE model, sceGsDrawEnv1 *drawEnv);
 void PrPreprocessSceneModel(PR_SCENEHANDLE scene);
 
-PR_MODELHANDLE PrInitializeModel(PR_MODELHANDLE spmFile, PR_SCENEHANDLE scene);
-PR_ANIMATIONHANDLE PrInitializeAnimation(PR_ANIMATIONHANDLE spaFile);
-PR_CAMERAHANDLE PrInitializeCamera(PR_CAMERAHANDLE spcFile);
+PR_MODELHANDLE PrInitializeModel(PR_MODELHANDLE model, PR_SCENEHANDLE scene);
+PR_ANIMATIONHANDLE PrInitializeAnimation(PR_ANIMATIONHANDLE animation);
+PR_CAMERAHANDLE PrInitializeCamera(PR_CAMERAHANDLE camera);
 
 void PrCleanupModel(PR_MODELHANDLE model);
 void PrCleanupAnimation(PR_ANIMATIONHANDLE animation);
@@ -75,7 +75,7 @@ void PrHideModel(PR_MODELHANDLE model);
 
 void PrAnimateModel(PR_MODELHANDLE model, float time);
 void PrAnimateModelPosition(PR_MODELHANDLE model, float time);
-void PrAnimateSceneCamera(float time, PR_SCENEHANDLE scene);
+void PrAnimateSceneCamera(PR_SCENEHANDLE scene, float time);
 
 void PrRender(PR_SCENEHANDLE scene);
 void PrWaitRender(void);
