@@ -275,7 +275,7 @@ void p3StrDispDs(P3SRT_OD *p3o_pp, P3STR_SD *p3sd_pp, int subtime)
                     if (tmp_time > 0)
                     {
                         PrSelectCamera((PR_CAMERAHANDLE)adrd_pp[scn_pp->adr1num].handle, (PR_SCENEHANDLE)p3o_pp->pad2);
-                        PrAnimateSceneCamera(cur_time, (PR_SCENEHANDLE)p3o_pp->pad2);
+                        PrAnimateSceneCamera((PR_SCENEHANDLE)p3o_pp->pad2, cur_time);
                     }
                     break;
                 case 4:
