@@ -50,6 +50,8 @@ enum PrDEBUG_PARAM
     PR_DEBUG_PARAM_NUM = 1
 };
 
+void PrSetFrameRate(float framerate);
+
 PR_SCENEHANDLE PrInitializeScene(sceGsDrawEnv1 *drawEnv, char *name, u_int fbp);
 void PrCleanupScene(PR_SCENEHANDLE scene);
 

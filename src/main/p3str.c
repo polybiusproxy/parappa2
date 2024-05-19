@@ -1,4 +1,5 @@
 #include "main/p3str.h"
+#include "main/etc.h"
 
 static u_int current_time_old = 0;
 
@@ -60,6 +61,55 @@ void p3strImage2RealPos(P3STR_SD *p3str_sd_pp)
 }
 
 INCLUDE_ASM(const s32, "main/p3str", p3StrInit);
+#if 0
+void p3StrInit(/* s7 23 */ u_int adrs)
+{
+    /* s0 16 */ int i;
+    /* s1 17 */ int j;
+    /* s2 18 */ P3SRT_OD *p3srt_od_pp;
+    /* s3 19 */ P3STR_SD *p3str_sd;
+    /* s6 22 */ ADRD *adrd_pp;
+    /* s5 21 */ int *usr_pp;
+
+    current_time_old = 0;
+    p3str_pp = (P3STR*)adrs;
+
+    if (STR(adrs)->ODcnt != 0)
+    {
+        p3srt_od_pp = STR(adrs)->p3srt_od;
+
+        for (i = 0; i < p3str_pp->ODcnt; i++, p3srt_od_pp++)
+        {
+            p3str_sd = (P3STR_SD*)(p3srt_od_pp->adr + (int)adrs);
+
+            if (p3srt_od_pp->od_type == OD_VRAM)
+            {
+                p3strImage2RealPos(p3str_sd);
+
+                adrd_pp = (ADRD*)p3str_sd->adrD;
+                usr_pp  = (int*)p3str_sd->usrD;
+
+                for (j = 0; j < p3str_sd->Dcnt; j++)
+                {
+                    if (usr_pp[j] == 0 || usr_pp[j] == GetHatRound() + 1)
+                        Tim2Trans((void*)adrd_pp[j].adrs);
+                }
+                
+            }
+            else if (p3srt_od_pp->od_type == OD_COMMON)
+            {
+                adrd_common_cnt = 0;
+                p3StrInitSd(p3srt_od_pp, p3str_sd, i);
+
+                adrd_common = (ADRD*)p3str_sd->adrD;
+                adrd_common_cnt = p3str_sd->adrDsize / 16;
+            }
+        }
+    }
+
+    PrSetFrameRate(60.0f);
+}
+#endif
 
 int getTopSeekPos(void)
 {
