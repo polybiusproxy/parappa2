@@ -671,6 +671,7 @@ TimeCallbackTimeGetChan             = 0x0011c790; // type:func
 TimeCallbackTimeSetChanTempo        = 0x0011c808; // type:func
 Pcode2Pindex                        = 0x0011c8d0; // type:func
 GetIndex2KeyCode                    = 0x0011c990; // type:func
+UsrPrSetScene                       = 0x0011ca68; // type:func
 inCmnHook2GameCheck                 = 0x0011ccd0; // type:func
 
 // main/mcctrl.c
@@ -719,6 +720,29 @@ TapCt                               = 0x00140098; // type:func
 
 sbuff                               = 0x01c82a00; // allow_duplicated:True
 gCd                                 = 0x01c82a40; // size:0x28 // allow_duplicated:True
+
+// prlib/prlib.cpp
+PrInitializeScene                   = 0x00141710; // type:func
+PrCleanupScene                      = 0x00141788; // type:func
+PrSetSceneEnv                       = 0x00141800; // type:func
+PrPreprocessSceneModel              = 0x00141818; // type:func
+PrInitializeModel                   = 0x00141820; // type:func
+PrInitializeAnimation               = 0x001418d8; // type:func
+PrInitializeCamera                  = 0x00141980; // type:func
+PrCleanupModel                      = 0x00141a28; // type:func
+PrCleanupAnimation                  = 0x00141a58; // type:func
+PrCleanupCamera                     = 0x00141b00; // type:func
+PrLinkAnimation                     = 0x00141c80; // type:func
+PrLinkPositionAnimation             = 0x00141c98; // type:func
+PrUnlinkPositionAnimation           = 0x00141ca0; // type:func
+PrSelectCamera                      = 0x00141cb0; // type:func
+PrShowModel                         = 0x00141d40; // type:func
+PrHideModel                         = 0x00141dd0; // type:func
+PrAnimateModel                      = 0x00141e68; // type:func
+PrAnimateModelPosition              = 0x00141e78; // type:func
+PrAnimateSceneCamera                = 0x00141e88; // type:func
+PrRender                            = 0x00141e98; // type:func
+PrWaitRender                        = 0x00141ea0; // type:func
 
 //
 //
