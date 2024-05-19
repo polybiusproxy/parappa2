@@ -139,7 +139,7 @@ segments:
         #- [0x29a504, sdata] # main/sprite
         #- [0x29a508, sdata, main/subt]
         #- [0x29a518, sdata] # main/drawctrl
-        - [0x29a6e0, sdata, main/p3str]
+        - [0x29a6e0, .sdata, main/p3str]
         - [0x29a6f0, sdata]
         
         # - [0x29a9d8, rodatabin] # .sbss / .bss

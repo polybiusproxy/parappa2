@@ -39,7 +39,7 @@ void CmnGifFlush(void)
     sceDmaChan *cmnDmaC;
     int i, j;
 
-    if (cmngif_pri_cnt != 0) 
+    if (cmngif_pri_cnt != 0)
     {
         for (i = 0; i < PR_ARRAYSIZE(cmngif_pri) - 1 && cmngif_pri[i].pBase; i++) 
         {

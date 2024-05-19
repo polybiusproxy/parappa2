@@ -46,7 +46,7 @@ int WP2Ctrl(int command, int data0)
     }
     else
     {
-        if ( command == 0x8002 )
+        if (command == 0x8002)
         {
             strcpy((char*)sbuff, (char*)data0);
             FlushCache(0);

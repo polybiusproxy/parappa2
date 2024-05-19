@@ -496,6 +496,7 @@ void GlobalTimeJobChange(TIME_GET_FLAG tfg);
 void TimeCallbackTimeSetChanTempo(int chan, u_int time, float tempo);
 PLAYER_INDEX Pcode2Pindex(PLAYER_CODE pc);
 int GetIndex2KeyCode(int index);
+void UsrPrSetScene(void);
 int inCmnHook2GameCheck(int pack_id);
 
 #endif

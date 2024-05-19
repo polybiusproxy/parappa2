@@ -4,7 +4,14 @@
 #include "common.h"
 
 #include <eetypes.h>
+
 #include "os/syssub.h"
+#include "os/system.h"
+#include "os/tim2.h"
+#include "main/drawctrl.h"
+#include "main/etc.h"
+
+#include <prlib/prlib.h>
 
 #include <stdio.h>
 
@@ -83,6 +90,58 @@ typedef enum {
     SD_VRAM_R3 = 3,
     SD_VRAM_R4 = 4
 } SD_VRAM;
+
+typedef enum {
+    STE_MDL = 0,
+    STE_ANI = 1,
+    STE_ANIPOS = 2,
+    STE_CAM = 3,
+    STE_TM2 = 4,
+    STE_CL2 = 5,
+    STE_MAX = 6
+} SCENE_TYPE_ENUM;
+
+typedef struct { // 0x20
+    /* 0x00 */ u_int type;
+    /* 0x04 */ u_int start;
+    /* 0x08 */ int adr1num;
+    /* 0x0c */ int adr2num;
+    /* 0x10 */ u_int top;
+    /* 0x14 */ u_int end;
+    /* 0x18 */ u_int pad1;
+    /* 0x1c */ u_int pad2;
+} SD_SCENE;
+
+typedef struct { // 0xc
+    /* 0x0 */ u_int frame;
+    /* 0x4 */ u_int xp;
+    /* 0x8 */ u_int yp;
+} SD_DISPIN_SUB;
+
+typedef struct { // 0x10
+    /* 0x0 */ u_short u;
+    /* 0x2 */ u_short v;
+    /* 0x4 */ u_short w;
+    /* 0x6 */ u_short h;
+    /* 0x8 */ u_int subDcnt;
+    /* 0xc */ u_int subDadr;
+    /* 0x10 */ SD_DISPIN_SUB subD[0];
+} SD_DISPIN;
+
+typedef struct { // 0x8
+    /* 0x0 */ int frame;
+    /* 0x4 */ int alp;
+} SD_FADE_SUB;
+
+typedef struct { // 0xc
+    /* 0x0 */ u_char r;
+    /* 0x1 */ u_char g;
+    /* 0x2 */ u_char b;
+    /* 0x3 */ u_char pad;
+    /* 0x4 */ int subDcnt;
+    /* 0x8 */ u_int subDadr;
+    /* 0xc */ SD_FADE_SUB subD[0];
+} SD_FADE;
 
 typedef struct { // 0x20
     /* 0x00 */ u_short type;
