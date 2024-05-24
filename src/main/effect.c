@@ -1,8 +1,8 @@
 #include "main/effect.h"
 
 /* lit4 - temp */
-float FLT_00398F38; /* UG_WaveDisp    */
-float FLT_00398F3C; /* UG_NoodlesDisp */
+float FLT_00398F38; /* UG_WaveDisp    -> 6.2831855  */
+float FLT_00398F3C; /* UG_NoodlesDisp -> 0.12822828 */
 
 #define WV_SCREEN_W 640
 #define WV_SCREEN_H 224
@@ -52,20 +52,14 @@ void CG_WaveInitEasy(WAVE_STR *wstr, short int x, short int y, short int w, shor
     wstr->currentAng = 0.0f;
 }
 
-INCLUDE_ASM(const s32, "main/effect", UG_WaveDisp);
-#if 0
 void UG_WaveDisp(WAVE_STR *wstr, sceGsFrame *frame_pp, sceGifPacket *wavePkSpr)
 {
-    /* fp 30 */ int i;
-    /* f20 58 */ float tmpAngle;
-    /* s5 21 */ int haba_now_u;
-    /* s7 23 */ int haba_now_v;
-    /* s4 20 */ int tmp_u;
-    /* s3 19 */ int tmp_v;
-    /* s1 17 */ int tmp_x;
-    /* s0 16 */ int tmp_y;
+    int i;
 
-    float tmp_size;
+    float tmpAngle;
+    int haba_now_u, haba_now_v;
+    int tmp_u, tmp_v;
+    int tmp_x, tmp_y;
 
     sceGifPkAddGsAD(wavePkSpr, SCE_GS_TEXFLUSH, 0);
     sceGifPkAddGsAD(wavePkSpr, SCE_GS_RGBAQ, 0x80808080);
@@ -87,30 +81,27 @@ void UG_WaveDisp(WAVE_STR *wstr, sceGsFrame *frame_pp, sceGifPacket *wavePkSpr)
         else
             haba_now_u = 0;
 
-        tmp_u = wstr->u + wstr->addU * i;
-        tmp_v = wstr->v + wstr->addV * i;
-        sceGifPkAddGsAD(wavePkSpr, SCE_GS_UV,   SCE_GS_SET_UV((tmp_u + haba_now_u) << 4, (tmp_v + haba_now_v) << 4));
+        tmp_u = wstr->addU * i + wstr->u;
+        tmp_v = wstr->addV * i + wstr->v;
+        sceGifPkAddGsAD(wavePkSpr, SCE_GS_UV,   SCE_GS_SET_UV((tmp_u << 4) + haba_now_u, (tmp_v << 4) + haba_now_v));
 
         tmp_x = wstr->x + wstr->addW * i;
         tmp_y = wstr->y + wstr->addH * i;
         sceGifPkAddGsAD(wavePkSpr, SCE_GS_XYZ2, SCE_GS_SET_XYZ(tmp_x << 4, tmp_y << 4, 1));
 
-        tmp_size = wstr->mvSize * 2.0f;
-        sceGifPkAddGsAD(wavePkSpr, SCE_GS_UV,   SCE_GS_SET_UV((int)(tmp_u + haba_now_u + (tmp_size - wstr->sizeW)) << 4,
-                                                              (int)(tmp_v + haba_now_v + (tmp_size - wstr->sizeH)) << 4));
-        
-        sceGifPkAddGsAD(wavePkSpr, SCE_GS_XYZ2, SCE_GS_SET_XYZ((tmp_x + wstr->sizeW) << 4,
-                                                               (tmp_y + wstr->sizeH) << 4, 1));
+        tmp_u += (wstr->sizeW - wstr->mvSize * 2);
+        tmp_v += (wstr->sizeH - wstr->mvSize * 2);
+        sceGifPkAddGsAD(wavePkSpr, SCE_GS_UV,   SCE_GS_SET_UV((tmp_u << 4) + haba_now_u, (tmp_v << 4) + haba_now_v));
+        sceGifPkAddGsAD(wavePkSpr, SCE_GS_XYZ2, SCE_GS_SET_XYZ((tmp_x + wstr->sizeW) << 4, (tmp_y + wstr->sizeH) << 4, 1));
 
         tmpAngle += wstr->plsAng1line;
     }
 
     wstr->currentAng += wstr->plsAng1time;
 
-    if (wstr->currentAng >= 6.2831855f)
-        wstr->currentAng -= 6.2831855f;
+    if (wstr->currentAng >= FLT_00398F38)
+        wstr->currentAng -= FLT_00398F38;
 }
-#endif
 
 void CG_WaveDisp(WAVE_STR *wstr, sceGsFrame *frame_pp, int pri)
 {
@@ -143,7 +134,7 @@ void CG_MozaikuDisp(MOZAIKU_STR *moz_pp, sceGsFrame *frame_pp, int pri)
     CmnGifCloseCmnPk(&mozPkSpr, pri);
 }
 
-/* TODO: use the GS macros */
+/* TODO: Use the GS macros */
 void UG_FadeDisp(FADE_MAKE_STR *fade_pp, sceGifPacket *fadePkSpr, sceGsFrame *texFr_pp)
 {
     sceGifPkAddGsAD(fadePkSpr, SCE_GS_TEXFLUSH, 0);
