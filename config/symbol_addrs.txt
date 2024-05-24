@@ -661,6 +661,12 @@ ddbg_tctrl_sub                      = 0x001167f0; // type:func
 DrawCtrlMainDebug                   = 0x001168b8; // type:func
 DrawCtrlInitDebug                   = 0x00116ad0; // type:func
 
+vclr_black_tmp                      = 0x00399518;
+scenectrl_outside_cnt               = 0x00399a50;
+scenectrl_outside_read_cnt          = 0x00399a54;
+useDispFlag                         = 0x00399a6c;
+drDispFlag                          = 0x00399a70;
+
 // main/effect.c
 CG_WaveInit                         = 0x00116b70; // type:func
 CG_WaveInitEasy                     = 0x00116b78; // type:func
