@@ -677,7 +677,8 @@ UG_NoodlesDisp                      = 0x00117a58; // type:func
 CG_NoodlesDisp                      = 0x00117e20; // type:func
 FD_MonocroDisp                      = 0x00117e90; // type:func
 
-gs_simage_EFFECTTMP                           = 0x01c6fef0; // size:0x70
+// TODO: use original name (gs_simage) once it's defined on the C side
+gs_simage_EFFECTTMP                 = 0x01c6fef0; // size:0x70
 gs_loadimg                          = 0x01c6ff60; // size:0x60
 
 FLT_00398F38                        = 0x00398f38;
@@ -876,6 +877,9 @@ sceCdMmode                          = 0x00163610; // type:func
 sceCdRead                           = 0x001636d8; // type:func
 sceCdSeek                           = 0x001638b8; // type:func
 sceCdGetError                       = 0x00163988; // type:func
+
+// sce/ee/gcc/src/newlib/libm/math/sf_sin.c
+sinf                                = 0x001654a0; // type:func
 
 // sce/ee/gcc/src/gcc/libgcc2.c
 __main                              = 0x001680b0; // type:func
