@@ -26,12 +26,17 @@ ELF_PATH = f"build/{BASENAME}"
 MAP_PATH = f"build/{BASENAME}.map"
 PRE_ELF_PATH = f"build/{BASENAME}.elf"
 
-COMMON_INCLUDES = "-Iinclude -isystem include/sdk/ee -isystem include/sdk -isystem include/gcc -isystem include/gcc/gcc-lib"
+COMMON_INCLUDES = "-Iinclude -Isrc -isystem include/sdk/ee -isystem include/sdk -isystem include/gcc -isystem include/gcc/gcc-lib"
 COMPILER_DIR = f"{TOOLS_DIR}/cc/ee-gcc2.96/bin"
-COMPILER_FLAGS = "-O2 -G8 -gstabs"
+
+COMPILER_FLAGS     = "-O2 -G8 -gstabs"
+COMPILER_FLAGS_CPP = "-O2 -G8 -x c++ -fno-exceptions -gstabs"
+
 COMPILE_CMD = (
     f"{COMPILER_DIR}/ee-gcc -c {COMMON_INCLUDES} {COMPILER_FLAGS}"
-    # f"{COMPILER_DIR}/ee-gcc -c -B {COMPILER_DIR}/ee- {COMMON_INCLUDES} {COMPILER_FLAGS}"
+)
+COMPILE_CMD_CPP = (
+    f"{COMPILER_DIR}/ee-gcc -c {COMMON_INCLUDES} {COMPILER_FLAGS_CPP}"
 )
 
 WIBO_VER = "0.6.11"
@@ -126,10 +131,15 @@ def build_stuff(linker_entries: List[LinkerEntry]):
     )
 
     ninja.rule(
+        "cpp",
+        description="cpp $in",
+        command=f"{COMPILE_CMD_CPP} $in -o $out && {cross}strip $out -N dummy-symbol-name",
+    )
+
+    ninja.rule(
         "cc",
         description="cc $in",
         command=f"{COMPILE_CMD} $in -o $out && {cross}strip $out -N dummy-symbol-name",
-        #command=f"{COMPILE_CMD} $in -o $out",
     )
 
     ninja.rule(
@@ -163,6 +173,8 @@ def build_stuff(linker_entries: List[LinkerEntry]):
             seg, splat.segtypes.common.data.CommonSegData
         ):
             build(entry.object_path, entry.src_paths, "as")
+        elif isinstance(seg, splat.segtypes.common.cpp.CommonSegCpp):
+            build(entry.object_path, entry.src_paths, "cpp")
         elif isinstance(seg, splat.segtypes.common.c.CommonSegC):
             build(entry.object_path, entry.src_paths, "cc")
         elif isinstance(seg, splat.segtypes.common.databin.CommonSegDatabin) or isinstance(seg, splat.segtypes.common.rodatabin.CommonSegRodatabin):

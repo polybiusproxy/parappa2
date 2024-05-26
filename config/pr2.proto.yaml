@@ -85,10 +85,11 @@ segments:
         - [0x42068, asm, prlib/objectset] # Header
         - [0x420d8, asm, prlib/renderstuff]
         # - [0x42650, asm, prlib/renderstuff] # Header
-        - [0x42658, asm, prlib/prlib]
+        - [0x42658, cpp, prlib/prlib]
         - [0x430b8, asm, prlib/setpointer]
         - [0x43820, asm, prlib/render]
-        - [0x46db0, asm] # nalib/navector] # Header
+        # - [0x46db0, asm, nalib/navector] # Header
+        - [0x471d0, asm] # prlib/renderee
         # - [0x46dd8, asm, prlib/render]
 
         - [0x55b58, asm, sdk/scelib]
@@ -110,6 +111,7 @@ segments:
         - [0x85ba0, data, main/subt]
         - [0x86478, data, main/drawctrl]
         - [0x87288, data] # main/mbar
+        - [0x28d458, data, prlib]
         
         - [0x291ed0, data, vudata] # .vudata
         
@@ -153,10 +155,17 @@ segments:
         - [0x29a378, sdata, main/stdat]
         - [0x29a438, sdata] # main/scrctrl
         #- [0x29a504, sdata] # main/sprite
-        #- [0x29a508, sdata, main/subt]
+        #- [0x29a514, sdata] # main/subt
         #- [0x29a518, sdata] # main/drawctrl
         - [0x29a6e0, .sdata, main/p3str]
         - [0x29a6f0, sdata]
+        #- [0x29a8b8, sdata, prlib/gifreg] # prlib/gifreg
+        #- [0x29a8bc, sdata, prlib/model] # prlib/model
+        #- [0x29a8c4, sdata, prlib/database] # prlib/database
+        #- [0x29a8c8, sdata, prlib/renderstuff] # prlib/renderstuff
+        - [0x29a8cc, .sdata, prlib/prlib]
+        - [0x29a8e0, sdata] # prlib/render
+        #- [0x29a8ec, sdata]
         
         # - [0x29a9d8, rodatabin] # .sbss / .bss
         
@@ -177,6 +186,8 @@ segments:
         - { start: 0x29aa00, type: sbss, vram: 0x00399abc, name: menu/menu }
 
         - { start: 0x29aa00, type: sbss, vram: 0x00399ac4, name: unk } # menu/menu_mdl
+        #- { start: 0x29aa00, type: sbss, vram: 0x00399b94, name: prlib/render }
+        #- { start: 0x29aa00, type: sbss, vram: 0x00399b98, name: unk2 } # prlib/microprogram.cpp
         - { start: 0x29aa00, type: sbss, vram: 0x00399bd0, name: gcc }
 
         - { start: 0x29aa1c, type: bss,  vram: 0x00399c00, name: bss            }

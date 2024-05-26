@@ -24,7 +24,9 @@ typedef float f32;
 
 #define NULL 0
 #define TRUE 1
-#define FALSE 0
+#define FALSE 
+
+#define PR_EXTERN extern "C"
 
 #define PR_ARRAYSIZEU(arr) (sizeof(arr) / sizeof(arr[0]))
 #define PR_ARRAYSIZE(arr)  (s32)(sizeof(arr) / sizeof(arr[0]))

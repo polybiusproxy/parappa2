@@ -747,9 +747,34 @@ TapCt                               = 0x00140098; // type:func
 sbuff                               = 0x01c82a00; // allow_duplicated:True
 gCd                                 = 0x01c82a40; // size:0x28 // allow_duplicated:True
 
+// prlib/model.cpp
+GetPrimitivePosition__13PrModelObjectPt8NaVECTOR2Zfi4 = 0x00140cb8; // type:func
+GetScreenPosition__13PrModelObjectPt8NaVECTOR2Zfi4    = 0x00140dc0; // type:func
+
+// prlib/database.cpp
+Initialize__16PrObjectDatabase      = 0x00140f08; // type:func
+_GLOBAL_$D$prObjectDatabase         = 0x00141058; // type:func
+_GLOBAL_$I$prObjectDatabase         = 0x00141068; // type:func
+
+prObjectDatabase                    = 0x0038c458; // size:0x24
+
+// prlib/renderstuff.cpp
+Initialize__13PrRenderStuffG9sceGsZbuf = 0x00141178; // type:func
+WaitRender__13PrRenderStuff         = 0x001412f0; // type:func
+_GLOBAL_$D$prRenderStuff            = 0x00141630; // type:func
+_GLOBAL_$I$prRenderStuff            = 0x00141640; // type:func
+
+prRenderStuff                       = 0x0038c480;
+
 // prlib/prlib.cpp
+PrSetFrameRate                      = 0x00141658; // type:func
+PrGetFrameRate                      = 0x00141678; // type:func
+PrInitializeModule                  = 0x00141680; // type:func
+PrCleanupModule                     = 0x001416c8; // type:func
 PrInitializeScene                   = 0x00141710; // type:func
+PrInitializeSceneDBuff              = 0x00141748; // type:func
 PrCleanupScene                      = 0x00141788; // type:func
+PrSetSceneFrame                     = 0x001417f8; // type:func
 PrSetSceneEnv                       = 0x00141800; // type:func
 PrPreprocessSceneModel              = 0x00141818; // type:func
 PrInitializeModel                   = 0x00141820; // type:func
@@ -758,17 +783,91 @@ PrInitializeCamera                  = 0x00141980; // type:func
 PrCleanupModel                      = 0x00141a28; // type:func
 PrCleanupAnimation                  = 0x00141a58; // type:func
 PrCleanupCamera                     = 0x00141b00; // type:func
+PrCleanupAllSceneModel              = 0x00141ba8; // type:func
+PrGetAnimationStartFrame            = 0x00141c10; // type:func
+PrGetAnimationEndFrame              = 0x00141c20; // type:func
+PrGetCameraStartFrame               = 0x00141c30; // type:func
+PrGetCameraEndFrame                 = 0x00141c40; // type:func
+PrSetModelUserData                  = 0x00141c50; // type:func
+PrSetAnimationUserData              = 0x00141c58; // type:func
+PrSetCameraUserData                 = 0x00141c60; // type:func
+PrGetModelUserData                  = 0x00141c68; // type:func
+PrGetAnimationUserData              = 0x00141c70; // type:func
+PrGetCameraUserData                 = 0x00141c78; // type:func
 PrLinkAnimation                     = 0x00141c80; // type:func
+PrUnlinkAnimation                   = 0x00141c88; // type:func
+PrGetLinkedAnimation                = 0x00141c90; // type:func
 PrLinkPositionAnimation             = 0x00141c98; // type:func
 PrUnlinkPositionAnimation           = 0x00141ca0; // type:func
+PrGetLinkedPositionAnimation        = 0x00141ca8; // type:func
 PrSelectCamera                      = 0x00141cb0; // type:func
+PrGetSelectedCamera                 = 0x00141cc0; // type:func
+PrGetCurrentCamera                  = 0x00141cc8; // type:func
+PrSetDefaultCamera                  = 0x00141ce8; // type:func
+PrSetAppropriateDefaultCamera       = 0x00141d38; // type:func
 PrShowModel                         = 0x00141d40; // type:func
+PrGetModelMatrix                    = 0x00141db0; // type:func
 PrHideModel                         = 0x00141dd0; // type:func
+PrGetModelPrimitivePosition         = 0x00141de8; // type:func
+PrGetModelScreenPosition            = 0x00141e28; // type:func
 PrAnimateModel                      = 0x00141e68; // type:func
 PrAnimateModelPosition              = 0x00141e78; // type:func
 PrAnimateSceneCamera                = 0x00141e88; // type:func
 PrRender                            = 0x00141e98; // type:func
 PrWaitRender                        = 0x00141ea0; // type:func
+PrSetStage                          = 0x00141eb0; // type:func
+PrSetDepthOfField                   = 0x00141eb8; // type:func
+PrSetDepthOfFieldLevel              = 0x00141f08; // type:func
+PrGetFocalLength                    = 0x00141f10; // type:func
+PrGetDefocusLength                  = 0x00141f18; // type:func
+PrGetDepthOfFieldLevel              = 0x00141f20; // type:func
+PrSaveContour                       = 0x00141f28; // type:func
+PrResetContour                      = 0x00141f30; // type:func
+PrSavePosture                       = 0x00141f38; // type:func
+PrResetPosture                      = 0x00141f40; // type:func
+PrSetContourBlurAlpha               = 0x00141f48; // type:func
+PrSetTransactionBlendRatio          = 0x00141f58; // type:func
+PrGetContourBlurAlpha               = 0x00141f60; // type:func
+PrGetContourBlurAlpha2              = 0x00141f68; // type:func
+PrGetTransactionBlendRatio          = 0x00141f70; // type:func
+PrSetModelDisturbance               = 0x00141f78; // type:func
+PrGetModelDisturbance               = 0x00141f80; // type:func
+PrGetVertexNum                      = 0x00141f88; // type:func
+PrGetModelName                      = 0x00141f98; // type:func
+PrGetAnimationName                  = 0x00141fa8; // type:func
+PrGetCameraName                     = 0x00141fb0; // type:func
+PrGetSceneName                      = 0x00141fb8; // type:func
+PrGetRenderingStatistics            = 0x00141fc0; // type:func
+PrSetModelVisibility                = 0x00141fd0; // type:func
+PrGetModelImage                     = 0x00142028; // type:func
+PrGetAnimationImage                 = 0x00142030; // type:func
+PrGetCameraImage                    = 0x00142038; // type:func
+PrSetDebugParam                     = 0x00142040; // type:func
+PrSetDebugParamFloat                = 0x00142058; // type:func
+PrGetDebugParam                     = 0x00142078; // type:func
+PrGetDebugParamFloat                = 0x00142090; // type:func
+InitializeDebugParam__Fv            = 0x001420a8; // type:func
+
+prFrameRate                         = 0x003998cc; // type:f32 size:0x4
+prInverseFrameRate                  = 0x003998d0; // type:f32 size:0x4
+tmp_0                               = 0x003998d4;
+tmp_1                               = 0x003998d8;
+prCurrentStage                      = 0x003998dc; // type:s32
+
+debugParam                          = 0x00399b90;
+
+vector_0                            = 0x01c83190;
+vector_1                            = 0x01c831a0;
+
+// prlib/render.cpp
+prSpramData                         = 0x003998e0;
+FLT_003998E4                        = 0x003998e4; // type:s32
+FLT_003998E8                        = 0x003998e8; // type:s32
+
+AwfulStatus                         = 0x00399b94;
+
+// prlib/random.cpp
+PrInitializeRandomPool__Fv          = 0x0014d980; // type:func
 
 //
 //
