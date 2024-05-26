@@ -1,14 +1,10 @@
 #ifndef PRLIB_H
 #define PRLIB_H
 
+#include "common.h"
+
 #include <eetypes.h>
 #include <libgraph.h>
-
-typedef enum
-{
-    false = 0,
-    true = 1
-} bool;
 
 typedef void *PR_MODELHANDLE;
 typedef void *PR_ANIMATIONHANDLE;
@@ -41,7 +37,7 @@ struct PrRENDERING_STATISTICS { // 0x2c
     /* 0x20 */ short unsigned int render_time6;
     /* 0x22 */ short unsigned int render_time7;
     /* 0x24 */ short unsigned int render_time8;
-    /* 0x28 */ bool dynamic_append_transmit_node;
+    /* 0x28 */ int dynamic_append_transmit_node; /* bool */
 };
 
 enum PrDEBUG_PARAM
@@ -49,6 +45,16 @@ enum PrDEBUG_PARAM
     PR_FLOAT_PARAM_DISTURBANCE = 0,
     PR_DEBUG_PARAM_NUM = 1
 };
+
+union PrDebugParam
+{
+	int   d;
+	float f;
+};
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void PrSetFrameRate(float framerate);
 
@@ -81,5 +87,9 @@ void PrAnimateSceneCamera(PR_SCENEHANDLE scene, float time);
 
 void PrRender(PR_SCENEHANDLE scene);
 void PrWaitRender(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
