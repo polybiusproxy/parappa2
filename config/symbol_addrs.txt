@@ -747,6 +747,19 @@ TapCt                               = 0x00140098; // type:func
 sbuff                               = 0x01c82a00; // allow_duplicated:True
 gCd                                 = 0x01c82a40; // size:0x28 // allow_duplicated:True
 
+// prlib/gifreg.cpp
+Append__27PrDmaStripForSetGifRegisterUiRCUl             = 0x00140130; // type:func
+Freeze__27PrDmaStripForSetGifRegisterUcPCv              = 0x00140170; // type:func
+PrInitializeDmaStripGifRegister__FG9sceGsZbuf           = 0x00140288; // type:func
+PrGetDmaStripGifRegister__F20PrSetGifRegisterMode       = 0x001407a0; // type:func
+_GLOBAL_$D$Append__27PrDmaStripForSetGifRegisterUiRCUl  = 0x001407b8; // type:func
+_GLOBAL_$I$Append__27PrDmaStripForSetGifRegisterUiRCUl  = 0x00140810; // type:func
+_$_27PrDmaStripForSetGifRegister                        = 0x00140848; // type:func
+
+gifRegisterModeInitialized                              = 0x003998b8; // size:0x4
+
+setGifRegisterMode                                      = 0x01c82a70; // size:0x720
+
 // prlib/model.cpp
 GetPrimitivePosition__13PrModelObjectPt8NaVECTOR2Zfi4 = 0x00140cb8; // type:func
 GetScreenPosition__13PrModelObjectPt8NaVECTOR2Zfi4    = 0x00140dc0; // type:func

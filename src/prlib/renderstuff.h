@@ -16,7 +16,7 @@ public:
     int _1C;
     sceGsZbuf m_gsZbuf;
     char pad1[0x4];
-    PrRENDERING_STATISTICS m_renderingStatistics;
+    PrRENDERING_STATISTICS m_renderStatistics;
 };
 
 #endif

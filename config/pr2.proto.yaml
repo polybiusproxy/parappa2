@@ -135,7 +135,11 @@ segments:
         - [0x294c00, rodata]
         - [0x297708, .rodata, iop_mdl/wp2cd_rpc]
         - [0x297728, .rodata, iop_mdl/tapctrl_rpc]
-        - [0x297748, rodata, prlib] # prlib
+
+        - [0x297748, rodata, prlib/gifreg]
+        - [0x297770, rodata, prlib]
+
+        - [0x297c10, rodata, sdk/scelib]
         
         - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
 
