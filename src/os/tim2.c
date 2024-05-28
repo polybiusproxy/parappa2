@@ -1,6 +1,11 @@
 #include "os/tim2.h"
 
-int tim2ColorTypeTbl[] = { 0, 2, 1, 0, 20, 19 };
+// TIM2 pixel format table
+int tim2ColorTypeTbl[] =
+{
+    SCE_GS_PSMCT32, SCE_GS_PSMCT16, SCE_GS_PSMCT24, SCE_GS_PSMCT32,
+    SCE_GS_PSMT4, SCE_GS_PSMT8
+};
 
 int SPstrncmp(char *sr1, char *sr2, int num)
 {
@@ -259,15 +264,14 @@ int MODE_TR_P(int mode, int ws, int hs)
 
 int Tim2LoadSet(TIM2INFO *info_pp)
 {
+    int i;
+    
     static sceGsLoadImage tp;
     u_long img_pos = info_pp->picturH->GsTex0;
     u_long col_pos = img_pos;
-    int i;
-    int ws;
-    int hs;
-    int dpsm;
-    int dbw;
-    int dtbp;
+    
+    int ws, hs;
+    int dpsm, dbw, dtbp;
     int adrs;
 
     col_pos = PR_TEX0(info_pp->picturH).CBP;

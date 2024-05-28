@@ -22,14 +22,16 @@ static char mtcStack_Ctrl[MTC_TASK_SIZE_CTRL];
 static struct ThreadParam th_para_Ctrl;
 
 // Size for each stack
-int mtcStackSizeTbl[] = { 
+int mtcStackSizeTbl[] =
+{ 
     0x1000, 0x1000, 0x100,  0x800,
     0x1000, 0x4000, 0x100,  0x4000,
     0x100,  0x100,  0x1000, 0x100,
     0x100,  0x1000, 0x100,  0x1000
 };
 
-char* mtcStack[16] = {
+char* mtcStack[16] =
+{
     mtcStack_CTRL, mtcStack_MAIN, mtcStack_02, mtcStack_03,
     mtcStack_04,   mtcStack_05,   mtcStack_06, mtcStack_07,
     mtcStack_08,   mtcStack_09,   mtcStack_0A, mtcStack_0B,

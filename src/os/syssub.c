@@ -256,7 +256,8 @@ void padPrsRead0Clear(PADD *pad_pp)
 
 void padPrsTreate(PADD *pad_pp)
 {
-    u_short pad_pos[12] = {
+    u_short pad_pos[12] =
+    {
         SCE_PADLright,
         SCE_PADLleft,
         SCE_PADLup,
@@ -390,7 +391,8 @@ void GPadRead(PADD *pad_pp)
 
 PAD_PRESS_ENUM GetPadbit2PressId(u_short padbit)
 {
-    BIT2PR bit2pr[12] = {
+    BIT2PR bit2pr[12] =
+    {
         { 0x8000, PAD_PR_Lleft }, { 0x2000, PAD_PR_Lright },
         { 0x1000, PAD_PR_Lup   }, { 0x4000, PAD_PR_Ldown  },
 
