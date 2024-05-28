@@ -25,7 +25,7 @@ options:
     rodata_string_guesser_level: 2 # improve string detection
     disasm_unknown: True
     named_regs_for_c_funcs: False
-    gp_value: 0x3A0EF0
+    gp_value: 0x3a0ef0
     # subalign: 4
     include_macro_inc: no # don't write macro.inc to rodata files
     
@@ -40,6 +40,7 @@ segments:
       bss_size: 0x18F4434 # should be 1 byte less?
       subalign: null
       subsegments:
+        # .text
         - [0x1000,  asm, sdk/crt0]
         - [0x10c8,  asm, sdk/tmp]
         
@@ -80,24 +81,68 @@ segments:
         # prlib/nalib
         - [0x41130, asm, prlib/gifreg]
         - [0x41868, asm, prlib/model]
-        - [0x41e38, asm, nalib/navector] # Header
+          # - [0x41e38, asm, nalib/navector] # Header
         - [0x41e60, asm, prlib/database]
-        - [0x42068, asm, prlib/objectset] # Header
+        # - [0x42078, asm, prlib/objectset] # Header
         - [0x420d8, asm, prlib/renderstuff]
-        # - [0x42650, asm, prlib/renderstuff] # Header
+          # - [0x42650, asm, prlib/renderstuff] # Header
         - [0x42658, cpp, prlib/prlib]
         - [0x430b8, asm, prlib/setpointer]
         - [0x43820, asm, prlib/render]
-        # - [0x46db0, asm, nalib/navector] # Header
-        - [0x471d0, asm] # prlib/renderee
-        # - [0x46dd8, asm, prlib/render]
+          # - [0x46db0, asm, nalib/navector] # Header
+        - [0x471d0, asm, prlib/renderee] # prlib/renderee
+          # - [0x47a08, asm, prlib/renderstuff] # Header
+        - [0x47a10, asm, prlib/transition]
+        - [0x47e80, asm, prlib/microprogram]
+        - [0x47f40, asm, prlib/spram]
+          # - [0x48ce0, asm, nalib/navector] # Header
+            # prlib/spram.cpp global constructor
+          # - [0x48e38, asm, nalib/navector] # Header
+        - [0x49350, asm, prlib/mfifo]
+        - [0x49590, asm, prlib/spadata]
+          # - [0x4a168, asm, nalib/navector] # Header
+          # - [0x4bbe0, asm, nalib/navector] # Header
+        - [0x4c118, asm, prlib/scene]
+          # - [0x4c988, asm, nalib/navector] # Header
+          # - [0x4c9d8, asm, prlib/objectset] # Header
+        - [0x4c9f8, asm, prlib/cluster]
+        - [0x4cd18, asm, prlib/shape]
+        - [0x4d200, asm, prlib/billboard]
+          # - [0x4d4e8, asm, nalib/navector] # Header
+        - [0x4d8e8, asm, prlib/depthfield]
+        - [0x4dd38, asm, nalib/napacket] # Header
+        - [0x4ddd0, asm, prlib/vram]
+          # - [0x4e668, asm, nalib/napacket] # Header
+        - [0x4e8e0, asm, prlib/random]
+        - [0x4ea40, asm, prlib/menderer]
+          # - [0x503b8, asm, nalib/navector] # Header
+          # - [0x504c8, asm, nalib/navector] # Header
+        - [0x509d0, asm, prlib/menderercreate]
+        - [0x514c8, asm, prlib/mendererawful]
+          # - [0x51ce8, asm, nalib/navector] # Header
+        - [0x51d68, asm, prlib/mendereralpha]
+        - [0x52270, asm, prlib/mendererdata]
+          # - [0x52d78, asm, nalib/navector] # Header
+        - [0x52e20, asm, prlib/wave]
+        - [0x533f0, asm, prlib/dmaqueue]
+        - [0x53750, asm, prlib/utility]
+        - [0x53790, asm, prlib/tim2]
+        - [0x54840, asm, prlib/animation]
+        - [0x54888, asm, prlib/camera]
+          # - [0x54ad0, asm, nalib/navector] # Header
+        - [0x54e80, asm, prlib/contour]
+        - [0x553e8, asm, prlib/dma]
+          # - [0x554a8, asm, nalib/navector] # Header
+        - [0x555d8, asm, nalib/navector]
 
         - [0x55b58, asm, sdk/scelib]
         - [0x662d0, asm, sdk/newlib]
         
-        - [0x79040, data, vutext] # .vutext
+        # .vutext
+        - [0x79040, data, vutext]
         
-        - [0x7b900, data] # .data
+        # .data
+        - [0x7b900, data]
         - [0x7b970, .data, dbug/dbgmsg]
         - [0x7c9e0, data, dbug/vramsave]
         - [0x7ca90, .data, os/mtc]
@@ -113,10 +158,13 @@ segments:
         - [0x87288, data] # main/mbar
         - [0x28d458, data, prlib]
         
-        - [0x291ed0, data, vudata] # .vudata
+        # .vudata
+        - [0x291ed0, data, vudata]
         
-        - [0x291f00, .rodata, dbug/dbgmsg] # .rodata
+         # .rodata
+        - [0x291f00, .rodata, dbug/dbgmsg]
         - [0x291f20, .rodata, dbug/vramsave]
+
         - [0x291fa0, .rodata, os/mtc]
         - [0x291fc0, .rodata, os/syssub]
         - [0x292760, .rodata, os/system]
@@ -130,26 +178,44 @@ segments:
         - [0x294018, .rodata, main/sprite]
         - [0x294110, rodata, main/drawctrl]
         - [0x294400, .rodata, main/effect]
-        - [0x294430, rodata] # main/mbar
+        - [0x294430, rodata, main/mbar]
+        - [0x294510, rodata, main/pack]
+        - [0x294530, rodata, main/etc]
+        - [0x294638, rodata, main/wipe]
+        - [0x294748, rodata, main/mcctrl]
+        - [0x294810, rodata, main/main]
+        - [0x294b48, rodata, main/cmnfile]
         - [0x294b60, .rodata, main/p3str]
         - [0x294c00, rodata]
+
         - [0x297708, .rodata, iop_mdl/wp2cd_rpc]
         - [0x297728, .rodata, iop_mdl/tapctrl_rpc]
 
         - [0x297748, rodata, prlib/gifreg]
-        - [0x297770, rodata, prlib]
+        - [0x297770, rodata, prlib/setpointer]
+        - [0x297790, rodata, prlib/spram]
+        - [0x2977a0, rodata, prlib/spadata]
+        - [0x2977e0, rodata, prlib/menderer]
+        - [0x297800, rodata, prlib/menderercreate]
+        - [0x297980, rodata, prlib/mendereralpha]
+        - [0x2979a0, rodata, prlib/wave]
+        - [0x2979b0, rodata, prlib/tim2]
 
         - [0x297c10, rodata, sdk/scelib]
+        - [0x2987e8, rodata, sdk/newlib]
         
-        - [0x299d80, rodatabin, gcc_except_table] # .gcc_except_table
+        # # .gcc_except_table
+        - [0x299d80, rodatabin, gcc_except_table]
 
-        - [0x299f00, .lit4, main/cdctrl] # .lit4
+        # .lit4
+        - [0x299f00, .lit4, main/cdctrl]
         - [0x299f10, .lit4, main/scrctrl]
         - [0x299f14, lit4] # main/drawctrl
         - [0x299f38, lit4, main/effect]
         - [0x299f40, lit4] # main/mbar
 
-        - [0x29a300, sdata] # .sdata
+        # .sdata
+        - [0x29a300, sdata]
         - [0x29a308, .sdata, dbug/vramsave]
         - [0x29a310, .sdata, os/mtc]
         - [0x29a318, .sdata, os/syssub]
@@ -162,7 +228,15 @@ segments:
         #- [0x29a514, sdata] # main/subt
         #- [0x29a518, sdata] # main/drawctrl
         - [0x29a6e0, .sdata, main/p3str]
-        - [0x29a6f0, sdata]
+
+        - [0x29a6f0, sdata, menu/menudata]
+        - [0x29a700, sdata, menu/menusub]
+        - [0x29a830, sdata, menu/p3mc]
+        - [0x29a878, sdata, menu/memc]
+        - [0x29a890, sdata, menu/menufont]
+        - [0x29a8a0, sdata, menu/pksprite]
+
+        - [0x29a8b8, sdata]
         #- [0x29a8b8, sdata, prlib/gifreg] # prlib/gifreg
         #- [0x29a8bc, sdata, prlib/model] # prlib/model
         #- [0x29a8c4, sdata, prlib/database] # prlib/database
