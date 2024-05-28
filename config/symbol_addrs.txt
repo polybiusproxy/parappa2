@@ -709,6 +709,15 @@ mccReqVSOTHSAVEget                  = 0x0011f110; // type:func
 // main/main.c
 mainStart                           = 0x00121a68; // type:func
 
+// main/cmnfile.c
+cmn_file_str_search                 = 0x00121dc8; // type:func
+cmnfTim2Trans                       = 0x00121e00; // type:func
+cmnfGetFileAdrs                     = 0x00121e80; // type:func
+cmnfGetFileSize                     = 0x00121ee8; // type:func
+
+common_ipk_start                    = 0x00190440;
+common_ipk_end                      = 0x0038c454;
+
 // main/p3str.c
 adrd_common_clr                     = 0x00121f68; // type:func
 adrd_common_ck                      = 0x00121fb0; // type:func
