@@ -194,9 +194,15 @@ INCLUDE_ASM(const s32, "prlib/prlib", PrGetContourBlurAlpha2);
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrGetTransactionBlendRatio);
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSetModelDisturbance);
+PR_EXTERN void PrSetModelDisturbance(PrModelObject *model, float disturbance)
+{
+    model->m_disturbance = disturbance;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetModelDisturbance);
+PR_EXTERN float PrGetModelDisturbance(PrModelObject *model)
+{
+    return model->m_disturbance;
+}
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrGetVertexNum);
 
@@ -208,7 +214,11 @@ INCLUDE_ASM(const s32, "prlib/prlib", PrGetCameraName);
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrGetSceneName);
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetRenderingStatistics);
+PR_EXTERN PrRENDERING_STATISTICS* PrGetRenderingStatistics()
+{
+    PrRenderStuff* renderStuff = &prRenderStuff;
+    return &renderStuff->m_renderStatistics;
+}
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrSetModelVisibility);
 
