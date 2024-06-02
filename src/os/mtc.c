@@ -51,7 +51,7 @@ static short int th_id_Ctrl;
 
 static void mtcStackErrorCheck(int level)
 {
-    if ( *(int*)mtcStack[level] != 0x572a8b4c )
+    if (*(int*)mtcStack[level] != 0x572a8b4c)
     {
         printf("stack over level[%d]\n", level);
         while (1)
@@ -81,7 +81,8 @@ void MtcChangeThCtrl(void* x)
             StartThread(mtcTaskConB[mtcCurrentTask].th_id, 0);
             SleepThread();
         }
-        else if ((mtcTaskConB[mtcCurrentTask].status == MTC_COND_WAIT) && (--mtcTaskConB[mtcCurrentTask].wtime <= 0)) 
+        else if ((mtcTaskConB[mtcCurrentTask].status == MTC_COND_WAIT) && 
+                 (--mtcTaskConB[mtcCurrentTask].wtime <= 0)) 
         {
             SyoriLineCnt(mtcCurrentTask);
             RotateThreadReadyQueue(16);
@@ -126,7 +127,7 @@ void MtcQuit(void)
 
 void MtcStart(void* ctrlTh_pp)
 {
-    MtcExec(ctrlTh_pp, NULL);
+    MtcExec(ctrlTh_pp, MTC_TASK_CTRL);
 
     mtcCurrentTask = -1;
 
@@ -136,8 +137,8 @@ void MtcStart(void* ctrlTh_pp)
 
 void MtcExec(void* prg_pp, long int level)
 {
-    struct ThreadParam* th_pp;
-    MTC_TASK_CONB* mc_pp = &mtcTaskConB[level];
+    struct ThreadParam *th_pp;
+    MTC_TASK_CONB      *mc_pp = &mtcTaskConB[level];
 
     if (mc_pp->status != MTC_COND_KILL)
     {
@@ -175,8 +176,8 @@ void MtcWait(long int wt)
 
 void MtcKill(long int level)
 {
-    MTC_TASK_CONB* tcb_pp = &mtcTaskConB[level];
-    MTC_COND_ENUM mtc_f = tcb_pp->status;
+    MTC_TASK_CONB *tcb_pp = &mtcTaskConB[level];
+    MTC_COND_ENUM  mtc_f  = tcb_pp->status;
 
     mtc_f |= ~MTC_COND_PAUSE;
 
@@ -193,7 +194,7 @@ void MtcKill(long int level)
 
 void MtcPause(long int level)
 {
-    MTC_TASK_CONB* tcb_pp = &mtcTaskConB[level];
+    MTC_TASK_CONB *tcb_pp = &mtcTaskConB[level];
 
     if (tcb_pp->status != 0)
         tcb_pp->status |= MTC_COND_PAUSE;
@@ -201,13 +202,13 @@ void MtcPause(long int level)
 
 void MtcContinue(long int level)
 {
-    MTC_TASK_CONB* tcb_pp = &mtcTaskConB[level];
+    MTC_TASK_CONB *tcb_pp = &mtcTaskConB[level];
     tcb_pp->status &= ~MTC_COND_PAUSE;
 }
 
 void MtcExit(void)
 {
-    MTC_TASK_CONB* tcb_pp;
+    MTC_TASK_CONB *tcb_pp;
     mtcStackErrorCheck(mtcCurrentTask);
 
     tcb_pp = &mtcTaskConB[mtcCurrentTask];

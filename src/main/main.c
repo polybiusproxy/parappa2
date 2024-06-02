@@ -19,6 +19,10 @@
 
 #include "menu/menu.h"
 
+#include "iop_mdl/tapctrl_rpc.h"
+
+#include "prlib/prlib.h"
+
 /* TODO - put on system.c */
 HAT_CHANGE_ENUM hat_change_enum;
 
@@ -95,6 +99,9 @@ extern DBG_MODE_STR dbg_mode_str[]; /* =
 
 int overlay_loadaddr;
 /* static */ int uramen_end_flag;
+
+/* bss - static */
+extern MENU_STR menu_str;
 
 int first_f; /* mainStart */
 
@@ -613,7 +620,6 @@ INCLUDE_ASM(const s32, "main/main", urawazaKeyCheck);
 
 extern char D_003996D0[]; /* sdata - "ura:%d" */
 
-// INCLUDE_ASM(const s32, "main/main", ura_check);
 void ura_check(void)
 {
     u_char msg_tmp[32];
@@ -642,3 +648,79 @@ void ura_check(void)
 }
 
 INCLUDE_ASM(const s32, "main/main", mainStart);
+void mainStart(/* a0 4 */ void *xx);
+#if 0
+{
+    extern int first_f; /* sdata 3996d8 */
+    /* s0 16 */ int retTitle;
+
+    // Init systems
+    mccReqInit();
+    CdctrlInit();
+    PrInitializeModule(DBufDc.draw01.zbuf1);
+    UsrPrInitScene();
+
+    hat_change_enum = HCNG_AUTO;
+
+    // Init TapCtrl module
+    TapCtInit();
+    TapCt(0, 0, 0);
+
+    TimeCallbackSet();
+
+    menu_str.sel_menu_enum = SEL_MENU_STAGESEL;
+    menu_str.mc_rep_str_p = &mc_rep_str;
+    menu_str.game_status_p = &game_status;
+
+    // Load common textures and sounds
+    cmnfTim2Trans();
+    wipeSndFileTrans();
+
+    CdctrlReadWait();
+    printf("int read end\n");
+
+    startUpDisp();
+
+    while (1)
+    {
+        urawaza_levelsel_bottun = -1;
+        titleDisp(first_f);
+
+        WipeInReq();
+        MtcWait(2);
+
+        first_f = 0;
+
+        menu_str.sel_menu_enum = SEL_MENU_STAGESEL;
+        game_status.demo_flagG = DEMOF_OFF;
+
+        while (1)
+        {
+            UsrMemClear();
+            SpuBankSet();
+
+            urawaza_levelsel_bottun = -1;
+            urawaza_skip_bottun = 0;
+
+            CdctrlRead(&file_str_menu_file, UsrMemAllocNext(), UsrMemAllocEndNext());
+            CdctrlReadWait();
+
+            WipeOutReq();
+
+            PrSetStage(0);
+            game_status.play_typeG = PLAY_TYPE_NORMAL;
+
+            retTitle = MenuCtrl(&menu_str);
+
+            if ((pad[0].shot & 4) && (pad[0].shot & 1))
+            {
+                urawaza_skip_bottun = 1;
+            }
+            else
+            {
+                urawaza_skip_bottun = 0;
+            }
+        }
+    }
+}
+#endif
