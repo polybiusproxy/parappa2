@@ -1,5 +1,7 @@
 #include "dbug/dbgmsg.h"
 
+#include "dbug/msg8x8data.h"
+
 static u_long128 dbgPacket[4096];
 static sceGifPacket gifPacket;
 

@@ -162,4 +162,24 @@ typedef struct { // 0xc
     /* 0x8 */ int subtime;
 } P3STR_SORT;
 
+void adrd_common_clr(void);
+ADRD* adrd_common_ck(int id);
+
+void p3strImage2RealPos(P3STR_SD *p3str_sd_pp);
+void p3StrInit(u_int adrs);
+
+int getTopSeekPos(void);
+ADRD* getADRDnum(ADRD *adr_pp, int id);
+
+int p3StrInitSd(P3SRT_OD *p3o_pp, P3STR_SD *p3sd_pp, int datnum);
+int p3StrQuitSdEach(P3SRT_OD *p3o_pp, P3STR_SD *p3sd_pp);
+void p3StrDispDs(P3SRT_OD *p3o_pp, P3STR_SD *p3sd_pp, int subtime);
+
+void p3str_sort_init(void);
+void p3str_sort_set(P3SRT_OD *p3o_pp, P3STR_SD *p3sd_pp, int subtime);
+void p3str_sort_disp(void);
+
+void p3StrPoll(u_int cur_time);
+void p3StrQuitSd(void);
+
 #endif
