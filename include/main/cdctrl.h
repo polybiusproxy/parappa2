@@ -149,7 +149,4 @@ void CdctrlSndFadeOut(int time);
 int CdctrlSndFadeOutCheck(void);
 void CdctrlSndFadeOutWait(int time);
 
-// TODO(poly): move to iop_mdl/tapctrl_rpc.c once splitted
-int TapCt(int command, int data1, int data2);
-
 #endif

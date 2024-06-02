@@ -30,6 +30,7 @@ typedef struct { // 0x38
 } STDAT_REC;
 
 FILE_STR file_str_logo_file;
+FILE_STR file_str_menu_file;
 
 STDAT_REC stdat_rec[19];
 

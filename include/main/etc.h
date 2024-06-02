@@ -3,8 +3,6 @@
 
 #include <eetypes.h>
 
-#include "os/system.h"
-
 // Typedef structs that I'm too lazy to define here
 // -----------------------------------------------
 typedef int EVENTREC;

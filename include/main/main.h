@@ -3,6 +3,11 @@
 
 #include "common.h"
 
+#include "main/etc.h"
+#include "main/mcctrl.h"
+
+#include <eetypes.h>
+
 enum
 {
     dmyPmTitle = 0,
@@ -26,6 +31,19 @@ typedef enum
     CBE_HOOK = 4,
     CBE_MAX = 5
 } CANCEL_TYPE_ENUM;
+
+// TODO: move somewhere else
+typedef enum {
+    SEL_MENU_STAGESEL = 0,
+    SEL_MENU_SAVE = 1,
+    SEL_MENU_REPLAY = 2
+} SEL_MENU_ENUM;
+
+typedef struct { // 0xc
+    /* 0x0 */ GAME_STATUS *game_status_p;
+    /* 0x4 */ MC_REP_STR *mc_rep_str_p;
+    /* 0x8 */ SEL_MENU_ENUM sel_menu_enum;
+} MENU_STR;
 
 void mainStart(void* xx);
 

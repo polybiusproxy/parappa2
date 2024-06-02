@@ -5,6 +5,8 @@
 
 #include <eetypes.h>
 #include <sifrpc.h>
-#include <stdio.h>
+
+int TapCtInit(void);
+int TapCt(int command, int data1, int data2);
 
 #endif

@@ -1,5 +1,7 @@
 #include "iop_mdl/tapctrl_rpc.h"
 
+#include <stdio.h>
+
 #define DATA_SIZE_NORMAL (16)
 #define TAPCT_DEV (0x8001)
 
