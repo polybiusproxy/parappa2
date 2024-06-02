@@ -3,6 +3,8 @@
 
 #include <eetypes.h>
 
+#include "os/system.h"
+
 // Typedef structs that I'm too lazy to define here
 // -----------------------------------------------
 typedef int EVENTREC;
@@ -489,14 +491,25 @@ typedef struct { // 0xd0
     /* 0xcc */ LEVEL_VS_ENUM level_vs_enumG;
 } GAME_STATUS;
 
+typedef enum {
+    HCNG_AUTO = -1,
+    HCNG_R1 = 0,
+    HCNG_R2 = 1,
+    HCNG_R3 = 2,
+    HCNG_R4 = 3,
+    HCNG_MAX = 4
+} HAT_CHANGE_ENUM;
+
 TAP_ROUND_ENUM GetHatRound(void);
 int GlobalSndSampleGet(void);
 u_int TimeCallbackTimeGetChan(int chan);
 void GlobalTimeJobChange(TIME_GET_FLAG tfg);
 void TimeCallbackTimeSetChanTempo(int chan, u_int time, float tempo);
+void GlobalSetTempo(GLOBAL_DATA *gl_pp, float tempo);
 PLAYER_INDEX Pcode2Pindex(PLAYER_CODE pc);
 int GetIndex2KeyCode(int index);
 void UsrPrSetScene(void);
+void SpuBankSet(void);
 int inCmnHook2GameCheck(int pack_id);
 
 #endif

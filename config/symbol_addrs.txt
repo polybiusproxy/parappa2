@@ -164,6 +164,7 @@ _stack_size_addr                    = 0x00399338; // type:s32
 outbuf_idx                          = 0x0039933c; // type:s32
 oddeven_idx                         = 0x00399340; // type:s32
 OsFuncAddr                          = 0x00399344; // type:s32
+hat_change_enum                     = 0x00399348; // type:s32
 
 GifPkCommon                         = 0x003babd0; // size:0x20000
 drawEnvSp                           = 0x003dabd0; // size:0x80
@@ -467,7 +468,7 @@ thnum_tbl                           = 0x00183320; // size:0x10
 tcl_ctrl                            = 0x00183330; // size:0x840
 scrprgstr                           = 0x00183b70;
 scrprgstr_hook                      = 0x00183b88;
-tim2spr_tbl                         = 0x00183b90; // size:0x40
+tim2spr_tbl                         = 0x00183b90; // size:0x40 allow_duplicated:true
 bn_num_type                         = 0x00183bd0;
 lero_tim2_pt                        = 0x00183c10;
 lero_pos_str                        = 0x00183c68;
@@ -698,6 +699,7 @@ TimeCallbackTimeSetChanTempo        = 0x0011c808; // type:func
 Pcode2Pindex                        = 0x0011c8d0; // type:func
 GetIndex2KeyCode                    = 0x0011c990; // type:func
 UsrPrSetScene                       = 0x0011ca68; // type:func
+SpuBankSet                          = 0x0011cad0; // type:func
 inCmnHook2GameCheck                 = 0x0011ccd0; // type:func
 
 // main/mcctrl.c
@@ -707,7 +709,44 @@ mccReqVSOTHSAVEset                  = 0x0011f0a0; // type:func
 mccReqVSOTHSAVEget                  = 0x0011f110; // type:func
 
 // main/main.c
+dbg_select_disp                     = 0x0011f720; // type:func
+dummyPlay                           = 0x0011f950; // type:func
+selPlayDisp                         = 0x00120020; // type:func
+SpHatChangeSub                      = 0x00120320; // type:func
+selPlayDispTitleDisp                = 0x001204f0; // type:func
+xtrView                             = 0x00120798; // type:func
+logoDispOne                         = 0x00120868; // type:func
+uramenFileSearchTask                = 0x00120970; // type:func
+uramenFileSearchSet                 = 0x001209a8; // type:func
+uramenFileSearchEnd                 = 0x001209c0; // type:func
+startUpDisp                         = 0x001209f0; // type:func
+selPlayDispType                     = 0x00120ad0; // type:func
+selPlayDispSetPlay                  = 0x00120e18; // type:func
+selPlayDispSetPlayOne               = 0x00121138; // type:func
+gamePlayDisp                        = 0x001212d0; // type:func
+titleDisp                           = 0x00121650; // type:func
+urawazaKeyCheck                     = 0x001217f0; // type:func
+ura_check                           = 0x001219c8; // type:func
 mainStart                           = 0x00121a68; // type:func
+
+dbg_select_str                      = 0x00187400; // size:0x10
+dbg_tbl_msg                         = 0x00187410;
+dbg_score_msg                       = 0x00187458;
+dbg_mode_str                        = 0x00187460;
+
+// TODO: migrate .data (and .sdata) and remove the temp name
+tim2spr_tbl_tmp                     = 0x001874b0; // size:0x40 allow_duplicated:true
+
+urawaza_skip_bottun                 = 0x003995d0;
+urawaza_levelsel_bottun             = 0x003995d4;
+overlay_loadaddr                    = 0x00399688;
+uramen_end_flag                     = 0x003996c8;
+first_f                             = 0x003996d8;
+
+FLT_00398F44                        = 0x00398f44; // type:f32
+FLT_00398F48                        = 0x00398f48; // type:f32
+
+menu_str                            = 0x01c77630; // size:0xC
 
 // main/cmnfile.c
 cmn_file_str_search                 = 0x00121dc8; // type:func
@@ -741,6 +780,9 @@ adrd_common_cnt                     = 0x00399ab4;
 p3str_sort_cnt                      = 0x00399ab8;
 
 p3str_sort                          = 0x01c77640; // size:0x108
+
+// menu/menu.c
+MenuMemCardCheck                    = 0x00123a68; // type:func
 
 // iop_mdl/wp2cd_rpc.c
 WP2Init                             = 0x0013fdb8; // type:func

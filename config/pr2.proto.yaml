@@ -68,7 +68,7 @@ segments:
         - [0x1cec0, asm, main/etc]
         - [0x1dd58, asm, main/wipe]
         - [0x1fce8, asm, main/mcctrl]
-        - [0x20720, asm, main/main]
+        - [0x20720, c, main/main]
         - [0x22dc8, c, main/cmnfile]
         - [0x22f68, c, main/p3str]
         - [0x23c50, asm, main/commake]
@@ -156,6 +156,8 @@ segments:
         - [0x85ba0, data, main/subt]
         - [0x86478, data, main/drawctrl]
         - [0x87288, data] # main/mbar
+        - [0x88400, data, main/main]
+        - [0x884f0, data] # main/commake
         - [0x28d458, data, prlib]
         
         # .vudata
@@ -183,7 +185,7 @@ segments:
         - [0x294530, rodata, main/etc]
         - [0x294638, rodata, main/wipe]
         - [0x294748, rodata, main/mcctrl]
-        - [0x294810, rodata, main/main]
+        - [0x294810, .rodata, main/main]
         - [0x294b48, .rodata, main/cmnfile]
         - [0x294b60, .rodata, main/p3str]
         - [0x294c00, rodata]
@@ -227,6 +229,8 @@ segments:
         #- [0x29a504, sdata] # main/sprite
         #- [0x29a514, sdata] # main/subt
         #- [0x29a518, sdata] # main/drawctrl
+        
+        - [0x29a5d0, sdata, main/main]
         - [0x29a6e0, .sdata, main/p3str]
 
         - [0x29a6f0, sdata, menu/menudata]

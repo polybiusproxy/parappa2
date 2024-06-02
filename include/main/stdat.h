@@ -3,10 +3,9 @@
 
 #include "common.h"
 
-#include "os/mtc.h"
-#include "main/cdctrl.h"
-#include "main/subt.h"
 #include "main/etc.h"
+#include "main/subt.h"
+#include "main/cdctrl.h"
 
 struct SCR_MAIN;
 
@@ -29,6 +28,10 @@ typedef struct { // 0x38
     /* 0x30 */ STDAT_DAT *stdat_dat_pp;
     /* 0x34 */ char *strec_name;
 } STDAT_REC;
+
+FILE_STR file_str_logo_file;
+
+STDAT_REC stdat_rec[19];
 
 void stDatFirstFileSearch(void);
 
