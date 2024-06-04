@@ -15,6 +15,7 @@
 #include "main/p3str.h"
 #include "main/cdctrl.h"
 #include "main/cmnfile.h"
+#include "main/scrctrl.h"
 #include "main/fadectrl.h"
 
 #include "menu/menu.h"
@@ -340,6 +341,7 @@ int selPlayDisp(/* s5 21 */ int sel_stage, /* s3 19 */ int sel_disp, /* s7 23 */
 #endif
 
 INCLUDE_ASM(const s32, "main/main", SpHatChangeSub);
+void SpHatChangeSub(void);
 #if 0
 static void SpHatChangeSub(void)
 {
@@ -387,8 +389,97 @@ static void SpHatChangeSub(void)
 }
 #endif
 
-INCLUDE_ASM(const s32, "main/main", selPlayDispTitleDisp);
-int selPlayDispTitleDisp(/* s3 19 */ int sel_stage, /* s4 20 */ int sel_disp, /* s0 16 */ int ovl_load);
+extern char D_003939D8[]; /* rodata - "=== selPlayDisp stg:%d disp:%d ===\n" */
+extern char D_00393A00[]; /* rodata - "overlay module load in\n" */
+extern char D_00393A18[]; /* rodata - "overlay module load out\n" */
+extern char D_003996C0[]; /* sdata  - "DEBUG" */
+
+int selPlayDispTitleDisp(int sel_stage, int sel_disp, int ovl_load)
+{
+    STDAT_DAT *stdat_dat_pp;
+    int        ret = 0;
+
+    ReportHeapUsage();
+    printf(D_003939D8, sel_stage, sel_disp);
+
+    if (ovl_load)
+    {
+        printf(D_00393A00);
+        CdctrlRead(&stdat_rec[sel_stage].ovlfile, overlay_loadaddr, 0);
+        CdctrlReadWait();
+        printf(D_00393A18);
+    }
+
+    asm("sync.l");
+    FlushCache(0);
+
+    stdat_dat_pp = &stdat_rec[sel_stage].stdat_dat_pp[sel_disp];
+
+    global_data.play_stageL = sel_stage;
+    GlobalPlySet(&global_data, stdat_dat_pp->play_step, sel_stage);
+    GlobalTimeInit(&global_data);
+    GlobalSetTempo(&global_data, stdat_rec[sel_stage].stdat_dat_pp[sel_disp].tempo);
+
+    ScrCtrlInit(stdat_dat_pp, (void*)UsrMemGetAdr(0));
+
+    do
+        MtcWait(1);
+    while (!ScrCtrlInitCheck());
+
+    ScrCtrlGoLoop();
+    WipeOutReq();
+
+    PrSetPostureWorkArea(UsrMemAllocNext(), UsrMemAllocEndNext() - UsrMemAllocNext());
+    DrawCtrlInit(stdat_dat_pp->ev_pp, global_data.draw_tbl_top, (void*)UsrMemGetAdr(0));
+    PrSetPostureWorkArea(0, 0);
+    DrawCtrlTimeSet(0);
+    MtcWait(1);
+
+    ReportHeapUsage();
+
+    while (1)
+    {
+        MtcWait(1);
+
+        if (ScrEndCheckTitle())
+        {
+            ret = 1;
+            break;
+        }
+        
+        if (ScrEndCheckScore())
+        {
+            break;
+        }
+
+        SpHatChangeSub();
+
+        if (pad[0].one & SCE_PADLdown)
+            dbg_select_str.debug_on ^= 1;
+
+        if (dbg_select_str.debug_on)
+        {
+            sceGifPacket dbgPk;
+
+            DbgMsgInit();
+            DbgMsgClear();
+
+            CmnGifOpenCmnPk(&dbgPk);
+            DbgMsgClearUserPkt(&dbgPk);
+            DbgMsgPrintUserPkt(D_003996C0, 1730, 1948, &dbgPk);
+            CmnGifCloseCmnPk(&dbgPk, 7);
+        }
+    }
+
+    if (ret != 0)
+        MtcWait(60);
+
+    DrawCtrlQuit();
+    CdctrlWP2SetVolume(0);
+    CdctrlWp2FileEnd();
+    ScrCtrlQuit();
+    return ret;
+}
 
 void xtrView(FILE_STR *file_str_pp)
 {

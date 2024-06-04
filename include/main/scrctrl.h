@@ -536,7 +536,14 @@ float GetLineTempo(int scr_line);
 GET_TIME_TYPE GetTimeType(int scr_line);
 int GetTimeOfset(int scr_line);
 
-int CheckIndvCdChannel(/* s1 17 */ SCORE_INDV_STR *sindv_pp, /* s0 16 */ u_char *chantmp);
+int CheckIndvCdChannel(SCORE_INDV_STR *sindv_pp, u_char *chantmp);
+
+void ScrCtrlInit(STDAT_DAT *sdat_pp, void *data_top);
+void ScrCtrlQuit(void);
+int ScrCtrlInitCheck(void);
+void ScrCtrlGoLoop(void);
+int ScrEndCheckScore(void);
+int ScrEndCheckTitle(void);
 
 /* TODO(poly): move to main/mbar.h */
 typedef enum {
@@ -555,7 +562,6 @@ TIM2_DAT* lessonCl2InfoGet(SCRRJ_LESSON_ROUND_ENUM type);
 void MbarSetCtrlTime(int mctime);
 void MbarReq(MBAR_REQ_ENUM mm_req, TAPSET *ts_pp, int curr_time, SCR_TAP_MEMORY *tm_pp, int tm_cnt, int lang, int tapdat_size, TAPDAT *tapdat_pp, GUI_CURSOR_ENUM guic);
 void vsAnimationReset(int ply, long int scr);
-
 
 /* TODO(poly): move to prlib/menderer.h */
 void PrDecelerateMenderer(float);
