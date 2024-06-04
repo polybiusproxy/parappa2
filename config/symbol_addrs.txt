@@ -692,8 +692,11 @@ FLT_00398F38                        = 0x00398f38;
 FLT_00398F3C                        = 0x00398f3c;
 
 // main/etc.c
+GlobalTimeInit                      = 0x0011bf80; // type:func
+GlobalSetTempo                      = 0x0011bfa0; // type:func
 GlobalSndSampleGet                  = 0x0011c108; // type:func
 GetHatRound                         = 0x0011c118; // type:func
+GlobalPlySet                        = 0x0011c288; // type:func
 TimeCallbackTimeGetChan             = 0x0011c790; // type:func
 TimeCallbackTimeSetChanTempo        = 0x0011c808; // type:func
 Pcode2Pindex                        = 0x0011c8d0; // type:func
@@ -701,6 +704,9 @@ GetIndex2KeyCode                    = 0x0011c990; // type:func
 UsrPrSetScene                       = 0x0011ca68; // type:func
 SpuBankSet                          = 0x0011cad0; // type:func
 inCmnHook2GameCheck                 = 0x0011ccd0; // type:func
+
+// main/wipe.c
+WipeOutReq                          = 0x0011da20; // type:func
 
 // main/mcctrl.c
 mccReqLvlSet                        = 0x0011eed8; // type:func
@@ -812,6 +818,7 @@ gifRegisterModeInitialized                              = 0x003998b8; // size:0x
 setGifRegisterMode                                      = 0x01c82a70; // size:0x720
 
 // prlib/model.cpp
+PrSetPostureWorkArea                = 0x00140868; // type:func
 GetPrimitivePosition__13PrModelObjectPt8NaVECTOR2Zfi4 = 0x00140cb8; // type:func
 GetScreenPosition__13PrModelObjectPt8NaVECTOR2Zfi4    = 0x00140dc0; // type:func
 

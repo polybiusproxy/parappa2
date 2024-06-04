@@ -498,12 +498,15 @@ typedef enum {
     HCNG_MAX = 4
 } HAT_CHANGE_ENUM;
 
+void GlobalTimeInit(GLOBAL_DATA *gl_pp);
+void GlobalSetTempo(GLOBAL_DATA *gl_pp, float tempo);
+void GlobalPlySet(GLOBAL_DATA *gl_pp, PLAY_STEP stp, int stage_num);
+
 TAP_ROUND_ENUM GetHatRound(void);
 int GlobalSndSampleGet(void);
 u_int TimeCallbackTimeGetChan(int chan);
 void GlobalTimeJobChange(TIME_GET_FLAG tfg);
 void TimeCallbackTimeSetChanTempo(int chan, u_int time, float tempo);
-void GlobalSetTempo(GLOBAL_DATA *gl_pp, float tempo);
 PLAYER_INDEX Pcode2Pindex(PLAYER_CODE pc);
 int GetIndex2KeyCode(int index);
 void UsrPrSetScene(void);
