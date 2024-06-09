@@ -126,7 +126,7 @@ segments:
         - [0x52e20, asm, prlib/wave]
         - [0x533f0, asm, prlib/dmaqueue]
         - [0x53750, asm, prlib/utility]
-        - [0x53790, asm, prlib/tim2]
+        - [0x53790, cpp, prlib/tim2]
         - [0x54840, asm, prlib/animation]
         - [0x54888, asm, prlib/camera]
           # - [0x54ad0, asm, nalib/navector] # Header
@@ -201,7 +201,7 @@ segments:
         - [0x297800, rodata, prlib/menderercreate]
         - [0x297980, rodata, prlib/mendereralpha]
         - [0x2979a0, rodata, prlib/wave]
-        - [0x2979b0, rodata, prlib/tim2]
+        - [0x2979b0, .rodata, prlib/tim2]
 
         - [0x297c10, rodata, sdk/scelib]
         - [0x2987e8, rodata, sdk/newlib]
