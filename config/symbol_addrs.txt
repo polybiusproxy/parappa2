@@ -940,6 +940,35 @@ AwfulStatus                         = 0x00399b94;
 // prlib/random.cpp
 PrInitializeRandomPool__Fv          = 0x0014d980; // type:func
 
+// prlib/dmaqueue.cpp
+__10PrDmaQueueUi                    = 0x001523f0; // type:func
+_$_10PrDmaQueue                     = 0x00152458; // type:func
+Initialize__10PrDmaQueue            = 0x001524b8; // type:func
+Start__10PrDmaQueue                 = 0x00152558; // type:func
+Append__10PrDmaQueuePv              = 0x001525f0; // type:func
+Wait__10PrDmaQueue                  = 0x00152690; // type:func
+
+warned                              = 0x003999b4;
+
+// prlib/tim2.cpp
+Tim2CheckFileHeader                 = 0x00152790; // type:func
+Tim2GetPictureHeader                = 0x00152798; // type:func
+Tim2GetMipMapPictureSize            = 0x001527e8; // type:func
+Tim2GetMipMapHeader                 = 0x00152870; // type:func
+Tim2GetImage                        = 0x001528a8; // type:func
+Tim2GetClut                         = 0x00152908; // type:func
+Tim2GetClutColor                    = 0x00152930; // type:func
+Tim2SetClutColor                    = 0x00152b20; // type:func
+Tim2GetTexel                        = 0x00152d88; // type:func
+Tim2SetTexel                        = 0x00152f10; // type:func
+Tim2GetTextureColor                 = 0x00153100; // type:func
+Tim2LoadPicture                     = 0x00153210; // type:func
+Tim2LoadImage                       = 0x00153238; // type:func
+Tim2LoadClut                        = 0x00153430; // type:func
+Tim2LoadTexture__FiUiiiiPUI80       = 0x001536d0; // type:func
+
+mmsize                              = 0x003999b8;
+
 //
 //
 // ** SCE SDK FUNCTIONS **
