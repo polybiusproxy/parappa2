@@ -115,9 +115,6 @@ PR_EXTERN void* Tim2GetClut(TIM2_PICTUREHEADER *ph)
     return pClut;
 }
 
-#if 1
-INCLUDE_ASM(const s32, "prlib/tim2", Tim2GetClutColor);
-#else
 PR_EXTERN u_int Tim2GetClutColor(TIM2_PICTUREHEADER *ph, int clut, int no)
 {
     u_char *pClut = (u_char*)Tim2GetClut(ph);
@@ -189,9 +186,8 @@ PR_EXTERN u_int Tim2GetClutColor(TIM2_PICTUREHEADER *ph, int clut, int no)
         break;
     }
     
-    return ((a << 24) | (g << 16) | (b << 8) | r);
+    return ((a << 24) | (b << 16) | (g << 8) | r);
 }
-#endif
 
 PR_EXTERN u_int Tim2SetClutColor(TIM2_PICTUREHEADER *ph, int clut, int no, u_int newcolor)
 {
@@ -287,9 +283,117 @@ PR_EXTERN u_int Tim2SetClutColor(TIM2_PICTUREHEADER *ph, int clut, int no, u_int
    return ((a << 24) | (b << 16) | (g << 8) | r);
 }
 
+// TODO: fix rodata
+#if 1
 INCLUDE_ASM(const s32, "prlib/tim2", Tim2GetTexel);
+#else
+PR_EXTERN u_int Tim2GetTexel(TIM2_PICTUREHEADER *ph, int mipmap, int x, int y)
+{
+    u_char *pImage = (u_char*)Tim2GetImage(ph, mipmap);
 
+    if (pImage == NULL)
+        return 0; // No texture data
+
+    int w, h;
+    Tim2GetMipMapPictureSize(ph, mipmap, &w, &h);
+
+    if (x > w || y > h)
+        return 0; // Illegal tex. coordinates
+
+    int t = y * w + x;
+    switch (ph->ImageType)
+    {
+    case TIM2_RGB16:
+        return ((pImage[t * 2 + 1] << 8) | pImage[t * 2]);
+
+    case TIM2_RGB24:
+        return ((pImage[t * 3 + 2] << 16) | (pImage[t * 3 + 1] << 8) | pImage[t * 3]);
+
+    case TIM2_RGB32:
+        return ((pImage[t * 4 + 3] << 24) | (pImage[t * 4 + 2] << 16) | (pImage[t * 4 + 1] << 8) | pImage[t * 4]);
+
+    case TIM2_IDTEX4:
+        if (x & 1)
+        {
+            return pImage[t / 2] >> 4;
+        }
+        else
+        {
+            return pImage[t / 2] & 0x0f;
+        }
+
+    case TIM2_IDTEX8:
+        return pImage[t];
+    }
+
+    return 0; // Illegal pixel format
+}
+#endif
+
+// TODO: fix rodata
+#if 1
 INCLUDE_ASM(const s32, "prlib/tim2", Tim2SetTexel);
+#else
+PR_EXTERN u_int Tim2SetTexel(TIM2_PICTUREHEADER *ph, int mipmap, int x, int y, u_int newtexel)
+{
+    u_char *pImage = (u_char*)Tim2GetImage(ph, mipmap);
+
+    if (pImage == NULL)
+        return 0; // No texture data
+
+    int w, h;
+    Tim2GetMipMapPictureSize(ph, mipmap, &w, &h);
+
+    if (x > w || y > h)
+        return 0; // Illegal tex. coordinates
+
+    int t = y * w + x;
+    u_int oldtexel;
+    switch (ph->ImageType)
+    {
+    case TIM2_RGB16:
+        oldtexel = (pImage[t * 2 + 1] << 8) | pImage[t * 2];
+        pImage[t * 2]     = (u_char)((newtexel)       & 0xff);
+        pImage[t * 2 + 1] = (u_char)((newtexel >> 8)  & 0xff);
+        return oldtexel;
+
+    case TIM2_RGB24:
+        oldtexel = (pImage[t * 3 + 2] << 16) | (pImage[t * 3 + 1] << 8) | pImage[t * 3];
+        pImage[t * 3]     = (u_char)((newtexel)       & 0xff);
+        pImage[t * 3 + 1] = (u_char)((newtexel >> 8)  & 0xff);
+        pImage[t * 3 + 2] = (u_char)((newtexel >> 16) & 0xff);
+        return oldtexel;
+
+    case TIM2_RGB32:
+        oldtexel = (pImage[t * 4 + 3] << 24) | (pImage[t * 4 + 2] << 16) | (pImage[t * 4 + 1] << 8) | pImage[t * 4];
+        pImage[t * 4]     = (u_char)((newtexel)       & 0xff);
+        pImage[t * 4 + 1] = (u_char)((newtexel >> 8)  & 0xff);
+        pImage[t * 4 + 2] = (u_char)((newtexel >> 16) & 0xff);
+        pImage[t * 4 + 3] = (u_char)((newtexel >> 24) & 0xff);
+        return oldtexel;
+
+    case TIM2_IDTEX4:
+        if (x & 1)
+        {
+            oldtexel = pImage[t / 2] >> 4;
+            pImage[t / 2] = (u_char)((newtexel << 4) | oldtexel);
+        }
+        else
+        {
+            oldtexel = pImage[t / 2] & 0x0f;
+            pImage[t / 2] = (u_char)((oldtexel << 4) | newtexel);
+        }
+        return oldtexel;
+
+    case TIM2_IDTEX8:
+        oldtexel = pImage[t];
+        pImage[t] = (u_char)newtexel;
+        return oldtexel;
+    }
+
+    return 0; // Illegal pixel format
+}
+#endif
 
 // TODO: fix rodata
 #if 1
@@ -298,7 +402,7 @@ INCLUDE_ASM(const s32, "prlib/tim2", Tim2GetTextureColor);
 PR_EXTERN u_int Tim2GetTextureColor(TIM2_PICTUREHEADER *ph, int mipmap, int clut, int x, int y)
 {
     if (Tim2GetImage(ph, mipmap) == NULL)
-        return 0; // No assumed level texture data
+        return 0; // No texture data
 
     u_int t = Tim2GetTexel(ph, mipmap, (x >> mipmap), (y >> mipmap));
     switch (ph->ImageType)

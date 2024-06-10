@@ -63,6 +63,7 @@ void*               Tim2GetClut(TIM2_PICTUREHEADER *ph);
 u_int               Tim2GetClutColor(TIM2_PICTUREHEADER *ph, int clut, int no);
 
 u_int               Tim2GetTexel(TIM2_PICTUREHEADER *ph, int mipmap, int x, int y);
+u_int               Tim2SetTexel(TIM2_PICTUREHEADER *ph, int mipmap, int x, int y, u_int newtexel);
 
 void                Tim2LoadPicture(TIM2_PICTUREHEADER *ph, u_int tbp, u_int cbp);
 u_int               Tim2LoadImage(TIM2_PICTUREHEADER *ph);
