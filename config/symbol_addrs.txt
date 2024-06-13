@@ -950,6 +950,9 @@ Wait__10PrDmaQueue                  = 0x00152690; // type:func
 
 warned                              = 0x003999b4;
 
+// prlib/utility.cpp
+PrGetBitSize__FUi                   = 0x00152750; // type:func
+
 // prlib/tim2.cpp
 Tim2CheckFileHeader                 = 0x00152790; // type:func
 Tim2GetPictureHeader                = 0x00152798; // type:func
