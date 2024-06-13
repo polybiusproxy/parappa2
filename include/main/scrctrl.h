@@ -542,8 +542,10 @@ void ScrCtrlInit(STDAT_DAT *sdat_pp, void *data_top);
 void ScrCtrlQuit(void);
 int ScrCtrlInitCheck(void);
 void ScrCtrlGoLoop(void);
+
 int ScrEndCheckScore(void);
 int ScrEndCheckTitle(void);
+int ScrEndCheckFadeOut(void);
 
 /* TODO(poly): move to main/mbar.h */
 typedef enum {

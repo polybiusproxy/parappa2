@@ -56,7 +56,11 @@ union PrDebugParam
 extern "C" {
 #endif
 
-void PrSetFrameRate(float framerate);
+/* model.cpp */
+void PrSetPostureWorkArea(u_int areaTop, int areaSize);
+
+/* prlib.cpp */
+void  PrSetFrameRate(float framerate);
 float PrGetFrameRate(void);
 
 void PrInitializeModule(sceGsZbuf zbuf);

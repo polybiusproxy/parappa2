@@ -707,6 +707,7 @@ inCmnHook2GameCheck                 = 0x0011ccd0; // type:func
 
 // main/wipe.c
 WipeOutReq                          = 0x0011da20; // type:func
+WipeEndCheck                        = 0x0011dab0; // type:func
 
 // main/mcctrl.c
 mccReqLvlSet                        = 0x0011eed8; // type:func
