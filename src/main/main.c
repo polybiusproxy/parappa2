@@ -11,6 +11,7 @@
 #include "os/usrmem.h"
 
 #include "main/etc.h"
+#include "main/wipe.h"
 #include "main/stdat.h"
 #include "main/p3str.h"
 #include "main/cdctrl.h"
@@ -241,21 +242,22 @@ static void dummyPlay(/* s0 16 */ int retTitle)
 }
 #endif
 
-INCLUDE_ASM(const s32, "main/main", selPlayDisp);
-int selPlayDisp(/* s5 21 */ int sel_stage, /* s3 19 */ int sel_disp, /* s7 23 */ int firstf);
-#if 0
+extern char D_00393A00[]; /* rodata - "overlay module load in\n" */
+extern char D_00393A18[]; /* rodata - "overlay module load out\n" */
+
+int selPlayDisp(int sel_stage, int sel_disp, int firstf)
 {
-    /* s6 22 */ STDAT_DAT *stdat_dat_pp;
-    /* fp 30 */ int ret = 0;
+    STDAT_DAT *stdat_dat_pp;
+    int        ret = 0;
 
     ReportHeapUsage();
     printf("=== selPlayDisp stg:%d disp:%d ===\n", sel_stage, sel_disp);
 
     // Load stage overlay
-    printf("overlay module load in\n");
+    printf(D_00393A00);
     CdctrlRead(&stdat_rec[sel_stage].ovlfile, overlay_loadaddr, 0);
     CdctrlReadWait();
-    printf("overlay module load out\n");
+    printf(D_00393A18);
 
     asm("sync.l");
     FlushCache(0);
@@ -273,7 +275,7 @@ int selPlayDisp(/* s5 21 */ int sel_stage, /* s3 19 */ int sel_disp, /* s7 23 */
     GlobalTimeInit(&global_data);
     GlobalSetTempo(&global_data, stdat_rec[sel_stage].stdat_dat_pp[sel_disp].tempo);
 
-    ScrCtrlInit(stdat_dat_pp, UsrMemGetAdr(0));
+    ScrCtrlInit(stdat_dat_pp, (void*)UsrMemGetAdr(0));
     
     do
         MtcWait(1);
@@ -293,10 +295,10 @@ int selPlayDisp(/* s5 21 */ int sel_stage, /* s3 19 */ int sel_disp, /* s7 23 */
     ScrCtrlGoLoop();
 
     if (!firstf)
-        WipeEndReq();
+        WipeOutReq();
 
     PrSetPostureWorkArea(UsrMemAllocNext(), UsrMemAllocEndNext() - UsrMemAllocNext());
-    DrawCtrlInit(stdat_dat_pp->ev_pp, global_data.draw_tbl_top, UsrMemGetAdr(0));
+    DrawCtrlInit(stdat_dat_pp->ev_pp, global_data.draw_tbl_top, (void*)UsrMemGetAdr(0));
 
     PrSetPostureWorkArea(0, 0);
     DrawCtrlTimeSet(0);
@@ -309,7 +311,7 @@ int selPlayDisp(/* s5 21 */ int sel_stage, /* s3 19 */ int sel_disp, /* s7 23 */
         MtcWait(120);
     }
 
-    do
+    while (1)
     {
         MtcWait(1);
 
@@ -321,8 +323,13 @@ int selPlayDisp(/* s5 21 */ int sel_stage, /* s3 19 */ int sel_disp, /* s7 23 */
 
         if (ScrEndCheckScore())
             break;
+
+        if (ScrEndCheckFadeOut() && (global_data.demo_flagL == DEMOF_DEMO))
+        {
+            ret = 2;
+            break;
+        }
     }
-    while (!ScrEndCheckFadeOut() || global_data.demo_flagL != DEMOF_DEMO);
 
     if (ret == 2)
     {
@@ -338,7 +345,6 @@ int selPlayDisp(/* s5 21 */ int sel_stage, /* s3 19 */ int sel_disp, /* s7 23 */
 
     return ret;
 }
-#endif
 
 INCLUDE_ASM(const s32, "main/main", SpHatChangeSub);
 void SpHatChangeSub(void);
@@ -389,9 +395,6 @@ static void SpHatChangeSub(void)
 }
 #endif
 
-extern char D_003939D8[]; /* rodata - "=== selPlayDisp stg:%d disp:%d ===\n" */
-extern char D_00393A00[]; /* rodata - "overlay module load in\n" */
-extern char D_00393A18[]; /* rodata - "overlay module load out\n" */
 extern char D_003996C0[]; /* sdata  - "DEBUG" */
 
 int selPlayDispTitleDisp(int sel_stage, int sel_disp, int ovl_load)
@@ -400,7 +403,7 @@ int selPlayDispTitleDisp(int sel_stage, int sel_disp, int ovl_load)
     int        ret = 0;
 
     ReportHeapUsage();
-    printf(D_003939D8, sel_stage, sel_disp);
+    printf("=== selPlayDisp stg:%d disp:%d ===\n", sel_stage, sel_disp);
 
     if (ovl_load)
     {
@@ -563,10 +566,7 @@ void logoDispOne(SPR_PRIM *sprm_pp, TIM2_DAT *tmd_pp)
     }
 }
 
-INCLUDE_RODATA(const s32, "main/main", D_003939D8);
-
 INCLUDE_RODATA(const s32, "main/main", D_00393A00);
-
 INCLUDE_RODATA(const s32, "main/main", D_00393A18);
 
 // From SpHatChangeSub
