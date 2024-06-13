@@ -1,6 +1,9 @@
 #include "common.h"
-#include <libgraph.h>
 #include "prlib/tim2.h"
+
+#include <libgraph.h>
+
+static void Tim2LoadTexture(int psm, u_int tbp, int tbw, int w, int h, u_long128 *pImage);
 
 PR_EXTERN int Tim2CheckFileHeader()
 {
@@ -29,8 +32,10 @@ PR_EXTERN TIM2_PICTUREHEADER* Tim2GetPictureHeader(void *pTim2, int imgno)
 }
 
 // TODO: fix non-matching jump table
+#if 1
 INCLUDE_ASM(const s32, "prlib/tim2", Tim2GetMipMapPictureSize);
-/* PR_EXTERN int Tim2GetMipMapPictureSize(TIM2_PICTUREHEADER *ph, int mipmap, int *pWidth, int *pHeight)
+#else
+PR_EXTERN int Tim2GetMipMapPictureSize(TIM2_PICTUREHEADER *ph, int mipmap, int *pWidth, int *pHeight)
 {
     int w, h, n;
 
@@ -65,7 +70,8 @@ INCLUDE_ASM(const s32, "prlib/tim2", Tim2GetMipMapPictureSize);
 
     n = (n + 15) & ~15;
     return n;
-} */
+}
+#endif
 
 PR_EXTERN TIM2_MIPMAPHEADER* Tim2GetMipMapHeader(TIM2_PICTUREHEADER *ph, int *pSize)
 {
@@ -427,15 +433,160 @@ PR_EXTERN u_int Tim2GetTextureColor(TIM2_PICTUREHEADER *ph, int mipmap, int clut
 }
 #endif
 
-PR_EXTERN void Tim2LoadPicture(TIM2_PICTUREHEADER *ph, u_int tbp, u_int cbp)
+PR_EXTERN void Tim2LoadPicture(TIM2_PICTUREHEADER *ph)
 {
     Tim2LoadImage(ph);
     Tim2LoadClut(ph);
 }
 
+#if 1 // non-matching
 INCLUDE_ASM(const s32, "prlib/tim2", Tim2LoadImage);
+#else
+PR_EXTERN void Tim2LoadImage(TIM2_PICTUREHEADER *ph)
+{
+    int tbw;
 
-INCLUDE_ASM(const s32, "prlib/tim2", Tim2LoadClut);
+    int psm = ((sceGsTex0*)&ph->GsTex0)->PSM;
+
+    TIM2_MIPMAPHEADER *pm;
+    if (ph->MipMapTextures > 1)
+    {
+        pm = (TIM2_MIPMAPHEADER*)(ph + 1);
+    }
+
+    // Transfer image data
+    u_long128 *pImage;
+    int w, h;
+    int miptbp;
+
+    for (int i = 0; i < ph->MipMapTextures; i++)
+    {
+        if (i == 0)
+        {
+            miptbp = ((sceGsTex0*)&ph->GsTex0)->TBP0;
+            tbw    = ((sceGsTex0*)&ph->GsTex0)->TBW;
+        }
+        else if (i < 4)
+        {
+            // Mipmap level 1, 2 or 3
+            miptbp = (pm->GsMiptbp1 >> ((i - 1) * 20)) & 0x3fff;
+            tbw    = (pm->GsMiptbp1 >> ((i - 1) * 20 + 14)) & 0x3f;
+        }
+        else
+        {
+            // Mipmap level 4, 5 or 6
+            miptbp = (pm->GsMiptbp2 >> ((i - 4) * 20)) & 0x3fff;
+            tbw    = (pm->GsMiptbp2 >> ((i - 4) * 20 + 14)) & 0x3f;
+        }
+
+        pImage = (u_long128*)Tim2GetImage(ph, i);
+        Tim2GetMipMapPictureSize(ph, i, &w, &h);
+
+        int tmp;
+        switch (psm)
+        {
+        case 0:
+        case 0x30:
+            tmp = 8;
+            break;
+        case 1:
+        case 0x31:
+            tmp = 6;
+            break;
+        case 2:
+        case 10:
+        case 0x32:
+        case 0x3a:
+            tmp = 4;
+            break;
+        case 0x13:
+        case 0x1b:
+            tmp = 2;
+            break;
+        case 0x14:
+        case 0x24:
+        case 0x2c:
+            tmp = 1;
+            break;
+        }
+
+        h = (((((w * h * tmp) >> 1) + 15 >> 4) * 32 + (w * tmp)) + -1) / (w * tmp);
+        Tim2LoadTexture(psm, miptbp, tbw, w, h, pImage);
+    }
+}
+#endif
+
+PR_EXTERN u_int Tim2LoadClut(TIM2_PICTUREHEADER *ph)
+{
+    sceGsLoadImage li;
+
+    // Get CLUT pixel format
+    if (ph->ClutType == TIM2_NONE)
+    {
+        return ph->ClutType;
+    }
+
+    ((sceGsTex0*)&ph->GsTex0)->CSM  = 0;    // CLUT storage mode (always CSM1)
+    ((sceGsTex0*)&ph->GsTex0)->CSA  = 0;    // CLUT entry offset (always 0)
+    
+    u_int cpsm = ((sceGsTex0*)&ph->GsTex0)->CPSM;
+    u_int cbp  = ((sceGsTex0*)&ph->GsTex0)->CBP;
+
+    // Calculate the top address of the CLUT data
+    u_long128 *pClut = (u_long128*)((char*)ph + ph->HeaderSize + ph->ImageSize);
+
+    // Transfer CLUT data into GS local memory
+    // CLUT data format etc. are defined by CLUT type and texture type
+    switch ((ph->ClutType << 8) | ph->ImageType)
+    {
+        case (((TIM2_RGB16 | 0x40) << 8) | TIM2_IDTEX4): // 16  colors, CSM1, 16bits, compound
+        case (((TIM2_RGB24 | 0x40) << 8) | TIM2_IDTEX4): // 16  colors, CSM1, 24bits, compound
+        case (((TIM2_RGB32 | 0x40) << 8) | TIM2_IDTEX4): // 16  colors, CSM1, 32bits, compound
+        case (( TIM2_RGB16         << 8) | TIM2_IDTEX8): // 256 colors, CSM1, 16bits, compound
+        case (( TIM2_RGB24         << 8) | TIM2_IDTEX8): // 256 colors, CSM1, 24bits, compound
+        case (( TIM2_RGB32         << 8) | TIM2_IDTEX8): // 256 colors, CSM1, 32bits, compound
+            // if 256 colors CLUT and storage mode is CSM1 or..
+            // 16 colors CLUT and storage mode is CSM1 and compounded flag is ON
+            // pixels are already placed in the right place, so directly transferable
+            Tim2LoadTexture(cpsm, cbp, 1, 16, (ph->ClutColors / 16), pClut);
+            break;
+        
+        case (( TIM2_RGB16         << 8) | TIM2_IDTEX4): // 16  colors, CSM1, 16bits, sequential
+        case (( TIM2_RGB24         << 8) | TIM2_IDTEX4): // 16  colors, CSM1, 24bits, sequential
+        case (( TIM2_RGB32         << 8) | TIM2_IDTEX4): // 16  colors, CSM1, 32bits, sequential
+        case (((TIM2_RGB16 | 0x80) << 8) | TIM2_IDTEX4): // 16  colors, CSM2, 16bits, sequential
+        case (((TIM2_RGB24 | 0x80) << 8) | TIM2_IDTEX4): // 16  colors, CSM2, 24bits, sequential
+        case (((TIM2_RGB32 | 0x80) << 8) | TIM2_IDTEX4): // 16  colors, CSM2, 32bits, sequential
+        case (((TIM2_RGB16 | 0x80) << 8) | TIM2_IDTEX8): // 256 colors, CSM2, 16bits, sequential
+        case (((TIM2_RGB24 | 0x80) << 8) | TIM2_IDTEX8): // 256 colors, CSM2, 24bits, sequential
+        case (((TIM2_RGB32 | 0x80) << 8) | TIM2_IDTEX8): // 256 colors, CSM2, 32bits, sequential
+            // 16 colors CLUT, storage mode is CSM1, and compunded flag is OFF or..
+            // 16 colors CLUT and storage mode is CSM2 or..
+            // 256 colors CLUT and storage mode is CSM2
+
+            // sequential placement (CSM2) is ineffective in performance, so compound into CSM1 then transfer
+            for (int i = 0; i < ph->ClutColors / 16; i++)
+            {
+                sceGsSetDefLoadImage(&li, cbp, 1, cpsm, (i & 1) * 8, (i >> 1) * 2, 8, 2);
+                FlushCache(0);
+
+                sceGsExecLoadImage(&li, pClut); // Transfer CLUT data to GS
+                sceGsSyncPath(0, 0);            // Wait for transfer completion
+                
+                if ((ph->ClutType & 0x3f) == TIM2_RGB16)
+                    pClut = (u_long128*)((char*)pClut + 2 * 16); // 16bit colors
+                else if ((ph->ClutType & 0x3f) == TIM2_RGB24)
+                    pClut = (u_long128*)((char*)pClut + 3 * 16); // 24bit colors
+                else
+                    pClut = (u_long128*)((char*)pClut + 4 * 16); // 32bit colors
+            }
+
+            break;
+       
+        default:
+            break;
+    }
+}
 
 static void Tim2LoadTexture(int psm, u_int tbp, int tbw, int w, int h, u_long128 *pImage)
 {
