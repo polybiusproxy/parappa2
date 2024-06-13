@@ -255,7 +255,7 @@ int selPlayDisp(int sel_stage, int sel_disp, int firstf)
 
     // Load stage overlay
     printf(D_00393A00);
-    CdctrlRead(&stdat_rec[sel_stage].ovlfile, overlay_loadaddr, 0);
+    CdctrlRead(&stdat_rec[sel_stage].ovlfile, overlay_loadaddr, NULL);
     CdctrlReadWait();
     printf(D_00393A18);
 
@@ -408,7 +408,7 @@ int selPlayDispTitleDisp(int sel_stage, int sel_disp, int ovl_load)
     if (ovl_load)
     {
         printf(D_00393A00);
-        CdctrlRead(&stdat_rec[sel_stage].ovlfile, overlay_loadaddr, 0);
+        CdctrlRead(&stdat_rec[sel_stage].ovlfile, overlay_loadaddr, NULL);
         CdctrlReadWait();
         printf(D_00393A18);
     }
@@ -575,12 +575,23 @@ INCLUDE_RODATA(const s32, "main/main", D_00393A48);
 INCLUDE_RODATA(const s32, "main/main", D_00393A58);
 INCLUDE_RODATA(const s32, "main/main", D_00393A68);
 
-INCLUDE_ASM(const s32, "main/main", uramenFileSearchTask);
+static void uramenFileSearchTask(void *x)
+{
+    printf("file search in\n");
+    stDatFirstFileSearch();
+    printf("file search out\n");
 
-INCLUDE_ASM(const s32, "main/main", uramenFileSearchSet);
-/* static */ void uramenFileSearchSet(void);
+    uramen_end_flag = 0;
+    MtcExit();
+}
 
-static void uramenFileSearchEnd()
+static void uramenFileSearchSet(void)
+{
+    uramen_end_flag = 1;
+    MtcExec(uramenFileSearchTask, MTC_TASK_03);
+}
+
+static void uramenFileSearchEnd(void)
 {
     if (uramen_end_flag)
     {
@@ -708,6 +719,7 @@ void titleDisp(/* s1 17 */ int firstf)
 INCLUDE_RODATA(const s32, "main/main", D_00393AD0);
 
 INCLUDE_ASM(const s32, "main/main", urawazaKeyCheck);
+int urawazaKeyCheck(void);
 
 extern char D_003996D0[]; /* sdata - "ura:%d" */
 
