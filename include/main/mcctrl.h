@@ -3,6 +3,10 @@
 
 #include "common.h"
 
+#include <eetypes.h>
+
+#include "main/etc.h"
+
 typedef struct { // 0x4
     /* 0x0 */ u_int timeP;
     /* 0x2 */ u_char padId;
@@ -19,6 +23,7 @@ typedef struct { // 0x10
     /* 0x4 */ int exam_score[3];
 } MC_REP_SCR;
 
+// FIXME: Struct size is wrong (0x9528)
 typedef struct { // 0x4528
     /* 0x0000 */ PLAY_MODE play_modeS;
     /* 0x0004 */ PLAY_TYPE play_typeS;
@@ -35,6 +40,13 @@ typedef struct { // 0x4528
     /* 0x38a4 */ u_int mc_vsoth_cnt;
     /* 0x38a8 */ VSOTHSAVE vsothsave[100];
 } MC_REP_STR;
+
+typedef struct { // 0x1c
+    /* 0x00 */ u_int cl_scoreN_cnt;
+    /* 0x04 */ u_int cl_levelN_cnt;
+    /* 0x08 */ u_int cl_mc_rep_dat_cnt[4];
+    /* 0x18 */ u_int cl_vsoth_cnt;
+} MC_REP_CTRL;
 
 void mccReqLvlSet(u_int lvl);
 u_int mccReqLvlGet(void);
