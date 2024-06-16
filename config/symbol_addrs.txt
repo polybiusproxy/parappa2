@@ -691,6 +691,97 @@ gs_loadimg                          = 0x01c6ff60; // size:0x60
 FLT_00398F38                        = 0x00398f38;
 FLT_00398F3C                        = 0x00398f3c;
 
+// main/mbar.c
+examCharSet                         = 0x00118160; // type:func
+clrColorBuffer                      = 0x00118410; // type:func
+MbarMemberClear                     = 0x001184b0; // type:func
+examCharBasic                       = 0x00118530; // type:func
+examCharScaleSet                    = 0x00118590; // type:func
+examCharCltSet                      = 0x001185b0; // type:func
+examCharPosSet                      = 0x001185f0; // type:func
+examCharUVWHSet                     = 0x00118610; // type:func
+examCharAlphaSet                    = 0x00118628; // type:func
+examCharKidoSet                     = 0x00118630; // type:func
+NikoReset                           = 0x00118640; // type:func
+MbarNikoHookUse                     = 0x00118680; // type:func
+MbarNikoVsUse                       = 0x00118698; // type:func
+MbarNikoUnUse                       = 0x001186b0; // type:func
+MbarNikoSet                         = 0x001186c0; // type:func
+MbarNikoDisp                        = 0x00118788; // type:func
+MbarHookUseInit                     = 0x00118ac8; // type:func
+MbarHookUnUse                       = 0x00118b28; // type:func
+MbarHookUseOK                       = 0x00118b30; // type:func
+MbarHookUseNG                       = 0x00118b40; // type:func
+MbarHookPoll                        = 0x00118b50; // type:func
+vsAnimationInit                     = 0x00118c10; // type:func
+vsAnimationReq                      = 0x00118c58; // type:func
+vsAnimationReset                    = 0x00118c88; // type:func
+vsScr2Move                          = 0x00118cb0; // type:func
+vsAnimationPoll                     = 0x00118cd0; // type:func
+metColorInit                        = 0x00118df8; // type:func
+metColorSet                         = 0x00118e48; // type:func
+metFrameInit                        = 0x00119020; // type:func
+conditionFrameInit                  = 0x001190a8; // type:func
+ExamDispInit                        = 0x001190e8; // type:func
+ExamDispPlySet                      = 0x00119150; // type:func
+ExamDispReq                         = 0x00119168; // type:func
+ExamDispReset                       = 0x001191b8; // type:func
+examScore2Level                     = 0x001191d8; // type:func
+ExamDispOn                          = 0x001192b8; // type:func
+// TODO: match as static
+hex2dec_mbar_tmp                   = 0x001195d8; // type:func
+hex2decPlMi                         = 0x00119658; // type:func
+examNumDisp                         = 0x00119728; // type:func
+examScoreSet                        = 0x00119890; // type:func
+examLevelDisp                       = 0x001199a8; // type:func
+ExamDispSet                         = 0x00119aa8; // type:func
+ExamDispSubt                        = 0x00119af0; // type:func
+MbarInit                            = 0x00119af8; // type:func
+MbarReset                           = 0x00119b20; // type:func
+MbarReq                             = 0x00119b30; // type:func
+MbarSetCtrlTime                     = 0x00119c48; // type:func
+MbarCl1CharSet                      = 0x00119c50; // type:func
+MbarCharSetSub                      = 0x00119cd0; // type:func
+MbarGifInit                         = 0x00119d18; // type:func
+MbarGifTrans                        = 0x00119da0; // type:func
+MbarCharSet                         = 0x00119db0; // type:func
+MbarCharSet2                        = 0x00119ff8; // type:func
+MbarWindowSet                       = 0x0011a1a8; // type:func
+MbarGetDispPosX                     = 0x0011a228; // type:func
+MbarGetDispPosY                     = 0x0011a290; // type:func
+MbarGetTimeArea                     = 0x0011a2c8; // type:func
+MbarGetTimeArea2                    = 0x0011a330; // type:func
+MbarGetStartTime                    = 0x0011a390; // type:func
+MbarGetEndTime                      = 0x0011a3c0; // type:func
+MbarGetStartTap                     = 0x0011a3d8; // type:func
+MbarSclRotMake                      = 0x0011a418; // type:func
+MbarGuideLightMake                  = 0x0011a4d0; // type:func
+MbarFlashMake                       = 0x0011a520; // type:func
+MbarBackSet                         = 0x0011a620; // type:func
+MbarOthSet                          = 0x0011a968; // type:func
+MbarCurSet                          = 0x0011ad40; // type:func
+MbarTapSubt                         = 0x0011ae60; // type:func
+MbarPosOffsetSet                    = 0x0011aee0; // type:func
+mbar_othon_frame_set                = 0x0011af40; // type:func
+MbarDisp                            = 0x0011afd0; // type:func
+MbarDispScene                       = 0x0011b110; // type:func
+MbarDispSceneDraw                   = 0x0011b368; // type:func
+MbarDispSceneVsDraw                 = 0x0011b520; // type:func
+MbarDispSceneVsDrawInit             = 0x0011b548; // type:func
+guidisp_init_pr                     = 0x0011b550; // type:func
+guidisp_draw_quit                   = 0x0011b680; // type:func
+MbarDispGuiScene                    = 0x0011b770; // type:func
+MbarDispGuiSceneMbarArea            = 0x0011ba88; // type:func
+lessonTim2InfoGet                   = 0x0011bba8; // type:func
+lessonCl2InfoGet                    = 0x0011bbb8; // type:func
+MbarDemoCharDisp                    = 0x0011bc18; // type:func
+
+// main/pack.c
+PackGetDecodeSize                   = 0x0011bcc8; // type:func
+PackDecode                          = 0x0011bcd0; // type:func
+PackGetAdrs                         = 0x0011be08; // type:func
+PackDbgList                         = 0x0011be38; // type:func
+
 // main/etc.c
 GlobalTimeInit                      = 0x0011bf80; // type:func
 GlobalSetTempo                      = 0x0011bfa0; // type:func
@@ -706,14 +797,82 @@ SpuBankSet                          = 0x0011cad0; // type:func
 inCmnHook2GameCheck                 = 0x0011ccd0; // type:func
 
 // main/wipe.c
+wipeSndReq                          = 0x0011cd58; // type:func
+wipeSndStop                         = 0x0011cde8; // type:func
+wipeSndFileTrans                    = 0x0011cdf8; // type:func
+LocalBufCopy                        = 0x0011cea8; // type:func
+wipeTimeGetInWait                   = 0x0011cfd8; // type:func
+lddisp_init_pr                      = 0x0011d0d8; // type:func
+lddisp_draw_quit                    = 0x0011d1e8; // type:func
+lddisp_draw_on                      = 0x0011d2d0; // type:func
+WipeLoadInDisp                      = 0x0011d2f0; // type:func
+WipeLoadInDispNR                    = 0x0011d460; // type:func
+WipeLoadOutDispNR                   = 0x0011d5f0; // type:func
+WipeLoadOutDisp                     = 0x0011d788; // type:func
+WipeInReq                           = 0x0011d8f0; // type:func
+WipeLoadInDispSame                  = 0x0011d940; // type:func
+WipeInReqSame                       = 0x0011d9e8; // type:func
 WipeOutReq                          = 0x0011da20; // type:func
 WipeEndCheck                        = 0x0011dab0; // type:func
+WipeYesNoDispTask                   = 0x0011dab8; // type:func
+wipeYesNoDispReq                    = 0x0011dc28; // type:func
+wipeYesNoDispEnd                    = 0x0011dc78; // type:func
+WipeInitPrDataPara                  = 0x0011dc80; // type:func
+WipeQuitPrDataPara                  = 0x0011dd60; // type:func
+WipeDispPrDataPara                  = 0x0011ddb0; // type:func
+WipeParaColorSet                    = 0x0011de68; // type:func
+WipeEnd                             = 0x0011de80; // type:func
+WipeParaInDisp                      = 0x0011dea8; // type:func
+WipeParaInDispMove                  = 0x0011e160; // type:func
+WipeParaOutDisp                     = 0x0011e350; // type:func
+wipeParaInReq                       = 0x0011e518; // type:func
+wipeParaInReqByeBye                 = 0x0011e558; // type:func
+wipeParaInReqMove                   = 0x0011e5a0; // type:func
+wipeParaOutReq                      = 0x0011e5d8; // type:func
+WipeBoxyInDisp                      = 0x0011e608; // type:func
+wipeBoxyInReq                       = 0x0011ea00; // type:func
+WipeBoxyWaitDisp                    = 0x0011ea40; // type:func
+wipeBoxyWaitReq                     = 0x0011ecb0; // type:func
+
+wipe_type                           = 0x00399598;
+wipe_end_flag                       = 0x0039959c;
+loading_wipe_switch                 = 0x003995a0;
+ldmove_rate                         = 0x003995a4;
+ldrecode_rate                       = 0x003995a8;
+ldlogo_rate                         = 0x003995ac;
+wipe_para_spa_type                  = 0x003995c0;
+vclr_para_disp                      = 0x003995c8;
+
+ldmap_hdl                           = 0x00399a98;
 
 // main/mcctrl.c
+setAscii2SjisCode                   = 0x0011ece8; // type:func
+mccReqInit                          = 0x0011edb8; // type:func
+mccReqSaveInit                      = 0x0011edf0; // type:func
+mccReqCtrlClr                       = 0x0011ee10; // type:func
+mccReqScrSet                        = 0x0011ee20; // type:func
+mccReqScrGet                        = 0x0011ee78; // type:func
 mccReqLvlSet                        = 0x0011eed8; // type:func
 mccReqLvlGet                        = 0x0011ef10; // type:func
+mccReqTapSet                        = 0x0011ef70; // type:func
+mccReqTapResetSet                   = 0x0011f070; // type:func
+mccReqTapHoldSet                    = 0x0011f088; // type:func
 mccReqVSOTHSAVEset                  = 0x0011f0a0; // type:func
 mccReqVSOTHSAVEget                  = 0x0011f110; // type:func
+mccReqTapGet                        = 0x0011f1b0; // type:func
+mccReqTapForward                    = 0x0011f2c8; // type:func
+mccReqTapForwardOwn                 = 0x0011f420; // type:func
+mccLocalGlobalCopy                  = 0x0011f558; // type:func
+mccGlobalLocalCopy                  = 0x0011f658; // type:func
+
+// Define size?
+ascii2sjiscng_tbl                   = 0x00187340;
+
+mc_rep_str_local                    = 0x01c730e8; // size:0x4528
+mc_rep_ctrl                         = 0x01c77610; // size:0x1c
+
+mc_holdTmp                          = 0x00399aa0; // size:0x4
+mc_resetTmp                         = 0x00399aa8; // size:0x4
 
 // main/main.c
 dbg_select_disp                     = 0x0011f720; // type:func
