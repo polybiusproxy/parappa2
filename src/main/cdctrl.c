@@ -1,4 +1,6 @@
 #include "main/cdctrl.h"
+#include "iop_mdl/tapctrl_rpc.h"
+#include "main/p3str.h"
 
 /* sdata */
 void *current_intg_adrs = 0;
@@ -529,7 +531,6 @@ void CdctrlReadOne(FILE_STR *fstr_pp, u_int buf, int tmpbuf)
     MtcExec(cdctrlReadDataOne, MTC_TASK_CDCTRL);
 }
 
-
 // さき(saki) -> Destination / もと(moto) -> Source
 void usrMemcpy(void *sakip, void *motop, int size)
 {
@@ -676,9 +677,8 @@ int CdctrlStatus(void)
 void CdctrlReadWait(void)
 {
     do
-    {
         MtcWait(1);
-    } while (CdctrlStatus());  
+    while (CdctrlStatus());  
 }
 
 u_int CdctrlGetFileSize(FILE_STR *fstr_pp)
@@ -714,13 +714,13 @@ void CdctrlWP2Set(FILE_STR *fstr_pp)
 
     WP2Ctrl(WP2_BGMSETTRPOINT, WP2_NONE);
     if (fstr_pp->frmode == FRMODE_PC)
-        WP2Ctrl(0x8013, (int)cdctrl_str.fstr_pp->fname);
+        WP2Ctrl(WP2_OPENFLOC, (int)cdctrl_str.fstr_pp->fname);
     else
-        WP2Ctrl(0x8013, (int)&cdctrl_str.fstr_pp->fpCd);
+        WP2Ctrl(WP2_OPENFLOC, (int)&cdctrl_str.fstr_pp->fpCd);
 
     CdctrlWP2SetVolume(0);
     
-    cdctrl_str.read_area = WP2Ctrl(0x8011, 0);
+    cdctrl_str.read_area = WP2Ctrl(WP2_GETTIMESAMPLE, 0);
     cdctrl_str.wp2chan[0] = 0;
     cdctrl_str.wp2chan[1] = 1;
 
@@ -741,9 +741,9 @@ void CdctrlWP2SetFileSeek(FILE_STR *fstr_pp, int seek_pos)
 
         WP2Ctrl(WP2_SETMODE, cdctrl_str.fstr_pp->mchan);
         if (fstr_pp->frmode == FRMODE_PC)
-            WP2Ctrl(0x8014, (int)cdctrl_str.fstr_pp->fname);
+            WP2Ctrl(WP2_SEEKFLOC, (int)cdctrl_str.fstr_pp->fname);
         else
-            WP2Ctrl(0x8014, (int)&cdctrl_str.fstr_pp->fpCd);
+            WP2Ctrl(WP2_SEEKFLOC, (int)&cdctrl_str.fstr_pp->fpCd);
 
         cdctrl_str.wp2chan[1] = 0;
         cdctrl_str.wp2chan[0] = 0;
@@ -765,9 +765,9 @@ void CdctrlWP2SetFileSeekChan(FILE_STR *fstr_pp, int seek_pos, u_char Lch, u_cha
 
     WP2Ctrl(WP2_SETMODE, cdctrl_str.fstr_pp->mchan);
     if (fstr_pp->frmode == FRMODE_PC)
-        WP2Ctrl(0x8014, (int)cdctrl_str.fstr_pp->fname);
+        WP2Ctrl(WP2_SEEKFLOC, (int)cdctrl_str.fstr_pp->fname);
     else
-        WP2Ctrl(0x8014, (int)&cdctrl_str.fstr_pp->fpCd);
+        WP2Ctrl(WP2_SEEKFLOC, (int)&cdctrl_str.fstr_pp->fpCd);
 
     cdctrl_str.wp2chan[1] = 0;
     cdctrl_str.wp2chan[0] = 0;
@@ -902,7 +902,93 @@ long int CdctrlWp2CdSample2Frame(long int samplecnt)
     return (samplecnt * 24) / 75;
 }
 
-INCLUDE_ASM(const s32, "main/cdctrl", CdctrlXTRset);
+void CdctrlXTRset(FILE_STR *fstr_pp, u_int usebuf)
+{
+    int       i;
+    TRBOX_TR *tb_pp;
+    u_char   *pr_pp;
+    int       seek_pos;
+
+    cdctrl_str.status = 1;
+    cdctrl_str.error_status = 0;
+    cdctrl_str.fstr_pp = fstr_pp;
+
+    /* Search the XTR file */
+    while (!CdctrlSerch(cdctrl_str.fstr_pp));
+
+    /* Read the XTR's header (2048 bytes) */
+    while (!cdctrlReadSub(fstr_pp, 0, 2048, usebuf))
+        MtcWait(1);
+    
+    FlushCache(0);
+
+    if (STR(usebuf)->read_size > 2048)
+    {
+        while (!cdctrlReadSub(fstr_pp, 2048, STR(usebuf)->read_size - 2048, (int)(usebuf + 2048)))
+            MtcWait(1);
+    }
+
+    FlushCache(0);
+
+    if (STR(usebuf)->channel != 0)
+        cdctrl_str.fstr_pp->mchan = STR(usebuf)->channel;
+    else
+        cdctrl_str.fstr_pp->mchan = 6;
+
+    WP2Ctrl(WP2_SETMODE, cdctrl_str.fstr_pp->mchan);
+    FlushCache(0);
+
+    tb_pp = STR(usebuf)->trbox_tr;
+    for (i = 0; i < 16; i++, tb_pp++)
+    {
+        if (tb_pp->press_size != 0)
+        {
+            pr_pp = (u_char*)UsrMemEndAlloc(tb_pp->press_size);
+            
+            UsrMemEndFree();
+            FlushCache(0);
+
+            while (!cdctrlReadSub(fstr_pp, tb_pp->read_pos, tb_pp->press_size, (int)pr_pp))
+                MtcWait(1);
+
+            FlushCache(0);
+
+            printf("dec size[%08x]\n", PackIntGetDecodeSize(pr_pp));
+            printf("dec info trpos[%08x] read_pos[%08x] press_size[%08x]\n", tb_pp->trpos, tb_pp->read_pos, tb_pp->press_size);
+        
+            PackIntDecodeWait(pr_pp, (u_char*)(tb_pp->trpos + usebuf), 230);
+        }
+    }
+
+    FlushCache(0);
+    
+    seek_pos = STR(usebuf)->seek;
+
+    printf("P3STR INIT REQ IN\n");
+    p3StrInit(usebuf);
+    printf("P3STR INIT REQ OUT\n");
+
+    WP2Ctrl(WP2_BGMSETTRPOINT, usebuf);
+    printf("WP2_BGMSETTRPOINT exit\n");
+
+    if (fstr_pp->frmode == FRMODE_PC)
+        WP2Ctrl(WP2_OPENFLOC, (int)cdctrl_str.fstr_pp->fname);
+    else
+        WP2Ctrl(WP2_OPENFLOC, (int)&cdctrl_str.fstr_pp->fpCd);
+
+    WP2Ctrl(WP2_SEEK, seek_pos);
+    printf("WP2_SEEK exit\n");
+
+    WP2Ctrl(WP2_SETCHANNEL, 1);
+    WP2Ctrl(WP2_PRELOADBACK, WP2_NONE);
+    printf("WP2_PRELOAD exit\n");
+
+    CdctrlWP2SetVolume(0);
+
+    cdctrl_str.read_area  = WP2Ctrl(WP2_GETTIMESAMPLE, WP2_NONE);
+    cdctrl_str.wp2chan[0] = 0;
+    cdctrl_str.wp2chan[1] = 1;
+}
 
 void* GetIntAdrsCurrent(u_short num)
 {

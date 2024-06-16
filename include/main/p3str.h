@@ -15,7 +15,7 @@
 
 #include <stdio.h>
 
-#define STR(x)  ((P3STR*)&(x))
+#define STR(x)  ((P3STR*)x)
 #define ADRD(x) ((ADRD*)&(x)->adrD)
 
 typedef struct { // 0x10

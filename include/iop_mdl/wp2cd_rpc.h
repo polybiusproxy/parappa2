@@ -31,6 +31,9 @@
 #define WP2_GETMODE             0x800b /*        No args        */
 #define WP2_SETMODE             0x800c /* Arg -> Mode           */
 #define WP2_GETTIME             0x8010 /*        No args        */
+#define WP2_GETTIMESAMPLE       0x8011 /*        No args        */
+#define WP2_OPENFLOC            0x8013 /* Arg -> File name      */
+#define WP2_SEEKFLOC            0x8014 /* Arg -> File name      */
 #define WP2_READBUF             0x8017 /*        No args        */
 
 /* WP2 modes */
