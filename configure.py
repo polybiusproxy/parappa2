@@ -249,8 +249,8 @@ if __name__ == "__main__":
         )
         sys.exit(1)
 
-    #if args.clean:
-    clean()
+    if args.clean:
+        clean()
     
     if args.cleansrc:
         shutil.rmtree("src", ignore_errors=True)
