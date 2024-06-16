@@ -58,7 +58,8 @@ def clean():
     shutil.rmtree("assets", ignore_errors=True)
     shutil.rmtree("build", ignore_errors=True)
 
-pattern = re.compile(r'%(gp_rel)\(([^)]+)\)\(\$28\)')
+gp_access_pattern = re.compile(r'%(gp_rel)\(([^)]+)\)\(\$28\)') # Pattern for removing %gp_rel accesses
+gp_add_pattern = re.compile(r'addiu\s+(\$\d+), \$28, %gp_rel\(([^)]+)\)') # Pattern for replacing %gp_rel additions
 def remove_gprel():
     for root, dirs, files in os.walk("asm/nonmatchings/"):
         for filename in files:
@@ -68,9 +69,20 @@ def remove_gprel():
                 content = file.read()
 
             # Search for any %gp_rel access
-            if re.search(pattern, content):
+            # INSTR REG, %gp_rel(SYMBOL)($28) -> INSTR REG, SYMBOL
+            if re.search(gp_access_pattern, content):
                 # Reference found, remove
-                updated_content = re.sub(pattern, r'\2', content)
+                updated_content = re.sub(gp_access_pattern, r'\2', content)
+
+                # Write the updated content back to the file
+                with open(filepath, "w") as file:
+                    file.write(updated_content)
+            
+            # Search for any %gp_rel additions
+            # addiu REG, $28, %gp_rel(SYMBOL) -> la REG, SYMBOL
+            if re.search(gp_add_pattern, content):
+                # Reference found, replace
+                updated_content = re.sub(gp_add_pattern, r'la \1, \2', content)
 
                 # Write the updated content back to the file
                 with open(filepath, "w") as file:
@@ -237,8 +249,8 @@ if __name__ == "__main__":
         )
         sys.exit(1)
 
-    if args.clean:
-        clean()
+    #if args.clean:
+    clean()
     
     if args.cleansrc:
         shutil.rmtree("src", ignore_errors=True)
