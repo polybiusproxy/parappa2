@@ -348,6 +348,8 @@ int selPlayDisp(int sel_stage, int sel_disp, int firstf)
 
 INCLUDE_ASM(const s32, "main/main", SpHatChangeSub);
 void SpHatChangeSub(void);
+
+// TODO: fix rodata
 #if 0
 static void SpHatChangeSub(void)
 {
