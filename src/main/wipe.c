@@ -4,19 +4,19 @@
 #include <prlib/prlib.h>
 
 /* sdata - static */
-extern WIPE_TYPE wipe_type;
-extern int wipe_end_flag;
-extern int loading_wipe_switch;
+WIPE_TYPE wipe_type;
+int wipe_end_flag;
+int loading_wipe_switch;
 
-extern int ldmove_rate;
-extern int ldrecode_rate;
-extern int ldlogo_rate;
+int ldmove_rate;
+int ldrecode_rate;
+int ldlogo_rate;
 
-extern int wipe_para_spa_type;
-extern VCLR_PARA vclr_para_disp;
+int wipe_para_spa_type;
+VCLR_PARA vclr_para_disp;
 
 /* sbss - static */
-extern PR_SCENEHANDLE ldmap_hdl;
+PR_SCENEHANDLE ldmap_hdl;
 
 INCLUDE_ASM(const s32, "main/wipe", wipeSndReq);
 
@@ -70,13 +70,13 @@ INCLUDE_ASM(const s32, "main/wipe", WipeParaColorSet);
 
 INCLUDE_ASM(const s32, "main/wipe", WipeEnd);
 
-/* Can't be assembled: %gp_rel add issue */
+/* Can't be assembled: %gp_rel issue */
 INCLUDE_ASM(const s32, "main/wipe", WipeParaInDisp);
 
-/* Can't be assembled: %gp_rel add issue */
+/* Can't be assembled: %gp_rel issue */
 INCLUDE_ASM(const s32, "main/wipe", WipeParaInDispMove);
 
-/* Can't be assembled: %gp_rel add issue */
+/* Can't be assembled: %gp_rel issue */
 INCLUDE_ASM(const s32, "main/wipe", WipeParaOutDisp);
 
 INCLUDE_ASM(const s32, "main/wipe", wipeParaInReq);

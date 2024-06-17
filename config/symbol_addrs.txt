@@ -841,7 +841,7 @@ ldmove_rate                         = 0x003995a4;
 ldrecode_rate                       = 0x003995a8;
 ldlogo_rate                         = 0x003995ac;
 wipe_para_spa_type                  = 0x003995c0;
-vclr_para_disp                      = 0x003995c8;
+vclr_para_disp                      = 0x003995c8; // size:0x4
 
 ldmap_hdl                           = 0x00399a98;
 
