@@ -8,11 +8,11 @@
 #include "main/etc.h"
 
 typedef struct { // 0x4
-    /* 0x0 */ u_int timeP;
-    /* 0x2 */ u_char padId;
-    /* 0x2 */ u_char resT;
-    /* 0x2 */ u_char holdT;
-    /* 0x2 */ u_char ply;
+    /* 0x0 */ u_int  timeP:17;
+    /* 0x2 */ u_char padId:3;
+    /* 0x2 */ u_char resT:1;
+    /* 0x2 */ u_char holdT:1;
+    /* 0x2 */ u_char ply:2;
     /* 0x3 */ u_char useL;
 } MC_REP_DAT;
 
@@ -23,7 +23,6 @@ typedef struct { // 0x10
     /* 0x4 */ int exam_score[3];
 } MC_REP_SCR;
 
-// FIXME: Struct size is wrong (0x9528)
 typedef struct { // 0x4528
     /* 0x0000 */ PLAY_MODE play_modeS;
     /* 0x0004 */ PLAY_TYPE play_typeS;
