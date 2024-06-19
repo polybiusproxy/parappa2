@@ -48,8 +48,8 @@ enum PrDEBUG_PARAM
 
 union PrDebugParam
 {
-	int   d;
-	float f;
+    int   d;
+    float f;
 };
 
 #ifdef __cplusplus

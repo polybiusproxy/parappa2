@@ -51,8 +51,8 @@ void GPadSysRead(void)
 {
     int i;
     int state;
-	int id;
-	int exid;
+    int id;
+    int exid;
     PAD_SYSD *sysP_pp = sysPad;
 
     for (i = 0; i < 2; i++)
@@ -94,7 +94,8 @@ void GPadSysRead(void)
 
                 break;
             case 40:
-                if (scePadInfoMode(i, 0, InfoModeIdTable, -1) == 0) {
+                if (scePadInfoMode(i, 0, InfoModeIdTable, -1) == 0)
+                {
                     sysP_pp->phase = 99;
                     break;
                 }
@@ -112,7 +113,8 @@ void GPadSysRead(void)
                     sysP_pp->phase = 0;
                 break;
             case 70:
-                if (scePadInfoAct(i, 0, -1, 0) == 0) {
+                if (scePadInfoAct(i, 0, -1, 0) == 0)
+                {
                     sysP_pp->phase = 99;
                     break;
                 }
@@ -276,17 +278,17 @@ void padPrsTreate(PADD *pad_pp)
     for (i = 0; i < PR_ARRAYSIZEU(pad_pos); i++) 
     {
         if (pad_pp->shot & pad_pos[i])
-		{
-			if (pad_pp->press[i])
-				continue;
-			pad_pp->press[i] = 1;
-		}
-		else
-		{
-			if (!pad_pp->press[i])
-				continue;
-			pad_pp->press[i] = 0;
-		}
+        {
+            if (pad_pp->press[i])
+                continue;
+            pad_pp->press[i] = 1;
+        }
+        else
+        {
+            if (!pad_pp->press[i])
+                continue;
+            pad_pp->press[i] = 0;
+        }
     }
 }
 
@@ -321,14 +323,14 @@ void padAnaMixPad(PADD *pad_pp)
         pad_pp->mshot |= SCE_PADLleft;
 
     if (pad_pp->ana[PAD_ANA_LX] > 0xBF)
-		pad_pp->mshot |= SCE_PADLright;
+        pad_pp->mshot |= SCE_PADLright;
 
     // Y axis
     if (pad_pp->ana[PAD_ANA_LY] < 0x40)
-		pad_pp->mshot |= SCE_PADLup;
+        pad_pp->mshot |= SCE_PADLup;
     
     if (pad_pp->ana[PAD_ANA_LY] > 0xBF)
-		pad_pp->mshot |= SCE_PADLdown;
+        pad_pp->mshot |= SCE_PADLdown;
 
     pad_pp->mone = pad_pp->mshot & (old_shot ^ pad_pp->mshot);
 }

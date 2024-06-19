@@ -2,20 +2,20 @@
 
 void SyoriLineInit(int bar_size)
 {
-	// Empty
+    // Empty
 }
 
 void SyoriLineReset(void)
 {
-	// Empty
+    // Empty
 }
 
 int SyoriLineCnt(int num)
 {
-	return 0;
+    return 0;
 }
 
 void SyoriLineDisp(short int xp, short int yp)
 {
-	// Empty
+    // Empty
 }

@@ -496,10 +496,10 @@ SCRREC* ScrCtrlCurrentSearch(/* a0 4 */ SCORE_INDV_STR *sindv_pp, /* a3 7 */ int
 
 void ScrCtrlIndvInit(STDAT_DAT *sdat_pp)
 {
-	int             i, j;
-	int             dare;
+    int             i, j;
+    int             dare;
 
-	SCORE_INDV_STR *sindv_pp;
+    SCORE_INDV_STR *sindv_pp;
     GLOBAL_PLY     *gply_pp;
 
     WorkClear(score_indv_str, sizeof(score_indv_str));

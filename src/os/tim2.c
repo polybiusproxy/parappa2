@@ -23,7 +23,7 @@ int SPstrncmp(char *sr1, char *sr2, int num)
 
         sr1++;
         sr2++;
-	}
+    }
 
     return 0;
 }

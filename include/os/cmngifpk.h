@@ -9,8 +9,8 @@
 #include <libgraph.h>
 
 typedef struct { // 0x8
-	/* 0x0 */ u_long128 *pBase;
-	/* 0x4 */ int pri;
+    /* 0x0 */ u_long128 *pBase;
+    /* 0x4 */ int pri;
 } CMNGIF_PRI;
 
 void CmnGifInit(void *buf_adr, int size);
