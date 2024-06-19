@@ -1278,3 +1278,6 @@ sprintf                             = 0x00171650; // type:func
 
 // sce/ee/gcc/src/newlib/libc/machine/r5900/strcpy.S
 strcpy                              = 0x00171aa0; // type:func
+
+// sce/ee/gcc/src/newlib/libc/machine/r5900/strlen.S
+strlen                              = 0x00171bb4; // type:func
