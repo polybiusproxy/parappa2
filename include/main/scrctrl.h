@@ -215,16 +215,16 @@ typedef enum {
 
 typedef enum
 {
-	EXAM_NONE,
-	EXAM_COOL,
-	EXAM_GOOD,
-	EXAM_BAD,
-	EXAM_AWFUL,
-	EXAM_HOOK,
-	EXAM_VS,
-	EXAM_CANCEL,
-	EXAM_BONUS,
-	EXAM_MAX
+    EXAM_NONE,
+    EXAM_COOL,
+    EXAM_GOOD,
+    EXAM_BAD,
+    EXAM_AWFUL,
+    EXAM_HOOK,
+    EXAM_VS,
+    EXAM_CANCEL,
+    EXAM_BONUS,
+    EXAM_MAX
 } EXAM_ENUM;
 
 typedef enum
@@ -320,23 +320,23 @@ typedef struct { // 0x66c
 } EXAM_CHECK;
 
 typedef struct { // 0x8
-	/* 0x0 */ int time;
-	/* 0x4 */ short int KeyIndex;
+    /* 0x0 */ int time;
+    /* 0x4 */ short int KeyIndex;
 } COMMAKE_STR;
 
 typedef struct { // 0x18
-	/* 0x00 */ int bank[2];
-	/* 0x08 */ SNDREC *sndrec_pp[2];
-	/* 0x10 */ void *data_top;
-	/* 0x14 */ u_int next_index;
+    /* 0x00 */ int bank[2];
+    /* 0x08 */ SNDREC *sndrec_pp[2];
+    /* 0x10 */ void *data_top;
+    /* 0x14 */ u_int next_index;
 } SCR_SND_DBUFF;
 
 typedef struct { // 0x14
-	/* 0x00 */ STDAT_DAT *stdat_dat_pp;
-	/* 0x04 */ void *int_top;
-	/* 0x08 */ int ready_flag;
-	/* 0x0c */ int go_loop_flag;
-	/* 0x10 */ int mbar_flag;
+    /* 0x00 */ STDAT_DAT *stdat_dat_pp;
+    /* 0x04 */ void *int_top;
+    /* 0x08 */ int ready_flag;
+    /* 0x0c */ int go_loop_flag;
+    /* 0x10 */ int mbar_flag;
 } SCORE_STR;
 
 typedef enum {

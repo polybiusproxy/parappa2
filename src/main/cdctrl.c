@@ -11,9 +11,9 @@ extern CDCTRL_STR cdctrl_str;
 /* sbss - static */
 static int cdSampleTmp;
 
-#define N		 4096	/* Size of ring buffer */
-#define F		   18	/* Upper limit */
-#define THRESHOLD	2
+#define N        4096 /* Size of ring buffer */
+#define F          18 /* Upper limit */
+#define THRESHOLD   2
 
 /* bss - static */
 extern unsigned char RBuff[N + F - 1]; /* Ring buffer for INT decompression */

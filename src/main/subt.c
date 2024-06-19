@@ -371,9 +371,9 @@ INCLUDE_ASM(const s32, "main/subt", SubtCtrlPrintBoxyWipe);
 void SubtCtrlPrintBoxyWipe(/* a0 4 */ JIMAKU_STR *jstr_pp, /* a1 5 */ int line, 
 /* a2 6 */ int time, /* s4 20 */ int lang, /* s0 16 */ void *code_pp)
 {
-	/* a0 4 */ int i;
-	/* s1 17 */ void *kanjiset_tmp_pp;
-	/* s3 19 */ JIMAKU_STR *jstr_tmp_pp = &jstr_pp[line];
+    /* a0 4 */ int i;
+    /* s1 17 */ void *kanjiset_tmp_pp;
+    /* s3 19 */ JIMAKU_STR *jstr_tmp_pp = &jstr_pp[line];
     /* s0 16 */ int lang_f;
 
     for ( i = 0; i < jstr_tmp_pp->size; i++ )
