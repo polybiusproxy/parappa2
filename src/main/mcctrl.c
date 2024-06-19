@@ -21,7 +21,7 @@ extern MC_REP_CTRL mc_rep_ctrl;
 
 int setAscii2SjisCode(u_char *saki_pp, u_char *moto_pp)
 {
-    int i;
+    int    i;
     u_char dat_tmp;
 
     *saki_pp = '\0';
@@ -197,20 +197,17 @@ int mccReqVSOTHSAVEget(VSOTHSAVE *sv)
     return 1;
 }
 
-#if 1
-INCLUDE_ASM(const s32, "main/mcctrl", mccReqTapGet);
-#else
-u_short mccReqTapGet(/* a3 7 */ u_int time, /* a1 5 */ u_int useLine, /* s3 19 */ u_int *time_pp, /* t0 8 */ PLAYER_ENUM ply)
+u_short mccReqTapGet(u_int time, u_int useLine, u_int *time_pp, PLAYER_ENUM ply)
 {
-    /* a1 5 */ u_short ret;
-    /* s0 16 */ MC_REP_DAT *mcrd_pp;
-    /* s2 18 */ u_int *rep_cnt;
+    u_short     ret;
+    MC_REP_DAT *mcrd_pp;
+    u_int      *rep_cnt;
 
     rep_cnt = &mc_rep_ctrl.cl_mc_rep_dat_cnt[ply];
 
     while (1)
     {
-        if (*rep_cnt >= 2560 || *rep_cnt < mc_rep_str_local.mc_rep_dat_cnt)
+        if (*rep_cnt >= 2560 || *rep_cnt >= mc_rep_str_local.mc_rep_dat_cnt)
             return 0;
 
         mcrd_pp = &mc_rep_str_local.mc_rep_dat[*rep_cnt];
@@ -224,24 +221,21 @@ u_short mccReqTapGet(/* a3 7 */ u_int time, /* a1 5 */ u_int useLine, /* s3 19 *
     if (mcrd_pp->timeP > time)
         return 0;
 
-    if (mcrd_pp->useL == useLine)
-    {
-        ret = GetIndex2KeyCode(mcrd_pp->padId);
+    if (mcrd_pp->useL != useLine)
+        return 0;
 
-        if (mcrd_pp->holdT)
-            ret |= 0x2000;
-        if (mcrd_pp->resT)
-            ret |= 0x8000;
+    ret = GetIndex2KeyCode(mcrd_pp->padId);
 
-        *time_pp = mcrd_pp->timeP;
-        (*rep_cnt)++;
+    if (mcrd_pp->holdT)
+        ret |= 0x2000;
+    if (mcrd_pp->resT)
+        ret |= 0x8000;
+
+    *time_pp = mcrd_pp->timeP;
+    (*rep_cnt)++;
         
-        return ret;
-    }
-
-    return 0;
+    return ret;
 }
-#endif
 
 extern char D_00393800[]; /* rodata - "TAP forward!!\n" */
 
