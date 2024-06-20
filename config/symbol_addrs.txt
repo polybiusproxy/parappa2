@@ -948,7 +948,34 @@ p3str_sort_cnt                      = 0x00399ab8;
 p3str_sort                          = 0x01c77640; // size:0x108
 
 // menu/menu.c
+menuDraw                            = 0x00123a10; // type:func
+menuDrawReq                         = 0x00123a30; // type:func
+menuDrawQuit                        = 0x00123a60; // type:func
 MenuMemCardCheck                    = 0x00123a68; // type:func
+MenuCtrl                            = 0x00123af8; // type:func
+P3LogInit                           = 0x00123d88; // type:func
+
+bFirst                              = 0x00399abc;
+VsLev                               = 0x00399ac0;
+
+P3Log_Val                           = 0x01c778c8; // size:0x188
+
+// menu/menudata.c
+MenuDataGetIconSysHed               = 0x00123d98; // type:func
+
+// menu/menu_mdl.c
+MNSceneMusicFitTimerClear           = 0x00124500; // type:func
+
+// menu/menusub.c
+TsGetMenuPadIsRepeat                = 0x00125ec0; // type:func
+TsMENU_InitSystem                   = 0x00127ad0; // type:func
+TsMENU_EndSystem                    = 0x00127c20; // type:func
+TsMenu_RankingClear                 = 0x00127c58; // type:func
+TsMenu_Init                         = 0x00127ca0; // type:func
+TsMenu_End                          = 0x00127fd8; // type:func
+TsMenu_InitFlow                     = 0x001280d0; // type:func
+TsMenuMemcChk_Flow                  = 0x00128188; // type:func
+TsMenu_Draw                         = 0x00128260; // type:func
 
 // iop_mdl/wp2cd_rpc.c
 WP2Init                             = 0x0013fdb8; // type:func

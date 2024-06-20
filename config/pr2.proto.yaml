@@ -73,7 +73,15 @@ segments:
         - [0x22f68, c, main/p3str]
         - [0x23c50, asm, main/commake]
 
-        - [0x24a10, asm, menu]
+        - [0x24a10, c, menu/menu]
+        - [0x24d98, asm, menu/menudata]
+        - [0x25500, asm, menu/menu_mdl]
+        - [0x26ec0, asm, menu/menusub]
+        - [0x38f70, asm, menu/p3mc]
+        - [0x3bd80, asm, menu/memc]
+        - [0x3dbf0, asm, menu/mntm2hed]
+        - [0x3dc08, asm, menu/menufont]
+        - [0x3ec08, asm, menu/pksprite]
 
         - [0x40db8, c, iop_mdl/wp2cd_rpc]
         - [0x41010, c, iop_mdl/tapctrl_rpc]
@@ -188,7 +196,12 @@ segments:
         - [0x294810, .rodata, main/main]
         - [0x294b48, .rodata, main/cmnfile]
         - [0x294b60, .rodata, main/p3str]
-        - [0x294c00, rodata]
+
+        - [0x294c00, rodata, menu/menudata]
+        - [0x296f10, rodata, menu/menusub]
+        - [0x297180, rodata, menu/p3mc]
+        - [0x297650, rodata, menu/memc]
+        - [0x2976e0, rodata, menu/pksprite]
 
         - [0x297708, .rodata, iop_mdl/wp2cd_rpc]
         - [0x297728, .rodata, iop_mdl/tapctrl_rpc]
@@ -263,9 +276,9 @@ segments:
         - { start: 0x29aa00, type: sbss, vram: 0x00399a4c, name: main/drawctrl }
         - { start: 0x29aa00, type: sbss, vram: 0x00399a80, name: main/mbar }
         - { start: 0x29aa00, type: sbss, vram: 0x00399a98, name: main/wipe }
-        - { start: 0x29aa00, type: sbss, vram: 0x00399aa0, name: main/mcctrl }
+        - { start: 0x29aa00, type: .sbss, vram: 0x00399aa0, name: main/mcctrl }
         - { start: 0x29aa00, type: .sbss, vram: 0x00399aac, name: main/p3str }
-        - { start: 0x29aa00, type: sbss, vram: 0x00399abc, name: menu/menu }
+        - { start: 0x29aa00, type: .sbss, vram: 0x00399abc, name: menu/menu }
 
         - { start: 0x29aa00, type: sbss, vram: 0x00399ac4, name: unk } # menu/menu_mdl
         #- { start: 0x29aa00, type: sbss, vram: 0x00399b94, name: prlib/render }
