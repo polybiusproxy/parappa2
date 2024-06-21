@@ -1,5 +1,7 @@
 #include "os/cmngifpk.h"
 
+#include <stdio.h>
+
 /* static--move to bss! */
 extern CMNGIF_PRI cmngif_pri[64];
 static int cmngif_pri_cnt;
