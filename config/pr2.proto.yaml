@@ -78,8 +78,8 @@ segments:
         - [0x25500, asm, menu/menu_mdl]
         - [0x26ec0, asm, menu/menusub]
         - [0x38f70, asm, menu/p3mc]
-        - [0x3bd80, asm, menu/memc]
-        - [0x3dbf0, asm, menu/mntm2hed]
+        - [0x3bd80, c, menu/memc]
+        - [0x3dbf0, c, menu/mntm2hed]
         - [0x3dc08, asm, menu/menufont]
         - [0x3ec08, asm, menu/pksprite]
 
@@ -200,7 +200,7 @@ segments:
         - [0x294c00, rodata, menu/menudata]
         - [0x296f10, rodata, menu/menusub]
         - [0x297180, rodata, menu/p3mc]
-        - [0x297650, rodata, menu/memc]
+        - [0x297650, .rodata, menu/memc]
         - [0x2976e0, rodata, menu/pksprite]
 
         - [0x297708, .rodata, iop_mdl/wp2cd_rpc]

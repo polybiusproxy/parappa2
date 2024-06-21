@@ -1,4 +1,4 @@
-// sce/ee/lib/crt0.s
+// ee/lib/crt0.s
 // ENTRYPOINT
 _start                              = 0x00100008; // type:func
 _exit                               = 0x001000b8; // type:func
@@ -962,6 +962,7 @@ P3Log_Val                           = 0x01c778c8; // size:0x188
 
 // menu/menudata.c
 MenuDataGetIconSysHed               = 0x00123d98; // type:func
+MenuMsgInit                         = 0x001242d8; // type:func
 
 // menu/menu_mdl.c
 MNSceneMusicFitTimerClear           = 0x00124500; // type:func
@@ -976,6 +977,56 @@ TsMenu_End                          = 0x00127fd8; // type:func
 TsMenu_InitFlow                     = 0x001280d0; // type:func
 TsMenuMemcChk_Flow                  = 0x00128188; // type:func
 TsMenu_Draw                         = 0x00128260; // type:func
+
+// menu/p3mc.c
+P3MC_GetIconSize                    = 0x00137f70;
+
+// menu/memc.c
+memc_init                           = 0x0013ad80; // type:func
+memc_setDirName                     = 0x0013adc0; // type:func
+memc_setSaveTitle                   = 0x0013ae70; // type:func
+memc_setIconSysHed                  = 0x0013af48; // type:func
+memc_setSaveIcon                    = 0x0013af98; // type:func
+memc_getfilename                    = 0x0013b0f8; // type:func
+memc_getfilepath                    = 0x0013b1d0; // type:func
+memc_checkFormat                    = 0x0013b240; // type:func
+memc_getChangeState                 = 0x0013b250; // type:func
+memc_setChangeState                 = 0x0013b260; // type:func
+memc_SaveFileClust                  = 0x0013b270; // type:func
+memc_clearMEMCINFO                  = 0x0013b2c8; // type:func
+memc_searchDirTbl                   = 0x0013b318; // type:func
+memc_port_info                      = 0x0013b418; // type:func
+memc_del_file                       = 0x0013b4c8; // type:func
+memc_load_file                      = 0x0013b558; // type:func
+memc_loadFirst                      = 0x0013b5f8; // type:func
+memc_save_file                      = 0x0013b688; // type:func
+memc_seeksave_file                  = 0x0013b7f0; // type:func
+memc_save_overwrite                 = 0x0013b840; // type:func
+memc_port_check                     = 0x0013b948; // type:func
+memc_format                         = 0x0013b9a8; // type:func
+memc_chg_dir                        = 0x0013ba10; // type:func
+memc_get_dir                        = 0x0013ba88; // type:func
+memc_get_dir_continue               = 0x0013bb50; // type:func
+memc_mansub_ErrChk                  = 0x0013bbe0; // type:func
+memc_mansub_Open                    = 0x0013bcf8; // type:func
+memc_mansub_Close                   = 0x0013bd48; // type:func
+memcsub_fileChk                     = 0x0013bd88; // type:func
+memc_mansub_GetInfo                 = 0x0013bdf8; // type:func
+memc_mansub_load                    = 0x0013c028; // type:func
+memc_manager_save                   = 0x0013c158; // type:func
+memc_manager_overwrite              = 0x0013c850; // type:func
+memc_manager_chk                    = 0x0013c9f0; // type:func
+memc_manager                        = 0x0013cba0; // type:func
+
+memc_iconsys                        = 0x0018ddf8; // size:0x3c4
+_memc_type                          = 0x0018e1c0; // type:u32 size:0x4
+
+memc_stat                           = 0x01c81540; // size:0x340
+
+// menu/mntm2hed.c
+TsGetTM2Hed                         = 0x0013cbf0; // type:func
+
+menu_tm2_hed                        = 0x0018e1d0; // size:0x13b0
 
 // iop_mdl/wp2cd_rpc.c
 WP2Init                             = 0x0013fdb8; // type:func
@@ -1273,10 +1324,19 @@ sceCdRead                           = 0x001636d8; // type:func
 sceCdSeek                           = 0x001638b8; // type:func
 sceCdGetError                       = 0x00163988; // type:func
 
-// sce/ee/gcc/src/newlib/libm/math/sf_sin.c
+// libmc.c
+sceMcInit                           = 0x00163b18; // type:func
+sceMcOpen                           = 0x00163e78; // type:func
+sceMcClose                          = 0x00163fe8; // type:func
+sceMcGetInfo                        = 0x00164650; // type:func
+sceMcGetDir                         = 0x001647d8; // type:func
+sceMcChdir                          = 0x001649b8; // type:func
+sceMcDelete                         = 0x00164bd0; // type:func
+
+// ee/gcc/src/newlib/libm/math/sf_sin.c
 sinf                                = 0x001654a0; // type:func
 
-// sce/ee/gcc/src/gcc/libgcc2.c
+// ee/gcc/src/gcc/libgcc2.c
 __main                              = 0x001680b0; // type:func
 __divdi3                            = 0x001680d0; // type:func
 __fixsfdi                           = 0x00169760; // type:func
@@ -1284,27 +1344,33 @@ __floatdisf                         = 0x00169a20; // type:func
 __udivdi3                           = 0x0016a1c8; // type:func
 __umoddi3                           = 0x0016a798; // type:func
 
-// sce/ee/gcc/src/newlib/libc/stdlib/malloc.c
+// ee/gcc/src/newlib/libc/stdlib/malloc.c
 malloc                              = 0x0016f9e8; // type:func
 free                                = 0x0016fa10; // type:func
 
-// sce/ee/gcc/src/newlib/libc/machine/r5900/memset.S
+// ee/gcc/src/newlib/libc/machine/r5900/memcpy.S
+memcpy                              = 0x00170484; // type:func
+
+// ee/gcc/src/newlib/libc/machine/r5900/memset.S
 memset                              = 0x00170534; // type:func
 
-// sce/ee/gcc/src/newlib/libc/stdlib/mstats.c
+// ee/gcc/src/newlib/libc/stdlib/mstats.c
 mallinfo                            = 0x00170608; // type:func
 
-// sce/ee/gcc/src/newlib/libc/stdio/printf.c
+// ee/gcc/src/newlib/libc/stdio/printf.c
 printf                              = 0x00170700; // type:func
 
-// sce/ee/gcc/src/newlib/libc/stdlib/rand.c
+// ee/gcc/src/newlib/libc/stdlib/rand.c
 rand                                = 0x00171188; // type:func
 
-// sce/ee/gcc/src/newlib/libc/stdio/sprintf.c
+// ee/gcc/src/newlib/libc/stdio/sprintf.c
 sprintf                             = 0x00171650; // type:func
 
-// sce/ee/gcc/src/newlib/libc/machine/r5900/strcpy.S
+// ee/gcc/src/newlib/libc/machine/r5900/strcat.S
+strcat                              = 0x00171830; // type:func
+
+// ee/gcc/src/newlib/libc/machine/r5900/strcpy.S
 strcpy                              = 0x00171aa0; // type:func
 
-// sce/ee/gcc/src/newlib/libc/machine/r5900/strlen.S
+// ee/gcc/src/newlib/libc/machine/r5900/strlen.S
 strlen                              = 0x00171bb4; // type:func

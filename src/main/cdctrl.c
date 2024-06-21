@@ -326,7 +326,7 @@ void intReadSub(void)
 
     while (1)
     {
-        /* Read 2048 bytes (power of two reads are faster) into our header buffer */
+        /* Read a whole sector into our header buffer */
         while (!cdctrlReadSub(cdctrl_str.fstr_pp, read_pos, 2048, (int)head_read_pp))
             MtcWait(1);
 
@@ -457,6 +457,8 @@ void intReadSub(void)
                     UsrMemAlloc(PACK(head_read_pp)->adr[i + 1] - PACK(head_read_pp)->adr[i]);
                 }
             }
+
+            /* Fallthrough, stops after the ONMEM file category */
 
             default:
             {
