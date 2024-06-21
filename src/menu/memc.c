@@ -413,10 +413,161 @@ static int memc_mansub_Close(void)
 }
 
 INCLUDE_ASM(const s32, "menu/memc", memcsub_fileChk);
+static int memcsub_fileChk(/* a0 4 */ sceMcTblGetDir *dir, /* a1 5 */ unsigned char *name, /* a2 6 */ int max);
 
-INCLUDE_ASM(const s32, "menu/memc", memc_mansub_GetInfo);
+extern char D_00399888[]; /* sdata - "SAVE" */
 
+static int memc_mansub_GetInfo(int result)
+{
+    MEMC_INFO *info;
+    MEMC_STAT *pmw = &memc_stat;
+
+    int re;
+
+    switch (pmw->cmd)
+    {
+    case 14:
+        if (pmw->type != sceMcTypePS2)
+        {
+            pmw->func = 0;
+            return 2;
+        }
+        else
+        {
+            if (result < 0)
+            {
+                pmw->func = 0;
+
+                if (result != -2)
+                    re = result;
+                else
+                    re = -2000;
+
+                return memc_mansub_ErrChk(re);
+            }
+            else
+            {
+                if (pmw->format == 0)
+                {
+                    pmw->func = 0;
+                    return 3;
+                }
+                else
+                {
+                    info = (MEMC_INFO*)pmw->buf;
+
+                    info->free = pmw->free;
+                    info->flag |= _memc_type[pmw->type];
+
+                    if (sceMcGetDir(pmw->port, pmw->slot, pmw->filename, 0, info->dirfileMax, info->dirfile) == sceMcResSucceed)
+                    {
+                        pmw->cmd = sceMcFuncNoGetDir;
+                        return 16;
+                    }
+
+                    return 1;
+                }
+            }
+        }
+        break;
+    case 13:
+        if (result < 0)
+        {
+            pmw->func = 0;
+            return memc_mansub_ErrChk(result);
+        }
+        else
+        {
+            info = (MEMC_INFO*)pmw->buf;
+
+            info->allfile = result;
+            info->flag |= 1;
+
+            if (pmw->bChkSys)
+            {
+                if (memcsub_fileChk(info->dirfile, memc_getfilename(-1), result))
+                    info->flag |= 2;
+                if (memcsub_fileChk(info->dirfile, memc_getfilename(-2), result))
+                    info->flag |= 4;
+                if (memcsub_fileChk(info->dirfile, memc_getfilename(-3), result))
+                    info->flag |= 8;
+                if (memcsub_fileChk(info->dirfile, memc_getfilename(-4), result))
+                    info->flag |= 16;
+                
+                info->savefile  = memcsub_fileChk(info->dirfile, pmw->saveDir, result);
+                info->savefile += memcsub_fileChk(info->dirfile, D_00399888, result);
+            }
+
+            pmw->func = 0;
+            return 0;
+        }
+        break;
+    default:
+        return 0;
+    }
+}
+
+#if 1
 INCLUDE_ASM(const s32, "menu/memc", memc_mansub_load);
+static int memc_mansub_load(/* -0x40(sp) */ int result);
+#else
+{
+    /* s0 16 */ MEMC_STAT *pmw = &memc_stat;
+
+    switch (pmw->cmd)
+    {
+    case 14: // l 1206- 1215-
+        if (result < 0)
+        {
+            if (pmw->type != 2)
+            {
+                pmw->func = 0;
+                return 2;
+            }
+
+            if (memc_mansub_Open(pmw->filename, 1) == 0)
+            {
+                pmw->func = 3;
+                return 16;
+            }
+
+            return 1;
+        }
+        return memc_mansub_ErrChk(result);
+    case 2: // l 1230-
+        if (result < 0)
+        {
+            pmw->fd = result;
+            
+            if (sceMcRead(result, pmw->buf, pmw->size) == sceMcResSucceed) 
+                pmw->cmd = 5;            
+        }
+        return memc_mansub_ErrChk(result);
+    case 5: // l 1240-
+        if (result < 0)
+        {
+            if (memc_mansub_Close())
+                return 1;
+            
+            pmw->func = 6;
+
+            if (pmw->isSyncClose)
+            {
+                pmw->func = 6;
+                return 16;
+            }
+
+            pmw->isSyncClose = 0;
+
+            if (sceMcSync(0, 0, &result) != 1)
+                return 16;
+        }
+        return memc_mansub_ErrChk(result);
+    default:
+        return 16;
+    }   
+}
+#endif
 
 INCLUDE_ASM(const s32, "menu/memc", memc_manager_save);
 
