@@ -81,7 +81,8 @@ segments:
         - [0x3bd80, c, menu/memc]
         - [0x3dbf0, c, menu/mntm2hed]
         - [0x3dc08, asm, menu/menufont]
-        - [0x3ec08, asm, menu/pksprite]
+        - [0x3ec08, asm, menu/pksprite] # Can't split until we match TsDrawUPacket, which has a EUC-JP string
+                                        # containing Japanese characters
 
         - [0x40db8, c, iop_mdl/wp2cd_rpc]
         - [0x41010, c, iop_mdl/tapctrl_rpc]

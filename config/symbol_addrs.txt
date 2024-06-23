@@ -1028,6 +1028,69 @@ TsGetTM2Hed                         = 0x0013cbf0; // type:func
 
 menu_tm2_hed                        = 0x0018e1d0; // size:0x13b0
 
+// menu/pksprite.c
+_tsWorkEnd                          = 0x0013dc08; // type:func
+_tsWorkInit                         = 0x0013dc50; // type:func
+TsInitUPacket                       = 0x0013dcd0; // type:func
+TsEndUPacket                        = 0x0013dd68; // type:func
+TsDrawUPacket                       = 0x0013dda8; // type:func
+PkTEX0_Add                          = 0x0013df08; // type:func
+PkTEX1_Add                          = 0x0013df40; // type:func
+PkCLAMP_Add                         = 0x0013df78; // type:func
+PkALPHA_Add                         = 0x0013dfb0; // type:func
+PkTEST_Add                          = 0x0013dfe8; // type:func
+PkSCISSOR_Add                       = 0x0013e020; // type:func
+PkDefSCISSOR_Add                    = 0x0013e090; // type:func
+PkOFFSET_Add                        = 0x0013e0c8; // type:func
+PkPABE_Add                          = 0x0013e100; // type:func
+PkFBA_Add                           = 0x0013e140; // type:func
+PkCCLAMP_Add                        = 0x0013e180; // type:func
+PkDefReg_Add                        = 0x0013e1c0; // type:func
+PkTEX0_SetAdd                       = 0x0013e208; // type:func
+GetDToneColor                       = 0x0013e328; // type:func
+GetToneColorA                       = 0x0013e3d0; // type:func
+GetToneColorH                       = 0x0013e440; // type:func
+SetSprDefOfsXY                      = 0x0013e4b0; // type:func
+SetSprScreenXYWH                    = 0x0013e4f0; // type:func
+PkSprPkt_SetDrawEnv                 = 0x0013e510; // type:func
+PkZBUFMask_Add                      = 0x0013e608; // type:func
+PkSprPkt_SetTexVram                 = 0x0013e680; // type:func
+PkSprPkt_SetDefault                 = 0x0013e788; // type:func
+PkNSprite_Add                       = 0x0013e8b0; // type:func
+PkNSprite_Add2                      = 0x0013e9c0; // type:func
+PkNSprite_AddAdj                    = 0x0013ead0; // type:func
+PkCRect_Add                         = 0x0013ebe0; // type:func
+PkCGRect_Add                        = 0x0013ec98; // type:func
+rotcossin                           = 0x0013ed98; // type:func
+_pkVU0RotMatrixZ                    = 0x0013ee48; // type:func
+PkRSprite_Add                       = 0x0013ee90; // type:func
+PkCLine2_Add                        = 0x0013f0c0; // type:func
+PkCLineS_AddStart                   = 0x0013f1a8; // type:func
+PkCLineS_AddNext                    = 0x0013f278; // type:func
+PkPolyF3_Add                        = 0x0013f308; // type:func
+PkPolyF4_Add                        = 0x0013f3f0; // type:func
+PkPolyFT4_Add                       = 0x0013f4e0; // type:func
+PkMesh_Create                       = 0x0013f630; // type:func
+PkMesh_Delete                       = 0x0013f6c8; // type:func
+PkMesh_SetXYWH                      = 0x0013f718; // type:func
+PkMesh_SetUVWH                      = 0x0013f808; // type:func
+PkCMesh_Add                         = 0x0013f8d8; // type:func
+PkFTMesh_Add                        = 0x0013fa58; // type:func
+PkMesh_SetHLinOfs                   = 0x0013fc10; // type:func
+PkMesh_SetVLinOfs                   = 0x0013fc70; // type:func
+PkMesh_SetHLinOfsLRX                = 0x0013fcd0; // type:func
+PkMesh_SetVLinOfsUDY                = 0x0013fd48; // type:func
+
+S5432                               = 0x00190430; // type:f32 size:0x10
+
+FLT_003990DC                        = 0x003990dc; // type:f32
+
+_PkDefSCISSOR                       = 0x003998a0; // size:0x8
+_PkDefZBUFFER                       = 0x003998b0; // size:0x8
+
+_PkScrW                             = 0x00399b84;
+_PkScrH                             = 0x00399b88;
+
 // iop_mdl/wp2cd_rpc.c
 WP2Init                             = 0x0013fdb8; // type:func
 WP2Ctrl                             = 0x0013fe40; // type:func

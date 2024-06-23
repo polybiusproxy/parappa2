@@ -132,6 +132,7 @@ void memc_setSaveIcon(/* a0 4 */ int no, /* a1 5 */ void *pIconData, /* a2 6 */ 
 INCLUDE_RODATA(const s32, "menu/memc", D_00396670);
 
 INCLUDE_ASM(const s32, "menu/memc", memc_getfilename);
+char* memc_getfilename(/* a0 4 */ int no);
 
 INCLUDE_ASM(const s32, "menu/memc", memc_getfilepath);
 char* memc_getfilepath(/* a0 4 */ int no);
