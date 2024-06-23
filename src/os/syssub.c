@@ -655,7 +655,6 @@ void usrFree(void *adrs)
     }
 
     printf("free is NG\n");
-    return;
 }
 
 void usrMallcReport(void)
