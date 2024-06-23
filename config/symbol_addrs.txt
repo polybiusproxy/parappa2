@@ -962,7 +962,65 @@ P3Log_Val                           = 0x01c778c8; // size:0x188
 
 // menu/menudata.c
 MenuDataGetIconSysHed               = 0x00123d98; // type:func
+MenuDataSndInit                     = 0x00123e10; // type:func
+MenuDataSndReq                      = 0x00123e50; // type:func
+MenuDataSndStop                     = 0x00123eb8; // type:func
+MenuDataSndQuit                     = 0x00123ec8; // type:func
+MenuDataSndSetVol                   = 0x00123f10; // type:func
+MenuDataSndTrans                    = 0x00123f40; // type:func
+MenuDataSndTransCheck               = 0x00123fe0; // type:func
+MenuDataSndReqChan                  = 0x00124008; // type:func
+MenuDataSpuVolume                   = 0x00124078; // type:func
+MenuDataDiskVolume                  = 0x001240a0; // type:func
+MenuDataDiskSndReq                  = 0x001240a8; // type:func
+MenuDataDiskSndReady                = 0x001240c0; // type:func
+MenuDataDiskSndPlay                 = 0x001240e0; // type:func
+MenuDataDiskSndEnd                  = 0x001240e8; // type:func
+menuDiskSndDebug                    = 0x001240f0; // type:func
+MenuVoiceBankSet                    = 0x00124198; // type:func
+MenuVoicePlayVol                    = 0x001241a8; // type:func
+MenuVoicePlay                       = 0x00124290; // type:func
+MenuVoiceStop                       = 0x00124298; // type:func
+MenuVoiceSetVol                     = 0x001242a8; // type:func
 MenuMsgInit                         = 0x001242d8; // type:func
+MenuMsgPrintSub                     = 0x00124308; // type:func
+MenuMsgPrintMc                      = 0x00124328; // type:func
+MenuMsgGetMessageMc                 = 0x00124348; // type:func
+MenuMsgGetMessageSub                = 0x00124368; // type:func
+MenuRoundTim2Trans                  = 0x00124388; // type:func
+MenuStageCl1Trans                   = 0x00124430; // type:func
+MenuCoolCl1Trans                    = 0x00124490; // type:func
+
+menumciconL                         = 0x00187558; // size:0x310
+menumciconR                         = 0x00187868; // size:0x620
+sndtap_menu                         = 0x00187e88; // size:0xC0
+sndtap_map                          = 0x00187f48; // size:0x18
+sndtap_chall                        = 0x00187f60; // size:0x78
+VoiceSet                            = 0x00187fd8; // size:0x1B0
+mess_mc                             = 0x00188188; // size:0xD0
+mess_menu                           = 0x00188258; // size:0x190
+rt2t_r1                             = 0x001883e8; // size:0x10
+rt2t_r2                             = 0x001883f8; // size:0x10
+rt2t_r3                             = 0x00188408; // size:0x10
+rt2t_r4                             = 0x00188418; // size:0x10
+rt2trans_str                        = 0x00188428; // size:0x20
+ocl1_r1                             = 0x00188448; // size:0x20
+ocl1_r2                             = 0x00188468; // size:0x20
+ocl1_r3                             = 0x00188488; // size:0x20
+ocl1_r4                             = 0x001884a8; // size:0x20
+ocl1_rndTbl                         = 0x001884c8; // size:0x10
+ocl1_st1                            = 0x001884d8; // size:0x40
+ocl1_st2                            = 0x00188518; // size:0x40
+ocl1_st3                            = 0x00188558; // size:0x40
+ocl1_st4                            = 0x00188598; // size:0x40
+ocl1_st5                            = 0x001885d8; // size:0x40
+ocl1_st6                            = 0x00188618; // size:0x40
+ocl1_st7                            = 0x00188658; // size:0x40
+ocl1_st8                            = 0x00188698; // size:0x40
+ocl1_stageTbl                       = 0x001886d8; // size:0x20
+
+_BankChan1Req                       = 0x003996f0;
+_BankChan1Stat                      = 0x003996f4;
 
 // menu/menu_mdl.c
 MNSceneMusicFitTimerClear           = 0x00124500; // type:func
