@@ -27,7 +27,7 @@ jobs:
       run: echo ${{ secrets.PROTO_ENCRYPTION_KEY }} | openssl enc -d -aes-256-cbc -pass stdin -pbkdf2 -in iso/SCPS_150.17.aes -out iso/SCPS_150.17
 
     - name: Add i686 architecture
-    - run: sudo dpkg --add-architecture i386
+      run: sudo dpkg --add-architecture i386
 
     - name: Install Ubuntu packages
       run: sudo apt-get update && sudo apt-get install -y gcc-mipsel-linux-gnu binutils-mips-linux-gnu ninja-build libc6:i386 libncurses5:i386 libstdc++6:i386
