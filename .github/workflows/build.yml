@@ -1,0 +1,42 @@
+name: build
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push' }}
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout main repository
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Checkout binaries
+      uses: actions/checkout@v3
+      with:
+        repository: polybiusproxy/p3_binaries
+        token: ${{ secrets.BINARY_ACCESS_TOKEN }}
+        path: iso
+
+    - name: Decrypt ELF
+      run: echo ${{ secrets.PROTO_ENCRYPTION_KEY }} | openssl enc -d -aes-256-cbc -pass stdin -pbkdf2 -in iso/SCPS_150.17.aes -out iso/SCPS_150.17
+
+    - name: Add i686 architecture
+    - run: sudo dpkg --add-architecture i386
+
+    - name: Install Ubuntu packages
+      run: sudo apt-get update && sudo apt-get install -y gcc-mipsel-linux-gnu binutils-mips-linux-gnu ninja-build libc6:i386 libncurses5:i386 libstdc++6:i386
+
+    - name: Install Python modules
+      run: python3 -m pip install -r requirements.txt
+
+    - name: Configure
+      run: python3 ./configure.py
+
+    - name: Compile
+      run: ninja
