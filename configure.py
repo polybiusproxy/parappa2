@@ -239,16 +239,6 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    try:
-        exec_shell(["wibo"])
-    except FileNotFoundError:
-        print("ERROR: wibo does not appear to be accessible")
-        print("To install it, please download it and put it in your PATH:")
-        print(
-            f"  wget https://github.com/decompals/wibo/releases/download/{WIBO_VER}/wibo && chmod +x wibo && sudo mv wibo /usr/bin/"
-        )
-        sys.exit(1)
-
     if args.clean:
         clean()
     
