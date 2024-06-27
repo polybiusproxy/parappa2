@@ -126,7 +126,7 @@ static void dummyPlay(/* s0 16 */ int retTitle)
 {
     /* s1 17 */ int mode;
     /* s2 18 */ int ret;
-    /* -0x150(sp) */ long int scoreTmp[2] = {};
+    /* -0x150(sp) */ long scoreTmp[2] = {};
     /* -0x140(sp) */ u_char *msgDmy[5] =
     {
         "TITLE   A or O or X EXIT",

@@ -47,8 +47,8 @@ typedef struct { // 0x58
     /* 0x30 */ int endingGame;
     /* 0x34 */ int isWipeEnd;
     /* 0x38 */ int isState;
-    /* 0x3c */ short int *pAutoMove;
-    /* 0x40 */ short int autoMovePos[10];
+    /* 0x3c */ short *pAutoMove;
+    /* 0x40 */ short autoMovePos[10];
     /* 0x54 */ int curRecJacket;
 } P3GAMESTATE;
 

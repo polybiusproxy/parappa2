@@ -15,7 +15,7 @@ int SyoriLineCnt(int num)
     return 0;
 }
 
-void SyoriLineDisp(short int xp, short int yp)
+void SyoriLineDisp(short xp, short yp)
 {
     // Empty
 }

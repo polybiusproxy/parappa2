@@ -844,7 +844,7 @@ int CdctrlFrame2WP2sample(int frame)
     return (frame * 75) / 24;
 }
 
-long int CdctrlWp2GetSndTime(float tempo)
+long CdctrlWp2GetSndTime(float tempo)
 {
     float beat = WP2Ctrl(WP2_GETTIME, WP2_NONE);
 
@@ -852,7 +852,7 @@ long int CdctrlWp2GetSndTime(float tempo)
     return (int)beat;
 }
 
-long int CdctrlSndTime2WP2sample(float tempo, long int beat)
+long CdctrlSndTime2WP2sample(float tempo, long beat)
 {
     return (beat * 1875.0f) / (tempo * 16.0f);
 }
@@ -883,7 +883,7 @@ int CdctrlWp2GetFrameTmp(void)
     return (frame * 24) / 75;
 }
 
-long int CdctrlWp2GetSndTimeTmp(float tempo)
+long CdctrlWp2GetSndTimeTmp(float tempo)
 {
     float beat = cdSampleTmp;
 
@@ -891,7 +891,7 @@ long int CdctrlWp2GetSndTimeTmp(float tempo)
     return (int)beat;
 }
 
-long int CdctrlWp2CdSample2SndTime(long int samplecnt, float tempo)
+long CdctrlWp2CdSample2SndTime(long samplecnt, float tempo)
 {
     float beat = samplecnt;
 
@@ -899,7 +899,7 @@ long int CdctrlWp2CdSample2SndTime(long int samplecnt, float tempo)
     return (int)beat;
 }
 
-long int CdctrlWp2CdSample2Frame(long int samplecnt)
+long CdctrlWp2CdSample2Frame(long samplecnt)
 {
     return (samplecnt * 24) / 75;
 }

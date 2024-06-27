@@ -39,12 +39,12 @@ typedef enum {
 typedef struct { // 0xc
     /* 0x0 */ int frame;
     /* 0x4 */ int actor;
-    /* 0x8 */ short int sound;
+    /* 0x8 */ short sound;
 } TAPCT;
 
 typedef struct { // 0x38
     /* 0x00 */ int time;
-    /* 0x04 */ short int KeyIndex;
+    /* 0x04 */ short KeyIndex;
     /* 0x08 */ TAPCT tapct[4];
 } TAPDAT;
 
@@ -106,8 +106,8 @@ typedef enum {
 } SCRRJ_LESSON_ROUND_ENUM;
 
 typedef struct { // 0x10
-    /* 0x0 */ short int job;
-    /* 0x2 */ short int sub;
+    /* 0x0 */ short job;
+    /* 0x2 */ short sub;
     /* 0x4 */ int jobd1;
     /* 0x8 */ int jobd2;
     /* 0xc */ int data;
@@ -115,7 +115,7 @@ typedef struct { // 0x10
 
 typedef struct { // 0x8
     /* 0x0 */ int time;
-    /* 0x4 */ short int chan[2];
+    /* 0x4 */ short chan[2];
 } SCR_CHAN_AUTO;
 
 typedef enum {
@@ -149,7 +149,7 @@ typedef struct SCR_MAIN { // 0x10
 
 typedef struct { // 0xc
     /* 0x0 */ int ofs_frame;
-    /* 0x4 */ short int onKey;
+    /* 0x4 */ short onKey;
     /* 0x6 */ char othOn;
     /* 0x7 */ u_char othNum;
     /* 0x8 */ KEY_INDEX_ENUM key;
@@ -321,7 +321,7 @@ typedef struct { // 0x66c
 
 typedef struct { // 0x8
     /* 0x0 */ int time;
-    /* 0x4 */ short int KeyIndex;
+    /* 0x4 */ short KeyIndex;
 } COMMAKE_STR;
 
 typedef struct { // 0x18
@@ -563,7 +563,7 @@ TIM2_DAT* lessonTim2InfoGet(void);
 TIM2_DAT* lessonCl2InfoGet(SCRRJ_LESSON_ROUND_ENUM type);
 void MbarSetCtrlTime(int mctime);
 void MbarReq(MBAR_REQ_ENUM mm_req, TAPSET *ts_pp, int curr_time, SCR_TAP_MEMORY *tm_pp, int tm_cnt, int lang, int tapdat_size, TAPDAT *tapdat_pp, GUI_CURSOR_ENUM guic);
-void vsAnimationReset(int ply, long int scr);
+void vsAnimationReset(int ply, long scr);
 
 /* TODO(poly): move to prlib/menderer.h */
 void PrDecelerateMenderer(float);

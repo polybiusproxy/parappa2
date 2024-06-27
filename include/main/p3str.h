@@ -26,12 +26,12 @@ typedef struct { // 0x10
 } TRBOX_TR;
 
 typedef struct { // 0x20
-    /* 0x00 */ short int od_type;
-    /* 0x02 */ short int first;
+    /* 0x00 */ short od_type;
+    /* 0x02 */ short first;
     /* 0x04 */ u_int start;
     /* 0x08 */ u_int end;
-    /* 0x0c */ short int use;
-    /* 0x0e */ short int draw;
+    /* 0x0c */ short use;
+    /* 0x0e */ short draw;
     /* 0x10 */ u_int pri;
     /* 0x14 */ u_int pad1;
     /* 0x18 */ u_int pad2;

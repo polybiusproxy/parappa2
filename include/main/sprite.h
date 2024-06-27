@@ -73,14 +73,14 @@ typedef struct { // 0x4
 } SPR_REGS;
 
 typedef struct { // 0x10
-    /* 0x0 */ short int x;
-    /* 0x2 */ short int y;
-    /* 0x4 */ short int scalex;
-    /* 0x6 */ short int scaley;
-    /* 0x8 */ short int u;
-    /* 0xa */ short int v;
-    /* 0xc */ short int w;
-    /* 0xe */ short int h;
+    /* 0x0 */ short x;
+    /* 0x2 */ short y;
+    /* 0x4 */ short scalex;
+    /* 0x6 */ short scaley;
+    /* 0x8 */ short u;
+    /* 0xa */ short v;
+    /* 0xc */ short w;
+    /* 0xe */ short h;
 } SPR_PRIM;
 
 void SprInit(void);

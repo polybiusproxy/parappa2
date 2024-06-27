@@ -6,6 +6,6 @@
 void SyoriLineInit(int bar_size);
 void SyoriLineReset(void);
 int SyoriLineCnt(int num);
-void SyoriLineDisp(short int xp, short int yp);
+void SyoriLineDisp(short xp, short yp);
 
 #endif
