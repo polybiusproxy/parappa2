@@ -74,7 +74,7 @@ segments:
         - [0x23c50, asm, main/commake]
 
         - [0x24a10, c, menu/menu]
-        - [0x24d98, asm, menu/menudata]
+        - [0x24d98, c, menu/menudata]
         - [0x25500, asm, menu/menu_mdl]
         - [0x26ec0, asm, menu/menusub]
         - [0x38f70, asm, menu/p3mc]
@@ -198,7 +198,7 @@ segments:
         - [0x294b48, .rodata, main/cmnfile]
         - [0x294b60, .rodata, main/p3str]
 
-        - [0x294c00, rodata, menu/menudata]
+        - [0x294c00, .rodata, menu/menudata]
         - [0x296f10, rodata, menu/menusub]
         - [0x297180, rodata, menu/p3mc]
         - [0x297650, .rodata, menu/memc]

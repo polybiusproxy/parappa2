@@ -498,6 +498,12 @@ typedef enum {
     HCNG_MAX = 4
 } HAT_CHANGE_ENUM;
 
+enum
+{
+    INTNUM_SUBT_CODE,
+    INTNUM_NOODLE_TEX
+};
+
 typedef enum {
     TCBK_CHANNEL_WIPE = 49,
     TCBK_CHANNEL_TMP = 50,
