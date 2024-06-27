@@ -5,6 +5,18 @@
 
 #include <eetypes.h>
 
+typedef enum {
+    STW_TURN_IN = 0,
+    STW_TURN_WAIT = 1,
+    STW_TURN_OUT = 2,
+    STW_PARAtoMINI = 3,
+    STW_PARAtoBIG = 4,
+    STW_YESNO = 5,
+    STW_BOXY_IN = 6,
+    STW_BOXY_WAIT = 7,
+    STW_MAX = 8
+} SNDTAP_WIPE_ENUM;
+
 typedef enum
 {
     WIPE_TYPE_LOADING = 0,
