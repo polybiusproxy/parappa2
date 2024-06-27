@@ -2,8 +2,20 @@
 
 #include "os/system.h"
 
+#include "main/etc.h"
+#include "main/subt.h"
+#include "main/cdctrl.h"
+#include "main/scrctrl.h"
+
+#include "iop_mdl/tapctrl_rpc.h"
+
 // temp
 int hat_change_enum;
+
+/* data */
+/* static */ extern SNDTAP sndtap_menu[];
+extern MESS mess_mc[];
+extern MESS mess_menu[];
 
 /* sdata - static */
 int _BankChan1Req;
@@ -11,19 +23,51 @@ int _BankChan1Stat;
 
 INCLUDE_ASM(const s32, "menu/menudata", MenuDataGetIconSysHed);
 
-INCLUDE_ASM(const s32, "menu/menudata", MenuDataSndInit);
+void MenuDataSndInit(void)
+{
+    _BankChan1Req = 0;
+    _BankChan1Stat = 0;
+    
+    TapCt(0x8011, 0x135010, 0);
+    TapCt(0x90, PR_CONCAT(0x3fff, 0x3fff), 0);
+}
 
-INCLUDE_ASM(const s32, "menu/menudata", MenuDataSndReq);
+void MenuDataSndReq(int chanId, int req)
+{
+    SNDTAP *sndtap_pp = &sndtap_menu[req];
+  
+    TapCt(0xf0, chanId, sndtap_pp->volume);
+    TapCt(0xd0, chanId, sndtap_pp->prg + sndtap_pp->key * 256);
+}
 
-INCLUDE_ASM(const s32, "menu/menudata", MenuDataSndStop);
+void MenuDataSndStop(int chanId)
+{
+    TapCt(0xe0, chanId, 0);
+}
 
-INCLUDE_ASM(const s32, "menu/menudata", MenuDataSndQuit);
+void MenuDataSndQuit(void)
+{
+    int i;
 
-INCLUDE_ASM(const s32, "menu/menudata", MenuDataSndSetVol);
+    for (i = 0; i < 3; i++)
+    {
+        TapCt(0x50 | i, 0, 0);
+    }
+}
+
+void MenuDataSndSetVol(int chanId, int req, int vol0)
+{
+    SNDTAP *sndtap_pp = &sndtap_menu[req];
+
+    TapCt(0x130, chanId, sndtap_pp->volume * vol0 >> 8); /* Should be a division rather than a shift? */
+}
 
 INCLUDE_ASM(const s32, "menu/menudata", MenuDataSndTrans);
 
-INCLUDE_ASM(const s32, "menu/menudata", MenuDataSndTransCheck);
+int MenuDataSndTransCheck(void)
+{
+    return TapCt(0x8070, 0, 0);
+}
 
 INCLUDE_ASM(const s32, "menu/menudata", MenuDataSndReqChan);
 
@@ -51,15 +95,31 @@ INCLUDE_ASM(const s32, "menu/menudata", MenuVoiceStop);
 
 INCLUDE_ASM(const s32, "menu/menudata", MenuVoiceSetVol);
 
-INCLUDE_ASM(const s32, "menu/menudata", MenuMsgInit);
+void MenuMsgInit(void)
+{
+    SubtMenuCtrlInit(GetIntAdrsCurrent(INTNUM_SUBT_CODE));
+    MENUSubtSetKanji(GetIntAdrsCurrent(INTNUM_SUBT_CODE));
+}
 
-INCLUDE_ASM(const s32, "menu/menudata", MenuMsgPrintSub);
+void MenuMsgPrintSub(int id, int xp, int yp, int flg)
+{
+    SubtMenuCtrlPrint(mess_menu[id][flg], xp, yp, flg);
+}
 
-INCLUDE_ASM(const s32, "menu/menudata", MenuMsgPrintMc);
+void MenuMsgPrintMc(int id, int xp, int yp, int flg)
+{
+    SubtMenuCtrlPrint(mess_mc[id][flg], xp, yp, flg);
+}
 
-INCLUDE_ASM(const s32, "menu/menudata", MenuMsgGetMessageMc);
+char* MenuMsgGetMessageMc(int id, int flg)
+{
+    return mess_mc[id][flg];
+}
 
-INCLUDE_ASM(const s32, "menu/menudata", MenuMsgGetMessageSub);
+char* MenuMsgGetMessageSub(int id, int flg)
+{
+    return mess_menu[id][flg];
+}
 
 INCLUDE_ASM(const s32, "menu/menudata", MenuRoundTim2Trans);
 
