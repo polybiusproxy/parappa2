@@ -2,6 +2,9 @@
 
 #include "os/system.h"
 
+// temp
+int hat_change_enum;
+
 /* sdata - static */
 int _BankChan1Req;
 int _BankChan1Stat;
