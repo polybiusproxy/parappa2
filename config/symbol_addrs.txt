@@ -540,7 +540,7 @@ SubtKanjiSet                        = 0x0010fa98; // type:func
 SubtClear                           = 0x0010faa8; // type:func
 SubtFlash                           = 0x0010fb38; // type:func
 SubtMcodeSet                        = 0x0010fb58; // type:func
-codeKanjiCheck                      = 0x0010fbc0; // type:func
+codeKanjiCheck                      = 0x0010fbc0; // type:func allow_duplicated:True
 euc2sjis                            = 0x0010fc10; // type:func allow_duplicated:True
 SubtMsgPrint                        = 0x0010fc80; // type:func
 SubtCtrlInit                        = 0x00110040; // type:func
@@ -1100,7 +1100,7 @@ _PKFontPut                          = 0x0013d348; // type:func
 _PADArrow_Put                       = 0x0013d6d0; // type:func
 _JPFont_GetSubtCode                 = 0x0013d800; // type:func
 _EGFont_GetSubtCode                 = 0x0013d9b8; // type:func
-codeKanjiCheck_TmpMenuFont          = 0x0013db18; // type:func
+codeKanjiCheck                      = 0x0013db18; // type:func allow_duplicated:True
 codeKanjiACheck                     = 0x0013db58; // type:func
 euc2sjis                            = 0x0013db98; // type:func allow_duplicated:True
 

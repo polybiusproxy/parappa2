@@ -6,14 +6,6 @@
 #include "os/cmngifpk.h"
 #include "main/etc.h"
 
-enum
-{
-    SUBTN_ETC_CODE = 0,
-    SUBTN_KANJI_CODE = 1,
-    SUBTN_KANJI_BOXY_CODE = 2,
-    SUBTN_END = 3
-};
-
 typedef struct { // 0x8
     /* 0x0 */ int cnt;
     /* 0x4 */ int wsize;
@@ -64,7 +56,9 @@ void* SubtKanjiSet(void *adrs);
 void SubtClear();
 void SubtFlash();
 void SubtMcodeSet(int code);
-MCODE_DAT* codeKanjiCheck(u_char dat0, u_char dat1);
+
+// poly: comment this out for the moment
+// MCODE_DAT* codeKanjiCheck(u_char dat0, u_char dat1);
 
 void SubtMsgPrint(u_char *msg_pp, int xp, int yp, int jap_flag, int mline);
 void SubtCtrlInit(void *adrs, int ser_f);
