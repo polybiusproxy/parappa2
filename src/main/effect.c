@@ -12,7 +12,7 @@ void CG_WaveInit(WAVE_STR *wstr)
     wstr->currentAng = 0.0f;
 }
 
-void CG_WaveInitEasy(WAVE_STR *wstr, short int x, short int y, short int w, short int h, WMODE_ENUM wmode)
+void CG_WaveInitEasy(WAVE_STR *wstr, short x, short y, short w, short h, WMODE_ENUM wmode)
 {
     wstr->wmode = wmode;
     wstr->x = x;

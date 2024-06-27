@@ -131,14 +131,14 @@ void CdctrlWp2FileEnd(void);
 int CdctrlWp2GetSample(void);
 int CdctrlWp2GetFrame(void);
 int CdctrlFrame2WP2sample(int frame);
-long int CdctrlWp2GetSndTime(float tempo);
-long int CdctrlSndTime2WP2sample(float tempo, long int beat);
+long CdctrlWp2GetSndTime(float tempo);
+long CdctrlSndTime2WP2sample(float tempo, long beat);
 void CdctrlWp2GetSampleTmpBuf(void);
 int CdctrlWp2GetSampleTmp(void);
 int CdctrlWp2GetFrameTmp(void);
-long int CdctrlWp2GetSndTimeTmp(float tempo);
-long int CdctrlWp2CdSample2SndTime(long int samplecnt, float tempo);
-long int CdctrlWp2CdSample2Frame(long int samplecnt);
+long CdctrlWp2GetSndTimeTmp(float tempo);
+long CdctrlWp2CdSample2SndTime(long samplecnt, float tempo);
+long CdctrlWp2CdSample2Frame(long samplecnt);
 
 void CdctrlXTRset(FILE_STR *fstr_pp, u_int usebuf);
 

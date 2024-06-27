@@ -47,7 +47,7 @@ int mtcCurrentTask = 0;
 int mtcSemaEnd = 0;
 
 /* sbss - static */
-static short int th_id_Ctrl;
+static short th_id_Ctrl;
 
 static void mtcStackErrorCheck(int level)
 {
@@ -135,7 +135,7 @@ void MtcStart(void* ctrlTh_pp)
     WaitSema(mtcSemaEnd);
 }
 
-void MtcExec(void* prg_pp, long int level)
+void MtcExec(void* prg_pp, long level)
 {
     struct ThreadParam *th_pp;
     MTC_TASK_CONB      *mc_pp = &mtcTaskConB[level];
@@ -160,7 +160,7 @@ void MtcExec(void* prg_pp, long int level)
     *(int*)mtcStack[level] = 0x572a8b4c;
 }
 
-void MtcWait(long int wt)
+void MtcWait(long wt)
 {
     FlushCache(0);
     mtcStackErrorCheck(mtcCurrentTask);
@@ -174,7 +174,7 @@ void MtcWait(long int wt)
     SleepThread();
 }
 
-void MtcKill(long int level)
+void MtcKill(long level)
 {
     MTC_TASK_CONB *tcb_pp = &mtcTaskConB[level];
     MTC_COND_ENUM  mtc_f  = tcb_pp->status;
@@ -192,7 +192,7 @@ void MtcKill(long int level)
     }
 }
 
-void MtcPause(long int level)
+void MtcPause(long level)
 {
     MTC_TASK_CONB *tcb_pp = &mtcTaskConB[level];
 
@@ -200,7 +200,7 @@ void MtcPause(long int level)
         tcb_pp->status |= MTC_COND_PAUSE;
 }
 
-void MtcContinue(long int level)
+void MtcContinue(long level)
 {
     MTC_TASK_CONB *tcb_pp = &mtcTaskConB[level];
     tcb_pp->status &= ~MTC_COND_PAUSE;
@@ -219,7 +219,7 @@ void MtcExit(void)
     ExitDeleteThread();
 }
 
-int MtcGetCondition(long int level)
+int MtcGetCondition(long level)
 {
     return mtcTaskConB[level].status;
 }

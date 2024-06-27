@@ -328,8 +328,8 @@ typedef struct { // 0xb8
     /* 0x08 */ PAD_TYPE pad_type;
     /* 0x0c */ int exam_score[3];
     /* 0x18 */ int now_score;
-    /* 0x20 */ long int score;
-    /* 0x28 */ long int bonus;
+    /* 0x20 */ long score;
+    /* 0x28 */ long bonus;
     /* 0x30 */ int exam_tbl_up;
     /* 0x34 */ int exam_tbl_dw;
     /* 0x38 */ int exam_tbl_updown[25];
@@ -338,7 +338,7 @@ typedef struct { // 0xb8
     /* 0xa4 */ u_int vsDraw;
     /* 0xa8 */ u_int vsWin;
     /* 0xac */ u_int vsLost;
-    /* 0xb0 */ long int vsScore;
+    /* 0xb0 */ long vsScore;
 } GLOBAL_PLY;
 
 typedef enum {
@@ -401,8 +401,8 @@ typedef enum {
 } HKLV_SNDREC_ENUM;
 
 typedef struct { // 0x28
-    /* 0x00 */ long int SingleScore;
-    /* 0x08 */ long int BonusScore;
+    /* 0x00 */ long SingleScore;
+    /* 0x08 */ long BonusScore;
     /* 0x10 */ int BonusStage;
     /* 0x14 */ int bonusType;
     /* 0x18 */ HKLV_SNDREC_ENUM HookLine;
@@ -483,8 +483,8 @@ typedef struct { // 0xd0
     /* 0x30 */ u_int stClrCntCool[9];
     /* 0x54 */ u_int stClrCntGood[9];
     /* 0x78 */ u_int stClrCntVs[9];
-    /* 0xa0 */ long int scoreG[4];
-    /* 0xc0 */ long int bonusG;
+    /* 0xa0 */ long scoreG[4];
+    /* 0xc0 */ long bonusG;
     /* 0xc8 */ DISP_LEVEL disp_level;
     /* 0xcc */ LEVEL_VS_ENUM level_vs_enumG;
 } GAME_STATUS;
@@ -498,12 +498,19 @@ typedef enum {
     HCNG_MAX = 4
 } HAT_CHANGE_ENUM;
 
+typedef enum {
+    TCBK_CHANNEL_WIPE = 49,
+    TCBK_CHANNEL_TMP = 50,
+    TCBK_CHANNEL_MAX = 51
+} TCBK_CHANNEL_ENUM;
+
 void GlobalTimeInit(GLOBAL_DATA *gl_pp);
 void GlobalSetTempo(GLOBAL_DATA *gl_pp, float tempo);
 void GlobalPlySet(GLOBAL_DATA *gl_pp, PLAY_STEP stp, int stage_num);
 
 TAP_ROUND_ENUM GetHatRound(void);
 int GlobalSndSampleGet(void);
+void TimeCallbackTimeSetChan(int chan, u_int time);
 u_int TimeCallbackTimeGetChan(int chan);
 void GlobalTimeJobChange(TIME_GET_FLAG tfg);
 void TimeCallbackTimeSetChanTempo(int chan, u_int time, float tempo);

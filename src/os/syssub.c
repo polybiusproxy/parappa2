@@ -517,9 +517,9 @@ void ClearFrameBufferGifTag(sceGsFrame *draw_pp, sceGifPacket *gifpk_pp, u_char 
 }
 
 void GGsSetLocalMoveImage(
-    sceGsMoveImage *lp, short int dbp, short int dbw, short int dpsm,
-    short int dx, short int dy, short int sbp, short int sbw,
-    short int spsm, short int sx, short int sy, short int w, short int h, short int dir) 
+    sceGsMoveImage *lp, short dbp, short dbw, short dpsm,
+    short dx, short dy, short sbp, short sbw,
+    short spsm, short sx, short sy, short w, short h, short dir) 
 {
     lp->giftag.NLOOP = 4;
     lp->giftag.EOP = 1;

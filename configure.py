@@ -126,7 +126,6 @@ def eucjp_convert():
             if filename.startswith("D_"):
                 filepath = os.path.join(root, filename)
 
-                print(f"(HACK) Encoding {filepath}")
                 with open(filepath, "r", encoding="utf-8") as file:
                     content = file.read()
 

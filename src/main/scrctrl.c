@@ -741,7 +741,7 @@ void ScrCtrlIndvNextRead(/* s0 16 */ SCORE_INDV_STR *sindv_pp, /* a1 5 */ int ta
     int i;
     /* s2 18 */ int endf;
     /* v1 3 */ int j;
-    /* a3 7 */ short int Rsub;
+    /* a3 7 */ short Rsub;
     /* t0 8 */ int Rdata;
     /* t1 9 */ int sj_data1;
     /* t2 10 */ int sj_data2;
@@ -1979,13 +1979,13 @@ static u_long hex2dec(u_long data)
 }
 
 INCLUDE_ASM(const s32, "main/scrctrl", bnNumberDisp);
-void bnNumberDisp(sceGifPacket *gif_pp, long int score, short int x, short int y, int keta, int tate, int type);
+void bnNumberDisp(sceGifPacket *gif_pp, long score, short x, short y, int keta, int tate, int type);
 
 static void bonusScoreDraw(void)
 {
-    long int     scr_stg;
-    long int     scr_bn;
-    long int     scr_add;
+    long         scr_stg;
+    long         scr_bn;
+    long         scr_add;
 
     sceGifPacket bn_gif;
     VCLR_PARA    vclr_para = {};
@@ -2002,7 +2002,7 @@ static void bonusScoreDraw(void)
     sceGifPkAddGsAD(&bn_gif, SCE_GS_PABE, 0);
     sceGifPkAddGsAD(&bn_gif, SCE_GS_TEXA, 0x8000008000);
 
-    scr_bn = ingame_common_str.BonusScore;
+    scr_bn  = ingame_common_str.BonusScore;
     scr_stg = ingame_common_str.SingleScore;
     scr_add = scr_stg + scr_bn;
 
@@ -2021,7 +2021,7 @@ static void bonusScoreDraw(void)
     CmnGifADPacketMakeTrans(&bn_gif);
 }
 
-static void set_lero_gifset(sceGifPacket *gifpk_pp, LERO_TIM2_PT *let2_pp, short int xp, short int yp)
+static void set_lero_gifset(sceGifPacket *gifpk_pp, LERO_TIM2_PT *let2_pp, short xp, short yp)
 {
     sceGifPkAddGsAD(gifpk_pp, SCE_GS_UV,   SCE_GS_SET_UV(let2_pp->u0 << 4, let2_pp->v0 << 4));
     sceGifPkAddGsAD(gifpk_pp, SCE_GS_XYZ2, SCE_GS_SET_XYZ2((xp + 2048) << 4,

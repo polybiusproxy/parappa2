@@ -789,6 +789,7 @@ GlobalSndSampleGet                  = 0x0011c108; // type:func
 GetHatRound                         = 0x0011c118; // type:func
 GlobalPlySet                        = 0x0011c288; // type:func
 TimeCallbackTimeGetChan             = 0x0011c790; // type:func
+TimeCallbackTimeSetChan             = 0x0011c7d8; // type:func
 TimeCallbackTimeSetChanTempo        = 0x0011c808; // type:func
 Pcode2Pindex                        = 0x0011c8d0; // type:func
 GetIndex2KeyCode                    = 0x0011c990; // type:func
@@ -836,6 +837,7 @@ wipeBoxyWaitReq                     = 0x0011ecb0; // type:func
 
 sndtap_wipe                         = 0x00187000; // size:0x30
 sceGsDrawEnv1_tmp                   = 0x001872c0; // size:0x80
+ldmap                               = 0x001871e8; // size:0xA0
 
 wipe_type                           = 0x00399598;
 wipe_end_flag                       = 0x0039959c;

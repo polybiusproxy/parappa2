@@ -149,10 +149,9 @@ static int HsizeAdj(int w, int h, int mode)
 
 int Tim2SetLoadImageI(TIM2INFO *info_pp, int img_pos, sceGsLoadImage *img_pp, int ofsx, int ofsy)
 {
-    u_long    dbw   = info_pp->picturH->GsTex0;
-    short int dpsm;
-    short int w;
-    short int h;
+    u_long dbw   = info_pp->picturH->GsTex0;
+    short  dpsm;
+    short  w, h;
 
     dbw  = PR_TEX0(info_pp->picturH).TBW;
     dpsm = tim2ColorTypeTbl[info_pp->picturH->ImageType];
@@ -168,12 +167,10 @@ int Tim2SetLoadImageI(TIM2INFO *info_pp, int img_pos, sceGsLoadImage *img_pp, in
 
 int Tim2SetLoadImageIX(TIM2INFO *info_pp, int img_pos, sceGsLoadImage *img_pp, TIM2INFO *infoX_pp)
 {
-    u_long    dbw   = info_pp->picturH->GsTex0;
-    short int dpsm;
-    short int w;
-    short int h;
-    int       ofsx;
-    int       ofsy;
+    u_long dbw   = info_pp->picturH->GsTex0;
+    short  dpsm;
+    short  w, h;
+    int    ofsx, ofsy;
 
     dbw  = PR_TEX0(info_pp->picturH).TBW;
     dpsm = tim2ColorTypeTbl[info_pp->picturH->ImageType];
@@ -192,10 +189,9 @@ int Tim2SetLoadImageIX(TIM2INFO *info_pp, int img_pos, sceGsLoadImage *img_pp, T
 
 int Tim2SetLoadImageC(TIM2INFO *info_pp, int col_pos, sceGsLoadImage *img_pp, int ofsx, int ofsy)
 {
-    int       col_type;
-    short int dpsm;
-    short int w;
-    short int h;
+    int   col_type;
+    short dpsm;
+    short w, h;
 
     col_type = info_pp->picturH->ClutType & 0x1f;
 
@@ -438,13 +434,13 @@ void Tim2Trans_TBP_MODE(void *adrs, int tbp, int mode)
     TIM2INFO tim2info;
     static sceGsLoadImage tp;
     u_long dbw;
-    short int w;
-    short int h;
-    short int maxh;
-    short int ofsy = 0;
+    short w;
+    short h;
+    short maxh;
+    short ofsy = 0;
     u_char *tr_adr;
     int trans_1size;
-    short int h_tmp;
+    short h_tmp;
 
     GetTim2Info(adrs, &tim2info, 1);
 
@@ -478,8 +474,7 @@ void Tim2TransColor_TBP(void *adrs, int tbp)
 {
     TIM2INFO tim2info;
     static sceGsLoadImage tp;
-    short int w;
-    short int h;
+    short w, h;
     u_char *tr_adr;
     int col_type;
     int mode;

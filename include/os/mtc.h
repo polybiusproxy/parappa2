@@ -70,9 +70,9 @@ typedef enum {
 } MTC_PRI_ENUM;
 
 typedef struct { // 0x40
-    /* 0x00 */ short int th_id;
+    /* 0x00 */ short th_id;
     /* 0x04 */ MTC_COND_ENUM status;
-    /* 0x08 */ long int wtime;
+    /* 0x08 */ long wtime;
     /* 0x10 */ struct ThreadParam th_para;
 } MTC_TASK_CONB;
 
@@ -80,13 +80,13 @@ void MtcChangeThCtrl(void* x);
 void MtcInit(void);
 void MtcQuit(void);
 void MtcStart(void* ctrlTh_pp);
-void MtcExec(void* prg_pp, long int level);
-void MtcWait(long int wt);
-void MtcKill(long int level);
-void MtcPause(long int level);
-void MtcContinue(long int level);
+void MtcExec(void* prg_pp, long level);
+void MtcWait(long wt);
+void MtcKill(long level);
+void MtcPause(long level);
+void MtcContinue(long level);
 void MtcExit(void);
-int MtcGetCondition(long int level);
+int MtcGetCondition(long level);
 int MtcResetCheck(void);
 
 #endif

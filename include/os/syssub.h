@@ -102,13 +102,13 @@ typedef enum {
 typedef struct { // 0x50
     /* 0x00 */ sceGifTag giftag;
     /* 0x10 */ sceGsBitbltbuf bitbltbuf;
-    /* 0x18 */ long int bitbltbufaddr;
+    /* 0x18 */ long bitbltbufaddr;
     /* 0x20 */ sceGsTrxpos trxpos;
-    /* 0x28 */ long int trxposaddr;
+    /* 0x28 */ long trxposaddr;
     /* 0x30 */ sceGsTrxreg trxreg;
-    /* 0x38 */ long int trxregaddr;
+    /* 0x38 */ long trxregaddr;
     /* 0x40 */ sceGsTrxdir trxdir;
-    /* 0x48 */ long int trxdiraddr;
+    /* 0x48 */ long trxdiraddr;
 } sceGsMoveImage;
 
 void WorkClear(void *clr_adrs, int size);
@@ -141,9 +141,9 @@ void ChangeDrawAreaSetGifTag(sceGsDrawEnv1 *env_pp, sceGifPacket *gifpk_pp);
 void ChangeDrawArea2(sceGsDrawEnv1 *env_pp);
 void ClearFrameBufferGifTag(sceGsFrame *draw_pp, sceGifPacket *gifpk_pp, u_char r, u_char g, u_char b, u_char a);
 void GGsSetLocalMoveImage(
-    sceGsMoveImage *lp, short int dbp, short int dbw, short int dpsm,
-    short int dx, short int dy, short int sbp, short int sbw,
-    short int spsm, short int sx, short int sy, short int w, short int h, short int dir
+    sceGsMoveImage *lp, short dbp, short dbw, short dpsm,
+    short dx, short dy, short sbp, short sbw,
+    short spsm, short sx, short sy, short w, short h, short dir
 );
 void GGsExecLocalMoveImage(sceGsMoveImage *lp);
 
