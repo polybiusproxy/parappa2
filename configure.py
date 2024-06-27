@@ -58,12 +58,44 @@ def clean():
     shutil.rmtree("assets", ignore_errors=True)
     shutil.rmtree("build", ignore_errors=True)
 
+
+# Possibly the worst thing I have ever written... removing the %gp_rel accesses like this...
+# For some reason, the regex doesn't work here, and I'm sure it'll be easier to match these than
+# debug what's going on here.
+HACK_FILENAME_TABLE = ["WipeParaInDisp.s", "WipeParaInDispMove.s", "WipeParaOutDisp.s"]
+HACK_REPLACE_TABLE  = {
+    "WipeParaInDisp.s":     [(171, f'/* 1F13C 0011E13C AC8682AF */  sw         $2, wipe_end_flag'),
+                             (175, f'/* 1F148 0011E148 AC8682AF */  sw         $2, wipe_end_flag')],
+    "WipeParaInDispMove.s": [(121, f'/* 1F32C 0011E32C AC8682AF */  sw         $2, wipe_end_flag'),
+                             (125, f'/* 1F338 0011E338 AC8682AF */  sw         $2, wipe_end_flag')],
+    "WipeParaOutDisp.s":    [(113, f'/* 1F504 0011E504 AC8682AF */   sw        $2, wipe_end_flag')]
+}
+
+def gp_hack(filepath):
+    filename = os.path.basename(filepath)
+    if filename in HACK_FILENAME_TABLE:
+        replacements = HACK_REPLACE_TABLE.get(filename, [])
+
+        print(f"(HACK) Removing %gp_rel references on problematic file \"{filename}\"")
+
+        with open(filepath, "r") as file:
+            lines = file.readlines()
+
+        for line_number, new_line in replacements:
+            if 0 <= line_number < len(lines):
+                lines[line_number] = new_line + "\n"
+        
+        with open(filepath, "w") as file:
+            file.writelines(lines)
+
 gp_access_pattern = re.compile(r'%(gp_rel)\(([^)]+)\)\(\$28\)') # Pattern for removing %gp_rel accesses
 gp_add_pattern = re.compile(r'addiu\s+(\$\d+), \$28, %gp_rel\(([^)]+)\)') # Pattern for replacing %gp_rel additions
 def remove_gprel():
     for root, dirs, files in os.walk("asm/nonmatchings/"):
         for filename in files:
             filepath = os.path.join(root, filename)
+
+            gp_hack(filepath) # Hopefully I can get rid of this!
 
             with open(filepath, "r") as file:
                 content = file.read()
@@ -87,6 +119,22 @@ def remove_gprel():
                 # Write the updated content back to the file
                 with open(filepath, "w") as file:
                     file.write(updated_content)
+
+def eucjp_convert():
+    for root, dirs, files in os.walk("asm/nonmatchings/"):
+        for filename in files:
+            if filename.startswith("D_"):
+                filepath = os.path.join(root, filename)
+
+                print(f"(HACK) Encoding {filepath}")
+                with open(filepath, "r", encoding="utf-8") as file:
+                    content = file.read()
+
+                eucjp_content = content.encode("euc-jp").decode("euc-jp")
+
+                with open(filepath, "w", encoding="euc-jp") as file:
+                    file.write(eucjp_content)
+
 
 def write_permuter_settings():
     with open("permuter_settings.toml", "w") as f:
@@ -236,6 +284,12 @@ if __name__ == "__main__":
         help="Do not remove gp_rel references on the disassembly",
         action="store_true",
     )
+    parser.add_argument(
+        "-noconvert",
+        "--no-eucjp-converting",
+        help="Do not convert to EUC-JP the disassembly strings",
+        action="store_true",
+    )
     args = parser.parse_args()
 
     if args.clean:
@@ -255,6 +309,9 @@ if __name__ == "__main__":
     # We're done with everything, now get rid of the %gp_rel references
     if not args.no_gprel_removing:
         remove_gprel()
+
+    if not args.no_eucjp_converting:
+        eucjp_convert()
 
     if not os.path.isfile("compile_commands.json"):
         exec_shell(["ninja", "-t", "compdb"], open("compile_commands.json", "w"))

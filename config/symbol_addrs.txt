@@ -834,6 +834,9 @@ wipeBoxyInReq                       = 0x0011ea00; // type:func
 WipeBoxyWaitDisp                    = 0x0011ea40; // type:func
 wipeBoxyWaitReq                     = 0x0011ecb0; // type:func
 
+sndtap_wipe                         = 0x00187000; // size:0x30
+sceGsDrawEnv1_tmp                   = 0x001872c0; // size:0x80
+
 wipe_type                           = 0x00399598;
 wipe_end_flag                       = 0x0039959c;
 loading_wipe_switch                 = 0x003995a0;

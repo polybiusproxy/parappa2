@@ -1,7 +1,13 @@
 #include "main/wipe.h"
 
 #include "main/sprite.h"
+#include "main/scrctrl.h"
+
+#include "iop_mdl/tapctrl_rpc.h"
 #include <prlib/prlib.h>
+
+/* data */
+extern SNDTAP sndtap_wipe[];
 
 /* sdata - static */
 WIPE_TYPE wipe_type;
@@ -18,7 +24,22 @@ VCLR_PARA vclr_para_disp;
 /* sbss - static */
 PR_SCENEHANDLE ldmap_hdl;
 
-INCLUDE_ASM(const s32, "main/wipe", wipeSndReq);
+void wipeSndReq(SNDTAP_WIPE_ENUM req)
+{
+    SNDTAP *sndtap_pp;
+
+    if (req >= STW_MAX)
+    {
+        printf("WIPE SND REQ OVER!![%d]\n", req);
+        return;
+    }
+
+    sndtap_pp = &sndtap_wipe[req];
+
+    TapCt(0xb0, 0, 0);
+    TapCt(0xf3, 0xf, sndtap_pp->volume);
+    TapCt(0xd3, 0xf, sndtap_pp->prg + sndtap_pp->key * 256);
+}
 
 INCLUDE_ASM(const s32, "main/wipe", wipeSndStop);
 
@@ -70,13 +91,10 @@ INCLUDE_ASM(const s32, "main/wipe", WipeParaColorSet);
 
 INCLUDE_ASM(const s32, "main/wipe", WipeEnd);
 
-/* Can't be assembled: %gp_rel issue */
 INCLUDE_ASM(const s32, "main/wipe", WipeParaInDisp);
 
-/* Can't be assembled: %gp_rel issue */
 INCLUDE_ASM(const s32, "main/wipe", WipeParaInDispMove);
 
-/* Can't be assembled: %gp_rel issue */
 INCLUDE_ASM(const s32, "main/wipe", WipeParaOutDisp);
 
 INCLUDE_ASM(const s32, "main/wipe", wipeParaInReq);
