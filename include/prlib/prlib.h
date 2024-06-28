@@ -28,15 +28,15 @@ struct PrRENDERING_STATISTICS { // 0x2c
     /* 0x08 */ unsigned int transmit_context1_node_num;
     /* 0x0c */ unsigned int opaque_context2_node_num;
     /* 0x10 */ unsigned int transmit_context2_node_num;
-    /* 0x14 */ short unsigned int render_time0;
-    /* 0x16 */ short unsigned int render_time1;
-    /* 0x18 */ short unsigned int render_time2;
-    /* 0x1a */ short unsigned int render_time3;
-    /* 0x1c */ short unsigned int render_time4;
-    /* 0x1e */ short unsigned int render_time5;
-    /* 0x20 */ short unsigned int render_time6;
-    /* 0x22 */ short unsigned int render_time7;
-    /* 0x24 */ short unsigned int render_time8;
+    /* 0x14 */ unsigned short render_time0;
+    /* 0x16 */ unsigned short render_time1;
+    /* 0x18 */ unsigned short render_time2;
+    /* 0x1a */ unsigned short render_time3;
+    /* 0x1c */ unsigned short render_time4;
+    /* 0x1e */ unsigned short render_time5;
+    /* 0x20 */ unsigned short render_time6;
+    /* 0x22 */ unsigned short render_time7;
+    /* 0x24 */ unsigned short render_time8;
     /* 0x28 */ int dynamic_append_transmit_node; /* bool */
 };
 
@@ -60,14 +60,17 @@ extern "C" {
 void PrSetPostureWorkArea(u_int areaTop, int areaSize);
 
 /* prlib.cpp */
-void  PrSetFrameRate(float framerate);
+void  PrSetFrameRate(float frameRate);
 float PrGetFrameRate(void);
 
 void PrInitializeModule(sceGsZbuf zbuf);
+void PrCleanupModule();
 
 PR_SCENEHANDLE PrInitializeScene(sceGsDrawEnv1 *drawEnv, char *name, u_int fbp);
+void PrInitializeSceneDBuff(sceGsDBuff *buff, char *name, u_int fbp);
 void PrCleanupScene(PR_SCENEHANDLE scene);
 
+void PrSetSceneFrame(PR_SCENEHANDLE model, sceGsFrame frame);
 void PrSetSceneEnv(PR_SCENEHANDLE model, sceGsDrawEnv1 *drawEnv);
 void PrPreprocessSceneModel(PR_SCENEHANDLE scene);
 
@@ -78,8 +81,11 @@ PR_CAMERAHANDLE PrInitializeCamera(PR_CAMERAHANDLE camera);
 void PrCleanupModel(PR_MODELHANDLE model);
 void PrCleanupAnimation(PR_ANIMATIONHANDLE animation);
 void PrCleanupCamera(PR_CAMERAHANDLE camera);
+void PrCleanupAllSceneModel(PR_SCENEHANDLE scene);
 
 void PrLinkAnimation(PR_MODELHANDLE model, PR_ANIMATIONHANDLE animation);
+void PrUnlinkAnimation(PR_MODELHANDLE model);
+
 void PrLinkPositionAnimation(PR_MODELHANDLE model, PR_ANIMATIONHANDLE animation);
 void PrUnlinkPositionAnimation(PR_MODELHANDLE model);
 
@@ -94,6 +100,22 @@ void PrAnimateSceneCamera(PR_SCENEHANDLE scene, float time);
 
 void PrRender(PR_SCENEHANDLE scene);
 void PrWaitRender(void);
+
+/* menderer.cpp */
+void  PrDecelerateMenderer(u_int speed);
+void  PrRestartMenderer();
+
+void  PrSetMendererRatio(float ratio);
+float PrGetMendererRatio();
+
+void  PrSetMendererDirection(int direction);
+int   PrGetMendererDirection();
+
+void  PrSetMendererColorModulation(int color);
+int   PrIsMendererColorModulation();
+
+void  PrInitializeMenderer(u_int tbp, void *noodlePicture, u_int fbp);
+void  PrRenderMenderer();
 
 #ifdef __cplusplus
 }

@@ -45,7 +45,7 @@ INCLUDE_ASM(const s32, "prlib/prlib", PrInitializeSceneDBuff);
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupScene);
 
-PR_EXTERN void PrSetSceneFrame() 
+PR_EXTERN void PrSetSceneFrame(PR_SCENEHANDLE model, sceGsFrame frame)
 {
     // Empty
 }

@@ -565,7 +565,4 @@ void MbarSetCtrlTime(int mctime);
 void MbarReq(MBAR_REQ_ENUM mm_req, TAPSET *ts_pp, int curr_time, SCR_TAP_MEMORY *tm_pp, int tm_cnt, int lang, int tapdat_size, TAPDAT *tapdat_pp, GUI_CURSOR_ENUM guic);
 void vsAnimationReset(int ply, long scr);
 
-/* TODO(poly): move to prlib/menderer.h */
-void PrDecelerateMenderer(float);
-
 #endif
