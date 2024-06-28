@@ -75,7 +75,7 @@ segments:
 
         - [0x24a10, c, menu/menu]
         - [0x24d98, c, menu/menudata]
-        - [0x25500, asm, menu/menu_mdl]
+        - [0x25500, c, menu/menu_mdl]
         - [0x26ec0, asm, menu/menusub]
         - [0x38f70, asm, menu/p3mc]
         - [0x3bd80, c, menu/memc]

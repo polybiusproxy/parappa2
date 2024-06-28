@@ -1030,6 +1030,75 @@ _BankChan1Stat                      = 0x003996f4;
 
 // menu/menu_mdl.c
 MNSceneMusicFitTimerClear           = 0x00124500; // type:func
+MNSceneMusicFitTimerFrame           = 0x00124508; // type:func
+MNSceneGetMusicFitTimer             = 0x00124518; // type:func
+MNScene_Init                        = 0x00124520; // type:func
+MNScene_End                         = 0x001247e0; // type:func
+SetDrawEnv12                        = 0x00124920; // type:func
+MNScene_Draw                        = 0x001249f8; // type:func
+MNScene_DispSw                      = 0x00124ac8; // type:func
+MNScene_SetAnimete                  = 0x00124ad0; // type:func
+MNScene_StartAnime                  = 0x00124bf0; // type:func
+MNScene_ContinueAnime               = 0x00124f58; // type:func
+MNScene_StopAnime                   = 0x00124fa8; // type:func
+MNScene_ExecAnime                   = 0x00124fe8; // type:func
+MNScene_CopyState                   = 0x001251d0; // type:func
+MNScene_CopyStateMdl                = 0x001254b0; // type:func
+MNScene_SetAnimeSpeed               = 0x00125740; // type:func
+MNScene_SetAnimeEnd                 = 0x00125760; // type:func
+MNScene_SetAnimeBankEnd             = 0x001257b0; // type:func
+MNScene_isAnime                     = 0x00125840; // type:func
+MNScene_isAnimeBank                 = 0x001258a8; // type:func
+MNScene_isSeniAnime                 = 0x00125960; // type:func
+MNScene_ModelDispSw                 = 0x001259a0; // type:func
+_myVu0Length                        = 0x00125a10; // type:func
+MnMoveMode_InitRoot                 = 0x00125a40; // type:func
+_MnParMovRoot_GetPos                = 0x00125bd8; // type:func
+MnMoveModelPosition                 = 0x00125d40; // type:func
+
+Mdl_StageMapH                       = 0x001886f8; // size:0x4EC
+Mdl_StageMapA                       = 0x00188be8; // size:0x4EC
+Mdl_StageMapY                       = 0x001890d8; // size:0x4EC
+Cam_StageMap                        = 0x001895c8; // size:0x30
+PRP_CTHAL                           = 0x001895f8; // size:0x28
+PRP_RootTbl                         = 0x00189620; // size:0x8
+StageMapAnime                       = 0x00189628; // size:0x2C0
+StageMapAnimeBB                     = 0x001898e8; // size:0x200
+StageMapAnimeCW1                    = 0x00189ae8; // size:0x80
+StageMapAnimeCW2                    = 0x00189b68; // size:0x80
+StageMapAnimeCW3                    = 0x00189be8; // size:0x80
+StageMapAnimeCW4                    = 0x00189c68; // size:0x80
+StageMapAnimeCW5                    = 0x00189ce8; // size:0x80
+StageMapAnimeCW6                    = 0x00189d68; // size:0x80
+StageMapAnimeCW7                    = 0x00189de8; // size:0x80
+StageMapAnimeCW8                    = 0x00189e68; // size:0x80
+StageMapCWptr                       = 0x00189ee8; // size:0x20
+StageMapAnimeSEA                    = 0x00189f08; // size:0x40
+StageMapAnimeBK                     = 0x00189f48; // size:0x60
+StageMapAnimePA                     = 0x00189fa8; // size:0x460
+StageMapBGMCamera                   = 0x0018a408; // size:0x140
+Mdl_CityHall                        = 0x0018a548; // size:0x12C
+Cam_CityHall                        = 0x0018a678; // size:0x18
+CityHallAnime                       = 0x0018a690; // size:0x3A0
+Cam_Notdef                          = 0x0018aa30; // size:0x8
+Mdl_OptCounter                      = 0x0018aa38; // size:0x78
+Mdl_RepCounter                      = 0x0018aab0; // size:0x1A4
+Mdl_StgCounterLoad                  = 0x0018ac58; // size:0x1A4
+Mdl_StgCounterSave                  = 0x0018ae00; // size:0x1A4
+CounterAnime                        = 0x0018afa8; // size:0xC0
+Mdl_JimakuBak                       = 0x0018b068; // size:0x3C
+
+Scene_StageMap                      = 0x00399700; // size:0x8
+Scene_StageMapA                     = 0x00399708; // size:0x8
+Scene_StageMapY                     = 0x00399710; // size:0x8
+Scene_CityHall                      = 0x00399718; // size:0x8
+Scene_OptCounter                    = 0x00399720; // size:0x8
+Scene_RepCounter                    = 0x00399728; // size:0x8
+Scene_StgCounterLoad                = 0x00399730; // size:0x8
+Scene_StgCounterSave                = 0x00399738; // size:0x8
+Scene_JimakuBak                     = 0x00399740; // size:0x8
+
+AMusicFitTime                       = 0x00399ac4;
 
 // menu/menusub.c
 TsGetMenuPadIsRepeat                = 0x00125ec0; // type:func
