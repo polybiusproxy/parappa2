@@ -67,6 +67,13 @@ typedef enum {
     LDMAP_LABEL = 4
 } LDMAP_ENUM;
 
+typedef struct { // 0x10
+    /* 0x0 */ void *scene_hdl;
+    /* 0x4 */ void *spm_hdl;
+    /* 0x8 */ void *spc_hdl;
+    /* 0xc */ void *spa_hdl;
+} WIPE_PARA_STR;
+
 void WipeOutReq(void);
 int WipeEndCheck(void);
 

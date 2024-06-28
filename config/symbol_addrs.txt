@@ -836,6 +836,7 @@ WipeBoxyWaitDisp                    = 0x0011ea40; // type:func
 wipeBoxyWaitReq                     = 0x0011ecb0; // type:func
 
 sndtap_wipe                         = 0x00187000; // size:0x30
+wipe_para_str                       = 0x001872b0; // size:0x10
 sceGsDrawEnv1_tmp                   = 0x001872c0; // size:0x80
 ldmap                               = 0x001871e8; // size:0xA0
 
@@ -1338,6 +1339,11 @@ AwfulStatus                         = 0x00399b94;
 
 // prlib/random.cpp
 PrInitializeRandomPool__Fv          = 0x0014d980; // type:func
+
+// prlib/menderer.cpp
+PrSetMendererRatio                  = 0x0014f278; // type:func
+PrGetMendererRatio                  = 0x0014f280; // type:func
+PrInitializeMenderer                = 0x0014f2a8; // type:func
 
 // prlib/dmaqueue.cpp
 __10PrDmaQueueUi                    = 0x001523f0; // type:func
