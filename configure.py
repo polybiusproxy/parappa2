@@ -62,8 +62,8 @@ def clean():
 # Possibly the worst thing I have ever written... removing the %gp_rel accesses like this...
 # For some reason, the regex doesn't work here, and I'm sure it'll be easier to match these than
 # debug what's going on here.
-HACK_FILENAME_TABLE = ["WipeParaInDisp.s", "WipeParaInDispMove.s", "WipeParaOutDisp.s"]
-HACK_REPLACE_TABLE  = {
+GP_HACK_FILENAME_TABLE = ["WipeParaInDisp.s", "WipeParaInDispMove.s", "WipeParaOutDisp.s"]
+GP_HACK_REPLACE_TABLE  = {
     "WipeParaInDisp.s":     [(171, f'/* 1F13C 0011E13C AC8682AF */  sw         $2, wipe_end_flag'),
                              (175, f'/* 1F148 0011E148 AC8682AF */  sw         $2, wipe_end_flag')],
     "WipeParaInDispMove.s": [(121, f'/* 1F32C 0011E32C AC8682AF */  sw         $2, wipe_end_flag'),
@@ -73,8 +73,8 @@ HACK_REPLACE_TABLE  = {
 
 def gp_hack(filepath):
     filename = os.path.basename(filepath)
-    if filename in HACK_FILENAME_TABLE:
-        replacements = HACK_REPLACE_TABLE.get(filename, [])
+    if filename in GP_HACK_FILENAME_TABLE:
+        replacements = GP_HACK_REPLACE_TABLE.get(filename, [])
 
         print(f"(HACK) Removing %gp_rel references on problematic file \"{filename}\"")
 
@@ -120,11 +120,15 @@ def remove_gprel():
                 with open(filepath, "w") as file:
                     file.write(updated_content)
 
+EUC_HACK_FILENAME_TABLE = ["TsDrawUPacket.s"]
 def eucjp_convert():
     for root, dirs, files in os.walk("asm/nonmatchings/"):
         for filename in files:
-            if filename.startswith("D_"):
+            if filename.startswith("D_") or filename in EUC_HACK_FILENAME_TABLE:
                 filepath = os.path.join(root, filename)
+
+                if filename in EUC_HACK_FILENAME_TABLE:
+                    print(f"(HACK) Converting {filename}")
 
                 with open(filepath, "r", encoding="utf-8") as file:
                     content = file.read()
