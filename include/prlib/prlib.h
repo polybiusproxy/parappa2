@@ -5,6 +5,7 @@
 
 #include <eetypes.h>
 #include <libgraph.h>
+#include <libvu0.h>
 
 typedef void *PR_MODELHANDLE;
 typedef void *PR_ANIMATIONHANDLE;
@@ -91,7 +92,7 @@ void PrUnlinkPositionAnimation(PR_MODELHANDLE model);
 
 void PrSelectCamera(PR_CAMERAHANDLE camera, PR_SCENEHANDLE scene);
 
-void PrShowModel(PR_MODELHANDLE model, u_int unk);
+void PrShowModel(PR_MODELHANDLE model, sceVu0FMATRIX *matrix);
 void PrHideModel(PR_MODELHANDLE model);
 
 void PrAnimateModel(PR_MODELHANDLE model, float time);

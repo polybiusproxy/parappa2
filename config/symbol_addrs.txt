@@ -1457,6 +1457,7 @@ sceGsResetGraph                     = 0x00154b58; // type:func
 sceGsResetPath                      = 0x00154cf8; // type:func
 sceGsSetDefDrawEnv                  = 0x00154d60; // type:func
 sceGsSetDefClear                    = 0x00154f48; // type:func
+sceGsPutDrawEnv                     = 0x00155050; // type:func
 sceGsSetDefLoadImage                = 0x001554e8; // type:func
 sceGsSyncV                          = 0x00155138; // type:func
 sceGsSyncPath                       = 0x001551d0; // type:func
