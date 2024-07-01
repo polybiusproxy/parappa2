@@ -3,7 +3,12 @@
 
 #include "common.h"
 
-#include <stdio.h>
+#include "os/mtc.h"
+#include "os/syssub.h"
+#include "os/cmngifpk.h"
+
+#include "main/main.h"
+#include "main/etc.h"
 
 #include <eekernel.h>
 #include <sifrpc.h>
@@ -16,15 +21,14 @@
 #include <devvu0.h>
 #include <sifcmd.h>
 
-#include "os/mtc.h"
-#include "os/syssub.h"
-#include "os/cmngifpk.h"
-
-#include "main/main.h"
-#include "main/etc.h"
-
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 448
+
+extern int outbuf_idx;
+
+extern sceGsDBuffDc   DBufDc;
+extern sceGsDrawEnv1* drawEnvP[5];
+extern PADD pad[2];
 
 extern GLOBAL_DATA global_data;
 extern GAME_STATUS game_status;
@@ -42,19 +46,12 @@ typedef struct { // 0x100
     /* 0xa0 */ sceGsClear clear;
 } CLEAR_VRAM_DMA;
 
-extern sceGsDBuffDc DBufDc;
-extern int outbuf_idx;
-
-extern sceGsDrawEnv1* drawEnvP[5];
-
-extern PADD pad[2];
-
 int  SetIopModule(void);
 void initSystem(void);
 void exitSystem(void);
-void SetOsFuncAddr(void* func_pp);
+void SetOsFuncAddr(void *func_pp);
 void osFunc(void);
-void systemCtrlMain(void* xx);
+void systemCtrlMain(void *xx);
 void mallocInit(void);
 
 #endif // SYSTEM_H

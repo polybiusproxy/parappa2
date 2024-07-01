@@ -662,11 +662,49 @@ ddbg_tctrl_sub                      = 0x001167f0; // type:func
 DrawCtrlMainDebug                   = 0x001168b8; // type:func
 DrawCtrlInitDebug                   = 0x00116ad0; // type:func
 
-vclr_black_tmp                      = 0x00399518;
+bra_tap                             = 0x00185478; // size:0x50
+bra_title                           = 0x001854c8; // size:0x80
+bra_ret                             = 0x00185548; // size:0xC8
+mozaiku_str_poll_00                 = 0x00185610; // size:0x110
+mozaiku_str_poll_01                 = 0x00185720; // size:0x360
+mozaiku_str_poll_02                 = 0x00185a80; // size:0x220
+mozaiku_poll_str                    = 0x00185ca0; // size:0x24
+mentitle_dat                        = 0x00185cc8; // size:0x40
+mentitle_dat_dera                   = 0x00185d08; // size:0x540
+draw_dbg_str                        = 0x00186248; // size:0x3C
+
+vclr_black_tmp                      = 0x00399518; // size:0x4
+bthrow_ctrl_time                    = 0x0039951c;
+mend_title_req                      = 0x00399528;
+
+ddbg_event_num                      = 0x0039952c;
+ddbg_scene_num                      = 0x00399530;
+ddbg_go_event_scene                 = 0x00399534;
+ddbg_tap_num                        = 0x00399538;
+ddbg_bmp_frame                      = 0x0039953c;
+ANI_BLUMOVE_ENUM                    = 0x00399550;
+
+dr_tap_req_num                      = 0x00399a4c;
 scenectrl_outside_cnt               = 0x00399a50;
 scenectrl_outside_read_cnt          = 0x00399a54;
+mozaiku_poll_str_current_pp         = 0x00399a58;
+drawCurrentLine                     = 0x00399a5c;
+drawCurrentTime                     = 0x00399a60;
+drawCurrentTimeOld                  = 0x00399a64;
+drawEventrec                        = 0x00399a68;
 useDispFlag                         = 0x00399a6c;
 drDispFlag                          = 0x00399a70;
+men_ctrl_ratio                      = 0x00399a74;
+men_ctrl_enum                       = 0x00399a78;
+ddbg_pause_f                        = 0x00399a7c;
+
+dr_tap_req                          = 0x01c6e030; // size:0xC0
+octst_time                          = 0x01c6e0f0; // size:0x20
+octst_timeLoad                      = 0x01c6e110; // size:0x20
+scenectrl_outside                   = 0x01c6e130; // size:0x100
+bthrow_ctrl                         = 0x01c6e230; // size:0x1C28
+tmp_buf_adrs                        = 0x01c6fe58; // size:0x40
+check_scenectrl                     = 0x01c6fe98; // size:0x50
 
 // main/effect.c
 CG_WaveInit                         = 0x00116b70; // type:func
@@ -1112,7 +1150,68 @@ TsMenuMemcChk_Flow                  = 0x00128188; // type:func
 TsMenu_Draw                         = 0x00128260; // type:func
 
 // menu/p3mc.c
-P3MC_GetIconSize                    = 0x00137f70;
+P3MC_GetIconSize                    = 0x00137f70; // type:func
+P3MC_GetIconPtr                     = 0x00137f98; // type:func
+_P3MC_SetUserDirName                = 0x00138070; // type:func
+_P3MC_GetFilePath                   = 0x00138090; // type:func
+_P3MC_EUC2SJIS                      = 0x001381e8; // type:func
+_P3MC_ASC2SJIS                      = 0x00138270; // type:func
+_P3MC_UserName_ASC2SJIS             = 0x00138368; // type:func
+_P3MC_SetBrowsInfo                  = 0x00138398; // type:func
+_P3MC_mainfile_chk                  = 0x001385a8; // type:func
+_P3MC_file_chk                      = 0x00138770; // type:func
+P3MC_InitReady                      = 0x001388c8; // type:func
+P3MC_GetSaveSize                    = 0x001389b8; // type:func
+P3MC_SetCheckSaveSize               = 0x00138a28; // type:func
+_P3MC_freesize_chk                  = 0x00138a90; // type:func
+P3MC_CheckChange                    = 0x00138ae8; // type:func
+P3MC_CheckChangeClear               = 0x00138c00; // type:func
+P3MC_CheckChangeSet                 = 0x00138c08; // type:func
+P3MC_CheckIsNewSave                 = 0x00138c10; // type:func
+_P3MC_GetSaveDataSize               = 0x00138c20; // type:func
+P3MC_DeleteDataWork                 = 0x00138c38; // type:func
+P3MC_MakeDataWork                   = 0x00138c88; // type:func
+_P3MCStrCmpLen                      = 0x00138e10; // type:func
+_P3MCStrNum                         = 0x00138e48; // type:func
+_P3MC_MemcCheck                     = 0x00138ed8; // type:func
+P3MC_GetUserStart                   = 0x00139150; // type:func
+P3MC_GetUserEnd                     = 0x00139210; // type:func
+P3MC_GetUserCheck                   = 0x00139238; // type:func
+P3MC_AddUser                        = 0x001396a0; // type:func
+_P3MC_AddUserBroken                 = 0x00139858; // type:func
+P3MC_SortUser                       = 0x001399d8; // type:func
+P3MC_CheckBrokenUser                = 0x00139c50; // type:func
+P3MC_OpeningCheckStart              = 0x00139d08; // type:func
+P3MC_OpeningCheckEnd                = 0x00139d58; // type:func
+P3MC_OpeningCheck                   = 0x00139d80; // type:func
+P3MC_LoadUser                       = 0x0013a028; // type:func
+P3MC_LoadCheck                      = 0x0013a0d8; // type:func
+_P3MC_loadCheck                     = 0x0013a158; // type:func
+P3MC_SetUserWorkTime                = 0x0013a3e0; // type:func
+P3MC_SaveUser                       = 0x0013a4a0; // type:func
+P3MC_SaveCheck                      = 0x0013a650; // type:func
+_P3MC_SaveCheck                     = 0x0013a6a8; // type:func
+_P3MC_proc                          = 0x0013a940; // type:func
+_P3MC_dataCheckFunc                 = 0x0013ac78; // type:func
+_P3MC_CheckUserData                 = 0x0013ac80; // type:func
+_P3MC_CheckUserDataHead             = 0x0013acc0; // type:func
+
+HedderID                            = 0x00399830; // size:0x4
+FooterID                            = 0x00399834; // size:0x4
+pUChkWork                           = 0x00399838; // size:0x4
+
+FreeSizeFlg                         = 0x00399b60; // size:0x4
+portCheckFlg                        = 0x00399b64; // size:0x4
+NeedSize                            = 0x00399b68; // size:0x8 type:s32
+UChkSize                            = 0x00399b70; // size:0x8 type:s32
+isFileFlgCash                       = 0x00399b78; // size:0x4
+
+P3MC_Work                           = 0x01c81100; // size:0x20
+filePath                            = 0x01c81120; // size:0x40 type:s8
+mcmenu_info                         = 0x01c81160; // size:0x18
+p3mcTblGetDir                       = 0x01c81180; // size:0x200
+McLogFileFlg                        = 0x01c81380; // size:0x50 type:u8
+McReplayFileFlg                     = 0x01c813d0; // size:0x50 type:u8
 
 // menu/memc.c
 memc_init                           = 0x0013ad80; // type:func
@@ -1605,6 +1704,9 @@ sprintf                             = 0x00171650; // type:func
 
 // ee/gcc/src/newlib/libc/machine/r5900/strcat.S
 strcat                              = 0x00171830; // type:func
+
+// ee/gcc/src/newlib/libc/machine/r5900/strcmp.S
+strcmp                              = 0x0017195c; // type:func
 
 // ee/gcc/src/newlib/libc/machine/r5900/strcpy.S
 strcpy                              = 0x00171aa0; // type:func
