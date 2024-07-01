@@ -1,31 +1,18 @@
 #include "os/system.h"
 
-/*char *iop_module[11] = {
-        "cdrom0:\\IRX\\SIO2MAN.IRX;1",
-        "cdrom0:\\IRX\\PADMAN.IRX;1",
-        "cdrom0:\\IRX\\LIBSD.IRX;1",
-        "cdrom0:\\IRX\\SDRDRV.IRX;1",
-        "cdrom0:\\IRX\\MODMIDI.IRX;1",
-        "cdrom0:\\IRX\\MODHSYN.IRX;1",
-        "cdrom0:\\IRX\\MODMSIN.IRX;1",
-        "cdrom0:\\IRX\\MCMAN.IRX;1",
-        "cdrom0:\\IRX\\MCSERV.IRX;1",
-        "cdrom0:\\IRX\\WAVE2PS2.IRX;1",
-        "cdrom0:\\IRX\\TAPCTRL.IRX;1",
-};*/
-
-extern u_char* iop_module[11];
+#include <stdio.h>
 
 int _end_addr;
 int _stack_size_addr;
 
 int oddeven_idx;
 
+/* bss - static */
 extern u_long128 GifPkCommon[8192];
 
 void (*OsFuncAddr)();
 
-/* static */
+/* bss - static */
 extern sceGsDrawEnv1 drawEnvSp;
 extern sceGsDrawEnv1 drawEnvZbuff;
 extern sceGsDrawEnv1 drawEnvEnd;
@@ -46,27 +33,20 @@ int main()
     }
 }
 
-INCLUDE_RODATA(const s32, "os/system", D_00391760);
-
-INCLUDE_RODATA(const s32, "os/system", D_00391780);
-
-INCLUDE_RODATA(const s32, "os/system", D_003917A0);
-
-INCLUDE_RODATA(const s32, "os/system", D_003917C0);
-
-INCLUDE_RODATA(const s32, "os/system", D_003917D8);
-
-INCLUDE_RODATA(const s32, "os/system", D_003917F8);
-
-INCLUDE_RODATA(const s32, "os/system", D_00391818);
-
-INCLUDE_RODATA(const s32, "os/system", D_00391838);
-
-INCLUDE_RODATA(const s32, "os/system", D_00391858);
-
-INCLUDE_RODATA(const s32, "os/system", D_00391870);
-
-INCLUDE_RODATA(const s32, "os/system", D_00391890);
+static u_char *iop_module[11] =
+{
+    "cdrom0:\\IRX\\SIO2MAN.IRX;1",
+    "cdrom0:\\IRX\\PADMAN.IRX;1",
+    "cdrom0:\\IRX\\LIBSD.IRX;1",
+    "cdrom0:\\IRX\\SDRDRV.IRX;1",
+    "cdrom0:\\IRX\\MODMIDI.IRX;1",
+    "cdrom0:\\IRX\\MODHSYN.IRX;1",
+    "cdrom0:\\IRX\\MODMSIN.IRX;1",
+    "cdrom0:\\IRX\\MCMAN.IRX;1",
+    "cdrom0:\\IRX\\MCSERV.IRX;1",
+    "cdrom0:\\IRX\\WAVE2PS2.IRX;1",
+    "cdrom0:\\IRX\\TAPCTRL.IRX;1",
+};
 
 int SetIopModule(void)
 {
@@ -96,6 +76,9 @@ int SetIopModule(void)
 
     return 0;
 }
+
+sceGsDBuffDc   DBufDc      = {};
+sceGsDrawEnv1 *drawEnvP[5] = {};
 
 static void firstClrFrameBuffer(void)
 {
@@ -188,6 +171,8 @@ void exitSystem(void)
     sceSifExitCmd();
 }
 
+PADD pad[2] = {};
+
 void SetOsFuncAddr(void* func_pp)
 {
     OsFuncAddr = func_pp;
@@ -271,3 +256,8 @@ void mallocInit(void)
     int size = FullAllocAndFree();
     scePrintf("HEAP SIZE[%08x]\n", size);
 }
+
+GLOBAL_DATA       global_data       = {};
+GAME_STATUS       game_status       = {};
+MC_REP_STR        mc_rep_str        = {};
+INGAME_COMMON_STR ingame_common_str = {};

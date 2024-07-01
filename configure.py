@@ -62,13 +62,45 @@ def clean():
 # Possibly the worst thing I have ever written... removing the %gp_rel accesses like this...
 # For some reason, the regex doesn't work here, and I'm sure it'll be easier to match these than
 # debug what's going on here.
-GP_HACK_FILENAME_TABLE = ["WipeParaInDisp.s", "WipeParaInDispMove.s", "WipeParaOutDisp.s"]
+GP_HACK_FILENAME_TABLE = [
+    "DrawCtrlMain.s",
+    "WipeParaInDisp.s", "WipeParaInDispMove.s", "WipeParaOutDisp.s",
+    "TsMENU_GetMapTimeState.s", "TsSetScene_Map.s", "TsMenu_Init.s", "TsRanking_Set.s", "MpCityHall_Flow.s", "TsOption_Flow.s"
+]
 GP_HACK_REPLACE_TABLE  = {
-    "WipeParaInDisp.s":     [(171, f'/* 1F13C 0011E13C AC8682AF */  sw         $2, wipe_end_flag'),
-                             (175, f'/* 1F148 0011E148 AC8682AF */  sw         $2, wipe_end_flag')],
-    "WipeParaInDispMove.s": [(121, f'/* 1F32C 0011E32C AC8682AF */  sw         $2, wipe_end_flag'),
-                             (125, f'/* 1F338 0011E338 AC8682AF */  sw         $2, wipe_end_flag')],
-    "WipeParaOutDisp.s":    [(113, f'/* 1F504 0011E504 AC8682AF */   sw        $2, wipe_end_flag')]
+    # main/drawctrl.c
+    "DrawCtrlMain.s":               [(26,  f'/* 167EC 001157EC 788B838F */   lw        $3, drawEventrec'),
+                                     (29,  f'/* 167F8 001157F8 788B838F */  lw         $3, drawEventrec'),
+                                     (31,  f'/* 167FC 001157FC 6C8B848F */  lw         $4, drawCurrentLine'),
+                                     (49,  f'/* 1683C 0011583C 708B848F */   lw        $4, drawCurrentTime'),
+                                     (74,  f'/* 16894 00115894 708B838F */  lw         $3, drawCurrentTime'),
+                                     (149, f'/* 1699C 0011599C 708B848F */   lw        $4, drawCurrentTime'),
+                                     (209, f'/* 16A70 00115A70 708B858F */  lw         $5, drawCurrentTime'),
+                                     (226, f'/* 16AAC 00115AAC 708B858F */   lw        $5, drawCurrentTime'),
+                                     (232, f'/* 16ABC 00115ABC 5C8B80AF */  sw         $0, dr_tap_req_num')],
+
+    # main/wipe.c
+    "WipeParaInDisp.s":             [(171, f'/* 1F13C 0011E13C AC8682AF */  sw         $2, wipe_end_flag'),
+                                     (175, f'/* 1F148 0011E148 AC8682AF */  sw         $2, wipe_end_flag')],
+    "WipeParaInDispMove.s":         [(121, f'/* 1F32C 0011E32C AC8682AF */  sw         $2, wipe_end_flag'),
+                                     (125, f'/* 1F338 0011E338 AC8682AF */  sw         $2, wipe_end_flag')],
+    "WipeParaOutDisp.s":            [(113, f'/* 1F504 0011E504 AC8682AF */   sw        $2, wipe_end_flag')],
+
+    # menu/menusub.c
+    "TsMENU_GetMapTimeState.s": [], # 13, 16, 20, 22, 25, 26, 30, 34, 77, 103
+    "TsSetScene_Map.s": [], # 4
+    "TsMenu_Init.s": [], # 4, 101, 114, 134, 143, 159, 171, 198, 200, 201, 202, 203, 205
+    "TsRanking_Set.s": [], # 14, 35, 50
+    "MpCityHall_Flow.s": [], # 19, 37, 53, 54, 55, 57, 58, 95, 96, 99, 103, 105, 142, 
+                             # 159, 164, 165, 182, 185, 194, 198, 205, 246, 255, 258, 268, 272, 274,
+                             # 276, 277, 287, 293, 296, 299, 456, 460, 483, 545, 550, 572, 580, 587,
+                             # 591, 596, 615, 621, 637, 658, 662, 673, 675, 679, 681, 693, 698, 699,
+                             # 703, 705, 707, 741, 743, 759, 760, 780, 813, 815, 821, 843, 845, 854,
+                             # 856, 860, 862, 870, 873, 877, 879, 883, 888, 897, 904, 915, 920, 921,
+                             # 925, 929, 931, 932, 937, 939, 945, 971, 991, 1002, 1009, 1011, 1016,
+                             # 1022, 1028, 1041, 1045, 1060, 1062, 1066, 1074, 1075, 1077, 1080
+    "TsOption_Flow.s": [] # 17, 28, 29, 30, 32, 253, 301, 302, 303, 304
+
 }
 
 def gp_hack(filepath):
@@ -120,7 +152,7 @@ def remove_gprel():
                 with open(filepath, "w") as file:
                     file.write(updated_content)
 
-EUC_HACK_FILENAME_TABLE = ["TsDrawUPacket.s"]
+EUC_HACK_FILENAME_TABLE = ["TsDrawUPacket.s", "_P3MC_SetBrowsInfo.s"]
 def eucjp_convert():
     for root, dirs, files in os.walk("asm/nonmatchings/"):
         for filename in files:

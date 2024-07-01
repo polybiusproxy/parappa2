@@ -77,7 +77,7 @@ segments:
         - [0x24d98, c, menu/menudata]
         - [0x25500, c, menu/menu_mdl]
         - [0x26ec0, asm, menu/menusub]
-        - [0x38f70, asm, menu/p3mc]
+        - [0x38f70, c, menu/p3mc]
         - [0x3bd80, c, menu/memc]
         - [0x3dbf0, c, menu/mntm2hed]
         - [0x3dc08, c, menu/menufont]
@@ -155,7 +155,7 @@ segments:
         - [0x7c9e0, data, dbug/vramsave]
         - [0x7ca90, .data, os/mtc]
         - [0x7cb40, .data, os/syssub]
-        - [0x7cbc0, data, os/system]
+        - [0x7cbc0, .data, os/system]
         - [0x818d8, .data, os/tim2]
 
         - [0x818f0, data, main/stdat]
@@ -199,7 +199,7 @@ segments:
 
         - [0x294c00, .rodata, menu/menudata]
         - [0x296f10, rodata, menu/menusub]
-        - [0x297180, rodata, menu/p3mc]
+        - [0x297180, .rodata, menu/p3mc]
         - [0x297650, .rodata, menu/memc]
         - [0x2976e0, .rodata, menu/pksprite]
 
@@ -299,21 +299,21 @@ segments:
         - { start: 0x29aa1c, type: .bss, vram: 0x01c6db90, name: main/fadectrl  }
         - { start: 0x29aa1c, type: .bss, vram: 0x01c6dba0, name: main/subt      }
         - { start: 0x29aa1c, type: bss,  vram: 0x01c6e030, name: main/drawctrl  }
-        - { start: 0x29aa1c, type: bss,  vram: 0x01c6fef0, name: tmp            } # main/effect
-        # - { start: 0x29aa1c, type: bss,  vram: 0x01c6ffc0, name: main/mbar      }
-        # - { start: 0x29aa1c, type: bss,  vram: 0x01c72000, name: main/pack      }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c6fef0, name: main/effect    }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c6ffc0, name: main/mbar      }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c72000, name: main/pack      }
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c73018, name: main/etc       }
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c730e8, name: main/mcctrl    }
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c77630, name: main/main      }
-        # - { start: 0x29aa1c, type: bss,  vram: 0x01c77640, name: main/p3str     }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c77640, name: main/p3str     }
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c77700, name: main/commake   }
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c778c8, name: menu/menu      }
-        # - { start: 0x29aa1c, type: bss,  vram: 0x01c77a50, name: menu/menusub   }
-        # - { start: 0x29aa1c, type: bss,  vram: 0x01c81100, name: menu/p3mc      }
-        # - { start: 0x29aa1c, type: bss,  vram: 0x01c81540, name: menu/memc      }
-        # - { start: 0x29aa1c, type: bss,  vram: 0x01c81880, name: menu/menufont  }
-        - { start: 0x29aa1c, type: .bss,  vram: 0x01c828c0, name: iop_mdl/wp2cd_rpc  }
-        - { start: 0x29aa1c, type: .bss,  vram: 0x01c82a00, name: iop_mdl/tapctrl_rpc  }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c77a50, name: menu/menusub   }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c81100, name: menu/p3mc      }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c81540, name: menu/memc      }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c81880, name: menu/menufont  }
+        - { start: 0x29aa1c, type: .bss, vram: 0x01c828c0, name: iop_mdl/wp2cd_rpc  }
+        - { start: 0x29aa1c, type: .bss, vram: 0x01c82a00, name: iop_mdl/tapctrl_rpc  }
         - { start: 0x29aa1c, type: bss,  vram: 0x01c82a70, name: tmp2  } # prlib
 
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c88500, name: sdk/scelib  }
