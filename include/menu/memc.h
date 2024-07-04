@@ -49,4 +49,34 @@ typedef struct { // 0x18
     /* 0x14 */ sceMcTblGetDir *dirfile;
 } MEMC_INFO;
 
+void memc_init(void);
+
+void memc_setDirName(char *name);
+void memc_setSaveTitle(char *name, int nLFPos);
+void memc_setIconSysHed(void *pIhData, int IhSize);
+void memc_setSaveIcon(int no, void *pIconData, int nIconSize);
+
+char* memc_getfilename(int no);
+char* memc_getfilepath(int no);
+
+int memc_checkFormat(void);
+int memc_getChangeState(void);
+void memc_setChangeState(int flg);
+sceMcTblGetDir* memc_searchDirTbl(char *name, sceMcTblGetDir *dirTbl, int num, int isClose, int cmpSize, int *status);
+
+int memc_port_info(int port, MEMC_INFO *info);
+int memc_del_file(int port, int no);
+int memc_load_file(int port, int no, char *buf, int size);
+int memc_loadFirst(int port, int no, char *buf, int size);
+int memc_save_file(int port, int no, char *buf, int size, int bSysRW);
+int memc_seeksave_file(int port, int no, char *buf, int size, int seek, int sizef, int bSysRW);
+int memc_save_overwrite(void);
+int memc_port_check(int port, int *type, int *free);
+int memc_format(int port);
+int memc_chg_dir(int port, char *name);
+int memc_get_dir(int port, char *name, sceMcTblGetDir *dir, int max);
+int memc_get_dir_continue(sceMcTblGetDir *dir, int max);
+
+int memc_manager(int mode);
+
 #endif

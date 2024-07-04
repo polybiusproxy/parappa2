@@ -874,9 +874,10 @@ WipeBoxyWaitDisp                    = 0x0011ea40; // type:func
 wipeBoxyWaitReq                     = 0x0011ecb0; // type:func
 
 sndtap_wipe                         = 0x00187000; // size:0x30
+ldmap                               = 0x001871e8; // size:0xA0
+jimaku_str                          = 0x001872a8; // size:0x8
 wipe_para_str                       = 0x001872b0; // size:0x10
 sceGsDrawEnv1_tmp                   = 0x001872c0; // size:0x80
-ldmap                               = 0x001871e8; // size:0xA0
 
 wipe_type                           = 0x00399598;
 wipe_end_flag                       = 0x0039959c;
@@ -1659,6 +1660,7 @@ sceCdMmode                          = 0x00163610; // type:func
 sceCdRead                           = 0x001636d8; // type:func
 sceCdSeek                           = 0x001638b8; // type:func
 sceCdGetError                       = 0x00163988; // type:func
+sceCdReadClock                      = 0x00163a20; // type:func
 
 // libmc.c
 sceMcInit                           = 0x00163b18; // type:func
@@ -1679,6 +1681,9 @@ __fixsfdi                           = 0x00169760; // type:func
 __floatdisf                         = 0x00169a20; // type:func
 __udivdi3                           = 0x0016a1c8; // type:func
 __umoddi3                           = 0x0016a798; // type:func
+
+// ee/gcc/src/nwelib/libc/stdlib/malign.c
+memalign                            = 0x0016f7e8; // type:func
 
 // ee/gcc/src/newlib/libc/stdlib/malloc.c
 malloc                              = 0x0016f9e8; // type:func
