@@ -10,7 +10,7 @@ extern u_int _memc_type[];
 /* bss - static */
 extern MEMC_STAT memc_stat;
 
-void memc_init()
+void memc_init(void)
 {
     sceMcInit();
 

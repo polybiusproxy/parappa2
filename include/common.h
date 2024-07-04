@@ -22,9 +22,9 @@ typedef float f32;
 #define UNK_FUN_PTR(name) void(*name)(void)
 #define UNK_ARGS
 
-#define NULL 0
-#define TRUE 1
-#define FALSE 
+#define NULL  0
+#define TRUE  1
+#define FALSE 0
 
 #define PR_EXTERN extern "C"
 
