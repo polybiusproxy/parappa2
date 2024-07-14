@@ -71,13 +71,13 @@ PR_SCENEHANDLE PrInitializeScene(sceGsDrawEnv1 *drawEnv, char *name, u_int fbp);
 void PrInitializeSceneDBuff(sceGsDBuff *buff, char *name, u_int fbp);
 void PrCleanupScene(PR_SCENEHANDLE scene);
 
-void PrSetSceneFrame(PR_SCENEHANDLE model, sceGsFrame frame);
-void PrSetSceneEnv(PR_SCENEHANDLE model, sceGsDrawEnv1 *drawEnv);
+void PrSetSceneFrame(PR_SCENEHANDLE scene, sceGsFrame frame);
+void PrSetSceneEnv(PR_SCENEHANDLE scene, sceGsDrawEnv1 *drawEnv);
 void PrPreprocessSceneModel(PR_SCENEHANDLE scene);
 
-PR_MODELHANDLE PrInitializeModel(PR_MODELHANDLE model, PR_SCENEHANDLE scene);
-PR_ANIMATIONHANDLE PrInitializeAnimation(PR_ANIMATIONHANDLE animation);
-PR_CAMERAHANDLE PrInitializeCamera(PR_CAMERAHANDLE camera);
+PR_MODELHANDLE PrInitializeModel(void* modelImage, PR_SCENEHANDLE scene);
+PR_ANIMATIONHANDLE PrInitializeAnimation(void* animImage);
+PR_CAMERAHANDLE PrInitializeCamera(void* cameraImage);
 
 void PrCleanupModel(PR_MODELHANDLE model);
 void PrCleanupAnimation(PR_ANIMATIONHANDLE animation);
@@ -101,6 +101,53 @@ void PrAnimateSceneCamera(PR_SCENEHANDLE scene, float time);
 
 void PrRender(PR_SCENEHANDLE scene);
 void PrWaitRender(void);
+
+void PrSetStage(int stage);
+
+void PrSetDepthOfField(PR_MODELHANDLE scene, float focalLen, float defocusLen);
+void PrSetDepthOfFieldLevel(PR_SCENEHANDLE scene, u_int depthLevel);
+
+float PrGetFocalLength(PR_SCENEHANDLE scene);
+float PrGetDefocusLength(PR_SCENEHANDLE scene);
+
+u_int PrGetDepthOfFieldLevel(PR_SCENEHANDLE scene);
+
+void PrSaveContour(PR_MODELHANDLE model);
+void PrResetContour(PR_MODELHANDLE model);
+
+void PrSavePosture(PR_MODELHANDLE model);
+void PrResetPosture(PR_MODELHANDLE model);
+
+void PrSetContourBlurAlpha(PR_MODELHANDLE model, float blurAlpha, float blurAlpha2);
+
+void PrSetTransactionBlendRatio(PR_MODELHANDLE model, float blendRatio);
+
+float PrGetContourBlurAlpha(PR_MODELHANDLE model);
+float PrGetContourBlurAlpha2(PR_MODELHANDLE model);
+
+float PrGetTransactionBlendRatio(PR_MODELHANDLE model);
+
+void PrSetModelDisturbance(PR_MODELHANDLE model, float disturbance);
+float PrGetModelDisturbance(PR_MODELHANDLE model);
+
+u_int PrGetVertexNum(PR_MODELHANDLE model);
+
+char* PrGetModelName(PR_MODELHANDLE model);
+char* PrGetCameraName(PR_CAMERAHANDLE camera);
+char* PrGetSceneName(PR_SCENEHANDLE scene);
+
+PrRENDERING_STATISTICS* PrGetRenderingStatistics();
+
+void PrSetModelVisibillity(PR_MODELHANDLE model, u_int nodeIndex, bool arg2);
+
+void* PrGetModelImage(PR_MODELHANDLE model);
+void* PrGetAnimationImage(PR_ANIMATIONHANDLE anim);
+void* PrGetCameraImage(PR_CAMERAHANDLE camera);
+
+void PrSetDebugParam(int param, int value);
+void PrSetDebugParamFloat(int param, float value);
+int PrGetDebugParam(int param);
+float PrGetDebugParamFloat(int param);
 
 /* menderer.cpp */
 void  PrDecelerateMenderer(u_int speed);
