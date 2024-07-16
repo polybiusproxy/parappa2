@@ -11,6 +11,8 @@ class PrRenderStuff
 public:
     void Initialize(sceGsZbuf zbuf);
     void WaitRender();
+
+    void Cleanup();
 public:
     char pad0[0x1C];
     int _1C;
