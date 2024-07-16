@@ -69,10 +69,12 @@ void PrCleanupModule();
 
 PR_SCENEHANDLE PrInitializeScene(sceGsDrawEnv1 *drawEnv, char *name, u_int fbp);
 void PrInitializeSceneDBuff(sceGsDBuff *buff, char *name, u_int fbp);
+
 void PrCleanupScene(PR_SCENEHANDLE scene);
 
 void PrSetSceneFrame(PR_SCENEHANDLE scene, sceGsFrame frame);
 void PrSetSceneEnv(PR_SCENEHANDLE scene, sceGsDrawEnv1 *drawEnv);
+
 void PrPreprocessSceneModel(PR_SCENEHANDLE scene);
 
 PR_MODELHANDLE PrInitializeModel(void* modelImage, PR_SCENEHANDLE scene);
@@ -84,16 +86,46 @@ void PrCleanupAnimation(PR_ANIMATIONHANDLE animation);
 void PrCleanupCamera(PR_CAMERAHANDLE camera);
 void PrCleanupAllSceneModel(PR_SCENEHANDLE scene);
 
+float PrGetAnimationStartFrame(PR_ANIMATIONHANDLE animation);
+float PrGetAnimationEndFrame(PR_ANIMATIONHANDLE animation);
+
+float PrGetCameraStartFrame(PR_CAMERAHANDLE camera);
+float PrGetCameraEndFrame(PR_CAMERAHANDLE camera);
+
+void PrSetModelUserData(PR_MODELHANDLE model, int userData);
+void PrSetAnimationUserData(PR_ANIMATIONHANDLE animation, int userData);
+void PrSetCameraUserData(PR_CAMERAHANDLE camera, int userData);
+
+int PrGetModelUserData(PR_MODELHANDLE model);
+int PrGetAnimationUserData(PR_ANIMATIONHANDLE animation);
+int PrGetCameraUserData(PR_CAMERAHANDLE camera);
+
 void PrLinkAnimation(PR_MODELHANDLE model, PR_ANIMATIONHANDLE animation);
 void PrUnlinkAnimation(PR_MODELHANDLE model);
+
+PR_ANIMATIONHANDLE PrGetLinkedAnimation(PR_MODELHANDLE model);
 
 void PrLinkPositionAnimation(PR_MODELHANDLE model, PR_ANIMATIONHANDLE animation);
 void PrUnlinkPositionAnimation(PR_MODELHANDLE model);
 
+PR_ANIMATIONHANDLE PrGetLinkedPositionAnimation(PR_MODELHANDLE model);
+
 void PrSelectCamera(PR_CAMERAHANDLE camera, PR_SCENEHANDLE scene);
+PR_CAMERAHANDLE PrGetSelectedCamera(PR_SCENEHANDLE scene);
+
+void* PrGetCurrentCamera(PR_SCENEHANDLE scene);
+
+void PrSetDefaultCamera(PR_SCENEHANDLE scene, PR_CAMERAHANDLE camera);
+void PrSetAppropriateDefaultCamera(PR_SCENEHANDLE scene);
 
 void PrShowModel(PR_MODELHANDLE model, sceVu0FMATRIX *matrix);
+
+float* PrGetModelMatrix(PR_MODELHANDLE model);
+
 void PrHideModel(PR_MODELHANDLE model);
+
+float* PrGetModelPrimitivePosition(PR_MODELHANDLE model);
+float* PrGetModelScreenPosition(PR_MODELHANDLE model);
 
 void PrAnimateModel(PR_MODELHANDLE model, float time);
 void PrAnimateModelPosition(PR_MODELHANDLE model, float time);
@@ -133,15 +165,16 @@ float PrGetModelDisturbance(PR_MODELHANDLE model);
 u_int PrGetVertexNum(PR_MODELHANDLE model);
 
 char* PrGetModelName(PR_MODELHANDLE model);
+char* PrGetAnimationName(PR_ANIMATIONHANDLE animation);
 char* PrGetCameraName(PR_CAMERAHANDLE camera);
 char* PrGetSceneName(PR_SCENEHANDLE scene);
 
-PrRENDERING_STATISTICS* PrGetRenderingStatistics();
+void* PrGetRenderingStatistics();
 
-void PrSetModelVisibillity(PR_MODELHANDLE model, u_int nodeIndex, bool arg2);
+void PrSetModelVisibillity(PR_MODELHANDLE model, u_int nodeIndex, u_int visible);
 
 void* PrGetModelImage(PR_MODELHANDLE model);
-void* PrGetAnimationImage(PR_ANIMATIONHANDLE anim);
+void* PrGetAnimationImage(PR_ANIMATIONHANDLE animation);
 void* PrGetCameraImage(PR_CAMERAHANDLE camera);
 
 void PrSetDebugParam(int param, int value);
