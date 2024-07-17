@@ -386,7 +386,8 @@ PR_EXTERN void PrSetModelVisibillity(PR_MODELHANDLE model, u_int nodeIndex, u_in
 {
     SpmNode* spmNode;
 
-    if (nodeIndex < ((PrModelObject*)model)->m_spmImage->m_nodeNum) {
+    if (nodeIndex < ((PrModelObject*)model)->m_spmImage->m_nodeNum)
+    {
         spmNode = ((PrModelObject*)model)->m_spmImage->m_nodes[nodeIndex];
 
         if (visible)
