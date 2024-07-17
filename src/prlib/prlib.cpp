@@ -194,7 +194,7 @@ INCLUDE_ASM(const s32, "prlib/prlib", PrShowModel);
 
 PR_EXTERN float* PrGetModelMatrix(PR_MODELHANDLE model)
 {
-    // Check LSB (hide model flag)
+    // Check LSB (show model flag)
     if ((((PrModelObject*)model)->m_posture & 1) == 0)
         return NULL;
 
@@ -203,8 +203,8 @@ PR_EXTERN float* PrGetModelMatrix(PR_MODELHANDLE model)
 
 PR_EXTERN void PrHideModel(PR_MODELHANDLE model)
 {
-    // Clear LSB (hide model flag)
-    ((PrModelObject*)model)->m_posture &= 0xfffffffe;
+    // Clear LSB (show model flag)
+    ((PrModelObject*)model)->m_posture &= ~1u;
 }
 
 PR_EXTERN float* PrGetModelPrimitivePosition(PR_MODELHANDLE model)
@@ -387,11 +387,11 @@ PR_EXTERN void PrSetModelVisibillity(PR_MODELHANDLE model, u_int nodeIndex, u_in
 
     if (nodeIndex < ((PrModelObject*)model)->m_spmImage->m_nodeNum) {
         spmNode = ((PrModelObject*)model)->m_spmImage->m_nodes[nodeIndex];
-        if (visible) {
-            spmNode->m_flags &= 0xfffdffff;
-            return;
-        }
-        spmNode->m_flags |= 0x20000;
+
+        if (visible)
+            spmNode->m_flags &= ~0x20000u;
+        else
+            spmNode->m_flags |= 0x20000u;
     }
 }
 
