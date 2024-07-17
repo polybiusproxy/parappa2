@@ -9,7 +9,8 @@
 
 #include "common.h"
 
-class SpcFileHeader {
+class SpcFileHeader
+{
 public:
     char pad0[0x14];
 
