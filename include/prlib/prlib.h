@@ -78,8 +78,8 @@ void PrSetSceneEnv(PR_SCENEHANDLE scene, sceGsDrawEnv1 *drawEnv);
 void PrPreprocessSceneModel(PR_SCENEHANDLE scene);
 
 PR_MODELHANDLE PrInitializeModel(void* modelImage, PR_SCENEHANDLE scene);
-PR_ANIMATIONHANDLE PrInitializeAnimation(void* animImage);
-PR_CAMERAHANDLE PrInitializeCamera(void* cameraImage);
+PR_ANIMATIONHANDLE PrInitializeAnimation(PR_ANIMATIONHANDLE animImage);
+PR_CAMERAHANDLE PrInitializeCamera(PR_CAMERAHANDLE cameraImage);
 
 void PrCleanupModel(PR_MODELHANDLE model);
 void PrCleanupAnimation(PR_ANIMATIONHANDLE animation);
