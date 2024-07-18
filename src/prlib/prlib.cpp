@@ -271,7 +271,9 @@ PR_EXTERN void PrSetDepthOfField(PR_MODELHANDLE scene, float focalLen, float def
         }
     }
     else
+    {
         defocusLen = 0.f;
+    }
 
     ((PrSceneObject*)scene)->m_fFocalLen = focalLen;
     ((PrSceneObject*)scene)->m_fDefocusLen = defocusLen;
