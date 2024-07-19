@@ -2,6 +2,8 @@
 #define SCENE_H
 
 #include <eetypes.h>
+#include <eestruct.h>
+#include <libgraph.h>
 
 #include "database.h"
 

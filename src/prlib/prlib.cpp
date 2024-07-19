@@ -1,5 +1,3 @@
-#include "prlib_intern.h"
-
 #include <nalib/navector.h>
 #include <nalib/namatrix.h>
 
