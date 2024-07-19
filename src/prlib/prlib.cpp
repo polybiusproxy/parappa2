@@ -1,4 +1,4 @@
-#include <prlib/prlib.h>
+#include "prlib_intern.h"
 
 #include <nalib/navector.h>
 #include <nalib/namatrix.h>
@@ -9,6 +9,8 @@
 #include "model.h"
 #include "scene.h"
 #include "animation.h"
+
+#include "common.h"
 
 /* sdata */
 static float prFrameRate = 1.0f;
@@ -51,9 +53,9 @@ PR_EXTERN void PrCleanupModule()
     prObjectDatabase.Cleanup();
 }
 
-PR_EXTERN PR_SCENEHANDLE PrInitializeScene(sceGsDrawEnv1 *drawEnv, char *name, u_int fbp)
+PR_EXTERN PrSceneObject* PrInitializeScene(sceGsDrawEnv1 *drawEnv, char *name, u_int fbp)
 {
-   return (PR_SCENEHANDLE)prObjectDatabase.CreateScene(drawEnv, name, fbp);
+   return prObjectDatabase.CreateScene(drawEnv, name, fbp);
 }
 
 PR_EXTERN void PrInitializeSceneDBuff(sceGsDBuff *buff, char *name, u_int fbp)
@@ -64,15 +66,15 @@ PR_EXTERN void PrInitializeSceneDBuff(sceGsDBuff *buff, char *name, u_int fbp)
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupScene);
 
-PR_EXTERN void PrSetSceneFrame(PR_SCENEHANDLE scene, sceGsFrame frame)
+PR_EXTERN void PrSetSceneFrame(PrSceneObject *scene, sceGsFrame frame)
 {
     // Empty
 }
 
-PR_EXTERN void PrSetSceneEnv(PR_SCENEHANDLE scene, sceGsDrawEnv1 *drawEnv)
+PR_EXTERN void PrSetSceneEnv(PrSceneObject *scene, sceGsDrawEnv1 *drawEnv)
 {
-    ((PrSceneObject*)scene)->m_gsFrame = drawEnv->frame1;
-    ((PrSceneObject*)scene)->m_xyOffset = drawEnv->xyoffset1;
+    scene->m_gsFrame = drawEnv->frame1;
+    scene->m_xyOffset = drawEnv->xyoffset1;
 }
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrPreprocessSceneModel);
@@ -91,99 +93,99 @@ INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupCamera);
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupAllSceneModel);
 
-PR_EXTERN float PrGetAnimationStartFrame(PR_ANIMATIONHANDLE animation)
+PR_EXTERN float PrGetAnimationStartFrame(SpaFileHeader *animation)
 {
     return 0.f;
 }
 
-PR_EXTERN float PrGetAnimationEndFrame(PR_ANIMATIONHANDLE animation)
+PR_EXTERN float PrGetAnimationEndFrame(SpaFileHeader *animation)
 {
-    return ((SpaFileHeader*)animation)->m_endFrame * prFrameRate;
+    return animation->m_endFrame * prFrameRate;
 }
 
-PR_EXTERN float PrGetCameraStartFrame(PR_CAMERAHANDLE camera)
+PR_EXTERN float PrGetCameraStartFrame(SpcFileHeader *camera)
 {
     return 0.f;
 }
 
-PR_EXTERN float PrGetCameraEndFrame(PR_CAMERAHANDLE camera)
+PR_EXTERN float PrGetCameraEndFrame(SpcFileHeader *camera)
 {
-    return ((SpcFileHeader*)camera)->m_endFrame * prFrameRate;
+    return camera->m_endFrame * prFrameRate;
 }
 
-PR_EXTERN void PrSetModelUserData(PR_MODELHANDLE model, int userData)
+PR_EXTERN void PrSetModelUserData(PrModelObject *model, int userData)
 {
-    ((PrModelObject*)model)->m_userData = userData;
+    model->m_userData = userData;
 }
 
-PR_EXTERN void PrSetAnimationUserData(PR_ANIMATIONHANDLE animation, int userData)
+PR_EXTERN void PrSetAnimationUserData(SpaFileHeader *animation, int userData)
 {
-    ((SpaFileHeader*)animation)->m_userData = userData;
+    animation->m_userData = userData;
 }
 
-PR_EXTERN void PrSetCameraUserData(PR_CAMERAHANDLE camera, int userData)
+PR_EXTERN void PrSetCameraUserData(SpcFileHeader *camera, int userData)
 {
-    ((SpcFileHeader*)camera)->m_userData = userData;
+    camera->m_userData = userData;
 }
 
-PR_EXTERN int PrGetModelUserData(PR_MODELHANDLE model)
+PR_EXTERN int PrGetModelUserData(PrModelObject *model)
 {
-    return ((PrModelObject*)model)->m_userData;
+    return model->m_userData;
 }
 
-PR_EXTERN int PrGetAnimationUserData(PR_ANIMATIONHANDLE animation)
+PR_EXTERN int PrGetAnimationUserData(SpaFileHeader *animation)
 {
-    return ((SpaFileHeader*)animation)->m_userData;
+    return animation->m_userData;
 }
 
-PR_EXTERN int PrGetCameraUserData(PR_CAMERAHANDLE camera)
+PR_EXTERN int PrGetCameraUserData(SpcFileHeader *camera)
 {
-    return ((SpcFileHeader*)camera)->m_userData;
+    return camera->m_userData;
 }
 
-PR_EXTERN void PrLinkAnimation(PR_MODELHANDLE model, PR_ANIMATIONHANDLE animation)
+PR_EXTERN void PrLinkAnimation(PrModelObject *model, SpaFileHeader *animation)
 {
-    ((PrModelObject*)model)->LinkAnimation((SpaFileHeader*)animation);
+    model->LinkAnimation(animation);
 }
 
-PR_EXTERN void PrUnlinkAnimation(PR_MODELHANDLE model)
+PR_EXTERN void PrUnlinkAnimation(PrModelObject *model)
 {
-    ((PrModelObject*)model)->LinkAnimation(NULL);
+    model->LinkAnimation(NULL);
 }
 
-PR_EXTERN PR_ANIMATIONHANDLE PrGetLinkedAnimation(PR_MODELHANDLE model)
+PR_EXTERN SpaFileHeader* PrGetLinkedAnimation(PrModelObject *model)
 {
-    return (PR_ANIMATIONHANDLE)((PrModelObject*)model)->m_linkedAnim;
+    return model->m_linkedAnim;
 }
 
-PR_EXTERN void PrLinkPositionAnimation(PR_MODELHANDLE model, PR_ANIMATIONHANDLE animation)
+PR_EXTERN void PrLinkPositionAnimation(PrModelObject *model, SpaFileHeader *animation)
 {
-    ((PrModelObject*)model)->LinkPositionAnimation((SpaFileHeader*)animation);
+    model->LinkPositionAnimation(animation);
 }
 
-PR_EXTERN void PrUnlinkPositionAnimation(PR_MODELHANDLE model)
+PR_EXTERN void PrUnlinkPositionAnimation(PrModelObject *model)
 {
-    ((PrModelObject*)model)->LinkPositionAnimation(NULL);
+    model->LinkPositionAnimation(NULL);
 }
 
-PR_EXTERN PR_ANIMATIONHANDLE PrGetLinkedPositionAnimation(PR_MODELHANDLE model)
+PR_EXTERN SpaFileHeader* PrGetLinkedPositionAnimation(PrModelObject *model)
 {
-    return (PR_ANIMATIONHANDLE)((PrModelObject*)model)->m_linkedPosAnim;
+    return model->m_linkedPosAnim;
 }
 
-PR_EXTERN void PrSelectCamera(PR_CAMERAHANDLE camera, PR_SCENEHANDLE scene)
+PR_EXTERN void PrSelectCamera(SpcFileHeader *camera, PrSceneObject *scene)
 {
-    ((PrSceneObject*)scene)->SelectCamera((SpcFileHeader*)camera);
+    scene->SelectCamera((SpcFileHeader*)camera);
 }
 
-PR_EXTERN PR_CAMERAHANDLE PrGetSelectedCamera(PR_SCENEHANDLE scene)
+PR_EXTERN SpcFileHeader* PrGetSelectedCamera(PrSceneObject *scene)
 {
-    return (PR_CAMERAHANDLE)((PrSceneObject*)scene)->m_pCurrentCamera;
+    return scene->m_pCurrentCamera;
 }
 
-PR_EXTERN void* PrGetCurrentCamera(PR_SCENEHANDLE scene)
+PR_EXTERN void* PrGetCurrentCamera(PrSceneObject *scene)
 {
-    return ((PrSceneObject*)scene)->GetCurrentCamera();
+    return scene->GetCurrentCamera();
 }
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrSetDefaultCamera);
@@ -192,22 +194,22 @@ INCLUDE_ASM(const s32, "prlib/prlib", PrSetAppropriateDefaultCamera);
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrShowModel);
 
-PR_EXTERN float* PrGetModelMatrix(PR_MODELHANDLE model)
+PR_EXTERN float* PrGetModelMatrix(PrModelObject *model)
 {
     // Check LSB (show model flag)
-    if ((((PrModelObject*)model)->m_posture & 1) == 0)
+    if ((model->m_posture & 1) == 0)
         return NULL;
 
-    return *((PrModelObject*)model)->m_matrix.m;
+    return *model->m_matrix.m;
 }
 
-PR_EXTERN void PrHideModel(PR_MODELHANDLE model)
+PR_EXTERN void PrHideModel(PrModelObject *model)
 {
     // Clear LSB (show model flag)
-    ((PrModelObject*)model)->m_posture &= ~1u;
+    model->m_posture &= ~1u;
 }
 
-PR_EXTERN float* PrGetModelPrimitivePosition(PR_MODELHANDLE model)
+PR_EXTERN float* PrGetModelPrimitivePosition(PrModelObject *model)
 {
     extern NaVECTOR<float, 4> vector_0;
     static int tmp_0 = 0;
@@ -215,11 +217,11 @@ PR_EXTERN float* PrGetModelPrimitivePosition(PR_MODELHANDLE model)
     if (tmp_0 == 0)
         tmp_0 = 1;
     
-    ((PrModelObject*)model)->GetPrimitivePosition(&vector_0);
+    model->GetPrimitivePosition(&vector_0);
     return vector_0.v;
 }
 
-PR_EXTERN float* PrGetModelScreenPosition(PR_MODELHANDLE model)
+PR_EXTERN float* PrGetModelScreenPosition(PrModelObject *model)
 {
     extern NaVECTOR<float, 4> vector_1;
     static int tmp_1 = 0;
@@ -227,25 +229,25 @@ PR_EXTERN float* PrGetModelScreenPosition(PR_MODELHANDLE model)
     if (tmp_1 == 0)
         tmp_1 = 1;
 
-    ((PrModelObject*)model)->GetScreenPosition(&vector_1);
+    model->GetScreenPosition(&vector_1);
     return vector_1.v;
 }
 
 int prCurrentStage = 0;
 
-PR_EXTERN void PrAnimateModel(PR_MODELHANDLE model, float time)
+PR_EXTERN void PrAnimateModel(PrModelObject *model, float time)
 {
-    ((PrModelObject*)model)->m_animTime = time * prInverseFrameRate;
+    model->m_animTime = time * prInverseFrameRate;
 }
 
-PR_EXTERN void PrAnimateModelPosition(PR_MODELHANDLE model, float time)
+PR_EXTERN void PrAnimateModelPosition(PrModelObject *model, float time)
 {
-    ((PrModelObject*)model)->m_animTimePosition = time * prInverseFrameRate;
+    model->m_animTimePosition = time * prInverseFrameRate;
 }
 
-PR_EXTERN void PrAnimateSceneCamera(PR_SCENEHANDLE scene, float time)
+PR_EXTERN void PrAnimateSceneCamera(PrSceneObject *scene, float time)
 {
-    ((PrSceneObject*)scene)->m_animTime = time * prInverseFrameRate;
+    scene->m_animTime = time * prInverseFrameRate;
 }
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrRender);
@@ -260,7 +262,7 @@ PR_EXTERN void PrSetStage(int stage)
     prCurrentStage = stage;
 }
 
-PR_EXTERN void PrSetDepthOfField(PR_MODELHANDLE scene, float focalLen, float defocusLen)
+PR_EXTERN void PrSetDepthOfField(PrSceneObject *scene, float focalLen, float defocusLen)
 {
     if (focalLen != 0.f)
     {
@@ -275,107 +277,107 @@ PR_EXTERN void PrSetDepthOfField(PR_MODELHANDLE scene, float focalLen, float def
         defocusLen = 0.f;
     }
 
-    ((PrSceneObject*)scene)->m_fFocalLen = focalLen;
-    ((PrSceneObject*)scene)->m_fDefocusLen = defocusLen;
+    scene->m_fFocalLen = focalLen;
+    scene->m_fDefocusLen = defocusLen;
 }
 
-PR_EXTERN void PrSetDepthOfFieldLevel(PR_SCENEHANDLE scene, u_int depthLevel)
+PR_EXTERN void PrSetDepthOfFieldLevel(PrSceneObject *scene, u_int depthLevel)
 {
-    ((PrSceneObject*)scene)->m_fDepthLevel = depthLevel;
+    scene->m_fDepthLevel = depthLevel;
 }
 
-PR_EXTERN float PrGetFocalLength(PR_SCENEHANDLE scene)
+PR_EXTERN float PrGetFocalLength(PrSceneObject *scene)
 {
-    return ((PrSceneObject*)scene)->m_fFocalLen;
+    return scene->m_fFocalLen;
 }
 
-PR_EXTERN float PrGetDefocusLength(PR_SCENEHANDLE scene)
+PR_EXTERN float PrGetDefocusLength(PrSceneObject *scene)
 {
-    return ((PrSceneObject*)scene)->m_fDefocusLen;
+    return scene->m_fDefocusLen;
 }
 
-PR_EXTERN u_int PrGetDepthOfFieldLevel(PR_SCENEHANDLE scene)
+PR_EXTERN u_int PrGetDepthOfFieldLevel(PrSceneObject *scene)
 {
-    return ((PrSceneObject*)scene)->m_fDepthLevel;
+    return scene->m_fDepthLevel;
 }
 
-PR_EXTERN void PrSaveContour(PR_MODELHANDLE model)
+PR_EXTERN void PrSaveContour(PrModelObject *model)
 {
-    ((PrModelObject*)model)->SaveContour();
+    model->SaveContour();
 }
-PR_EXTERN void PrResetContour(PR_MODELHANDLE model)
+PR_EXTERN void PrResetContour(PrModelObject *model)
 {
-    ((PrModelObject*)model)->ResetContour();
-}
-
-PR_EXTERN void PrSavePosture(PR_MODELHANDLE model)
-{
-    ((PrModelObject*)model)->SavePosture();
-}
-PR_EXTERN void PrResetPosture(PR_MODELHANDLE model)
-{
-    ((PrModelObject*)model)->ResetPosture();
+    model->ResetContour();
 }
 
-PR_EXTERN void PrSetContourBlurAlpha(PR_MODELHANDLE model, float blurAlpha, float blurAlpha2)
+PR_EXTERN void PrSavePosture(PrModelObject *model)
 {
-    ((PrModelObject*)model)->m_contourBlurAlpha = blurAlpha;
-    ((PrModelObject*)model)->m_contourBlurAlpha2 = blurAlpha2;
+    model->SavePosture();
+}
+PR_EXTERN void PrResetPosture(PrModelObject *model)
+{
+    model->ResetPosture();
 }
 
-PR_EXTERN void PrSetTransactionBlendRatio(PR_MODELHANDLE model, float blendRatio)
+PR_EXTERN void PrSetContourBlurAlpha(PrModelObject *model, float blurAlpha, float blurAlpha2)
 {
-    ((PrModelObject*)model)->m_transactionBlendRatio = blendRatio;
+    model->m_contourBlurAlpha = blurAlpha;
+    model->m_contourBlurAlpha2 = blurAlpha2;
 }
 
-PR_EXTERN float PrGetContourBlurAlpha(PR_MODELHANDLE model)
+PR_EXTERN void PrSetTransactionBlendRatio(PrModelObject *model, float blendRatio)
 {
-    return ((PrModelObject*)model)->m_contourBlurAlpha;
+    model->m_transactionBlendRatio = blendRatio;
 }
 
-PR_EXTERN float PrGetContourBlurAlpha2(PR_MODELHANDLE model)
+PR_EXTERN float PrGetContourBlurAlpha(PrModelObject *model)
 {
-    return ((PrModelObject*)model)->m_contourBlurAlpha2;
+    return model->m_contourBlurAlpha;
 }
 
-PR_EXTERN float PrGetTransactionBlendRatio(PR_MODELHANDLE model)
+PR_EXTERN float PrGetContourBlurAlpha2(PrModelObject *model)
 {
-    return ((PrModelObject*)model)->m_transactionBlendRatio;
+    return model->m_contourBlurAlpha2;
 }
 
-PR_EXTERN void PrSetModelDisturbance(PR_MODELHANDLE model, float disturbance)
+PR_EXTERN float PrGetTransactionBlendRatio(PrModelObject *model)
 {
-    ((PrModelObject*)model)->m_disturbance = disturbance;
+    return model->m_transactionBlendRatio;
 }
 
-PR_EXTERN float PrGetModelDisturbance(PR_MODELHANDLE model)
+PR_EXTERN void PrSetModelDisturbance(PrModelObject *model, float disturbance)
 {
-    return ((PrModelObject*)model)->m_disturbance;
+    model->m_disturbance = disturbance;
 }
 
-PR_EXTERN u_int PrGetVertexNum(PR_MODELHANDLE model)
+PR_EXTERN float PrGetModelDisturbance(PrModelObject *model)
 {
-    return ((PrModelObject*)model)->m_spmImage->m_vertexNum;
+    return model->m_disturbance;
 }
 
-PR_EXTERN char* PrGetModelName(PR_MODELHANDLE model)
+PR_EXTERN u_int PrGetVertexNum(PrModelObject *model)
 {
-    return ((PrModelObject*)model)->m_spmImage->m_name;
+    return model->m_spmImage->m_vertexNum;
 }
 
-PR_EXTERN char* PrGetAnimationName(PR_ANIMATIONHANDLE animation)
+PR_EXTERN char* PrGetModelName(PrModelObject *model)
 {
-    return ((SpaFileHeader*)animation)->m_name;
+    return model->m_spmImage->m_name;
 }
 
-PR_EXTERN char* PrGetCameraName(PR_CAMERAHANDLE camera)
+PR_EXTERN char* PrGetAnimationName(SpaFileHeader *animation)
 {
-    return ((SpcFileHeader*)camera)->m_name;
+    return animation->m_name;
 }
 
-PR_EXTERN char* PrGetSceneName(PR_SCENEHANDLE scene)
+PR_EXTERN char* PrGetCameraName(SpcFileHeader *camera)
 {
-    return ((PrSceneObject*)scene)->m_name;
+    return camera->m_name;
+}
+
+PR_EXTERN char* PrGetSceneName(PrSceneObject *scene)
+{
+    return scene->m_name;
 }
 
 PR_EXTERN void* PrGetRenderingStatistics()
@@ -384,13 +386,13 @@ PR_EXTERN void* PrGetRenderingStatistics()
     return &renderStuff->m_renderStatistics;
 }
 
-PR_EXTERN void PrSetModelVisibillity(PR_MODELHANDLE model, u_int nodeIndex, u_int visible)
+PR_EXTERN void PrSetModelVisibillity(PrModelObject *model, u_int nodeIndex, u_int visible /* bool */)
 {
     SpmNode* spmNode;
 
-    if (nodeIndex < ((PrModelObject*)model)->m_spmImage->m_nodeNum)
+    if (nodeIndex < model->m_spmImage->m_nodeNum)
     {
-        spmNode = ((PrModelObject*)model)->m_spmImage->m_nodes[nodeIndex];
+        spmNode = model->m_spmImage->m_nodes[nodeIndex];
 
         if (visible)
             spmNode->m_flags &= ~0x20000u;
@@ -399,19 +401,19 @@ PR_EXTERN void PrSetModelVisibillity(PR_MODELHANDLE model, u_int nodeIndex, u_in
     }
 }
 
-PR_EXTERN void* PrGetModelImage(PR_MODELHANDLE model)
+PR_EXTERN SpmFileHeader* PrGetModelImage(PrModelObject *model)
 {
-    return (void*)((PrModelObject*)model)->m_spmImage;
+    return model->m_spmImage;
 }
 
-PR_EXTERN void* PrGetAnimationImage(PR_ANIMATIONHANDLE animation)
+PR_EXTERN SpaFileHeader* PrGetAnimationImage(SpaFileHeader *animation)
 {
-    return (void*)animation; // SpaFileHeader
+    return animation;
 }
 
-PR_EXTERN void* PrGetCameraImage(PR_CAMERAHANDLE camera)
+PR_EXTERN SpcFileHeader* PrGetCameraImage(SpcFileHeader *camera)
 {
-    return (void*)camera; // SpcFileHeader
+    return camera;
 }
 
 PR_EXTERN void PrSetDebugParam(int param, int value)

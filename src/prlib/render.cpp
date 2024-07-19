@@ -1,6 +1,6 @@
 #include "common.h"
 
-#include "prlib/prlib.h"
+#include "prlib_intern.h"
 
 void* prSpramData = (void*)0x70000000;
 int FLT_003998E4 = 0x7F7FFFFF;

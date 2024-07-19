@@ -1,13 +1,21 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "database.h"
+#include <eetypes.h>
 
-#include "prlib/prlib.h"
+#include "database.h"
 
 #include "model.h"
 
-#include "common.h"
+struct PrPERSPECTIVE_CAMERA { // 0x40
+    /* 0x00 */ float position[4];
+    /* 0x10 */ float interest[4];
+    /* 0x20 */ float up[4];
+    /* 0x30 */ float aspect;
+    /* 0x34 */ float field_of_view;
+    /* 0x38 */ float near_clip;
+    /* 0x3c */ float far_clip;
+};
 
 class SpcFileHeader
 {
@@ -23,7 +31,7 @@ public:
     float m_position[4];
     float m_interest[4];
 
-    u32 m_unk60;
+    u_int m_unk60;
 
     float m_fieldOfView;
     float m_aspect;
@@ -39,6 +47,8 @@ public:
 
 class PrObjectDatabase;
 
+class PrModelObject;
+
 class PrSceneObject
 {
 public:
@@ -47,7 +57,7 @@ public:
 public:
     char pad[0x8];
     PrObjectDatabase* m_objectDatabase;
-    u32 m_unk0C;
+    u_int m_unk0C;
     PrPERSPECTIVE_CAMERA m_camera;
     sceGsFrame m_gsFrame;
     sceGsXyoffset m_xyOffset;
@@ -55,25 +65,25 @@ public:
     PrModelObject* m_unk60_modelObject;
     PrModelObject* m_unk64_modelObject;
 
-    u32 m_modelCount;
+    u_int m_modelCount;
     
     SpcFileHeader* m_pCurrentCamera;
 
     sceGsDrawEnv1* m_pDrawEnv;
 
-    u32 m_unk74;
-    u32 m_unk78;
+    u_int m_unk74;
+    u_int m_unk78;
     float m_animTime;
 
     char* m_name;
 
     float m_fFocalLen;
     float m_fDefocusLen;
-    u32 m_fDepthLevel;
+    u_int m_fDepthLevel;
 
     sceGsDBuff* m_pDBuff;
 
-    u32 m_unk94;
+    u_int m_unk94;
 
     PrModelObject* m_unk98_modelObject;
     PrModelObject* m_unk9C_modelObject;

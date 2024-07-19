@@ -4,7 +4,7 @@
 #include <eetypes.h>
 #include <eestruct.h>
 
-#include "prlib/prlib.h"
+#include "prlib_intern.h"
 
 class PrRenderStuff
 {

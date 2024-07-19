@@ -7,6 +7,9 @@
 
 #include "animation.h"
 
+class SpaFileHeader;
+class SpcFileHeader;
+
 class PrObjectDatabase
 {
 public:

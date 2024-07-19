@@ -1,6 +1,8 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include <eetypes.h>
+
 #include <nalib/navector.h>
 #include <nalib/namatrix.h>
 
@@ -20,8 +22,8 @@ public:
     NaMATRIX<float, 4, 4> unk100_matrix;
     NaVECTOR<float, 4> unk140_vec4;
 
-    u32 m_index;
-    u32 m_flags;
+    u_int m_index;
+    u_int m_flags;
 
     SpmFileHeader *unk158_spmHeader;
 
@@ -29,7 +31,7 @@ public:
     SpmNode* unk160_parentNode;
     SpmNode* unk164_previousNode;
 
-    u32 m_triangleCount;
+    u_int m_triangleCount;
 
     void* m_opaqueNodePacket;
     void* m_transmitNodePacket;
@@ -42,22 +44,22 @@ class PrModelObject;
 class SpmFileHeader
 {
 public:
-    u32 m_magic;
-    u16 m_version;
-    u16 m_flags;
+    u_int m_magic;
+    u_short m_version;
+    u_short m_flags;
     char pad[8];
     char m_name[32];
     float m_unk30_vec4[4];
     float m_unk40_vec4[4];
     PrModelObject* m_pLinkedModel;
-    s32 m_meshCount;
-    s32 m_unk58;
-    u32 m_vertexNum;
+    u_int m_meshCount;
+    int m_unk58;
+    u_int m_vertexNum;
     float m_currentFrame;
     float m_currentPosFrame;
-    u32 m_nodeNum;
-    u32 m_unk6C;
-    u32 m_unk70_post;
+    u_int m_nodeNum;
+    u_int m_unk6C;
+    u_int m_unk70_post;
     SpmNode** m_nodes;
 };
 
