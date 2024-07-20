@@ -192,13 +192,13 @@ INCLUDE_ASM(const s32, "prlib/prlib", PrSetAppropriateDefaultCamera);
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrShowModel);
 
-PR_EXTERN float* PrGetModelMatrix(PrModelObject *model)
+PR_EXTERN NaMATRIX<float, 4, 4>* PrGetModelMatrix(PrModelObject *model)
 {
     // Check LSB (show model flag)
     if ((model->m_posture & 1) == 0)
         return NULL;
 
-    return *model->m_matrix.m;
+    return &model->m_matrix;
 }
 
 PR_EXTERN void PrHideModel(PrModelObject *model)
@@ -207,7 +207,7 @@ PR_EXTERN void PrHideModel(PrModelObject *model)
     model->m_posture &= ~1u;
 }
 
-PR_EXTERN float* PrGetModelPrimitivePosition(PrModelObject *model)
+PR_EXTERN NaVECTOR<float, 4>* PrGetModelPrimitivePosition(PrModelObject *model)
 {
     extern NaVECTOR<float, 4> vector_0;
     static int tmp_0 = 0;
@@ -216,10 +216,10 @@ PR_EXTERN float* PrGetModelPrimitivePosition(PrModelObject *model)
         tmp_0 = 1;
     
     model->GetPrimitivePosition(&vector_0);
-    return vector_0.v;
+    return &vector_0;
 }
 
-PR_EXTERN float* PrGetModelScreenPosition(PrModelObject *model)
+PR_EXTERN NaVECTOR<float, 4>* PrGetModelScreenPosition(PrModelObject *model)
 {
     extern NaVECTOR<float, 4> vector_1;
     static int tmp_1 = 0;
@@ -228,7 +228,7 @@ PR_EXTERN float* PrGetModelScreenPosition(PrModelObject *model)
         tmp_1 = 1;
 
     model->GetScreenPosition(&vector_1);
-    return vector_1.v;
+    return &vector_1;
 }
 
 int prCurrentStage = 0;

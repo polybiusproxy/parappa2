@@ -94,12 +94,12 @@ void PrSetAppropriateDefaultCamera(PrSceneObject *scene);
 
 void PrShowModel(PrModelObject *model, sceVu0FMATRIX *matrix);
 
-float* PrGetModelMatrix(PrModelObject *model);
+NaMATRIX<float, 4, 4>* PrGetModelMatrix(PrModelObject *model);
 
 void PrHideModel(PrModelObject *model);
 
-float* PrGetModelPrimitivePosition(PrModelObject *model);
-float* PrGetModelScreenPosition(PrModelObject *model);
+NaVECTOR<float, 4>* PrGetModelPrimitivePosition(PrModelObject *model);
+NaVECTOR<float, 4>* PrGetModelScreenPosition(PrModelObject *model);
 
 void PrAnimateModel(PrModelObject *model, float time);
 void PrAnimateModelPosition(PrModelObject *model, float time);
