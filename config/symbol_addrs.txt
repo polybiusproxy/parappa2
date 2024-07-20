@@ -1386,23 +1386,47 @@ gifRegisterModeInitialized                              = 0x003998b8; // size:0x
 
 setGifRegisterMode                                      = 0x01c82a70; // size:0x720
 
+// prlib/animation.cpp
+Initialize__13SpaFileHeader = 0x00153840; // type:func
+
 // prlib/model.cpp
-PrSetPostureWorkArea                = 0x00140868; // type:func
-GetPrimitivePosition__13PrModelObjectPt8NaVECTOR2Zfi4 = 0x00140cb8; // type:func
-GetScreenPosition__13PrModelObjectPt8NaVECTOR2Zfi4    = 0x00140dc0; // type:func
+PrSetPostureWorkArea                                   = 0x00140868; // type:func
+GetPrimitivePosition__13PrModelObjectPt8NaVECTOR2Zfi4  = 0x00140cb8; // type:func
+GetScreenPosition__13PrModelObjectPt8NaVECTOR2Zfi4     = 0x00140dc0; // type:func
+LinkAnimation__13PrModelObjectP13SpaFileHeader         = 0x00140c10; // type:func
+LinkPositionAnimation__13PrModelObjectP13SpaFileHeader = 0x00140c30; // type:func
+CleanupAnimation__13PrModelObject                      = 0x00140c28; // type:func
+_$_13PrModelObject                                     = 0x001409b8; // type:func
+
+// prlib/contour.cpp
+SaveContour__13PrModelObject                           = 0x00153e80; // type:func
+ResetContour__13PrModelObject                          = 0x00154098; // type:func
+
+// prlib/transition.cpp
+SavePosture__13PrModelObject                           = 0x00146a10; // type:func
+ResetPosture__13PrModelObject                          = 0x00146a58; // type:func
+
+// prlib/scene.cpp
+SelectCamera__13PrSceneObjectP13SpcFileHeader = 0x0014b368; // type:func
+GetCurrentCamera__13PrSceneObject             = 0x0014b378; // type:func
+PreprocessModel__13PrSceneObject              = 0x0014b7d0; // type:func
 
 // prlib/database.cpp
-Initialize__16PrObjectDatabase      = 0x00140f08; // type:func
-_GLOBAL_$D$prObjectDatabase         = 0x00141058; // type:func
-_GLOBAL_$I$prObjectDatabase         = 0x00141068; // type:func
+Initialize__16PrObjectDatabase                       = 0x00140f08; // type:func
+Cleanup__16PrObjectDatabase                          = 0x00140f18; // type:func
+CreateScene__16PrObjectDatabaseP13sceGsDrawEnv1PCcUi = 0x00140F30; // type:func
+DeleteScene__16PrObjectDatabaseP13PrSceneObject      = 0x00140fc8; // type:func
+_GLOBAL_$D$prObjectDatabase                          = 0x00141058; // type:func
+_GLOBAL_$I$prObjectDatabase                          = 0x00141068; // type:func
 
 prObjectDatabase                    = 0x0038c458; // size:0x24
 
 // prlib/renderstuff.cpp
 Initialize__13PrRenderStuffG9sceGsZbuf = 0x00141178; // type:func
-WaitRender__13PrRenderStuff         = 0x001412f0; // type:func
-_GLOBAL_$D$prRenderStuff            = 0x00141630; // type:func
-_GLOBAL_$I$prRenderStuff            = 0x00141640; // type:func
+Cleanup__13PrRenderStuff               = 0x001411e0; // type:func
+WaitRender__13PrRenderStuff            = 0x001412f0; // type:func
+_GLOBAL_$D$prRenderStuff               = 0x00141630; // type:func
+_GLOBAL_$I$prRenderStuff               = 0x00141640; // type:func
 
 prRenderStuff                       = 0x0038c480;
 

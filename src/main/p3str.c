@@ -1,6 +1,8 @@
 #include "main/p3str.h"
 #include "main/etc.h"
 
+#include "prlib/prlib.h"
+
 static u_int current_time_old = 0;
 
 static P3STR *p3str_pp;

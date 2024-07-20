@@ -11,8 +11,6 @@
 #include "main/drawctrl.h"
 #include "main/etc.h"
 
-#include <prlib/prlib.h>
-
 #include <stdio.h>
 
 #define STR(x)  ((P3STR*)x)
