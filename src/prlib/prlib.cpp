@@ -303,6 +303,7 @@ PR_EXTERN void PrSaveContour(PrModelObject *model)
 {
     model->SaveContour();
 }
+
 PR_EXTERN void PrResetContour(PrModelObject *model)
 {
     model->ResetContour();
@@ -312,6 +313,7 @@ PR_EXTERN void PrSavePosture(PrModelObject *model)
 {
     model->SavePosture();
 }
+
 PR_EXTERN void PrResetPosture(PrModelObject *model)
 {
     model->ResetPosture();
