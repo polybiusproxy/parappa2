@@ -126,9 +126,9 @@ void* PrGetRenderingStatistics();
 
 void PrSetModelVisibillity(PR_MODELHANDLE model, u_int nodeIndex, u_int visible);
 
-void* PrGetModelImage(PR_MODELHANDLE model);
-void* PrGetAnimationImage(PR_ANIMATIONHANDLE animation);
-void* PrGetCameraImage(PR_CAMERAHANDLE camera);
+PR_MODELHANDLE PrGetModelImage(PR_MODELHANDLE model);
+PR_ANIMATIONHANDLE PrGetAnimationImage(PR_ANIMATIONHANDLE animation);
+PR_CAMERAHANDLE PrGetCameraImage(PR_CAMERAHANDLE camera);
 
 void PrSetDebugParam(int param, int value);
 void PrSetDebugParamFloat(int param, float value);
