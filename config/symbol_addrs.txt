@@ -650,6 +650,7 @@ DrawCtrlTblChange                   = 0x00115e68; // type:func
 DrawTapReqTbl                       = 0x00115eb8; // type:func
 ddbg_event_sel                      = 0x00115f40; // type:func
 ddbg_event_msg                      = 0x00115fa8; // type:func
+ddbg_scene_sel                      = 0x00115fb8; // type:func
 ddbg_scene_msg                      = 0x00116000; // type:func
 ddbg_event_check                    = 0x00116010; // type:func
 ddbg_scene_check                    = 0x00116020; // type:func
