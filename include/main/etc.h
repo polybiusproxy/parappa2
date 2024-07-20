@@ -5,7 +5,6 @@
 
 // Typedef structs that I'm too lazy to define here
 // -----------------------------------------------
-typedef int EVENTREC;
 // -----------------------------------------------
 
 typedef struct { // 0x18

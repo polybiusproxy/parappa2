@@ -6,6 +6,7 @@
 #include "main/etc.h"
 #include "main/subt.h"
 #include "main/cdctrl.h"
+#include "main/drawctrl.h"
 
 struct SCR_MAIN;
 
