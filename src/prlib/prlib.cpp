@@ -1,5 +1,3 @@
-#include <prlib/prlib.h>
-
 #include <nalib/navector.h>
 #include <nalib/namatrix.h>
 
@@ -7,6 +5,10 @@
 
 #include "random.h"
 #include "model.h"
+#include "scene.h"
+#include "animation.h"
+
+#include "common.h"
 
 /* sdata */
 static float prFrameRate = 1.0f;
@@ -37,20 +39,41 @@ PR_EXTERN void PrInitializeModule(sceGsZbuf zbuf)
     prRenderStuff.Initialize(zbuf);
 }
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupModule);
+PR_EXTERN void PrCleanupModule()
+{
+    prRenderStuff.Cleanup();
+    
+    PrCleanupModel(NULL);
+    PrCleanupAnimation(NULL);
+    PrCleanupCamera(NULL);
+    PrCleanupScene(NULL);
+    
+    prObjectDatabase.Cleanup();
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrInitializeScene);
+PR_EXTERN PrSceneObject* PrInitializeScene(sceGsDrawEnv1 *drawEnv, char *name, u_int fbp)
+{
+   return prObjectDatabase.CreateScene(drawEnv, name, fbp);
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrInitializeSceneDBuff);
+PR_EXTERN void PrInitializeSceneDBuff(sceGsDBuff *buff, char *name, u_int fbp)
+{
+    PrSceneObject* scene = prObjectDatabase.CreateScene(&buff->draw0, name, fbp);
+    scene->m_pDBuff = buff;
+}
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupScene);
 
-PR_EXTERN void PrSetSceneFrame(PR_SCENEHANDLE model, sceGsFrame frame)
+PR_EXTERN void PrSetSceneFrame(PrSceneObject *scene, sceGsFrame frame)
 {
     // Empty
 }
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSetSceneEnv);
+PR_EXTERN void PrSetSceneEnv(PrSceneObject *scene, sceGsDrawEnv1 *drawEnv)
+{
+    scene->m_gsFrame = drawEnv->frame1;
+    scene->m_xyOffset = drawEnv->xyoffset1;
+}
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrPreprocessSceneModel);
 
@@ -68,43 +91,100 @@ INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupCamera);
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupAllSceneModel);
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetAnimationStartFrame);
+PR_EXTERN float PrGetAnimationStartFrame(SpaFileHeader *animation)
+{
+    return 0.f;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetAnimationEndFrame);
+PR_EXTERN float PrGetAnimationEndFrame(SpaFileHeader *animation)
+{
+    return animation->m_endFrame * prFrameRate;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetCameraStartFrame);
+PR_EXTERN float PrGetCameraStartFrame(SpcFileHeader *camera)
+{
+    return 0.f;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetCameraEndFrame);
+PR_EXTERN float PrGetCameraEndFrame(SpcFileHeader *camera)
+{
+    return camera->m_endFrame * prFrameRate;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSetModelUserData);
+PR_EXTERN void PrSetModelUserData(PrModelObject *model, int userData)
+{
+    model->m_userData = userData;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSetAnimationUserData);
+PR_EXTERN void PrSetAnimationUserData(SpaFileHeader *animation, int userData)
+{
+    animation->m_userData = userData;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSetCameraUserData);
+PR_EXTERN void PrSetCameraUserData(SpcFileHeader *camera, int userData)
+{
+    camera->m_userData = userData;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetModelUserData);
+PR_EXTERN int PrGetModelUserData(PrModelObject *model)
+{
+    return model->m_userData;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetAnimationUserData);
+PR_EXTERN int PrGetAnimationUserData(SpaFileHeader *animation)
+{
+    return animation->m_userData;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetCameraUserData);
+PR_EXTERN int PrGetCameraUserData(SpcFileHeader *camera)
+{
+    return camera->m_userData;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrLinkAnimation);
+PR_EXTERN void PrLinkAnimation(PrModelObject *model, SpaFileHeader *animation)
+{
+    model->LinkAnimation(animation);
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrUnlinkAnimation);
+PR_EXTERN void PrUnlinkAnimation(PrModelObject *model)
+{
+    model->LinkAnimation(NULL);
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetLinkedAnimation);
+PR_EXTERN SpaFileHeader* PrGetLinkedAnimation(PrModelObject *model)
+{
+    return model->m_linkedAnim;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrLinkPositionAnimation);
+PR_EXTERN void PrLinkPositionAnimation(PrModelObject *model, SpaFileHeader *animation)
+{
+    model->LinkPositionAnimation(animation);
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrUnlinkPositionAnimation);
+PR_EXTERN void PrUnlinkPositionAnimation(PrModelObject *model)
+{
+    model->LinkPositionAnimation(NULL);
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetLinkedPositionAnimation);
+PR_EXTERN SpaFileHeader* PrGetLinkedPositionAnimation(PrModelObject *model)
+{
+    return model->m_linkedPosAnim;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSelectCamera);
+PR_EXTERN void PrSelectCamera(SpcFileHeader *camera, PrSceneObject *scene)
+{
+    scene->SelectCamera((SpcFileHeader*)camera);
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetSelectedCamera);
+PR_EXTERN SpcFileHeader* PrGetSelectedCamera(PrSceneObject *scene)
+{
+    return scene->m_pCurrentCamera;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetCurrentCamera);
+PR_EXTERN void* PrGetCurrentCamera(PrSceneObject *scene)
+{
+    return scene->GetCurrentCamera();
+}
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrSetDefaultCamera);
 
@@ -114,13 +194,18 @@ INCLUDE_ASM(const s32, "prlib/prlib", PrShowModel);
 
 PR_EXTERN NaMATRIX<float, 4, 4>* PrGetModelMatrix(PrModelObject *model)
 {
+    // Check LSB (show model flag)
     if ((model->m_posture & 1) == 0)
         return NULL;
 
     return &model->m_matrix;
 }
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrHideModel);
+PR_EXTERN void PrHideModel(PrModelObject *model)
+{
+    // Clear LSB (show model flag)
+    model->m_posture &= ~1u;
+}
 
 PR_EXTERN NaVECTOR<float, 4>* PrGetModelPrimitivePosition(PrModelObject *model)
 {
@@ -148,11 +233,20 @@ PR_EXTERN NaVECTOR<float, 4>* PrGetModelScreenPosition(PrModelObject *model)
 
 int prCurrentStage = 0;
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrAnimateModel);
+PR_EXTERN void PrAnimateModel(PrModelObject *model, float time)
+{
+    model->m_animTime = time * prInverseFrameRate;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrAnimateModelPosition);
+PR_EXTERN void PrAnimateModelPosition(PrModelObject *model, float time)
+{
+    model->m_animTimePosition = time * prInverseFrameRate;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrAnimateSceneCamera);
+PR_EXTERN void PrAnimateSceneCamera(PrSceneObject *scene, float time)
+{
+    scene->m_animTime = time * prInverseFrameRate;
+}
 
 INCLUDE_ASM(const s32, "prlib/prlib", PrRender);
 
@@ -166,33 +260,90 @@ PR_EXTERN void PrSetStage(int stage)
     prCurrentStage = stage;
 }
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSetDepthOfField);
+PR_EXTERN void PrSetDepthOfField(PrSceneObject *scene, float focalLen, float defocusLen)
+{
+    if (focalLen != 0.f)
+    {
+        if (focalLen < 0.f || defocusLen <= focalLen)
+        {
+            defocusLen = 0.f;
+            return;
+        }
+    }
+    else
+    {
+        defocusLen = 0.f;
+    }
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSetDepthOfFieldLevel);
+    scene->m_fFocalLen = focalLen;
+    scene->m_fDefocusLen = defocusLen;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetFocalLength);
+PR_EXTERN void PrSetDepthOfFieldLevel(PrSceneObject *scene, u_int depthLevel)
+{
+    scene->m_fDepthLevel = depthLevel;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetDefocusLength);
+PR_EXTERN float PrGetFocalLength(PrSceneObject *scene)
+{
+    return scene->m_fFocalLen;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetDepthOfFieldLevel);
+PR_EXTERN float PrGetDefocusLength(PrSceneObject *scene)
+{
+    return scene->m_fDefocusLen;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSaveContour);
+PR_EXTERN u_int PrGetDepthOfFieldLevel(PrSceneObject *scene)
+{
+    return scene->m_fDepthLevel;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrResetContour);
+PR_EXTERN void PrSaveContour(PrModelObject *model)
+{
+    model->SaveContour();
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSavePosture);
+PR_EXTERN void PrResetContour(PrModelObject *model)
+{
+    model->ResetContour();
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrResetPosture);
+PR_EXTERN void PrSavePosture(PrModelObject *model)
+{
+    model->SavePosture();
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSetContourBlurAlpha);
+PR_EXTERN void PrResetPosture(PrModelObject *model)
+{
+    model->ResetPosture();
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSetTransactionBlendRatio);
+PR_EXTERN void PrSetContourBlurAlpha(PrModelObject *model, float blurAlpha, float blurAlpha2)
+{
+    model->m_contourBlurAlpha = blurAlpha;
+    model->m_contourBlurAlpha2 = blurAlpha2;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetContourBlurAlpha);
+PR_EXTERN void PrSetTransactionBlendRatio(PrModelObject *model, float blendRatio)
+{
+    model->m_transactionBlendRatio = blendRatio;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetContourBlurAlpha2);
+PR_EXTERN float PrGetContourBlurAlpha(PrModelObject *model)
+{
+    return model->m_contourBlurAlpha;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetTransactionBlendRatio);
+PR_EXTERN float PrGetContourBlurAlpha2(PrModelObject *model)
+{
+    return model->m_contourBlurAlpha2;
+}
+
+PR_EXTERN float PrGetTransactionBlendRatio(PrModelObject *model)
+{
+    return model->m_transactionBlendRatio;
+}
 
 PR_EXTERN void PrSetModelDisturbance(PrModelObject *model, float disturbance)
 {
@@ -204,29 +355,66 @@ PR_EXTERN float PrGetModelDisturbance(PrModelObject *model)
     return model->m_disturbance;
 }
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetVertexNum);
+PR_EXTERN u_int PrGetVertexNum(PrModelObject *model)
+{
+    return model->m_spmImage->m_vertexNum;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetModelName);
+PR_EXTERN char* PrGetModelName(PrModelObject *model)
+{
+    return model->m_spmImage->m_name;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetAnimationName);
+PR_EXTERN char* PrGetAnimationName(SpaFileHeader *animation)
+{
+    return animation->m_name;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetCameraName);
+PR_EXTERN char* PrGetCameraName(SpcFileHeader *camera)
+{
+    return camera->m_name;
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetSceneName);
+PR_EXTERN char* PrGetSceneName(PrSceneObject *scene)
+{
+    return scene->m_name;
+}
 
-PR_EXTERN PrRENDERING_STATISTICS* PrGetRenderingStatistics()
+PR_EXTERN void* PrGetRenderingStatistics()
 {
     PrRenderStuff* renderStuff = &prRenderStuff;
     return &renderStuff->m_renderStatistics;
 }
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSetModelVisibility);
+PR_EXTERN void PrSetModelVisibillity(PrModelObject *model, u_int nodeIndex, u_int visible /* bool */)
+{
+    SpmNode* spmNode;
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetModelImage);
+    if (nodeIndex < model->m_spmImage->m_nodeNum)
+    {
+        spmNode = model->m_spmImage->m_nodes[nodeIndex];
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetAnimationImage);
+        if (visible)
+            spmNode->m_flags &= ~0x20000u;
+        else
+            spmNode->m_flags |= 0x20000u;
+    }
+}
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrGetCameraImage);
+PR_EXTERN SpmFileHeader* PrGetModelImage(PrModelObject *model)
+{
+    return model->m_spmImage;
+}
+
+PR_EXTERN SpaFileHeader* PrGetAnimationImage(SpaFileHeader *animation)
+{
+    return animation;
+}
+
+PR_EXTERN SpcFileHeader* PrGetCameraImage(SpcFileHeader *camera)
+{
+    return camera;
+}
 
 PR_EXTERN void PrSetDebugParam(int param, int value)
 {
