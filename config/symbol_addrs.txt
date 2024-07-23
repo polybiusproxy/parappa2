@@ -826,6 +826,7 @@ GlobalTimeInit                      = 0x0011bf80; // type:func
 GlobalSetTempo                      = 0x0011bfa0; // type:func
 GlobalSndSampleGet                  = 0x0011c108; // type:func
 GetHatRound                         = 0x0011c118; // type:func
+GlobalMendererUseCheck              = 0x0011c130; // type:func
 GlobalPlySet                        = 0x0011c288; // type:func
 TimeCallbackTimeGetChan             = 0x0011c790; // type:func
 TimeCallbackTimeSetChan             = 0x0011c7d8; // type:func
@@ -1538,6 +1539,9 @@ PrInitializeRandomPool__Fv          = 0x0014d980; // type:func
 PrSetMendererRatio                  = 0x0014f278; // type:func
 PrGetMendererRatio                  = 0x0014f280; // type:func
 PrInitializeMenderer                = 0x0014f2a8; // type:func
+
+// prlib/menderercreate.cpp
+PrCreateMendererTexture             = 0x00150330; // type:func
 
 // prlib/dmaqueue.cpp
 __10PrDmaQueueUi                    = 0x001523f0; // type:func

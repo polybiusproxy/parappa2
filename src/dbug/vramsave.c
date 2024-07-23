@@ -4,7 +4,7 @@
 extern /* static */ TIM2SETINFO tim2setinfo;
 extern sceGsStoreImage gs_simage;
 
-u_int BekiDat(u_int size)
+static u_int BekiDat(u_int size)
 {
     u_int mot = 2;
     u_int i;
@@ -276,7 +276,7 @@ void VramTmpSave(u_char *save_pp, int wsize, int hsize, int id)
     sceGsSyncPath(0, 0);
 }
 
-void VramTmpSaveOutBMP(u_char *fname, int wsize, int hsize, int id, u_char *dst1_pp, u_char *dst2_pp) 
+void VramTmpSaveOutBMP(u_char *fname, int wsize, int hsize, int id, u_char *dst1_pp, u_char *dst2_pp)
 {
     int    fd;
     u_char fname_tmp[64];

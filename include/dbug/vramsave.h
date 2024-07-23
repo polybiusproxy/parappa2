@@ -33,4 +33,10 @@ typedef struct { // 0x38
     /* 0x38 */ u_char imageData[0];
 } BMP_HEADER;
 
+void VramSave(u_char *fname, int wsize, int hsize, int id);
+void VramSaveBMP(u_char *fname, int wsize, int hsize, int id);
+void VramSaveBMPDouble(u_char *fname, int wsize, int hsize, int id);
+void VramTmpSave(u_char *save_pp, int wsize, int hsize, int id);
+void VramTmpSaveOutBMP(u_char *fname, int wsize, int hsize, int id, u_char *dst1_pp, u_char *dst2_pp);
+
 #endif // VRAMSAVE_H
