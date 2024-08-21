@@ -414,7 +414,7 @@ static int memc_mansub_Close(void)
 }
 
 INCLUDE_ASM(const s32, "menu/memc", memcsub_fileChk);
-static int memcsub_fileChk(/* a0 4 */ sceMcTblGetDir *dir, /* a1 5 */ unsigned char *name, /* a2 6 */ int max);
+/* static */ int memcsub_fileChk(/* a0 4 */ sceMcTblGetDir *dir, /* a1 5 */ unsigned char *name, /* a2 6 */ int max);
 
 extern char D_00399888[]; /* sdata - "SAVE" */
 
@@ -576,7 +576,7 @@ INCLUDE_ASM(const s32, "menu/memc", memc_manager_overwrite);
 
 #if 1
 INCLUDE_ASM(const s32, "menu/memc", memc_manager_chk);
-static int memc_manager_chk(int mode);
+/* static */ int memc_manager_chk(int mode);
 #else
 static int memc_manager_chk(int mode)
 {

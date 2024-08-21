@@ -191,7 +191,7 @@ def patch_branch_instructions(folder: str) -> None:
                 #lines = file.readlines()
 
             if re.search(OPCODE_PATTERN, content):
-                print(f"(HACK) Applying short loop fix on file \"{filename}\"")
+                # print(f"(HACK) Applying short loop fix on file \"{filename}\"")
 
                 # Reference found
                 # Embed the opcode, we have to swap byte order for correct endianness
@@ -206,6 +206,7 @@ def patch_branch_instructions(folder: str) -> None:
                     file.write(content)
 
 def apply_short_loop_fix():
+    print(f"(HACK) Applying short loop fix on \"menu/menusub.c\"")
     patch_branch_instructions("asm/nonmatchings/menu/menusub")
 
 EUC_HACK_FILENAME_TABLE = ["TsDrawUPacket.s", "_P3MC_SetBrowsInfo.s"]

@@ -6,7 +6,8 @@
                 "${workspaceFolder}/include/**"
             ],
             "compilerPath": "${workspaceFolder}/tools/cc/ee-gcc2.96/bin/ee-gcc",
-            "cStandard": "c89"
+            "cStandard": "c89",
+            "cppStandard": "c++98"
         }
     ],
     "version": 4

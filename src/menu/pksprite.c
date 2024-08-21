@@ -30,7 +30,7 @@ static void _tsWorkEnd(TS_WORKMEM *emem)
 
 #if 1
 INCLUDE_ASM(const s32, "menu/pksprite", _tsWorkInit);
-static u_int* _tsWorkInit(TS_WORKMEM *emem, u_int *buf, u_int size);
+/* static */ u_int* _tsWorkInit(TS_WORKMEM *emem, u_int *buf, u_int size);
 #else
 static u_int* _tsWorkInit(/* s0 16 */ TS_WORKMEM *emem, /* s2 18 */ u_int *buf, /* s1 17 */ u_int size)
 {

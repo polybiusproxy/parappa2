@@ -895,7 +895,7 @@ INCLUDE_ASM(const s32, "main/drawctrl", drawDispCheckSub);
 }
 
 INCLUDE_ASM(const s32, "main/drawctrl", DrawScenectrlReq);
-static int DrawScenectrlReq(/* s0 16 */ SCENECTRL *scenectrl_pp, /* s2 18 */ u_int time);
+/* static */ int DrawScenectrlReq(/* s0 16 */ SCENECTRL *scenectrl_pp, /* s2 18 */ u_int time);
 
 INCLUDE_ASM(const s32, "main/drawctrl", MendererCtrlInit);
 
