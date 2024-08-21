@@ -116,6 +116,12 @@ INCLUDE_RODATA(const s32, "main/main", D_00393820);
 
 INCLUDE_ASM(const s32, "main/main", dbg_select_disp);
 
+INCLUDE_RODATA(const s32, "main/main", D_00393840);
+INCLUDE_RODATA(const s32, "main/main", D_00393860);
+INCLUDE_RODATA(const s32, "main/main", D_00393880);
+INCLUDE_RODATA(const s32, "main/main", D_003938A8);
+INCLUDE_RODATA(const s32, "main/main", D_003938D0);
+
 INCLUDE_RODATA(const s32, "main/main", D_003938F8);
 
 INCLUDE_RODATA(const s32, "main/main", D_00393910);
@@ -140,6 +146,8 @@ static void dummyPlay(/* s0 16 */ int retTitle)
 
     if (retTitle == 0)
     {
+        mode = 0;
+
         if (game_status.demo_flagG == DEMOF_REPLAY)
         {
             mode = 1;
@@ -228,9 +236,83 @@ static void dummyPlay(/* s0 16 */ int retTitle)
         MtcWait(1);
     }
 
-    if (mode != 2)
+    switch (mode)
     {
+    case 2:
+        if ((ret == 1) || (ret == 3))
+        {
+            if (game_status.endingFlag == 1)
+            {
+                while (1)
+                {
+                    DbgMsgClear();
+                    DbgMsgSetSize(16, 10);
+                    DbgMsgSetColor(128, 128, 128);
+                    DbgMsgPrint("ENDING   A or O or X  EXIT", 1800, 1968);
+                    DbgMsgFlash();
 
+                    if (pad[0].one & 0x70)
+                        break;
+
+                    MtcWait(1);
+                }
+            }
+            else if (game_status.endingFlag - 2U < 3)
+            {
+                while (1)
+                {
+                    DbgMsgClear();
+                    DbgMsgSetSize(16, 10);
+                    DbgMsgSetColor(128, 128, 128);
+                    DbgMsgPrint("BONUS GAME   A or O or X  EXIT", 1800, 1968);
+                    DbgMsgFlash();
+
+                    if (pad[0].one & 0x70)
+                        break;
+
+                    MtcWait(1);
+                }
+            }
+
+            menu_str.sel_menu_enum = SEL_MENU_SAVE;
+            mc_rep_str.play_modeS = game_status.play_modeG;
+            mc_rep_str.roundS = game_status.roundG;
+            mc_rep_str.play_typeS = game_status.play_typeG;
+            mc_rep_str.play_table_modeS = game_status.play_table_modeG;
+            mc_rep_str.play_stageS = game_status.play_stageG;
+
+            if (ret != 1)
+            {
+                if (game_status.stClrCntCool[game_status.play_stageG] != -1)
+                    game_status.stClrCntCool[game_status.play_stageG]++;
+            }
+            else
+            {
+                if (game_status.stClrCntGood[game_status.play_stageG] != -1)
+                    game_status.stClrCntGood[game_status.play_stageG]++;
+            }
+
+            game_status.disp_level = (DISP_LEVEL)(ret == 1);
+
+            game_status.disp_level = (ret == 1);
+
+            game_status.scoreG[0] = scoreTmp[0];
+            game_status.scoreG[1] = 0;
+        }
+        else
+        {
+            menu_str.sel_menu_enum = SEL_MENU_STAGESEL;
+            game_status.disp_level = DLVL_BAD; 
+            game_status.scoreG[0] = 0;
+            game_status.scoreG[1] = 0;
+        }
+        break;
+
+    case 1:
+        menu_str.sel_menu_enum = SEL_MENU_REPLAY;
+        break;
+    case 3:
+        break;
     }
 
     /* SCOPE VARIABLES */

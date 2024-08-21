@@ -1,5 +1,8 @@
 #! /usr/bin/env python3
 
+# SPDX-FileCopyrightText: Copyright 2024 polyproxy
+# SPDX-License-Identifier: MIT
+
 import argparse
 import os
 import shutil
@@ -7,8 +10,9 @@ import subprocess
 import sys
 import re
 
-from   pathlib import Path
-from   typing  import Dict, List, Set, Union
+from   pathlib     import Path
+from   typing      import Dict, List, Set, Union
+from   collections import defaultdict
 
 import ninja_syntax
 
@@ -54,6 +58,12 @@ def exec_shell(command: List[str], stdout = subprocess.PIPE) -> str:
 def clean():
     if os.path.exists(".splache"):
         os.remove(".splache")
+    if os.path.exists(".ninja_log"):
+        os.remove(".ninja_log")
+    if os.path.exists("build.ninja"):
+        os.remove("build.ninja")
+    if os.path.exists("SCPS_150.17.ld"):
+        os.remove("SCPS_150.17.ld")
     shutil.rmtree("asm", ignore_errors=True)
     shutil.rmtree("assets", ignore_errors=True)
     shutil.rmtree("build", ignore_errors=True)
@@ -170,6 +180,45 @@ def eucjp_convert():
                 with open(filepath, "w", encoding="euc-jp") as file:
                     file.write(eucjp_content)
 
+gp_analysis_pattern = re.compile(r'/\* gp_rel: \((\w+)\) \*/')
+def perform_gp_analysis():
+    references = defaultdict(lambda: defaultdict(list))
+    for root, dirs, files in os.walk("asm/nonmatchings/"):
+        for filename in files:
+            filepath = os.path.join(root, filename)
+
+            with open(filepath, "r") as file:
+                for line_num, line in enumerate(file, 1):
+                    analysis_match = gp_analysis_pattern.search(line)
+                    if analysis_match:
+                        variable_name = analysis_match.group(1)
+                        references[filename][variable_name].append(line_num)
+
+    max_line_length = 48
+    border_prefix = "---- "
+    space_after_filename = 1
+
+    available_length = max_line_length - len(border_prefix) - space_after_filename
+    
+    print()
+    print("---------- @parappa2, gp_rel analysis ----------")
+    for file in sorted(references.keys()):
+        vars_dict = references[file]
+        truncated_filename = file[:available_length]
+        dashes_length = max_line_length - len(border_prefix) - len(truncated_filename) - space_after_filename
+        border_line = f"{border_prefix}{truncated_filename} {'-' * dashes_length}"
+        print(border_line)
+        for variable_name in sorted(vars_dict.keys()):
+            lines = vars_dict[variable_name]
+            ref_count = len(lines)
+            print(f"Variable: {variable_name} (references: {ref_count})")
+            print("Locations:")
+            for line_num in lines:
+                print(f"    - {file}:{line_num}")
+            print()
+        print("------------------------------------------------")
+    print("-------------- gp_rel analysis end -------------")
+    print("------------------------------------------------")
 
 def write_permuter_settings():
     with open("permuter_settings.toml", "w") as f:
@@ -318,11 +367,18 @@ if __name__ == "__main__":
         "--no-gprel-removing",
         help="Do not remove gp_rel references on the disassembly",
         action="store_true",
+        default=True
     )
     parser.add_argument(
-        "-noconvert",
+        "-noeuc",
         "--no-eucjp-converting",
         help="Do not convert to EUC-JP the disassembly strings",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-gpanalysis",
+        "--gp-analysis",
+        help="Analyzes every use of gp_rel, for aiding the splitting of a file",
         action="store_true",
     )
     args = parser.parse_args()
@@ -341,9 +397,13 @@ if __name__ == "__main__":
 
     write_permuter_settings()
 
-    # We're done with everything, now get rid of the %gp_rel references
+    # Remove the %gp_rel references
     if not args.no_gprel_removing:
         remove_gprel()
+
+    # Only to be performed with a clean build
+    if args.gp_analysis:
+        perform_gp_analysis()
 
     if not args.no_eucjp_converting:
         eucjp_convert()

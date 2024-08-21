@@ -546,8 +546,148 @@ INCLUDE_ASM(const s32, "menu/pksprite", PkPolyF3_Add);
 INCLUDE_ASM(const s32, "menu/pksprite", PkPolyF4_Add);
 void PkPolyF4_Add(/* t3 11 */ SPR_PKT pk, /* a1 5 */ SPR_PRM *ppspr, /* a2 6 */ int flg);
 
+#if 1
 INCLUDE_ASM(const s32, "menu/pksprite", PkPolyFT4_Add);
 void PkPolyFT4_Add(/* t3 11 */ SPR_PKT pk, /* a1 5 */ SPR_PRM *ppspr, /* a2 6 */ int flg);
+#else
+void PkPolyFT4_Add(/* t3 11 */ SPR_PKT pk, /* a1 5 */ SPR_PRM *ppspr, /* a2 6 */ int flg)
+{
+    /* a3 7 */ SprTagTFR *sp = (SprTagTFR*)*pk;
+
+    *(u_long*)&sp->GifCord[0] = 0xa400000000008001;
+    *(u_long*)&sp->GifCord[2] = 0x4343434310;
+
+    sp->prim = 0x154;
+    sp->rgba = ppspr->rgba0;
+
+    asm __volatile__
+    ("
+        # t0 -> $8
+        # t1 -> $9
+        # t2 -> $10
+
+        lq     $9, 0x20(%0)     # ppspr->ux => $t1 ($9)
+        lq     $8, 0x20(%0)     # ppspr->ux => $t0 ($8)
+        li     $10, -8
+        daddu  $9,  $0,  $8
+        pcpyld $8,  $8,  $0
+        paddw  $9,  $8,  $9
+        psllw  $9,  $9,  0x4
+
+        li     $8,  0x8         # t0 = 8
+        pextlw $8,  $10, $8
+        pextlw $8,  $8,  $8
+        paddw  $8,  $9,  $8
+        ppach  $9,  $0,  $8
+        sd     $9,  0x20(%1)    # sp->uv0
+
+        pexew  $10, $8
+        ppach  $8,  $0, $10
+        sd     $8,  0x30(%1)    # sp->uv1
+
+        prot3w $10, $8
+        sd     $10, 0x40(%1)    # sp->uv2
+
+        prot3w $10, $9
+        sd     $10, 0x50(%1)    # sp->uv3
+    " :: "r"(ppspr), "r"(sp));
+
+    asm __volatile__
+    ("
+        lqc2        vf01, 0x50(%0)
+        lqc2        vf02, 0x60(%0)
+        lqc2        vf04, 0x10(%0)
+
+        vmr32.xyzw  vf03, vf04
+        vmr32.xyzw  vf03, vf03
+        vadd.xy     vf03, vf00, vf04
+    " :: "r"(ppspr));
+
+    if (flg & 2 && ppspr->zoom.isOn)
+    {
+        asm __volatile__
+        ("
+            lq       $8, 0x0(%0)
+
+            qmtc2    $8, vf05
+            pcpyud   $8, $8, $8
+
+            qmtc2    $8, vf08
+            vadda.xy ACC,  vf01, vf0
+            vmadd.xy vf01, vf04, vf08
+            vmul.zw  vf01, vf01, vf05
+            vmul.zw  vf04, vf04, vf08
+            vsub.xy  vf01, vf01, vf05
+            vadda.xy ACC,  vf05, vf00
+            vmadd.xy vf01, vf01, vf08
+        " :: "r"(&ppspr->zoom));
+    }
+
+    asm __volatile__
+    ("
+        vadd.xy      vf01, vf01, vf04
+        vadd.xy      vf08, vf01, vf02
+        vmr32.xyzw   vf02, vf02
+        vmr32.xyzw   vf04, vf04
+        vmr32.xyzw   vf05, vf01
+        vmr32.xyzw   vf02, vf02
+        vmr32.xyzw   vf04, vf04
+        vmr32.xyzw   vf05, vf05
+
+        # t4 -> $12
+        lw           $12,  0x0(%0)
+        vmul.xy      vf06, vf06, vf02
+        vmul.xy      vf07, vf07, vf02
+        vsub.xy      vf09, vf00, vf04
+        vsub.y       vf10, vf00, vf04
+        vsub.x       vf10, vf05, vf04
+        vsub.x       vf11, vf00, vf04
+        vsub.y       vf11, vf05, vf04
+        vsub.xy      vf12, vf05, vf04
+        vmulax.xyzw  ACC,  vf06, vf09
+        vmadday.xyzw ACC,  vf07, vf09
+        vmaddw.xyzw  vf09, vf08, vf00
+        vmulax.xyzw  ACC,  vf06, vf10
+        vmadday.xyzw ACC,  vf07, vf10
+        vmaddw.xyzw  vf10, vf08, vf00
+        vftoi4.xyzw  vf09, vf09
+        vmulax.xyzw  ACC,  vf06, vf11
+        vmadday.xyzw ACC,  vf07, vf11
+        vmaddw.xyzw  vf11, vf08, vf00
+        vftoi4.xyzw  vf10, vf10
+
+        qmtc2        $8,   vf09
+        vmulax.xyzw  ACC,  vf06, vf12
+        vmadday.xyzw ACC,  vf07, vf12
+        vmaddw.xyzw  vf12, vf08, vf00
+        vftoi4.xyzw  vf11, vf11
+
+        qmfc2        $9,   vf10
+        ppach        $8,  $0,  $8
+        pextlw       $8,  $12, $8
+        sd           $8,  0x28(%1)
+
+        vftoi4.xyzw  vf12, vf12
+
+        ppach        $8,  $0,  $9
+        pextlw       $8,  $12, $8
+        sd           $8,  0x38(%1)
+
+        qmfc2        $10, vf11
+        ppach        $8,  $0,  $10
+        pextlw       $8,  $12, $8
+        sd           $8,  0x48(%1)
+
+        qmfc2        $11, vf12
+        ppach        $8, $0,  $11
+        pextlw       $8, $12, $8
+        sd           $8, 0x58(%1)
+    " :: "r"(ppspr->zdepth), "r"(sp));
+
+    // **pk = *(u_long128*)&sp->GifCord;
+    *pk = sp->GifCord;
+}
+#endif
 
 PKMESH* PkMesh_Create(int w, int h)
 {

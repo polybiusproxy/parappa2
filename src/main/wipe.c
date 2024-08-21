@@ -1,6 +1,7 @@
 #include "main/wipe.h"
 
 #include "main/subt.h"
+#include "main/effect.h"
 #include "main/sprite.h"
 #include "main/cmnfile.h"
 #include "main/scrctrl.h"
@@ -18,6 +19,8 @@
 /* data */
 extern SNDTAP sndtap_wipe[];
 extern LDMAP ldmap[];
+
+extern WIPE_SCRATCH_CTRL wipe_scratch_ctrl[];
 
 extern JIMAKU_STR jimaku_str[];
 
@@ -258,12 +261,59 @@ void WipeLoadInDisp(void *x)
     }
 }
 
+extern FADE_MAKE_STR D_003995B0;
+extern void UG_FadeDisp2(/* s0 16 */ FADE_MAKE_STR *fade_pp, /* s3 19 */ sceGifPacket *fadePkSpr, /* s1 17 */ sceGsFrame *texFr_pp, /* f20 58 */ float scale);
+
 /* TODO: split .sdata */
 INCLUDE_ASM(const s32, "main/wipe", WipeLoadInDispNR);
 
 /* TODO: split .sdata */
+#if 1
 INCLUDE_ASM(const s32, "main/wipe", WipeLoadOutDispNR);
 void WipeLoadOutDispNR(void);
+#else
+void WipeLoadOutDispNR(void)
+{
+    /* s2 18 */ int timer = 0;
+    /* -0xb0(sp) */ sceGifPacket gifpk;
+    /* -0xa0(sp) */ FADE_MAKE_STR fade_make_str = D_003995B0;
+    /* -0x90(sp) */ VCLR_PARA vclr_para = {};
+
+    /* f20 58 */ float scl;
+
+    int tmp = 3840;
+
+    do
+    {
+        DrawVramClear(&vclr_para, 0, 0, 0, DNUM_ZBUFF);
+        DrawVramClear(&vclr_para, 0, 0, 0, DNUM_VRAM2);
+
+        ldmove_rate = 360;
+        ldrecode_rate = 0;
+
+        if (!loading_wipe_switch)
+            ldmove_rate = 0;
+
+        lddisp_init_pr();
+        lddisp_draw_on(LDMAP_TURN);
+        lddisp_draw_on(LDMAP_LABEL);
+        lddisp_draw_quit(DNUM_VRAM2);
+
+        fade_make_str.alp = (tmp / 30);
+        tmp -= 128;
+        
+        timer++;
+
+        scl = (timer / 30.0f) + (timer / 30) + 1.0;
+
+        CmnGifADPacketMake(&gifpk, DrawGetFrameP(DNUM_DRAW));
+        UG_FadeDisp2(&fade_make_str, &gifpk, DrawGetFrameP(DNUM_VRAM2), scl);
+        CmnGifADPacketMakeTrans(&gifpk);
+
+        MtcWait(1);
+    } while (timer != 30);
+}
+#endif
 
 static void WipeLoadOutDisp(void *x)
 {

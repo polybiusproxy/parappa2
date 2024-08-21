@@ -6,6 +6,9 @@
 #include <eetypes.h>
 
 #include "main/etc.h"
+#include "main/effect.h"
+
+typedef int (*OVL_FUNC)(void *para_pp, int frame, int first_f, int useDisp, int drDisp);
 
 typedef enum {
     MEN_CTRL_BtoG = 0,
@@ -42,6 +45,12 @@ typedef struct { // 0xe14
     /* 0xe0c */ float targetY;
     /* 0xe10 */ void *targ_mdl_adr;
 } BTHROW_CTRL;
+
+typedef struct { // 0xc
+    /* 0x0 */ int mozaiku_str_frame;
+    /* 0x4 */ int mozaiku_str_cnt;
+    /* 0x8 */ MOZAIKU_STR *mozaiku_str_pp;
+} MOZAIKU_POLL_STR;
 
 typedef enum {
     ODAT_SPA = 0,
@@ -186,7 +195,7 @@ typedef struct { // 0x20
     /* 0x0c */ u_int drDisp;
     /* 0x10 */ u_char pri;
     /* 0x11 */ u_char use_flag;
-    /* 0x14 */ int (*prg_pp)(void *para_pp, int frame, int first_f, int useDisp, int drDisp);
+    /* 0x14 */ OVL_FUNC prg_pp;
     /* 0x18 */ void *param_pp;
     /* 0x1c */ u_int condition;
 } SCENECTRL;
@@ -215,6 +224,8 @@ void DrawCtrlTblChange(int ctrlTbl);
 int DrawTapReqTbl(int atap, int pindx, u_char *prs_pp);
 
 void Cl2MixTrans(int now_T, int max_T, u_char *cl2_0_pp, u_char *cl2_1_pp);
+
+int DrawMozaikuDisp(void *para_pp, int frame, int first_f, int useDisp, int drDisp);
 
 void DrawCtrlInit(EVENTREC *ev_pp, int ctrlTbl, void *dat_top);
 void DrawCtrlQuit(void);

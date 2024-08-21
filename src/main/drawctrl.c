@@ -24,6 +24,10 @@
 int oddeven_idx;
 int outbuf_idx;
 
+/* data */
+/* static */ extern float bra_tap[10][2];
+/* static */ extern MOZAIKU_POLL_STR mozaiku_poll_str[];
+
 /* sdata - static */
 VCLR_PARA vclr_black_tmp;
 
@@ -39,7 +43,7 @@ int ddbg_bmp_frame;
 /* sbss - static */
 int scenectrl_outside_cnt;
 int scenectrl_outside_read_cnt;
-/*MOZAIKU_POLL_STR*/ void *mozaiku_poll_str_current_pp;
+MOZAIKU_POLL_STR *mozaiku_poll_str_current_pp;
 int dr_tap_req_num;
 float men_ctrl_ratio;
 MEN_CTRL_ENUM men_ctrl_enum;
@@ -99,7 +103,7 @@ void outsideDrawSceneClear(void)
     WorkClear(scenectrl_outside, 0x100);
 }
 
-int outsideDrawSceneReq(int (*prg_pp)(), u_char pri, u_int useF, u_int drawF, void *param)
+int outsideDrawSceneReq(OVL_FUNC prg_pp, u_char pri, u_int useF, u_int drawF, void *param)
 {
     SCENECTRL *scenectrl_pp;
 
@@ -139,7 +143,35 @@ static SCENECTRL* getOutsideCtrlScene(int time)
     return scenectrl_pp;
 }
 
+#if 1
 INCLUDE_ASM(const s32, "main/drawctrl", bra_tap_GetNext);
+#else
+float* bra_tap_GetNext(/* a0 4 */ PR_MODELHANDLE model)
+{
+    /* a0 4 */ int i;
+    /* f1 39 */ float tmp_f = PrGetContourBlurAlpha(model);
+    /* s0 16 */ float *ret;
+
+    if (tmp_f == -1.0f)
+        return NULL;
+
+    if (bra_tap[0][0] == tmp_f)
+    {
+        ret = &bra_tap[1][0];
+    }
+    else
+    {
+        
+        for (i = 0; i < 10; i++)
+        {
+            if (bra_tap[i][0] != tmp_f)
+                ret = &bra_tap[i][0];
+        }
+    }
+
+    return ret;
+}
+#endif
 
 INCLUDE_ASM(const s32, "main/drawctrl", bra_title_GetNext);
 
@@ -200,15 +232,19 @@ static void* vs06BomAdr(/* a0 4 */ OBJBTHROW_TYPE thtype, /* t0 8 */ int time)
         0x17E, 0x17D, 0x17C, 0x17B, 0x17A, 0x179
     };
 
+    u_short num;
+
     if (global_data.play_step == PSTEP_VS)
     {
         if (time >= 12)
             return NULL;
 
         if (thtype == OBJBTHROW_PARAPPA)
-            return GetIntAdrsCurrent(bomdat_pa[time]);
+            num = bomdat_pa[time];
         else
-            return GetIntAdrsCurrent(bomdat_tea[time]);
+            num = bomdat_tea[time];
+
+        return GetIntAdrsCurrent(num);
     }
 }
 #endif
@@ -247,8 +283,6 @@ void BallThrowTarget(void *mdlh, OBJBTHROW_TYPE thtype, int targetframe)
 {
     bthrow_ctrl[thtype].targ_mdl_adr = mdlh;
 }
-
-float* PrGetModelScreenPosition(PR_MODELHANDLE model);
 
 void BallThrowPoll(void)
 {   
@@ -396,13 +430,40 @@ int BallThrowPollScene(void *para_pp, int frame, int first_f, int useDisp, int d
     return 0;
 }
 
-INCLUDE_ASM(const s32, "main/drawctrl", MozaikuPollSceneInit);
-static void MozaikuPollSceneInit();
+static void MozaikuPollSceneInit(void)
+{
+    mozaiku_poll_str_current_pp = NULL;
+}
 
-INCLUDE_ASM(const s32, "main/drawctrl", MozaikuPollSceneReq);
+static void MozaikuPollSceneReq(int id)
+{
+    if (id < 3u)
+    {
+        mozaiku_poll_str_current_pp = &mozaiku_poll_str[id];
+        mozaiku_poll_str_current_pp->mozaiku_str_frame = 0;
+    }
+}
 
-INCLUDE_ASM(const s32, "main/drawctrl", MozaikuPollScene);
-static int MozaikuPollScene(/* a0 4 */ void *para_pp, /* s1 17 */ int frame, /* s2 18 */ int first_f, /* s3 19 */ int useDisp, /* s0 16 */ int drDisp);
+static int MozaikuPollScene(void *para_pp, int frame, int first_f, int useDisp, int drDisp)
+{
+    if (mozaiku_poll_str_current_pp == NULL)
+        return 0;
+
+    if (mozaiku_poll_str_current_pp->mozaiku_str_frame >= mozaiku_poll_str_current_pp->mozaiku_str_cnt)
+    {
+        mozaiku_poll_str_current_pp->mozaiku_str_frame = 0;
+        mozaiku_poll_str_current_pp = NULL;
+        return 0;
+    }
+    else
+    {
+        ChangeDrawArea(DrawGetDrawEnvP(drDisp));
+
+        DrawMozaikuDisp(&mozaiku_poll_str_current_pp->mozaiku_str_pp[mozaiku_poll_str_current_pp->mozaiku_str_frame], frame, first_f, useDisp, drDisp);
+        mozaiku_poll_str_current_pp->mozaiku_str_frame++;
+        return 0;
+    }
+}
 
 void DrawTmpBuffInit(void)
 {
@@ -459,7 +520,6 @@ INCLUDE_RODATA(const s32, "main/drawctrl", D_00393128);
 
 INCLUDE_RODATA(const s32, "main/drawctrl", D_00393140);
 
-// INCLUDE_ASM(const s32, "main/drawctrl", DrawObjdatInit);
 void DrawObjdatInit(int size, OBJDAT *od_pp, PR_SCENEHANDLE prf)
 {
     int    i;
@@ -804,6 +864,7 @@ INCLUDE_ASM(const s32, "main/drawctrl", DrawMoveDispIn);
 INCLUDE_ASM(const s32, "main/drawctrl", DrawAlphaBlendDisp);
 
 INCLUDE_ASM(const s32, "main/drawctrl", DrawMozaikuDisp);
+int DrawMozaikuDisp(/* s2 18 */ void *para_pp, /* a1 5 */ int frame, /* a2 6 */ int first_f, /* a0 4 */ int useDisp, /* s0 16 */ int drDisp);
 
 INCLUDE_ASM(const s32, "main/drawctrl", DrawFadeDisp);
 
@@ -1115,7 +1176,22 @@ void DrawCtrlQuit(void)
     MtcKill(MTC_TASK_DRAWCTRL);
 }
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawCtrlTimeSet);
+void DrawCtrlTimeSet(int time)
+{
+    if (drawCurrentTime == 0)
+    {
+        drawCurrentTime = time;
+        return;
+    }
+
+    if (drawCurrentTime == time)
+    {
+        drawCurrentTime = time + 1;
+        return;
+    }
+
+    drawCurrentTime = time;
+}
 
 INCLUDE_ASM(const s32, "main/drawctrl", DrawCtrlTblChange);
 
@@ -1371,9 +1447,69 @@ static void ddbg_event_sub_bmp(void)
 
 INCLUDE_ASM(const s32, "main/drawctrl", ddbg_tap_check);
 
-INCLUDE_ASM(const s32, "main/drawctrl", ddbg_scene_sub);
+static void ddbg_scene_sub(void)
+{
+    SCENECTRL *scenectrl_pp;
 
-INCLUDE_ASM(const s32, "main/drawctrl", ddbg_tctrl_sub);
+    if (drawEventrec->scenestr_pp[drawCurrentLine].scenectrl_pp == NULL)
+        return;
+
+    scenectrl_pp = &drawEventrec->scenestr_pp[drawCurrentLine].scenectrl_pp[ddbg_scene_num];
+
+    drawUseDrDispCheckInit();
+
+    if (drawCurrentTime < scenectrl_pp->start_flame)
+        drawCurrentTime = scenectrl_pp->start_flame;
+
+    if (drawCurrentTime >= scenectrl_pp->end_flame)
+        drawCurrentTime = scenectrl_pp->end_flame - 1;
+
+    DrawScenectrlReq(scenectrl_pp, drawCurrentTime);
+
+    dr_tap_req_num = 0;
+    ChangeDrawArea(DrawGetDrawEnvP(DNUM_DRAW));
+    UseGsRegSet();
+}
+
+void ddbg_tctrl_sub(void)
+{
+    u_short paddata = pad[0].shot;
+    u_short paddata_one = pad[0].one;
+
+    if (paddata_one & SCE_PADRdown)
+        ddbg_pause_f ^= 1;
+
+    if (paddata_one & SCE_PADRup)
+        drawCurrentTime = 0;
+
+    if (!ddbg_pause_f)
+    {
+        drawCurrentTime += 1;
+    }
+    else
+    {
+        if (paddata & SCE_PADR1)
+            drawCurrentTime++;
+
+        if (paddata_one & SCE_PADR2)
+            drawCurrentTime += 600;
+
+        if (paddata & SCE_PADL1)
+            drawCurrentTime--;
+
+        if (paddata_one & SCE_PADL2)
+            drawCurrentTime -= 600;
+
+        if (paddata_one & SCE_PADRright)
+            drawCurrentTime++;
+
+        if (paddata_one & SCE_PADRleft)
+            drawCurrentTime--;
+    }
+
+    if (drawCurrentTime < 0)
+        drawCurrentTime = 0;
+}
 
 extern DRAW_DBG_STR draw_dbg_str[5];
 

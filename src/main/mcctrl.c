@@ -236,7 +236,7 @@ u_short mccReqTapGet(u_int time, u_int useLine, u_int *time_pp, PLAYER_ENUM ply)
     return ret;
 }
 
-extern char D_00393800[]; /* rodata - "TAP forward!!\n" */
+extern const char D_00393800[]; /* rodata - "TAP forward!!\n" */
 
 #if 1
 INCLUDE_ASM(const s32, "main/mcctrl", mccReqTapForward);
@@ -274,6 +274,39 @@ void mccReqTapForward(/* s5 21 */ u_int time, /* s4 20 */ u_int useLine)
 #endif
 
 INCLUDE_ASM(const s32, "main/mcctrl", mccReqTapForwardOwn);
+#if 0
+void mccReqTapForwardOwn(/* s3 19 */ u_int time, /* s2 18 */ u_int useLine, /* s4 20 */ int ply)
+{
+    /* v1 3 */ MC_REP_DAT *mcrd_pp;
+    /* s1 17 */ u_int *rep_cnt;
+
+    rep_cnt = &mc_rep_ctrl.cl_mc_rep_dat_cnt[ply];
+
+    if (*rep_cnt >= 2560 || *rep_cnt >= mc_rep_str_local.mc_rep_dat_cnt)
+        return;
+
+    mcrd_pp = &mc_rep_str_local.mc_rep_dat[*rep_cnt];
+
+    if ((mcrd_pp->timeP >= time) && (mcrd_pp->useL == useLine))
+    {
+        while (mcrd_pp->ply == ply)
+        {
+            
+            (*rep_cnt)++;
+
+            printf(D_00393800);
+
+            mcrd_pp = &mc_rep_str_local.mc_rep_dat[*rep_cnt];
+
+            if (*rep_cnt >= 2560 || *rep_cnt >= mc_rep_str_local.mc_rep_dat_cnt)
+                break;
+
+            if (mcrd_pp->timeP > time || mcrd_pp->useL != useLine)
+                break; 
+        }
+    }
+}
+#endif
 
 void mccLocalGlobalCopy(void)
 {

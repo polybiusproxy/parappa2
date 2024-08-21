@@ -21,7 +21,7 @@
 #include <devvu0.h>
 #include <sifcmd.h>
 
-#define SCREEN_WIDTH 640
+#define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT 448
 
 extern int outbuf_idx;

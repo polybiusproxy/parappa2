@@ -388,7 +388,6 @@ void p3str_sort_set(P3SRT_OD *p3o_pp, P3STR_SD *p3sd_pp, int subtime)
     p3str_sort[p3str_sort_cnt].p3o_pp  = p3o_pp;
     p3str_sort[p3str_sort_cnt].p3sd_pp = p3sd_pp;
     p3str_sort[p3str_sort_cnt].subtime = subtime;
-
     p3str_sort_cnt++;
 }
 

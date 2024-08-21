@@ -19,6 +19,8 @@ options:
     compiler: EEGCC
     platform: ps2
 
+    use_gp_rel_macro_nonmatching: False # Disable %gp_rel emission
+    use_legacy_include_asm: True
     ld_bss_contains_common: True
     
     string_encoding: EUC-JP
@@ -26,8 +28,7 @@ options:
     disasm_unknown: True
     named_regs_for_c_funcs: False
     gp_value: 0x3a0ef0
-    # subalign: 4
-    include_macro_inc: no # don't write macro.inc to rodata files
+    subalign: null
     
     find_file_boundaries: False
     section_order: [".text", ".data", ".rodata", ".lit4", ".sdata", ".sbss", ".bss"]
@@ -38,7 +39,6 @@ segments:
       start: 0x1000
       vram: 0x100000
       bss_size: 0x18F4434 # should be 1 byte less?
-      subalign: null
       subsegments:
         # .text
         - [0x1000,  asm, sdk/crt0]

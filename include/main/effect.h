@@ -88,5 +88,6 @@ typedef struct { // 0x3
 } MONOCRO_STR;
 
 void CG_FadeDisp(FADE_MAKE_STR *fade_pp, int pri, sceGsFrame *texFr_pp);
+void UG_MozaikuDisp(MOZAIKU_STR *moz_pp, sceGsFrame *frame_pp, sceGifPacket *mozPkSpr);
 
 #endif

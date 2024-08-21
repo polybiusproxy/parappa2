@@ -262,17 +262,17 @@ PR_EXTERN void PrSetStage(int stage)
 
 PR_EXTERN void PrSetDepthOfField(PrSceneObject *scene, float focalLen, float defocusLen)
 {
-    if (focalLen != 0.f)
+    if (focalLen != 0.0f)
     {
-        if (focalLen < 0.f || defocusLen <= focalLen)
+        if (focalLen < 0.0f || defocusLen <= focalLen)
         {
-            defocusLen = 0.f;
+            defocusLen = 0.0f;
             return;
         }
     }
     else
     {
-        defocusLen = 0.f;
+        defocusLen = 0.0f;
     }
 
     scene->m_fFocalLen = focalLen;
