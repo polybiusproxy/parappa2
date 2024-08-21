@@ -186,13 +186,14 @@ def perform_gp_analysis():
     for root, dirs, files in os.walk("asm/nonmatchings/"):
         for filename in files:
             filepath = os.path.join(root, filename)
+            relative_path = os.path.relpath(filepath, "asm/nonmatchings/")
 
             with open(filepath, "r") as file:
                 for line_num, line in enumerate(file, 1):
                     analysis_match = gp_analysis_pattern.search(line)
                     if analysis_match:
                         variable_name = analysis_match.group(1)
-                        references[filename][variable_name].append(line_num)
+                        references[relative_path][variable_name].append(line_num)
 
     max_line_length = 48
     border_prefix = "---- "
