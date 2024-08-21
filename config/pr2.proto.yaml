@@ -76,7 +76,7 @@ segments:
         - [0x24a10, c, menu/menu]
         - [0x24d98, c, menu/menudata]
         - [0x25500, c, menu/menu_mdl]
-        - [0x26ec0, asm, menu/menusub]
+        - [0x26ec0, c, menu/menusub]
         - [0x38f70, c, menu/p3mc]
         - [0x3bd80, c, menu/memc]
         - [0x3dbf0, c, menu/mntm2hed]
@@ -198,7 +198,7 @@ segments:
         - [0x294b60, .rodata, main/p3str]
 
         - [0x294c00, .rodata, menu/menudata]
-        - [0x296f10, rodata, menu/menusub]
+        - [0x296f10, .rodata, menu/menusub]
         - [0x297180, .rodata, menu/p3mc]
         - [0x297650, .rodata, menu/memc]
         - [0x2976e0, .rodata, menu/pksprite]

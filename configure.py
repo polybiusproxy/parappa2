@@ -162,6 +162,52 @@ def remove_gprel():
                 with open(filepath, "w") as file:
                     file.write(updated_content)
 
+# https://github.com/Fantaskink/SOTC/blob/44d5744b0a1725da85c980ea1389e544d1802f23/configure.py#L177-L214
+# Pattern to workaround unintended nops around loops
+COMMENT_PART = r"\/\* (.+) ([0-9A-Z]{2})([0-9A-Z]{2})([0-9A-Z]{2})([0-9A-Z]{2}) \*\/"
+INSTRUCTION_PART = r"(\b(bc1t|bne|bnel|beq|beql|bqez|bnez|bnezl|beqzl|bgez|bgezl|bgtz|bgtzl|blez|blezl|bltz|bltzl|b|slti)\b.*)"
+OPCODE_PATTERN = re.compile(f"{COMMENT_PART}  {INSTRUCTION_PART}")
+
+SLOOP_PROBLEMATIC_FUNCS = [
+    "TsRestoreSaveData.s",
+    "TsGetRankingList.s",
+    "TsOption_Draw.s",
+    "TsNAMEINBox_Flow.s",
+    "_TsCELBackObjDraw.s"
+]
+
+def patch_branch_instructions(folder: str) -> None:
+    for root, dirs, files in os.walk(folder):
+        for filename in files:
+            filepath = os.path.join(root, filename)
+
+            # Uncomment to only apply the patch on specific functions
+            #
+            # if filename not in SLOOP_PROBLEMATIC_FUNCS:
+            #     continue
+
+            with open(filepath, "r") as file:
+                content = file.read()
+                #lines = file.readlines()
+
+            if re.search(OPCODE_PATTERN, content):
+                print(f"(HACK) Applying short loop fix on file \"{filename}\"")
+
+                # Reference found
+                # Embed the opcode, we have to swap byte order for correct endianness
+                content = re.sub(
+                    OPCODE_PATTERN,
+                    r"/* \1 \2\3\4\5 */  .word      0x\5\4\3\2 /* \6 */",
+                    content,
+                )
+
+                # Write the updated content back to the file
+                with open(filepath, "w") as file:
+                    file.write(content)
+
+def apply_short_loop_fix():
+    patch_branch_instructions("asm/nonmatchings/menu/menusub")
+
 EUC_HACK_FILENAME_TABLE = ["TsDrawUPacket.s", "_P3MC_SetBrowsInfo.s"]
 def eucjp_convert():
     for root, dirs, files in os.walk("asm/nonmatchings/"):
@@ -377,6 +423,12 @@ if __name__ == "__main__":
         action="store_true",
     )
     parser.add_argument(
+        "-noshortloopfix",
+        "--no-short-loop-fix",
+        help="Do not patch branch instructions on specific functions to combat a assembler bug",
+        action="store_true",
+    )
+    parser.add_argument(
         "-gpanalysis",
         "--gp-analysis",
         help="Analyzes every use of gp_rel, for aiding the splitting of a file",
@@ -401,6 +453,9 @@ if __name__ == "__main__":
     # Remove the %gp_rel references
     if not args.no_gprel_removing:
         remove_gprel()
+
+    if not args.no_short_loop_fix:
+        apply_short_loop_fix()
 
     # Only to be performed with a clean build
     if args.gp_analysis:
