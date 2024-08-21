@@ -22,3 +22,5 @@ compile_commands.json
 *.o
 ctx.c
 ctx.c.m2c
+
+output/
