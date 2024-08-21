@@ -123,7 +123,32 @@ void CG_AlpDisp(PLH_STR *plh_pp, sceGsFrame *frame_pp, int pri)
     CmnGifCloseCmnPk(&alpPkSpr, pri);
 }
 
-INCLUDE_ASM(const s32, "main/effect", UG_MozaikuDisp);
+/* TODO: Use the GS macros */
+void UG_MozaikuDisp(MOZAIKU_STR *moz_pp, sceGsFrame *frame_pp, sceGifPacket *mozPkSpr)
+{
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_TEXFLUSH, 0);
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_PRMODECONT, 1);
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_TEST_1, 0x30000);
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_RGBAQ, 0x3f80000080808080);
+
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_CLAMP_1, SCE_GS_SET_CLAMP(15, 0, moz_pp->umsk & 0x3ff, moz_pp->ufix & 0x3ff, moz_pp->vmsk & 0x3ff, moz_pp->vfix & 0x3ff));
+
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_COLCLAMP, 0);
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_PABE, 0);
+
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_TEX0_1, SCE_GS_SET_TEX0(frame_pp->FBP << 5, frame_pp->FBW, 0, 10, 8, 0, 0, 0, 0, 0, 0, 0));
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_TEX1_1, 0);
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_PRIM, 0x116);
+
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_UV, 0xe002800);
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_XYZ2, 0x87009400);
+
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_UV, 0);
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_XYZ2, 0x179006c00);
+
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_TEXFLUSH, 0);
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_CLAMP_1, 0);
+}
 
 void CG_MozaikuDisp(MOZAIKU_STR *moz_pp, sceGsFrame *frame_pp, int pri)
 {
@@ -168,14 +193,65 @@ void UG_FadeDisp(FADE_MAKE_STR *fade_pp, sceGifPacket *fadePkSpr, sceGsFrame *te
     sceGifPkAddGsAD(fadePkSpr, SCE_GS_XYZ2, 0x187009400);
 }
 
+#if 1
 INCLUDE_ASM(const s32, "main/effect", UG_FadeDisp2);
+#else
+void UG_FadeDisp2(/* s0 16 */ FADE_MAKE_STR *fade_pp, /* s3 19 */ sceGifPacket *fadePkSpr, /* s1 17 */ sceGsFrame *texFr_pp, /* f20 58 */ float scale)
+{
+    /* s1 17 */ int xp;
+    /* s0 16 */ int yp;
+
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_TEXFLUSH, 0);
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_PRMODECONT, 1);
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_ALPHA_1, SCE_GS_SET_ALPHA(0, 1, 0, 1, 0));
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_CLAMP_1, SCE_GS_SET_CLAMP(0, 0, 0, 640 - 1, 0, 224 - 1));
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_COLCLAMP, 1);
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_PABE, 0);
+
+    if (texFr_pp == NULL)
+    {
+        sceGifPkAddGsAD(fadePkSpr, SCE_GS_TEST_1, 0x31001);
+
+        sceGifPkAddGsAD(fadePkSpr, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(fade_pp->r, fade_pp->g, fade_pp->b, fade_pp->alp, 0));
+
+        sceGifPkAddGsAD(fadePkSpr, SCE_GS_PRIM, 0x146);
+
+        sceGifPkAddGsAD(fadePkSpr, SCE_GS_XYZ2, SCE_GS_SET_XYZ(GS_X_COORD(0), GS_Y_COORD(0), 1));
+        sceGifPkAddGsAD(fadePkSpr, SCE_GS_XYZ2, SCE_GS_SET_XYZ(GS_X_COORD(640), GS_Y_COORD(224), 1));
+        return;
+    }
+
+    #define PR_TXINT(x) (*(int*)&x)
+
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_TEST_1, 0x3000d);
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(128, 128, 128, fade_pp->alp, 0));
+
+    //sceGifPkAddGsAD(fadePkSpr, SCE_GS_TEX0_1,
+    //              (long)(int)((PR_TXINT(texFr_pp) & 0x1ff) << 5 | (PR_TXINT(texFr_pp) & 0x3f) << 0xe
+    //                         ) | 0x628000000);
+
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_TEX0_1, SCE_GS_SET_TEX0(texFr_pp->FBP << 5, texFr_pp->FBW, 640, 0, 8, 0, 1, 0, 0, 0, 0, 0));
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_PRIM, 0x156);
+
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_UV, SCE_GS_SET_UV(0, 0));
+
+    xp = scale * (640.0f / 2);
+    yp = scale * (224.0f / 2);
+    
+
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_XYZ2, SCE_GS_SET_XYZ((2048 - xp) << 4, (2048 - yp) << 4, 1));
+
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_UV, SCE_GS_SET_UV(0x2800, 0xe00));
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_XYZ2, SCE_GS_SET_XYZ((xp + 2048) << 4, (yp + 2048) << 4, 1));
+}
+#endif
 
 void CG_FadeDisp(FADE_MAKE_STR *fade_pp, int pri, sceGsFrame *texFr_pp)
 {
     sceGifPacket fadePkSpr;
   
     CmnGifOpenCmnPk(&fadePkSpr);
-    UG_FadeDisp(fade_pp,&fadePkSpr,texFr_pp);
+    UG_FadeDisp(fade_pp, &fadePkSpr, texFr_pp);
     CmnGifCloseCmnPk(&fadePkSpr,pri);
 }
 
