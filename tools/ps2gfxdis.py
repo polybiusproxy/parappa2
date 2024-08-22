@@ -6,24 +6,24 @@
 import argparse
 
 REGISTERS = {
-	# Vertex info
+    # Vertex info
     0x00: 'PRIM',
     0x01: 'RGBAQ',
     0x02: 'ST',
     0x03: 'UV',
-	0x04: 'XYZF2',
-	0x05: 'XYZ2',
-	0x0a: 'FOG',
-	0x0c: 'XYZF3',
-	0x0d: 'XYZ3',
-	0x18: 'XYOFFSET_1',
-	0x19: 'XYOFFSET_2',
-	0x1a: 'PRMODECONT',
-	
+    0x04: 'XYZF2',
+    0x05: 'XYZ2',
+    0x0a: 'FOG',
+    0x0c: 'XYZF3',
+    0x0d: 'XYZ3',
+    0x18: 'XYOFFSET_1',
+    0x19: 'XYOFFSET_2',
+    0x1a: 'PRMODECONT',
+
     # Drawing attributes
-	0x1b: 'PRMODE',
-	0x06: 'TEX0_1',
-	0x07: 'TEX0_2',
+    0x1b: 'PRMODE',
+    0x06: 'TEX0_1',
+    0x07: 'TEX0_2',
     0x14: 'TEX1_1',
     0x15: 'TEX1_2',
     0x16: 'TEX2_1',
@@ -59,19 +59,19 @@ REGISTERS = {
     0x4d: 'FRAME_2',
     0x4e: 'ZBUF_1',
     0x4f: 'ZBUF_2',
-	
-	# Inter-buffer transfer
-	0x50: 'BITBLTBUF',
-	0x51: 'TRXPOS',
-	0x52: 'TRXREG',
-	0x53: 'TRXDIR',
-	0x54: 'HWREG',
-	
-	# Other
-	0x60: 'SIGNAL',
-	0x61: 'FINISH',
-	0x62: 'LABEL',
-	0x7f: 'NOP',
+
+    # Inter-buffer transfer
+    0x50: 'BITBLTBUF',
+    0x51: 'TRXPOS',
+    0x52: 'TRXREG',
+    0x53: 'TRXDIR',
+    0x54: 'HWREG',
+    
+    # Other
+    0x60: 'SIGNAL',
+    0x61: 'FINISH',
+    0x62: 'LABEL',
+    0x7f: 'NOP',
 }
 
 REVERSE_REGISTERS = {v: k for k, v in REGISTERS.items()}
