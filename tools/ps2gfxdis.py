@@ -103,6 +103,17 @@ def disassemble_prim(data, name):
 
     return format_macro(name, PRIM, IIP, TME, FGE, ABE, AA1, FST, CTXT, FIX)
 
+def disassemble_xyz(data, name):
+    X = (data >> 0 ) & 0xffff     # bits 0-15
+    Y = (data >> 16) & 0xffff     # bits 16-31
+    Z = (data >> 32) & 0xffffffff # bits 32-63
+
+    # Convert the GS coordinates back to screen coordinates
+    SCREEN_X = round((X / 16) - (2048 - (640 / 2)))
+    SCREEN_Y = round((Y / 16) - (2048 - (224 / 2)))
+
+    return f"SCE_GS_SET_{name}(GS_X_COORD({SCREEN_X}), GS_Y_COORD({SCREEN_Y}), {Z})"
+
 def disassemble_tex1(data, name):
     LCM  = (data >> 0 ) & 0b1   # bit 0
     MXL  = (data >> 2 ) & 0b111 # bits 2-4
@@ -110,7 +121,7 @@ def disassemble_tex1(data, name):
     MMIN = (data >> 6 ) & 0b111 # bits 6-8
     MTBA = (data >> 9 ) & 0b1   # bit 9
     L    = (data >> 19) & 0b11  # bits 19-20
-    K    = (data >> 32) & 12    # bits 32-43
+    K    = (data >> 32) & 0xfff # bits 32-43
 
     return format_macro(name, LCM, MXL, MMAG, MMIN, MTBA, L, K)
 
@@ -130,10 +141,10 @@ DISASSEMBLY_FUNCTIONS = {
     'ST':         lambda data: disassemble_null(data, 'ST'),
     'UV':         lambda data: disassemble_null(data, 'UV'),
     'XYZF2':      lambda data: disassemble_null(data, 'XYZF2'),
-    'XYZ2':       lambda data: disassemble_null(data, 'XYZ2'),
+    'XYZ2':       lambda data: disassemble_xyz(data, 'XYZ2'),
     'FOG':        lambda data: disassemble_null(data, 'FOG'),
     'XYZF3':      lambda data: disassemble_null(data, 'XYZF3'),
-    'XYZ3':       lambda data: disassemble_null(data, 'XYZ3'),
+    'XYZ3':       lambda data: disassemble_xyz(data, 'XYZ3'),
     'XYOFFSET_1': lambda data: disassemble_null(data, 'XYOFFSET_1'),
     'XYOFFSET_2': lambda data: disassemble_null(data, 'XYOFFSET_2'),
     'PRMODECONT': lambda data: disassemble_null(data, 'PRMODECONT'),
