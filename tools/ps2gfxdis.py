@@ -66,7 +66,7 @@ REGISTERS = {
     0x52: 'TRXREG',
     0x53: 'TRXDIR',
     0x54: 'HWREG',
-    
+
     # Other
     0x60: 'SIGNAL',
     0x61: 'FINISH',
@@ -86,6 +86,22 @@ def parse_hex(hex_data):
         return int(hex_data, 16)
     except ValueError:
         raise ValueError("Invalid register data")
+
+def disassemble_null(data, name):
+    return f"Unimplemented register {name}"
+
+def disassemble_prim(data, name):
+    PRIM = (data >> 0 ) & 0b111 # bits 0-2
+    IIP  = (data >> 3 ) & 0b1   # bit 3
+    TME  = (data >> 4 ) & 0b1   # bit 4
+    FGE  = (data >> 5 ) & 0b1   # bit 5
+    ABE  = (data >> 6 ) & 0b1   # bit 6
+    AA1  = (data >> 7 ) & 0b1   # bit 7
+    FST  = (data >> 8 ) & 0b1   # bit 8
+    CTXT = (data >> 9 ) & 0b1   # bit 9
+    FIX  = (data >> 10) & 0b1   # bit 10
+
+    return format_macro(name, PRIM, IIP, TME, FGE, ABE, AA1, FST, CTXT, FIX)
 
 def disassemble_tex1(data, name):
     LCM  = (data >> 0 ) & 0b1   # bit 0
@@ -109,17 +125,71 @@ def disassemble_alpha(data, name):
     
 DISASSEMBLY_FUNCTIONS = {
     # Vertex info
+    'PRIM':       lambda data: disassemble_prim(data, 'PRIM'),
+    'RGBAQ':      lambda data: disassemble_null(data, 'RGBAQ'),
+    'ST':         lambda data: disassemble_null(data, 'ST'),
+    'UV':         lambda data: disassemble_null(data, 'UV'),
+    'XYZF2':      lambda data: disassemble_null(data, 'XYZF2'),
+    'XYZ2':       lambda data: disassemble_null(data, 'XYZ2'),
+    'FOG':        lambda data: disassemble_null(data, 'FOG'),
+    'XYZF3':      lambda data: disassemble_null(data, 'XYZF3'),
+    'XYZ3':       lambda data: disassemble_null(data, 'XYZ3'),
+    'XYOFFSET_1': lambda data: disassemble_null(data, 'XYOFFSET_1'),
+    'XYOFFSET_2': lambda data: disassemble_null(data, 'XYOFFSET_2'),
+    'PRMODECONT': lambda data: disassemble_null(data, 'PRMODECONT'),
+
     # Drawing attributes
-    'TEX1_1': lambda data: disassemble_tex1(data, 'TEX1_1'),
-    'TEX1_2': lambda data: disassemble_tex1(data, 'TEX1_2'),
+    'PRMODE':     lambda data: disassemble_null(data, 'PRMODE'),
+    'TEX0_1':     lambda data: disassemble_null(data, 'TEX0_1'),
+    'TEX0_2':     lambda data: disassemble_null(data, 'TEX0_2'),
+    'TEX1_1':     lambda data: disassemble_tex1(data, 'TEX1_1'),
+    'TEX1_2':     lambda data: disassemble_tex1(data, 'TEX1_2'),
+    'TEX2_1':     lambda data: disassemble_null(data, 'TEX2_1'),
+    'TEX2_2':     lambda data: disassemble_null(data, 'TEX2_2'),
+    'TEXCLUT':    lambda data: disassemble_null(data, 'TEXCLUT'),
+    'SCANMSK':    lambda data: disassemble_null(data, 'SCANMSK'),
+    'MIPTBP1_1':  lambda data: disassemble_null(data, 'MIPTBP1_1'),
+    'MIPTBP1_2':  lambda data: disassemble_null(data, 'MIPTBP1_2'),
+    'MIPTBP2_1':  lambda data: disassemble_null(data, 'MIPTBP2_1'),
+    'MIPTBP2_2':  lambda data: disassemble_null(data, 'MIPTBP2_2'),
+    'CLAMP_1':    lambda data: disassemble_null(data, 'CLAMP_1'),
+    'CLAMP_2':    lambda data: disassemble_null(data, 'CLAMP_2'),
+    'TEXA':       lambda data: disassemble_null(data, 'TEXA'),
+    'FOGCOL':     lambda data: disassemble_null(data, 'FOGCOL'),
+    'TEXFLUSH':   lambda data: disassemble_null(data, 'TEXFLUSH'),
 
     # Pixel operations
-    'ALPHA_1': lambda data: disassemble_alpha(data, 'ALPHA_1'),
-    'ALPHA_2': lambda data: disassemble_alpha(data, 'ALPHA_2'),
+    'SCISSOR_1':  lambda data: disassemble_null(data, 'SCISSOR_1'),
+    'SCISSOR_2':  lambda data: disassemble_null(data, 'SCISSOR_2'),
+    'ALPHA_1':    lambda data: disassemble_alpha(data, 'ALPHA_1'),
+    'ALPHA_2':    lambda data: disassemble_alpha(data, 'ALPHA_2'),
+    'DIMX':       lambda data: disassemble_null(data, 'DIMX'),
+    'DTHE':       lambda data: disassemble_null(data, 'DTHE'),
+    'COLCLAMP':   lambda data: disassemble_null(data, 'COLCLAMP'),
+    'TEST_1':     lambda data: disassemble_null(data, 'TEST_1'),
+    'TEST_2':     lambda data: disassemble_null(data, 'TEST_2'),
+    'PABE':       lambda data: disassemble_null(data, 'PABE'),
+    'FBA_1':      lambda data: disassemble_null(data, 'FBA_1'),
+    'FBA_2':      lambda data: disassemble_null(data, 'FBA_2'),
 
     # Buffer
+    'FRAME_1':    lambda data: disassemble_null(data, 'FRAME_1'),
+    'FRAME_2':    lambda data: disassemble_null(data, 'FRAME_2'),
+    'ZBUF_1':     lambda data: disassemble_null(data, 'ZBUF_1'),
+    'ZBUF_2':     lambda data: disassemble_null(data, 'ZBUF_2'),
+
     # Inter-buffer transfer
+    'BITBLTBUF':  lambda data: disassemble_null(data, 'BITBLTBUF'),
+    'TRXPOS':     lambda data: disassemble_null(data, 'TRXPOS'),
+    'TRXREG':     lambda data: disassemble_null(data, 'TRXREG'),
+    'TRXDIR':     lambda data: disassemble_null(data, 'TRXDIR'),
+    'HWREG':      lambda data: disassemble_null(data, 'HWREG'),
+
     # Other
+    'SIGNAL':     lambda data: disassemble_null(data, 'SIGNAL'),
+    'FINISH':     lambda data: disassemble_null(data, 'FINISH'),
+    'LABEL':      lambda data: disassemble_null(data, 'LABEL'),
+    'NOP':        lambda data: disassemble_null(data, 'NOP'),
 }
 
 def disassemble_command(register_name, hex_data):
