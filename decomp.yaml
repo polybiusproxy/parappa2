@@ -1,0 +1,13 @@
+name: PaRappa the Rapper 2
+platform: ps2
+versions:
+- name: proto
+  fullname: July 12 prototype
+  paths:
+    baserom: "iso/SCPS_150.17"
+    build: "build/SCPS_150.17"
+    asm: "asm"
+    nonmatchings: "asm/nonmatchings"
+    map: "build/SCPS_150.17.map"
+    elf: "build/SCPS_150.17"
+tools:

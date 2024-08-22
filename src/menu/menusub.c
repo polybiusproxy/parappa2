@@ -1,6 +1,16 @@
-#include "common.h"
+#include "menu/menusub.h"
 
-INCLUDE_ASM(const s32, "menu/menusub", TsGetMenuPadIsRepeat);
+/* .sdata */
+TSTEX_INF *tblTex;
+HOSI_OBJ *HOSIObj;
+
+/* .bss */
+extern TSREPPAD menuPadState[2][4];
+
+static int TsGetMenuPadIsRepeat(int no, int npad)
+{
+    return (menuPadState[no][npad].state < 2) ^ 1;
+}
 
 INCLUDE_ASM(const s32, "menu/menusub", TSSNDPLAY);
 
@@ -308,21 +318,64 @@ INCLUDE_ASM(const s32, "menu/menusub", _PkSubMsgPut);
 
 INCLUDE_ASM(const s32, "menu/menusub", TsMenu_CleanVram);
 
-INCLUDE_ASM(const s32, "menu/menusub", TsMenu_CaptureVram);
+void TsMenu_CaptureVram(SPR_PKT pk, SPR_PRM *spr)
+{
+    PkSprPkt_SetDrawEnv(pk, spr, DrawGetDrawEnvP(DNUM_VRAM2));
+    PkSprPkt_SetTexVram(pk, spr, DrawGetDrawEnvP(DNUM_DRAW));
+
+    PkTEX1_Add(pk, SCE_GS_SET_TEX1(0, 0, 0, 0, 0, 0, 0));
+    PkALPHA_Add(pk, SCE_GS_SET_ALPHA(2, 2, 0, 0, 0));
+
+    spr->zy = 1.0f;
+    spr->zx = 1.0f;
+    spr->zdepth = 0;
+    spr->rgba0 = SCE_GS_SET_RGBAQ(128, 128, 128, 128, 0);
+
+    SetSprScreenXYWH(spr);
+    spr->ux = spr->px;
+    spr->uy = spr->py;
+    spr->uw = spr->sw;
+    spr->uh = spr->sh;
+
+    PkNSprite_AddAdj(pk, spr, 1);
+    PkTEX1_Add(pk, 0x2020);
+
+    PkSprPkt_SetDrawEnv(pk, spr, DrawGetDrawEnvP(DNUM_DRAW));
+    PkSprPkt_SetTexVram(pk, spr, DrawGetDrawEnvP(DNUM_VRAM2));
+
+    PkALPHA_Add(pk, SCE_GS_SET_ALPHA(0, 1, 0, 1, 0));
+}
 
 INCLUDE_ASM(const s32, "menu/menusub", TsSetCTransSpr);
 
 INCLUDE_ASM(const s32, "menu/menusub", TsSetSLTransSpr);
 
 INCLUDE_ASM(const s32, "menu/menusub", TsSetPNTransSpr);
+void TsSetPNTransSpr(/* s3 19 */ SPR_PKT pk, /* s2 18 */ SPR_PRM *spr, /* a2 6 */ int mx, /* a3 7 */ int my, /* f12 50 */ float wr, /* f22 60 */ float dr);
 
 INCLUDE_ASM(const s32, "menu/menusub", TsPatTexFnc);
 
 INCLUDE_ASM(const s32, "menu/menusub", _TsPatSetPrm);
+/* static */ void _TsPatSetPrm(/* t1 9 */ SPR_PKT pk, /* s0 16 */ SPR_PRM *spr, /* s2 18 */ PATPOS *ppos, /* s3 19 */ int ox, /* s4 20 */ int oy);
 
 INCLUDE_ASM(const s32, "menu/menusub", TsPatPut);
 
-INCLUDE_ASM(const s32, "menu/menusub", TsPatGetSize);
+static void TsPatGetSize(PATPOS *ppos, int *x, int *y, int *w, int *h)
+{
+	TSTEX_INF *ptex = &tblTex[ppos->texNo];
+
+    if (w != NULL)
+        *w = ptex->w;
+
+    if (h != NULL)
+        *h = ptex->h;
+    
+    if (x != NULL)
+        *x = ppos->x + (ptex->w / 2);
+
+    if (y != NULL)
+        *y = ppos->y + (ptex->h / 2);      
+}
 
 INCLUDE_ASM(const s32, "menu/menusub", TsPatPutRZoom);
 
@@ -330,11 +383,22 @@ INCLUDE_ASM(const s32, "menu/menusub", TsPatPutMZoom);
 
 INCLUDE_ASM(const s32, "menu/menusub", TsPatPutSwing);
 
-INCLUDE_ASM(const s32, "menu/menusub", TsPatPutUneri);
+static void TsPatPutUneri(SPR_PKT pk, SPR_PRM *spr, PATPOS *ppos, int ox, int oy, int mx, int my, float Crx, float Drt)
+{
+    _TsPatSetPrm(pk, spr, ppos, ox, oy);
+    TsSetPNTransSpr(pk, spr, mx, my, Crx, Drt);
+}
 
 INCLUDE_ASM(const s32, "menu/menusub", TsCELBackInit);
 
-INCLUDE_ASM(const s32, "menu/menusub", TsCELBackEnd);
+void TsCELBackEnd(void)
+{
+    if (HOSIObj != NULL)
+    {
+        free(HOSIObj);
+        HOSIObj = NULL;
+    }
+}
 
 INCLUDE_ASM(const s32, "menu/menusub", TsCELBackDraw);
 

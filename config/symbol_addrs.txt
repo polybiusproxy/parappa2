@@ -1355,6 +1355,11 @@ _P3MC_dataCheckFunc                 = 0x0013ac78; // type:func
 _P3MC_CheckUserData                 = 0x0013ac80; // type:func
 _P3MC_CheckUserDataHead             = 0x0013acc0; // type:func
 
+tblTex                              = 0x003997bc;
+HOSIObj                             = 0x00399824;
+
+menuPadState                        = 0x01c77ac0; // size:0x20
+
 HedderID                            = 0x00399830; // size:0x4
 FooterID                            = 0x00399834; // size:0x4
 pUChkWork                           = 0x00399838; // size:0x4
