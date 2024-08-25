@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: MIT
 
 import argparse
+import struct
 
 REGISTERS = {
     # Vertex info
@@ -103,6 +104,24 @@ def disassemble_prim(data, name):
 
     return format_macro(name, PRIM, IIP, TME, FGE, ABE, AA1, FST, CTXT, FIX)
 
+def disassemble_rgbaq(data, name):
+    R = (data >> 0 ) & 255
+    G = (data >> 8 ) & 255
+    B = (data >> 16) & 255
+    A = (data >> 24) & 255
+    Q = (data >> 32) & 0xFFFFFFFF
+
+    # TODO: Add option to display Q as a float
+    # q_bits = (data >> 32) & 0xFFFFFFFF
+    # Q = struct.unpack('f', struct.pack('I', q_bits))[0]
+
+    if Q == 0:
+        Q_str = '0'
+    else:
+        Q_str = f"0x{Q:08x}'"
+
+    return format_macro(name, R, G, B, A, Q_str)
+
 def disassemble_xyz(data, name):
     X = (data >> 0 ) & 0xffff     # bits 0-15
     Y = (data >> 16) & 0xffff     # bits 16-31
@@ -137,7 +156,7 @@ def disassemble_alpha(data, name):
 DISASSEMBLY_FUNCTIONS = {
     # Vertex info
     'PRIM':       lambda data: disassemble_prim(data, 'PRIM'),
-    'RGBAQ':      lambda data: disassemble_null(data, 'RGBAQ'),
+    'RGBAQ':      lambda data: disassemble_rgbaq(data, 'RGBAQ'),
     'ST':         lambda data: disassemble_null(data, 'ST'),
     'UV':         lambda data: disassemble_null(data, 'UV'),
     'XYZF2':      lambda data: disassemble_null(data, 'XYZF2'),
