@@ -1,4 +1,5 @@
 #include "menu/menusub.h"
+#include "menu/menu_mdl.h"
 
 /* .sdata */
 TSTEX_INF *tblTex;
@@ -118,7 +119,15 @@ INCLUDE_ASM(const s32, "menu/menusub", TsSetSaveData);
 
 INCLUDE_ASM(const s32, "menu/menusub", TsRestoreSaveData);
 
-INCLUDE_ASM(const s32, "menu/menusub", DateChgInt);
+int DateChgInt(u_int n)
+{
+    // Convert BCD to decimal
+    return 
+    (
+        ((n & 0xf0) >> 4) * 10 +
+         (n & 0xf)
+    );
+}
 
 INCLUDE_ASM(const s32, "menu/menusub", GetRankScoreID);
 
@@ -128,7 +137,17 @@ INCLUDE_ASM(const s32, "menu/menusub", TsMENU_SetMapScreen);
 
 INCLUDE_ASM(const s32, "menu/menusub", TsCheckTimeMapChange);
 
-INCLUDE_ASM(const s32, "menu/menusub", TsAnimeWait_withKeySkip);
+int TsAnimeWait_withKeySkip(u_int tpad, MN_SCENE *scene, int ltim, u_int bnk)
+{
+    if (bnk == -1)
+    {
+        return MNScene_isAnime(scene, ltim);
+    }
+    else
+    {
+        return MNScene_isAnimeBank(scene, ltim, bnk);
+    }
+}
 
 INCLUDE_ASM(const s32, "menu/menusub", TsMemCardCheck_Flow);
 
