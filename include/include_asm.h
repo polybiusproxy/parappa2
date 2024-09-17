@@ -12,8 +12,8 @@
         "\t.include \"asm/" BASE_FOLDER "/" FOLDER "/" #NAME ".s\"\n"  \
         "\t.set reorder\n"                                             \
         "\t.set at\n"                                                  \
-        "\t.globl\t" #NAME ".nonmatching\n"                            \
-        #NAME ".nonmatching" " = " #NAME "\n");
+        "\t.globl\t" #NAME ".NON_MATCHING\n"                            \
+        #NAME ".NON_MATCHING" " = " #NAME "\n");
 #define INCLUDE_ASM(TYPE, FOLDER, NAME, ARGS...) INCLUDE_ASM_INTERNAL(TYPE, "nonmatchings", FOLDER, NAME, ARGS)
 #endif
 
