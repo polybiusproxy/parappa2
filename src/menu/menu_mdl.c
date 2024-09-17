@@ -58,11 +58,11 @@ static void SetDrawEnv12(sceGsDrawEnv1 *pdenv)
         sceGsPutDrawEnv(&denvTag.giftag);
         sceGsSyncPath(0, 0);
 
-        denvTag.denv1.frame1addr = 0x4D;
-        denvTag.denv1.zbuf1addr = 0x4F;
-        denvTag.denv1.xyoffset1addr = 0x19;
-        denvTag.denv1.scissor1addr = 0x41;
-        denvTag.denv1.test1addr = 0x48;
+        denvTag.denv1.frame1addr    = SCE_GS_FRAME_2;
+        denvTag.denv1.zbuf1addr     = SCE_GS_ZBUF_2;
+        denvTag.denv1.xyoffset1addr = SCE_GS_XYOFFSET_2;
+        denvTag.denv1.scissor1addr  = SCE_GS_SCISSOR_2;
+        denvTag.denv1.test1addr     = SCE_GS_TEST_2;
         FlushCache(0);
 
         sceGsPutDrawEnv(&denvTag.giftag);
@@ -111,17 +111,85 @@ INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_CopyState);
 
 INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_CopyStateMdl);
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_SetAnimeSpeed);
+void MNScene_SetAnimeSpeed(MN_SCENE *pshdl, int nAnime, int speed)
+{
+    if (nAnime >= 10)
+        return;
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_SetAnimeEnd);
+    pshdl->speed[nAnime] = speed;
+}
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_SetAnimeBankEnd);
+void MNScene_SetAnimeEnd(MN_SCENE *pshdl)
+{
+    int        i;
+    MNANM_TBL *panm;
+
+    for (i = 0; i < 10; i++)
+    {
+        panm = pshdl->anime[i];
+
+        if (panm == NULL)
+            continue;
+
+        if (panm->kind - 1 > 1u)
+            pshdl->time[i] = panm->etime;
+    }
+
+    MNScene_SetAnimete(pshdl);
+}
+
+void MNScene_SetAnimeBankEnd(MN_SCENE *pshdl, u_int bnk)
+{
+    int        i;
+    MNANM_TBL *panm;
+
+    if ((int)bnk >= 0)
+    {
+        panm = pshdl->anime[bnk];
+
+        if (panm != NULL)
+        {
+            if (panm->kind != 1 && panm->kind != 2)
+                pshdl->time[bnk] = panm->etime;
+        }
+    }
+    else
+    {       
+        for (i = 0; i < 10; i++, bnk >>= 1)
+        {
+            if (bnk & 1)
+            {
+                panm = pshdl->anime[i];
+
+                if (panm != NULL)
+                {
+                    if (panm->kind != 1 && panm->kind != 2)
+                        pshdl->time[i] = panm->etime;
+                }
+            }
+        }
+    }
+
+    MNScene_SetAnimete(pshdl);
+}
 
 INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_isAnime);
 
 INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_isAnimeBank);
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_isSeniAnime);
+int MNScene_isSeniAnime(MN_SCENE *pshdl)
+{
+    int      mn;
+    MN_HMDL *mdl = pshdl->mdl;
+
+    for (mn = 0; mn < pshdl->nmdl; mn++, mdl++)
+    {
+        if (mdl->bABlend)
+            return 1;
+    }
+
+    return 0;
+}
 
 int MNScene_ModelDispSw(MN_SCENE *pshdl, int nmdl, int bsw)
 {
@@ -178,7 +246,58 @@ static void _myVu0Length(float *v0, float *v1)
     " :: "r"(v0), "r"(v1));
 }
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MnMoveMode_InitRoot);
+static void MnMoveMode_InitRoot(int movNo)
+{
+    int      i;
+
+    PRPROOT *prt;
+    PRPOS   *ppos;
+    float    flen;
+
+    prt  = &PRP_RootTbl[movNo & ~0x80];
+    ppos = prt->ppos;
+    flen = 0.0f;
+
+    for (i = 1; i < prt->npos; i++)
+    {
+        float flen0;
+        sceVu0FVECTOR v0;
+        sceVu0FVECTOR v1;
+
+        v0[0] = ppos[i - 1].x;
+        v0[1] = ppos[i - 1].y;
+        v0[2] = ppos[i - 1].z;
+        v0[3] = 0.0f;
+
+        v1[0] = ppos[i].x;
+        v1[1] = ppos[i].y;
+        v1[2] = ppos[i].z;
+        v1[3] = 0.0f;
+
+        sceVu0SubVector(v0, v1, v0);
+        _myVu0Length(&flen0, v0);
+        flen += flen0;
+
+        ppos[i].dist = flen;
+        ppos[i].rly = atan2f(v0[0], v0[2]);
+    }
+
+    ppos->dist = 0.0f;
+
+    if (prt->npos >= 2)
+        ppos->rly = ppos[1].rly;
+    else
+        ppos->rly = 0.0f;
+
+    if (flen == 0.0f)
+        flen = 1.0f;
+
+    flen = (1.0f / flen);
+    for (i = 1; i < prt->npos; i++)
+    {
+        ppos[i].dist *= flen;
+    }
+}
 
 INCLUDE_ASM(const s32, "menu/menu_mdl", _MnParMovRoot_GetPos);
 static void _MnParMovRoot_GetPos(/* a0 4 */ PRPROOT *prt, /* f12 50 */ float rate, /* a1 5 */ float *pos);

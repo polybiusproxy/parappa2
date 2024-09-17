@@ -1842,6 +1842,9 @@ sceSifRebootIop                     = 0x00160f60; // type:func
 sceSifLoadFileReset                 = 0x001601f0; // type:func
 sceSifLoadModule                    = 0x00160a60; // type:func
 
+// libvu0.c
+sceVu0SubVector                     = 0x001618b0; // type:func
+
 // eecdvd.c
 sceCdSearchFile                     = 0x001629b0; // type:func
 sceCdSync                           = 0x00162eb8; // type:func
@@ -1863,6 +1866,9 @@ sceMcDelete                         = 0x00164bd0; // type:func
 
 // ee/gcc/src/newlib/libm/math/sf_sin.c
 sinf                                = 0x001654a0; // type:func
+
+// ee/gcc/src/newlib/libm/math/wf_atan2.c
+atan2f                              = 0x00165730; // type:func
 
 // ee/gcc/src/gcc/libgcc2.c
 __main                              = 0x001680b0; // type:func
