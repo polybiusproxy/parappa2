@@ -267,7 +267,40 @@ INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_AddUserBroken);
 
 INCLUDE_ASM(const s32, "menu/p3mc", P3MC_SortUser);
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_CheckBrokenUser);
+int P3MC_CheckBrokenUser(P3MC_USRLST *pUser, int mode)
+{
+    int         nmuser;
+    USER_DATA **pmuser;
+
+    int i;
+    int nBrk = 0;
+
+    if (mode & 1)
+    {
+        pmuser = pUser->plog_user;
+        nmuser = pUser->nLogGet;
+
+        for (i = 0; i < nmuser; i++, pmuser++)
+        {
+            if ((*pmuser)->flg == 2)
+                nBrk++;
+        }
+    }
+
+    if (mode & 2)
+    {
+        pmuser = pUser->prep_user;
+        nmuser = pUser->nRepGet;
+
+        for (i = 0; i < nmuser; i++, pmuser++)
+        {
+            if ((*pmuser)->flg == 2)
+                nBrk++;
+        }
+    }
+
+    return nBrk;
+}
 
 void P3MC_OpeningCheckStart(void)
 {
@@ -340,7 +373,6 @@ void P3MC_SetUserWorkTime(USER_DATA *puser)
     sceCdCLOCK clock;
 
     err = sceCdReadClock(&clock);
-
     puser->date_pad = rand() % 200;
 
     if (err != 0 && clock.stat == 0)
