@@ -71,7 +71,7 @@ segments:
         - [0x20720, c, main/main]
         - [0x22dc8, c, main/cmnfile]
         - [0x22f68, c, main/p3str]
-        - [0x23c50, asm, main/commake]
+        - [0x23c50, c, main/commake]
 
         - [0x24a10, c, menu/menu]
         - [0x24d98, c, menu/menudata]
@@ -304,7 +304,7 @@ segments:
         - { start: 0x29aa1c, type: bss,  vram: 0x01c72000, name: main/pack      }
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c73018, name: main/etc       }
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c730e8, name: main/mcctrl    }
-        # - { start: 0x29aa1c, type: bss,  vram: 0x01c77630, name: main/main      }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c77630, name: main/main      }
         - { start: 0x29aa1c, type: bss,  vram: 0x01c77640, name: main/p3str     }
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c77700, name: main/commake   }
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c778c8, name: menu/menu      }

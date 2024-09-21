@@ -994,6 +994,45 @@ p3str_sort_cnt                      = 0x00399ab8;
 
 p3str_sort                          = 0x01c77640; // size:0x108
 
+// main/commake.c
+setMakinDataMoto                    = 0x00122c50; // type:func
+getMakingDataKeyKind                = 0x00122cb0; // type:func
+getMakingDataKeyCnt                 = 0x00122d10; // type:func
+setMakingDataCopy                   = 0x00122d90; // type:func
+setMakingDataCopyCnt                = 0x00122dc8; // type:func
+setMakingDataCOMMAKE_STR            = 0x00122e00; // type:func
+getMakinKeyKind2KeyKindNum          = 0x00122e50; // type:func
+comMakeSSmaxCntGet                  = 0x00122e80; // type:func
+comMakeSSminCntGet                  = 0x00122ec0; // type:func
+comMakeSubYure                      = 0x00122f08; // type:func
+comMakeSubYureReset                 = 0x00122f88; // type:func
+comMakeSubChangeKey                 = 0x00122fb0; // type:func
+comMakeSubSwapKey                   = 0x00123018; // type:func
+comMakeSubSwapCntKey                = 0x00123050; // type:func
+comMakeSubDoubleKey                 = 0x001230a8; // type:func
+comMakeSubSpaceSearch               = 0x001230e0; // type:func
+comMakeSubUseKeyCode                = 0x00123138; // type:func
+comMakingNo0                        = 0x001231a0; // type:func
+comMakingNo1                        = 0x00123250; // type:func
+comMakingNo2                        = 0x00123348; // type:func
+comMakingNo3                        = 0x00123390; // type:func
+comMakingNo5                        = 0x00123458; // type:func
+comMakingNo6                        = 0x001234b8; // type:func
+comMakingNo7                        = 0x00123518; // type:func
+comMakingNo8                        = 0x001235d8; // type:func
+comMakingNo9                        = 0x00123638; // type:func
+comMakingNo15                       = 0x00123698; // type:func
+comMakingNo16                       = 0x001237d0; // type:func
+comSelection                        = 0x00123868; // type:func
+computerMaking                      = 0x00123908; // type:func
+
+comMakeingTblLevel0                 = 0x001874f0;
+comMakeingTblLevel1                 = 0x00187510;
+comMakeingTblLevel2                 = 0x00187530;
+comMakeingTblLevel3                 = 0x00187548;
+
+cm_str_ctrl                         = 0x01c77700; // size:0x1c4
+
 // menu/menu.c
 menuDraw                            = 0x00123a10; // type:func
 menuDrawReq                         = 0x00123a30; // type:func
