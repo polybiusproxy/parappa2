@@ -133,6 +133,23 @@ def disassemble_xyz(data, name):
 
     return f"SCE_GS_SET_{name}(GS_X_COORD({SCREEN_X}), GS_Y_COORD({SCREEN_Y}), {Z})"
 
+def disassemble_tex0(data, name):
+    TBP0 = (data >> 0 ) & 0x3fff
+    TBW  = (data >> 14) & 0x3f
+    PSM  = (data >> 20) & 0x3f
+    TW   = (data >> 26) & 0xf
+    TH   = (data >> 30) & 0xf
+    TCC  = (data >> 34) & 0x1
+    TFX  = (data >> 35) & 0x3
+    CBP  = (data >> 37) & 0x3fff
+    CPSM = (data >> 51) & 0xf
+    CSM  = (data >> 55) & 0x1
+    CSA  = (data >> 56) & 0x1f
+    CLD  = (data >> 61) & 0x7
+
+    return format_macro(name, TBP0, TBW, PSM, TW, TH, TCC, TFX,
+                        CBP, CPSM, CSM, CSA, CLD)
+
 def disassemble_tex1(data, name):
     LCM  = (data >> 0 ) & 0b1   # bit 0
     MXL  = (data >> 2 ) & 0b111 # bits 2-4
@@ -170,8 +187,8 @@ DISASSEMBLY_FUNCTIONS = {
 
     # Drawing attributes
     'PRMODE':     lambda data: disassemble_null(data, 'PRMODE'),
-    'TEX0_1':     lambda data: disassemble_null(data, 'TEX0_1'),
-    'TEX0_2':     lambda data: disassemble_null(data, 'TEX0_2'),
+    'TEX0_1':     lambda data: disassemble_tex0(data, 'TEX0_1'),
+    'TEX0_2':     lambda data: disassemble_tex0(data, 'TEX0_2'),
     'TEX1_1':     lambda data: disassemble_tex1(data, 'TEX1_1'),
     'TEX1_2':     lambda data: disassemble_tex1(data, 'TEX1_2'),
     'TEX2_1':     lambda data: disassemble_null(data, 'TEX2_1'),
