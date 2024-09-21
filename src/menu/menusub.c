@@ -73,9 +73,21 @@ INCLUDE_ASM(const s32, "menu/menusub", TSNumMov);
 
 INCLUDE_ASM(const s32, "menu/menusub", TSNumRBack);
 
-INCLUDE_ASM(const s32, "menu/menusub", TSLOOP);
+static int TSLOOP(int no, int max)
+{
+    return (no + max) % max;
+}
 
-INCLUDE_ASM(const s32, "menu/menusub", TSLIMIT);
+static int TSLIMIT(int no, int min, int max)
+{
+    if (no < min)
+        return min;
+
+    if (no >= max)
+        return max - 1;
+    
+    return no;
+}
 
 INCLUDE_ASM(const s32, "menu/menusub", TsMENU_GetMapNo);
 
