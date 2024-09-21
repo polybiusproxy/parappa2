@@ -35,10 +35,10 @@ int isFileFlgCash;
 extern u_char McLogFileFlg[80];
 extern u_char McReplayFileFlg[80];
 
-static char* _P3MC_GetFilePath(int mode, int fileNo);
+/* static */ char* _P3MC_GetFilePath(int mode, int fileNo);
 static void  _P3MC_dataCheckFunc(P3MC_WORK *pw, P3MCDataCheckFunc funcp);
 static int   _P3MC_CheckUserData(P3MC_WORK *pw);
-static int   _P3MC_CheckUserDataHead(P3MC_WORK *pw);
+/* static */ int   _P3MC_CheckUserDataHead(P3MC_WORK *pw);
 
 INCLUDE_ASM(const s32, "menu/p3mc", P3MC_GetIconSize);
 

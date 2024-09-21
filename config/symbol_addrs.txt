@@ -992,7 +992,7 @@ adrd_common                         = 0x00399ab0;
 adrd_common_cnt                     = 0x00399ab4;
 p3str_sort_cnt                      = 0x00399ab8;
 
-p3str_sort                          = 0x01c77640; // size:0x108
+p3str_sort                          = 0x01c77640; // size:0xC0
 
 // main/commake.c
 setMakinDataMoto                    = 0x00122c50; // type:func

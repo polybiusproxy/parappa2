@@ -306,7 +306,7 @@ segments:
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c730e8, name: main/mcctrl    }
         - { start: 0x29aa1c, type: bss,  vram: 0x01c77630, name: main/main      }
         - { start: 0x29aa1c, type: bss,  vram: 0x01c77640, name: main/p3str     }
-        # - { start: 0x29aa1c, type: bss,  vram: 0x01c77700, name: main/commake   }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c77700, name: main/commake   }
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c778c8, name: menu/menu      }
         - { start: 0x29aa1c, type: bss,  vram: 0x01c77a50, name: menu/menusub   }
         - { start: 0x29aa1c, type: bss,  vram: 0x01c81100, name: menu/p3mc      }

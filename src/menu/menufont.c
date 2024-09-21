@@ -28,9 +28,9 @@ float D_003990D0;
 float D_003990D4;
 float D_003990D8;
 
-static int  _JPFont_GetSubtCode(u_char *str, SUBT_CODE *subt_code);
+/* static */ int  _JPFont_GetSubtCode(u_char *str, SUBT_CODE *subt_code);
 static int  _EGFont_GetSubtCode(u_char *str, SUBT_CODE *subt_code, MCODE_DAT *pfnt_ascii);
-static void _PKFontPut(SPR_PKT pk, SPR_PRM *spr, SUBT_CODE *psubt, int line_num, int xp, int yp, int pflg, int hsize, float rtx, float rty);
+/* static */ void _PKFontPut(SPR_PKT pk, SPR_PRM *spr, SUBT_CODE *psubt, int line_num, int xp, int yp, int pflg, int hsize, float rtx, float rty);
 
 static MCODE_DAT* codeKanjiACheck(u_char dat0, u_char dat1, MCODE_KANJI_ANIME *kcode_pp, int kcode_max);
 static void euc2sjis(unsigned char *c1, unsigned char *c2);
