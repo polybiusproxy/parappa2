@@ -83,7 +83,7 @@ void ScrTapDbuffCtrlInit(void *data_top, int bk0, int bk1)
     scr_snd_dbuff.sndrec_pp[1] = NULL;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrTapDbuffSet);
+INCLUDE_ASM("main/scrctrl", ScrTapDbuffSet);
 
 void ScrTapDbuffSetSp(SNDREC *sndrec_pp, int id)
 {
@@ -326,9 +326,9 @@ void vsTapdatSetMemorySave(void)
 }
 
 /* https://decomp.me/scratch/ZjsvF */
-INCLUDE_ASM(const s32, "main/scrctrl", vsTapdatSetMemoryLoad);
+INCLUDE_ASM("main/scrctrl", vsTapdatSetMemoryLoad);
 
-INCLUDE_ASM(const s32, "main/scrctrl", vsTapdatSet);
+INCLUDE_ASM("main/scrctrl", vsTapdatSet);
 
 void vsTapdatSetMoto(SCORE_INDV_STR *sindv_pp)
 {
@@ -384,7 +384,7 @@ static void followTapSave(SCORE_INDV_STR *sindv_pp)
     }
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", followTapLoad);
+INCLUDE_ASM("main/scrctrl", followTapLoad);
 #if 0
 static SCR_TAP_MEMORY* followTapLoad(int pos, int time)
 {
@@ -461,7 +461,7 @@ void KeyCntClear(int *key_pp)
     }
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlCurrentSearch);
+INCLUDE_ASM("main/scrctrl", ScrCtrlCurrentSearch);
 SCRREC* ScrCtrlCurrentSearch(/* a0 4 */ SCORE_INDV_STR *sindv_pp, /* a3 7 */ int index, /* a2 6 */ int frame);
 #if 0
 {
@@ -571,7 +571,7 @@ void ScrCtrlExamClearIndv(SCR_EXAM_STR *sexam_pp)
     sexam_pp->exam_start = -1;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvNextTime);
+INCLUDE_ASM("main/scrctrl", ScrCtrlIndvNextTime);
 int ScrCtrlIndvNextTime(/* a0 4 */ SCORE_INDV_STR *sindv_pp, /* a1 5 */ int Ncnt);
 #if 0
 {
@@ -596,7 +596,7 @@ int ScrCtrlIndvNextTime(/* a0 4 */ SCORE_INDV_STR *sindv_pp, /* a1 5 */ int Ncnt
 }
 #endif
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvNextReadLine);
+INCLUDE_ASM("main/scrctrl", ScrCtrlIndvNextReadLine);
 int ScrCtrlIndvNextReadLine(/* t0 8 */ SCORE_INDV_STR *sindv_pp, /* t2 10 */ int ckf);
 
 int getLvlTblRand(TAPLVL_DAT *taplvl_dat_pp)
@@ -621,7 +621,7 @@ int getLvlTblRand(TAPLVL_DAT *taplvl_dat_pp)
     return ret;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", tapLevelChangeSub);
+INCLUDE_ASM("main/scrctrl", tapLevelChangeSub);
 int tapLevelChangeSub(void);
 #if 0
 {
@@ -734,7 +734,7 @@ void tapLevelChange(SCORE_INDV_STR *sindv_pp)
     printf("            after [%d]\n\n", add_move);
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvNextRead);
+INCLUDE_ASM("main/scrctrl", ScrCtrlIndvNextRead);
 #if 0
 void ScrCtrlIndvNextRead(/* s0 16 */ SCORE_INDV_STR *sindv_pp, /* a1 5 */ int tap_res_f)
 {
@@ -1053,7 +1053,7 @@ static int useIndevCodeGet(void)
     return ret;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", targetTimeGet);
+INCLUDE_ASM("main/scrctrl", targetTimeGet);
 int targetTimeGet(/* a0 4 */ int line, /* a1 5 */ int time, /* a2 6 */ int codeAll);
 
 void useIndevSndKill(void)
@@ -1184,7 +1184,7 @@ void tapReqGroup(TAPCT *tapct_pp, PLAYER_INDEX pindex, int sndId, u_char *tappre
     tap_groupe_str[pindex].tappress_pp = tappress_pp;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", tapReqGroupPoll);
+INCLUDE_ASM("main/scrctrl", tapReqGroupPoll);
 #if 0
 void tapReqGroupPoll(void)
 {
@@ -1226,7 +1226,7 @@ void tapReqGroupPoll(void)
 }
 #endif
 
-INCLUDE_ASM(const s32, "main/scrctrl", tapEventCheck);
+INCLUDE_ASM("main/scrctrl", tapEventCheck);
 
 static int otehon_all_make(EXAM_CHECK *ec_pp)
 {
@@ -1246,7 +1246,7 @@ static int otehon_all_make(EXAM_CHECK *ec_pp)
 
 static int thnum_get(int p96_num, CK_TH_ENUM ckth);
 
-INCLUDE_ASM(const s32, "main/scrctrl", treateTimeChange);
+INCLUDE_ASM("main/scrctrl", treateTimeChange);
 #if 0
 static int treateTimeChange(/* s0 16 */ int time)
 {
@@ -1304,7 +1304,7 @@ static int MapNormalNumGet(int time)
     return thnum_get(time / 4, CK_TH_NORMAL);
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", on_th_make);
+INCLUDE_ASM("main/scrctrl", on_th_make);
 
 /* TODO(poly): Make these static once .data is migrated */
 /* static */ int exh_normal_add(EXAM_CHECK *ec_pp)
@@ -1338,7 +1338,7 @@ INCLUDE_ASM(const s32, "main/scrctrl", on_th_make);
     return ret;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_nombar_sub);
+INCLUDE_ASM("main/scrctrl", exh_nombar_sub);
 #if 0
 static int exh_nombar_sub(/* s2 18 */ EXAM_CHECK *ec_pp)
 {
@@ -1372,59 +1372,59 @@ static int exh_nombar_sub(/* s2 18 */ EXAM_CHECK *ec_pp)
 }
 #endif
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_mbar_key_out);
+INCLUDE_ASM("main/scrctrl", exh_mbar_key_out);
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_mbar_time_out);
+INCLUDE_ASM("main/scrctrl", exh_mbar_time_out);
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_mbar_num_out);
+INCLUDE_ASM("main/scrctrl", exh_mbar_num_out);
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_yaku);
+INCLUDE_ASM("main/scrctrl", exh_yaku);
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_yaku_original);
+INCLUDE_ASM("main/scrctrl", exh_yaku_original);
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_yaku_hane);
+INCLUDE_ASM("main/scrctrl", exh_yaku_hane);
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_allkey_out);
+INCLUDE_ASM("main/scrctrl", exh_allkey_out);
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_allkey_out_nh);
+INCLUDE_ASM("main/scrctrl", exh_allkey_out_nh);
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_command);
+INCLUDE_ASM("main/scrctrl", exh_command);
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_renda_out);
+INCLUDE_ASM("main/scrctrl", exh_renda_out);
 
-INCLUDE_ASM(const s32, "main/scrctrl", manemane_check_sub);
+INCLUDE_ASM("main/scrctrl", manemane_check_sub);
 
-INCLUDE_ASM(const s32, "main/scrctrl", manemane_check);
+INCLUDE_ASM("main/scrctrl", manemane_check);
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_mane);
+INCLUDE_ASM("main/scrctrl", exh_mane);
 
-INCLUDE_ASM(const s32, "main/scrctrl", exh_all_add);
+INCLUDE_ASM("main/scrctrl", exh_all_add);
 
-INCLUDE_ASM(const s32, "main/scrctrl", IndvGetTapSetAdrs);
+INCLUDE_ASM("main/scrctrl", IndvGetTapSetAdrs);
 TAPSET* IndvGetTapSetAdrs(/* a0 4 */ SCORE_INDV_STR *sindv_pp);
 
-INCLUDE_ASM(const s32, "main/scrctrl", nextExamTime);
+INCLUDE_ASM("main/scrctrl", nextExamTime);
 
-INCLUDE_ASM(const s32, "main/scrctrl", GetSindvPcodeLine);
+INCLUDE_ASM("main/scrctrl", GetSindvPcodeLine);
 SCORE_INDV_STR* GetSindvPcodeLine(/* a0 4 */ PLAYER_CODE pcode);
 
-INCLUDE_ASM(const s32, "main/scrctrl", ExamScoreCheck);
+INCLUDE_ASM("main/scrctrl", ExamScoreCheck);
 
-INCLUDE_ASM(const s32, "main/scrctrl", ExamScoreCheckSame);
+INCLUDE_ASM("main/scrctrl", ExamScoreCheckSame);
 
-INCLUDE_ASM(const s32, "main/scrctrl", levelChangeCheck);
+INCLUDE_ASM("main/scrctrl", levelChangeCheck);
 
-INCLUDE_ASM(const s32, "main/scrctrl", levelUpRank);
+INCLUDE_ASM("main/scrctrl", levelUpRank);
 
-INCLUDE_ASM(const s32, "main/scrctrl", levelDownRank);
+INCLUDE_ASM("main/scrctrl", levelDownRank);
 
-INCLUDE_RODATA(const s32, "main/scrctrl", D_00392D30);
+INCLUDE_RODATA("main/scrctrl", D_00392D30);
 
-INCLUDE_RODATA(const s32, "main/scrctrl", D_00392D40);
+INCLUDE_RODATA("main/scrctrl", D_00392D40);
 
-INCLUDE_RODATA(const s32, "main/scrctrl", D_00392D88);
+INCLUDE_RODATA("main/scrctrl", D_00392D88);
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrMoveSetSub);
+INCLUDE_ASM("main/scrctrl", ScrMoveSetSub);
 #if 0
 void ScrMoveSetSub(SCORE_INDV_STR *sindv_pp, /* s0 16 */ int Pnum, /* s4 20 */ int sub_job, /* s1 17 */ int sub_time, /* s6 22 */ int goto_job, /* s7 23 */ int goto_time, /* fp 30 */ int start_move_line, /* s3 19 */ int start_move_time)
 {
@@ -1491,9 +1491,9 @@ void ScrMoveSetSub(SCORE_INDV_STR *sindv_pp, /* s0 16 */ int Pnum, /* s4 20 */ i
 
 /* Big function! Decompiler discretion advised */
 /*      https://decomp.me/scratch/woLno        */
-INCLUDE_ASM(const s32, "main/scrctrl", ScrExamSetCheck);
+INCLUDE_ASM("main/scrctrl", ScrExamSetCheck);
 
-INCLUDE_ASM(const s32, "main/scrctrl", subjobEvent);
+INCLUDE_ASM("main/scrctrl", subjobEvent);
 #if 0
 void subjobEvent(/* s1 17 */ SCORE_INDV_STR *sindv_pp, /* s6 22 */ int ctime_next)
 {
@@ -1629,7 +1629,7 @@ void subjobEvent(/* s1 17 */ SCORE_INDV_STR *sindv_pp, /* s6 22 */ int ctime_nex
 }
 #endif
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlIndvJob);
+INCLUDE_ASM("main/scrctrl", ScrCtrlIndvJob);
 
 static void ScrTimeRenew(SCR_MAIN *scr_main_pp)
 {
@@ -1668,7 +1668,7 @@ static void ScrTimeRenew(SCR_MAIN *scr_main_pp)
 }
 
 #ifndef NON_MATCHING
-INCLUDE_ASM(const s32, "main/scrctrl", ScrMbarReq);
+INCLUDE_ASM("main/scrctrl", ScrMbarReq);
 #else
 void ScrMbarReq(/* s5 21 */ int mbarTime)
 {
@@ -1756,7 +1756,7 @@ void allTimeCallbackTimeSetChanTempo(int time)
     }
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", SetIndvDrawTblLine);
+INCLUDE_ASM("main/scrctrl", SetIndvDrawTblLine);
 #if 0
 int SetIndvDrawTblLine(/* s0 16 */ SCORE_INDV_STR *sindv_pp)
 {
@@ -1790,7 +1790,7 @@ int SetIndvDrawTblLine(/* s0 16 */ SCORE_INDV_STR *sindv_pp)
 }
 #endif
 
-INCLUDE_ASM(const s32, "main/scrctrl", otehonSetCheck);
+INCLUDE_ASM("main/scrctrl", otehonSetCheck);
 #if 0
 static int otehonSetCheck(void)
 {
@@ -1814,8 +1814,8 @@ static int otehonSetCheck(void)
 }
 #endif
 
-// INCLUDE_RODATA(const s32, "main/scrctrl", D_00392F70);
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlMainLoop);
+// INCLUDE_RODATA("main/scrctrl", D_00392F70);
+INCLUDE_ASM("main/scrctrl", ScrCtrlMainLoop);
 
 GET_TIME_TYPE GetTimeType(int scr_line)
 {
@@ -1852,14 +1852,14 @@ void SetLineChannel(int scr_line)
     }
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", SetIndvCdChannel);
+INCLUDE_ASM("main/scrctrl", SetIndvCdChannel);
 
-INCLUDE_ASM(const s32, "main/scrctrl", CheckIndvCdChannel);
+INCLUDE_ASM("main/scrctrl", CheckIndvCdChannel);
 int CheckIndvCdChannel(/* s1 17 */ SCORE_INDV_STR *sindv_pp, /* s0 16 */ u_char *chantmp);
 
-// INCLUDE_RODATA(const s32, "main/scrctrl", dbg_tbl_msg);
+// INCLUDE_RODATA("main/scrctrl", dbg_tbl_msg);
 
-INCLUDE_ASM(const s32, "main/scrctrl", ScrCtrlInit);
+INCLUDE_ASM("main/scrctrl", ScrCtrlInit);
 
 void ScrCtrlQuit(void)
 {
@@ -1914,13 +1914,13 @@ int ScrEndWaitLoop(void)
     return gameEndWaitLoop;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", bonusGameInit);
+INCLUDE_ASM("main/scrctrl", bonusGameInit);
 
-INCLUDE_ASM(const s32, "main/scrctrl", bonusGameCntPls);
+INCLUDE_ASM("main/scrctrl", bonusGameCntPls);
 
-INCLUDE_ASM(const s32, "main/scrctrl", bonusPointSave);
+INCLUDE_ASM("main/scrctrl", bonusPointSave);
 
-INCLUDE_ASM(const s32, "main/scrctrl", bngTapEventCheck);
+INCLUDE_ASM("main/scrctrl", bngTapEventCheck);
 void bngTapEventCheck(/* s1 17 */ SCORE_INDV_STR *sindv_pp, /* t0 8 */ int num, /* s3 19 */ int id);
 
 void bonusGameParaReq(BNG_ACT_P_ENUM actnum)
@@ -1957,7 +1957,7 @@ static int bonus_pls_point_sub(int wtime)
         return 5;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", bonusGameCtrl);
+INCLUDE_ASM("main/scrctrl", bonusGameCtrl);
 
 static u_long hex2dec(u_long data)
 {
@@ -1978,7 +1978,7 @@ static u_long hex2dec(u_long data)
     return ret;
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", bnNumberDisp);
+INCLUDE_ASM("main/scrctrl", bnNumberDisp);
 void bnNumberDisp(sceGifPacket *gif_pp, long score, short x, short y, int keta, int tate, int type);
 
 static void bonusScoreDraw(void)
@@ -2032,7 +2032,7 @@ static void set_lero_gifset(sceGifPacket *gifpk_pp, LERO_TIM2_PT *let2_pp, short
                                                            (yp + 2048 + let2_pp->h) << 4, 1));
 }
 
-INCLUDE_ASM(const s32, "main/scrctrl", LessonRoundDisp);
+INCLUDE_ASM("main/scrctrl", LessonRoundDisp);
 #if 0
 static void LessonRoundDisp(SCRRJ_LESSON_ROUND_ENUM type)
 {

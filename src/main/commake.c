@@ -1,24 +1,24 @@
 #include "main/commake.h"
 
-INCLUDE_ASM(const s32, "main/commake", setMakinDataMoto);
+INCLUDE_ASM("main/commake", setMakinDataMoto);
 
-INCLUDE_ASM(const s32, "main/commake", getMakingDataKeyKind);
+INCLUDE_ASM("main/commake", getMakingDataKeyKind);
 
-INCLUDE_ASM(const s32, "main/commake", getMakingDataKeyCnt);
+INCLUDE_ASM("main/commake", getMakingDataKeyCnt);
 
-INCLUDE_ASM(const s32, "main/commake", setMakingDataCopy);
+INCLUDE_ASM("main/commake", setMakingDataCopy);
 
-INCLUDE_ASM(const s32, "main/commake", setMakingDataCopyCnt);
+INCLUDE_ASM("main/commake", setMakingDataCopyCnt);
 
-INCLUDE_ASM(const s32, "main/commake", setMakingDataCOMMAKE_STR);
+INCLUDE_ASM("main/commake", setMakingDataCOMMAKE_STR);
 
-INCLUDE_ASM(const s32, "main/commake", getMakinKeyKind2KeyKindNum);
+INCLUDE_ASM("main/commake", getMakinKeyKind2KeyKindNum);
 
-INCLUDE_ASM(const s32, "main/commake", comMakeSSmaxCntGet);
+INCLUDE_ASM("main/commake", comMakeSSmaxCntGet);
 
-INCLUDE_ASM(const s32, "main/commake", comMakeSSminCntGet);
+INCLUDE_ASM("main/commake", comMakeSSminCntGet);
 
-INCLUDE_ASM(const s32, "main/commake", comMakeSubYure);
+INCLUDE_ASM("main/commake", comMakeSubYure);
 
 void comMakeSubYureReset(CM_STR *cms_pp, int cnt)
 {
@@ -33,7 +33,7 @@ void comMakeSubYureReset(CM_STR *cms_pp, int cnt)
     }
 }
 
-INCLUDE_ASM(const s32, "main/commake", comMakeSubChangeKey);
+INCLUDE_ASM("main/commake", comMakeSubChangeKey);
 
 void comMakeSubSwapKey(CM_STR *cms_pp, int cnt, int swKey1, int swKey2)
 {
@@ -52,16 +52,16 @@ void comMakeSubSwapKey(CM_STR *cms_pp, int cnt, int swKey1, int swKey2)
     }
 }
 
-INCLUDE_ASM(const s32, "main/commake", comMakeSubSwapCntKey);
+INCLUDE_ASM("main/commake", comMakeSubSwapCntKey);
 
-INCLUDE_ASM(const s32, "main/commake", comMakeSubDoubleKey);
+INCLUDE_ASM("main/commake", comMakeSubDoubleKey);
 
-INCLUDE_ASM(const s32, "main/commake", comMakeSubSpaceSearch);
+INCLUDE_ASM("main/commake", comMakeSubSpaceSearch);
 
-INCLUDE_ASM(const s32, "main/commake", comMakeSubUseKeyCode);
+INCLUDE_ASM("main/commake", comMakeSubUseKeyCode);
 
 #ifndef NON_MATCHING
-INCLUDE_ASM(const s32, "main/commake", comMakingNo0);
+INCLUDE_ASM("main/commake", comMakingNo0);
 #else
 void comMakingNo0(CM_STR_CTRL *cmstr_pp)
 {
@@ -88,17 +88,17 @@ void comMakingNo0(CM_STR_CTRL *cmstr_pp)
 }
 #endif
 
-INCLUDE_ASM(const s32, "main/commake", comMakingNo1);
+INCLUDE_ASM("main/commake", comMakingNo1);
 
-INCLUDE_ASM(const s32, "main/commake", comMakingNo2);
+INCLUDE_ASM("main/commake", comMakingNo2);
 
-INCLUDE_ASM(const s32, "main/commake", comMakingNo3);
+INCLUDE_ASM("main/commake", comMakingNo3);
 
-INCLUDE_ASM(const s32, "main/commake", comMakingNo5);
+INCLUDE_ASM("main/commake", comMakingNo5);
 
-INCLUDE_ASM(const s32, "main/commake", comMakingNo6);
+INCLUDE_ASM("main/commake", comMakingNo6);
 
-INCLUDE_ASM(const s32, "main/commake", comMakingNo7);
+INCLUDE_ASM("main/commake", comMakingNo7);
 
 void comMakingNo8(CM_STR_CTRL *cmstr_pp)
 {
@@ -118,10 +118,10 @@ void comMakingNo9(CM_STR_CTRL *cmstr_pp)
     comMakeSubYure(cmstr_pp->cm_str_make, cmstr_pp->maxBox, -2, 2);
 }
 
-INCLUDE_ASM(const s32, "main/commake", comMakingNo15);
+INCLUDE_ASM("main/commake", comMakingNo15);
 
-INCLUDE_ASM(const s32, "main/commake", comMakingNo16);
+INCLUDE_ASM("main/commake", comMakingNo16);
 
-INCLUDE_ASM(const s32, "main/commake", comSelection);
+INCLUDE_ASM("main/commake", comSelection);
 
-INCLUDE_ASM(const s32, "main/commake", computerMaking);
+INCLUDE_ASM("main/commake", computerMaking);

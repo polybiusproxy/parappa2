@@ -37,9 +37,9 @@ int MNSceneGetMusicFitTimer(void)
     return AMusicFitTime;
 }
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_Init);
+INCLUDE_ASM("menu/menu_mdl", MNScene_Init);
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_End);
+INCLUDE_ASM("menu/menu_mdl", MNScene_End);
 
 static void SetDrawEnv12(sceGsDrawEnv1 *pdenv)
 {
@@ -70,13 +70,13 @@ static void SetDrawEnv12(sceGsDrawEnv1 *pdenv)
     }
 }
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_Draw);
+INCLUDE_ASM("menu/menu_mdl", MNScene_Draw);
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_DispSw);
+INCLUDE_ASM("menu/menu_mdl", MNScene_DispSw);
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_SetAnimete);
+INCLUDE_ASM("menu/menu_mdl", MNScene_SetAnimete);
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_StartAnime);
+INCLUDE_ASM("menu/menu_mdl", MNScene_StartAnime);
 
 void MNScene_ContinueAnime(MN_SCENE *pshdl, int no, MNANM_TBL *anime)
 {
@@ -105,11 +105,11 @@ void MNScene_StopAnime(MN_SCENE *pshdl,int no)
     MNScene_ContinueAnime(pshdl, no, NULL);
 }
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_ExecAnime);
+INCLUDE_ASM("menu/menu_mdl", MNScene_ExecAnime);
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_CopyState);
+INCLUDE_ASM("menu/menu_mdl", MNScene_CopyState);
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_CopyStateMdl);
+INCLUDE_ASM("menu/menu_mdl", MNScene_CopyStateMdl);
 
 void MNScene_SetAnimeSpeed(MN_SCENE *pshdl, int nAnime, int speed)
 {
@@ -173,9 +173,9 @@ void MNScene_SetAnimeBankEnd(MN_SCENE *pshdl, u_int bnk)
     MNScene_SetAnimete(pshdl);
 }
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_isAnime);
+INCLUDE_ASM("menu/menu_mdl", MNScene_isAnime);
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", MNScene_isAnimeBank);
+INCLUDE_ASM("menu/menu_mdl", MNScene_isAnimeBank);
 
 int MNScene_isSeniAnime(MN_SCENE *pshdl)
 {
@@ -299,11 +299,11 @@ static void MnMoveMode_InitRoot(int movNo)
     }
 }
 
-INCLUDE_ASM(const s32, "menu/menu_mdl", _MnParMovRoot_GetPos);
+INCLUDE_ASM("menu/menu_mdl", _MnParMovRoot_GetPos);
 static void _MnParMovRoot_GetPos(/* a0 4 */ PRPROOT *prt, /* f12 50 */ float rate, /* a1 5 */ float *pos);
 
 #if 1
-INCLUDE_ASM(const s32, "menu/menu_mdl", MnMoveModelPosition);
+INCLUDE_ASM("menu/menu_mdl", MnMoveModelPosition);
 #else
 static void MnMoveModelPosition(/* s2 18 */ void *spm, /* s0 16 */ int movNo, /* a2 6 */ int ttim, /* a3 7 */ int ttim0)
 {

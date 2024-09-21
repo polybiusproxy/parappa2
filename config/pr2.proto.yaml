@@ -20,7 +20,6 @@ options:
     platform: ps2
 
     use_gp_rel_macro_nonmatching: False # Disable %gp_rel emission
-    use_legacy_include_asm: True
     ld_bss_contains_common: True
     
     string_encoding: EUC-JP

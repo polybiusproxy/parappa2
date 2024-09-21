@@ -144,7 +144,7 @@ static SCENECTRL* getOutsideCtrlScene(int time)
 }
 
 #if 1
-INCLUDE_ASM(const s32, "main/drawctrl", bra_tap_GetNext);
+INCLUDE_ASM("main/drawctrl", bra_tap_GetNext);
 #else
 float* bra_tap_GetNext(/* a0 4 */ PR_MODELHANDLE model)
 {
@@ -173,11 +173,11 @@ float* bra_tap_GetNext(/* a0 4 */ PR_MODELHANDLE model)
 }
 #endif
 
-INCLUDE_ASM(const s32, "main/drawctrl", bra_title_GetNext);
+INCLUDE_ASM("main/drawctrl", bra_title_GetNext);
 
-INCLUDE_ASM(const s32, "main/drawctrl", bra_ret_GetNext);
+INCLUDE_ASM("main/drawctrl", bra_ret_GetNext);
 
-INCLUDE_ASM(const s32, "main/drawctrl", XAnimationLinkOption);
+INCLUDE_ASM("main/drawctrl", XAnimationLinkOption);
 
 void XAnimationPositionLink(PR_MODELHANDLE model, PR_ANIMATIONHANDLE animation, float time)
 {
@@ -215,7 +215,7 @@ void BallThrowInitDare(int dare)
 }
 
 #if 1
-INCLUDE_ASM(const s32, "main/drawctrl", vs06BomAdr);
+INCLUDE_ASM("main/drawctrl", vs06BomAdr);
 void* vs06BomAdr(/* a0 4 */ OBJBTHROW_TYPE thtype, /* t0 8 */ int time);
 #else
 static void* vs06BomAdr(/* a0 4 */ OBJBTHROW_TYPE thtype, /* t0 8 */ int time)
@@ -493,7 +493,7 @@ void DrawTmpBuffQuit(void *adrs)
 }
 
 #if 1
-INCLUDE_ASM(const s32, "main/drawctrl", DrawTmpBuffGetArea);
+INCLUDE_ASM("main/drawctrl", DrawTmpBuffGetArea);
 void* DrawTmpBuffGetArea(/* a0 4 */ int size);
 #else
 void* DrawTmpBuffGetArea(/* a0 4 */ int size)
@@ -516,9 +516,9 @@ void* DrawTmpBuffGetArea(/* a0 4 */ int size)
 }
 #endif
 
-INCLUDE_RODATA(const s32, "main/drawctrl", D_00393128);
+INCLUDE_RODATA("main/drawctrl", D_00393128);
 
-INCLUDE_RODATA(const s32, "main/drawctrl", D_00393140);
+INCLUDE_RODATA("main/drawctrl", D_00393140);
 
 void DrawObjdatInit(int size, OBJDAT *od_pp, PR_SCENEHANDLE prf)
 {
@@ -685,7 +685,7 @@ static void DrawObjStrTapReq(SCENE_OBJDATA *scn_pp, int num, u_int time, u_char 
     }
 }
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawObjTapStrTapReq);
+INCLUDE_ASM("main/drawctrl", DrawObjTapStrTapReq);
 
 void DrawObjStrTapQuit(SCENE_OBJDATA *scn_pp, int num, u_int time)
 {
@@ -730,7 +730,7 @@ static void DrawObjStrKill(SCENE_OBJDATA *scn_pp, int num)
 }
 
 #if 1
-INCLUDE_ASM(const s32, "main/drawctrl", GetSpfTimeCtrl);
+INCLUDE_ASM("main/drawctrl", GetSpfTimeCtrl);
 #else
 static u_int GetSpfTimeCtrl(/* a0 4 */ OBJDAT *objdat_pp, /* v0 2 */ u_int frame) 
 {
@@ -780,9 +780,9 @@ void posAniOtherKill(OBJACTPRG *objactprg_pp, int objactprg_num, int ani_num, in
     }
 }
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawObjStrDisp);
+INCLUDE_ASM("main/drawctrl", DrawObjStrDisp);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawObjStrDispTap);
+INCLUDE_ASM("main/drawctrl", DrawObjStrDispTap);
 
 void DrawSceneReset(SCENE_OBJDATA *scene_pp)
 {
@@ -842,74 +842,74 @@ void DrawSceneFirstSet(SCENE_OBJDATA *scene_pp)
     }
 }
 
-INCLUDE_ASM(const s32, "main/drawctrl", Cl2MixTrans);
+INCLUDE_ASM("main/drawctrl", Cl2MixTrans);
 
-INCLUDE_RODATA(const s32, "main/drawctrl", D_00393290);
+INCLUDE_RODATA("main/drawctrl", D_00393290);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawObjPrReq);
+INCLUDE_ASM("main/drawctrl", DrawObjPrReq);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawObjStrTapTimeNext);
+INCLUDE_ASM("main/drawctrl", DrawObjStrTapTimeNext);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawObjTapCtrl);
+INCLUDE_ASM("main/drawctrl", DrawObjTapCtrl);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawSceneObjData);
+INCLUDE_ASM("main/drawctrl", DrawSceneObjData);
 int DrawSceneObjData(/* s1 17 */ void *para_pp, /* s3 19 */ int frame, /* a2 6 */ int first_f, /* a3 7 */ int useDisp, /* s4 20 */ int drDisp);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawDoubleDispIn);
+INCLUDE_ASM("main/drawctrl", DrawDoubleDispIn);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawVramClear);
+INCLUDE_ASM("main/drawctrl", DrawVramClear);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawMoveDispIn);
+INCLUDE_ASM("main/drawctrl", DrawMoveDispIn);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawAlphaBlendDisp);
+INCLUDE_ASM("main/drawctrl", DrawAlphaBlendDisp);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawMozaikuDisp);
+INCLUDE_ASM("main/drawctrl", DrawMozaikuDisp);
 int DrawMozaikuDisp(/* s2 18 */ void *para_pp, /* a1 5 */ int frame, /* a2 6 */ int first_f, /* a0 4 */ int useDisp, /* s0 16 */ int drDisp);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawFadeDisp);
+INCLUDE_ASM("main/drawctrl", DrawFadeDisp);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawPlphaIndex8Disp);
+INCLUDE_ASM("main/drawctrl", DrawPlphaIndex8Disp);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawTim2DIsp);
+INCLUDE_ASM("main/drawctrl", DrawTim2DIsp);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawNoodlesDisp);
+INCLUDE_ASM("main/drawctrl", DrawNoodlesDisp);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawVramLocalCopy);
+INCLUDE_ASM("main/drawctrl", DrawVramLocalCopy);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawVramLocalCopy2);
+INCLUDE_ASM("main/drawctrl", DrawVramLocalCopy2);
 
-INCLUDE_ASM(const s32, "main/drawctrl", drawUseDrDispCheckInit);
+INCLUDE_ASM("main/drawctrl", drawUseDrDispCheckInit);
 /* static */ void drawUseDrDispCheckInit(void);
 
-INCLUDE_ASM(const s32, "main/drawctrl", drawDispCheckSub);
+INCLUDE_ASM("main/drawctrl", drawDispCheckSub);
 
 /* static */ int drawUseDispCheck(/* a0 4 */ int useD)
 {
     return drawDispCheckSub(useD, &useDispFlag);
 }
 
-// INCLUDE_ASM(const s32, "main/drawctrl", drawDrDispCheck);
+// INCLUDE_ASM("main/drawctrl", drawDrDispCheck);
 /* static */ int drawDrDispCheck(/* a0 4 */ int drD)
 {
     return drawDispCheckSub(drD, &drDispFlag);
 }
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawScenectrlReq);
+INCLUDE_ASM("main/drawctrl", DrawScenectrlReq);
 /* static */ int DrawScenectrlReq(/* s0 16 */ SCENECTRL *scenectrl_pp, /* s2 18 */ u_int time);
 
-INCLUDE_ASM(const s32, "main/drawctrl", MendererCtrlInit);
+INCLUDE_ASM("main/drawctrl", MendererCtrlInit);
 
-INCLUDE_ASM(const s32, "main/drawctrl", MendererCtrlTitle);
+INCLUDE_ASM("main/drawctrl", MendererCtrlTitle);
 
-INCLUDE_ASM(const s32, "main/drawctrl", MendererCtrlTitleDera);
+INCLUDE_ASM("main/drawctrl", MendererCtrlTitleDera);
 
-INCLUDE_RODATA(const s32, "main/drawctrl", D_00393300);
+INCLUDE_RODATA("main/drawctrl", D_00393300);
 
-INCLUDE_ASM(const s32, "main/drawctrl", MendererCtrl);
+INCLUDE_ASM("main/drawctrl", MendererCtrl);
 
-INCLUDE_ASM(const s32, "main/drawctrl", mendRatioTitleGet);
+INCLUDE_ASM("main/drawctrl", mendRatioTitleGet);
 
-INCLUDE_ASM(const s32, "main/drawctrl", MendererCtrlTitleDisp);
+INCLUDE_ASM("main/drawctrl", MendererCtrlTitleDisp);
 
 void MendererReq(MEN_CTRL_ENUM menum)
 {
@@ -921,10 +921,10 @@ MEN_CTRL_ENUM GetMendererEnum(void)
     return men_ctrl_enum;
 }
 
-INCLUDE_ASM(const s32, "main/drawctrl", MendererCtrlScene);
+INCLUDE_ASM("main/drawctrl", MendererCtrlScene);
 int MendererCtrlScene(/* a0 4 */ void *para_pp, /* a1 5 */ int frame, /* a2 6 */ int first_f, /* a3 7 */ int useDisp, /* s0 16 */ int drDisp);
 
-INCLUDE_ASM(const s32, "main/drawctrl", sceneConditionCheck);
+INCLUDE_ASM("main/drawctrl", sceneConditionCheck);
 int sceneConditionCheck(/* s2 18 */ u_int cond_flag);
 
 static void DrawCtrlMain(void *x)
@@ -1193,9 +1193,9 @@ void DrawCtrlTimeSet(int time)
     drawCurrentTime = time;
 }
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawCtrlTblChange);
+INCLUDE_ASM("main/drawctrl", DrawCtrlTblChange);
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawTapReqTbl);
+INCLUDE_ASM("main/drawctrl", DrawTapReqTbl);
 
 int ddbg_scene_sel(int pad);
 
@@ -1321,13 +1321,13 @@ static void ddbg_event_sub(void)
     UseGsRegSet();
 }
 
-INCLUDE_RODATA(const s32, "main/drawctrl", D_003933B0);
+INCLUDE_RODATA("main/drawctrl", D_003933B0);
 
-INCLUDE_RODATA(const s32, "main/drawctrl", D_003933C0);
+INCLUDE_RODATA("main/drawctrl", D_003933C0);
 
-INCLUDE_RODATA(const s32, "main/drawctrl", D_003933D0);
+INCLUDE_RODATA("main/drawctrl", D_003933D0);
 
-INCLUDE_RODATA(const s32, "main/drawctrl", D_003933E0);
+INCLUDE_RODATA("main/drawctrl", D_003933E0);
 
 static void ddbg_event_sub_bmp(void)
 {
@@ -1445,7 +1445,7 @@ static void ddbg_event_sub_bmp(void)
     ddbg_bmp_frame++;
 }
 
-INCLUDE_ASM(const s32, "main/drawctrl", ddbg_tap_check);
+INCLUDE_ASM("main/drawctrl", ddbg_tap_check);
 
 static void ddbg_scene_sub(void)
 {
@@ -1513,7 +1513,7 @@ void ddbg_tctrl_sub(void)
 
 extern DRAW_DBG_STR draw_dbg_str[5];
 
-INCLUDE_ASM(const s32, "main/drawctrl", DrawCtrlMainDebug);
+INCLUDE_ASM("main/drawctrl", DrawCtrlMainDebug);
 /* static */ void DrawCtrlMainDebug(/* a0 4 */ void *x);
 #if 0
 {

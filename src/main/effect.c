@@ -112,7 +112,104 @@ void CG_WaveDisp(WAVE_STR *wstr, sceGsFrame *frame_pp, int pri)
     CmnGifCloseCmnPk(&wavePkSpr, pri);
 }
 
-INCLUDE_ASM(const s32, "main/effect", UG_AlpDisp);
+INCLUDE_ASM("main/effect", UG_AlpDisp);
+#if 0
+void UG_AlpDisp(/* s0 16 */ PLH_STR *plh_pp, /* s1 17 */ sceGsFrame *frame_pp, /* s2 18 */ sceGifPacket *alpPkSpr)
+{
+    /* s7 23 */ int i;
+    /* -0xc0(sp) */ short int ofs_tbl[4][2];
+    /* t0 8 */ int tmp0;
+    /* a2 6 */ int tmp1;
+
+    sceGifPkAddGsAD(alpPkSpr, SCE_GS_TEXFLUSH, 0);
+    sceGifPkAddGsAD(alpPkSpr, SCE_GS_PRMODECONT, 1);
+    sceGifPkAddGsAD(alpPkSpr, SCE_GS_TEST_1, 0x30000);
+    // alpha_1
+    sceGifPkAddGsAD(alpPkSpr, SCE_GS_CLAMP_1, 0x37c009fc00a);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_COLCLAMP,1);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_PABE,0);
+    // tex0_1
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_TEX1_1,0x60);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_TEXA,0x8000000080);
+    sceGifPkAddGsAD(alpPkSpr, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(plh_pp->r, plh_pp->g, plh_pp->b, plh_pp->a, 0x3f800000));
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_PRIM,0x15c);
+
+    for (i = 0; i < 4; i++)
+    {
+
+    }
+
+    #if 0
+
+    pasVar7 = ofs_tbl;
+    pPVar12 = plh_pp->uvOfs;
+    pfVar11 = &plh_pp->xyOfs[0].ofs1;
+    pPVar10 = plh_pp->xyOfs;
+    pfVar9 = &plh_pp->uvOfs[0].ofs1;
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_TEXFLUSH,0);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_PRMODECONT,1);
+    i = 3;
+
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_TEST_1,0x30000);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_ALPHA_1,(ulong)plh_pp->alp << 0x20 | 100);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_CLAMP_1,0x37c009fc00a);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_COLCLAMP,1);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_PABE,0);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_TEX0_1,
+                    (long)(int)((SUB84(*frame_pp,0) & 0x1ff) << 5 |
+                               (SUB84(*frame_pp,2) & 0x3f) << 0xe) | 0x228000000);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_TEX1_1,0x60);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_TEXA,0x8000000080);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_RGBAQ,
+                    (ulong)plh_pp->r | 0x3f80000000000000 |
+                    (ulong)plh_pp->b << 0x10 | (ulong)plh_pp->g << 8);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_PRIM,0x15c);
+    psVar8 = (short *)((uint)ofs_tbl | 2);
+    fVar15 = *pfVar9;
+    while( true )
+    {
+        fVar14 = pPVar12->ofs0;
+        puVar1 = (undefined *)((int)ofs_tbl[1] + 3);
+        uVar4 = (uint)puVar1 & 7;
+        puVar5 = (ulong *)(puVar1 + -uVar4);
+        *puVar5 = *puVar5 & -1L << (uVar4 + 1) * 8 | 0x28000000000U >> (7 - uVar4) * 8;
+        ofs_tbl[0][0] = 0;
+        ofs_tbl[0][1] = 0;
+        ofs_tbl[1][0] = 0x280;
+        ofs_tbl[1][1] = 0;
+        puVar1 = (undefined *)((int)ofs_tbl[3] + 3);
+        uVar4 = (uint)puVar1 & 7;
+        puVar5 = (ulong *)(puVar1 + -uVar4);
+        *puVar5 = *puVar5 & -1L << (uVar4 + 1) * 8 | 0xe0028000e00000U >> (7 - uVar4) * 8;
+        ofs_tbl[2][0] = 0;
+        ofs_tbl[2][1] = 0xe0;
+        ofs_tbl[3][0] = 0x280;
+        ofs_tbl[3][1] = 0xe0;
+        pfVar9 = pfVar9 + 2;
+        pPVar12 = pPVar12 + 1;
+        i = i + -1;
+        sceGifPkAddGsAD(alpPkSpr,SCE_GS_UV,
+                        (long)((int)(fVar14 * 16.0) + *(short *)pasVar7 * 0x10) & 0xffffU |
+                        ((long)((int)(fVar15 * 16.0) + *psVar8 * 0x10) & 0xffffU) << 0x10);
+        fVar15 = *pfVar11;
+        pfVar6 = &pPVar10->ofs0;
+        sVar2 = *psVar8;
+        sVar3 = *(short *)pasVar7;
+        pfVar11 = pfVar11 + 2;
+        pPVar10 = pPVar10 + 1;
+        psVar8 = psVar8 + 2;
+        pasVar7 = (short int (*) [2])((int)pasVar7 + 4);
+        sceGifPkAddGsAD(alpPkSpr,SCE_GS_XYZ2,
+                        (long)((int)(*pfVar6 * 16.0) + (sVar3 + 0x6c0) * 0x10) & 0xffffU |
+                        ((long)((int)(fVar15 * 16.0) + (sVar2 + 0x790) * 0x10) & 0xffffU) << 0x10 |
+                        0x100000000);
+        if (i < 0) break;
+        fVar15 = *pfVar9;
+    }
+
+    #endif
+}
+#endif
 
 void CG_AlpDisp(PLH_STR *plh_pp, sceGsFrame *frame_pp, int pri)
 {
@@ -194,7 +291,7 @@ void UG_FadeDisp(FADE_MAKE_STR *fade_pp, sceGifPacket *fadePkSpr, sceGsFrame *te
 }
 
 #if 1
-INCLUDE_ASM(const s32, "main/effect", UG_FadeDisp2);
+INCLUDE_ASM("main/effect", UG_FadeDisp2);
 #else
 void UG_FadeDisp2(/* s0 16 */ FADE_MAKE_STR *fade_pp, /* s3 19 */ sceGifPacket *fadePkSpr, /* s1 17 */ sceGsFrame *texFr_pp, /* f20 58 */ float scale)
 {
@@ -255,7 +352,7 @@ void CG_FadeDisp(FADE_MAKE_STR *fade_pp, int pri, sceGsFrame *texFr_pp)
     CmnGifCloseCmnPk(&fadePkSpr,pri);
 }
 
-INCLUDE_ASM(const s32, "main/effect", UG_NoodlesDisp);
+INCLUDE_ASM("main/effect", UG_NoodlesDisp);
 
 void CG_NoodlesDisp(NOODLES_STR *ndl_pp, sceGsFrame *frame_pp, int pri, int time)
 {
@@ -266,7 +363,7 @@ void CG_NoodlesDisp(NOODLES_STR *ndl_pp, sceGsFrame *frame_pp, int pri, int time
     CmnGifCloseCmnPk(&noodlesPkSpr, pri);
 }
 
-INCLUDE_RODATA(const s32, "main/effect", D_00393400);
+INCLUDE_RODATA("main/effect", D_00393400);
 
 /* NOTE: Uses the scratchpad */
-INCLUDE_ASM(const s32, "main/effect", FD_MonocroDisp);
+INCLUDE_ASM("main/effect", FD_MonocroDisp);

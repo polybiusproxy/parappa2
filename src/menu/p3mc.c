@@ -40,11 +40,11 @@ static void  _P3MC_dataCheckFunc(P3MC_WORK *pw, P3MCDataCheckFunc funcp);
 static int   _P3MC_CheckUserData(P3MC_WORK *pw);
 /* static */ int   _P3MC_CheckUserDataHead(P3MC_WORK *pw);
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_GetIconSize);
+INCLUDE_ASM("menu/p3mc", P3MC_GetIconSize);
 
-INCLUDE_RODATA(const s32, "menu/p3mc", D_00396180);
+INCLUDE_RODATA("menu/p3mc", D_00396180);
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_GetIconPtr);
+INCLUDE_ASM("menu/p3mc", P3MC_GetIconPtr);
 
 static void _P3MC_SetUserDirName(int mode, int fileNo)
 {
@@ -52,7 +52,7 @@ static void _P3MC_SetUserDirName(int mode, int fileNo)
 }
 
 #if 1
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_GetFilePath);
+INCLUDE_ASM("menu/p3mc", _P3MC_GetFilePath);
 #else
 static char* _P3MC_GetFilePath(/* a0 4 */ int mode, /* a2 6 */ int fileNo)
 {
@@ -83,22 +83,22 @@ static char* _P3MC_GetFilePath(/* a0 4 */ int mode, /* a2 6 */ int fileNo)
 }
 #endif
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_EUC2SJIS);
+INCLUDE_ASM("menu/p3mc", _P3MC_EUC2SJIS);
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_ASC2SJIS);
+INCLUDE_ASM("menu/p3mc", _P3MC_ASC2SJIS);
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_UserName_ASC2SJIS);
+INCLUDE_ASM("menu/p3mc", _P3MC_UserName_ASC2SJIS);
 
-INCLUDE_RODATA(const s32, "menu/p3mc", D_003961C0);
+INCLUDE_RODATA("menu/p3mc", D_003961C0);
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_SetBrowsInfo);
+INCLUDE_ASM("menu/p3mc", _P3MC_SetBrowsInfo);
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_mainfile_chk);
+INCLUDE_ASM("menu/p3mc", _P3MC_mainfile_chk);
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_file_chk);
+INCLUDE_ASM("menu/p3mc", _P3MC_file_chk);
 
 #if 1
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_InitReady);
+INCLUDE_ASM("menu/p3mc", P3MC_InitReady);
 #else
 int P3MC_InitReady(void)
 {
@@ -124,13 +124,13 @@ int P3MC_InitReady(void)
 }
 #endif
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_GetSaveSize);
+INCLUDE_ASM("menu/p3mc", P3MC_GetSaveSize);
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_SetCheckSaveSize);
+INCLUDE_ASM("menu/p3mc", P3MC_SetCheckSaveSize);
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_freesize_chk);
+INCLUDE_ASM("menu/p3mc", _P3MC_freesize_chk);
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_CheckChange);
+INCLUDE_ASM("menu/p3mc", P3MC_CheckChange);
 
 void P3MC_CheckChangeClear(void)
 {
@@ -147,7 +147,7 @@ int P3MC_CheckIsNewSave(int mode)
     return FreeSizeFlg & mode;
 }
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_GetSaveDataSize);
+INCLUDE_ASM("menu/p3mc", _P3MC_GetSaveDataSize);
 
 void P3MC_DeleteDataWork(MCRWDATA_HDL *phdl)
 {
@@ -163,7 +163,7 @@ void P3MC_DeleteDataWork(MCRWDATA_HDL *phdl)
 #define USER_HDR(x) ((USER_HEADER*)x)
 
 #if 1
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_MakeDataWork);
+INCLUDE_ASM("menu/p3mc", P3MC_MakeDataWork);
 #else
 MCRWDATA_HDL* P3MC_MakeDataWork(/* s4 20 */ int dsize, /* s5 21 */ USER_DATA *puser)
 {
@@ -205,11 +205,11 @@ MCRWDATA_HDL* P3MC_MakeDataWork(/* s4 20 */ int dsize, /* s5 21 */ USER_DATA *pu
 }
 #endif
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MCStrCmpLen);
+INCLUDE_ASM("menu/p3mc", _P3MCStrCmpLen);
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MCStrNum);
+INCLUDE_ASM("menu/p3mc", _P3MCStrNum);
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_MemcCheck);
+INCLUDE_ASM("menu/p3mc", _P3MC_MemcCheck);
 
 int P3MC_GetUserStart(int mode, P3MC_USRLST *pUsrLst, int bFirst)
 {
@@ -259,13 +259,13 @@ void P3MC_GetUserEnd(void)
     pUChkWork = NULL;
 }
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_GetUserCheck);
+INCLUDE_ASM("menu/p3mc", P3MC_GetUserCheck);
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_AddUser);
+INCLUDE_ASM("menu/p3mc", P3MC_AddUser);
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_AddUserBroken);
+INCLUDE_ASM("menu/p3mc", _P3MC_AddUserBroken);
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_SortUser);
+INCLUDE_ASM("menu/p3mc", P3MC_SortUser);
 
 int P3MC_CheckBrokenUser(P3MC_USRLST *pUser, int mode)
 {
@@ -327,18 +327,18 @@ void P3MC_OpeningCheckEnd(void)
     pUChkWork = NULL;
 }
 
-INCLUDE_RODATA(const s32, "menu/p3mc", D_00396420);
+INCLUDE_RODATA("menu/p3mc", D_00396420);
 
-INCLUDE_RODATA(const s32, "menu/p3mc", D_00396448);
+INCLUDE_RODATA("menu/p3mc", D_00396448);
 
-INCLUDE_RODATA(const s32, "menu/p3mc", D_00396470);
+INCLUDE_RODATA("menu/p3mc", D_00396470);
 
-INCLUDE_RODATA(const s32, "menu/p3mc", D_00396498);
+INCLUDE_RODATA("menu/p3mc", D_00396498);
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_OpeningCheck);
+INCLUDE_ASM("menu/p3mc", P3MC_OpeningCheck);
 
 #if 1
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_LoadUser);
+INCLUDE_ASM("menu/p3mc", P3MC_LoadUser);
 #else
 int P3MC_LoadUser(/* s5 21 */ int mode, /* s3 19 */ int fileNo, /* s1 17 */ MCRWDATA_HDL *pdhdl, /* s4 20 */ int flg)
 {
@@ -363,9 +363,9 @@ int P3MC_LoadUser(/* s5 21 */ int mode, /* s3 19 */ int fileNo, /* s1 17 */ MCRW
 }
 #endif
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_LoadCheck);
+INCLUDE_ASM("menu/p3mc", P3MC_LoadCheck);
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_loadCheck);
+INCLUDE_ASM("menu/p3mc", _P3MC_loadCheck);
 
 void P3MC_SetUserWorkTime(USER_DATA *puser)
 {
@@ -397,13 +397,13 @@ void P3MC_SetUserWorkTime(USER_DATA *puser)
     }
 }
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_SaveUser);
+INCLUDE_ASM("menu/p3mc", P3MC_SaveUser);
 
-INCLUDE_ASM(const s32, "menu/p3mc", P3MC_SaveCheck);
+INCLUDE_ASM("menu/p3mc", P3MC_SaveCheck);
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_SaveCheck);
+INCLUDE_ASM("menu/p3mc", _P3MC_SaveCheck);
 
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_proc);
+INCLUDE_ASM("menu/p3mc", _P3MC_proc);
 
 void _P3MC_dataCheckFunc(P3MC_WORK *pw, P3MCDataCheckFunc funcp)
 {
@@ -421,7 +421,7 @@ static int _P3MC_CheckUserData(P3MC_WORK *pw)
 }
 
 #if 1
-INCLUDE_ASM(const s32, "menu/p3mc", _P3MC_CheckUserDataHead);
+INCLUDE_ASM("menu/p3mc", _P3MC_CheckUserDataHead);
 #else
 static int _P3MC_CheckUserDataHead(/* s1 17 */ P3MC_WORK *pw)
 {

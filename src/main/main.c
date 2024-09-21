@@ -111,22 +111,22 @@ int first_f; /* mainStart */
 float FLT_00398F44;
 float FLT_00398F48;
 
-INCLUDE_RODATA(const s32, "main/main", D_00393810);
-INCLUDE_RODATA(const s32, "main/main", D_00393820);
+INCLUDE_RODATA("main/main", D_00393810);
+INCLUDE_RODATA("main/main", D_00393820);
 
-INCLUDE_ASM(const s32, "main/main", dbg_select_disp);
+INCLUDE_ASM("main/main", dbg_select_disp);
 
-INCLUDE_RODATA(const s32, "main/main", D_00393840);
-INCLUDE_RODATA(const s32, "main/main", D_00393860);
-INCLUDE_RODATA(const s32, "main/main", D_00393880);
-INCLUDE_RODATA(const s32, "main/main", D_003938A8);
-INCLUDE_RODATA(const s32, "main/main", D_003938D0);
+INCLUDE_RODATA("main/main", D_00393840);
+INCLUDE_RODATA("main/main", D_00393860);
+INCLUDE_RODATA("main/main", D_00393880);
+INCLUDE_RODATA("main/main", D_003938A8);
+INCLUDE_RODATA("main/main", D_003938D0);
 
-INCLUDE_RODATA(const s32, "main/main", D_003938F8);
+INCLUDE_RODATA("main/main", D_003938F8);
 
-INCLUDE_RODATA(const s32, "main/main", D_00393910);
+INCLUDE_RODATA("main/main", D_00393910);
 
-INCLUDE_ASM(const s32, "main/main", dummyPlay);
+INCLUDE_ASM("main/main", dummyPlay);
 #if 0
 static void dummyPlay(/* s0 16 */ int retTitle)
 {
@@ -428,7 +428,7 @@ int selPlayDisp(int sel_stage, int sel_disp, int firstf)
     return ret;
 }
 
-INCLUDE_ASM(const s32, "main/main", SpHatChangeSub);
+INCLUDE_ASM("main/main", SpHatChangeSub);
 void SpHatChangeSub(void);
 
 // TODO: fix rodata
@@ -650,14 +650,14 @@ void logoDispOne(SPR_PRIM *sprm_pp, TIM2_DAT *tmd_pp)
     }
 }
 
-INCLUDE_RODATA(const s32, "main/main", D_00393A00);
-INCLUDE_RODATA(const s32, "main/main", D_00393A18);
+INCLUDE_RODATA("main/main", D_00393A00);
+INCLUDE_RODATA("main/main", D_00393A18);
 
 // From SpHatChangeSub
-INCLUDE_RODATA(const s32, "main/main", D_00393A38);
-INCLUDE_RODATA(const s32, "main/main", D_00393A48);
-INCLUDE_RODATA(const s32, "main/main", D_00393A58);
-INCLUDE_RODATA(const s32, "main/main", D_00393A68);
+INCLUDE_RODATA("main/main", D_00393A38);
+INCLUDE_RODATA("main/main", D_00393A48);
+INCLUDE_RODATA("main/main", D_00393A58);
+INCLUDE_RODATA("main/main", D_00393A68);
 
 static void uramenFileSearchTask(void *x)
 {
@@ -719,19 +719,19 @@ void startUpDisp(void)
     SpuBankSet();
 }
 
-INCLUDE_ASM(const s32, "main/main", selPlayDispType);
+INCLUDE_ASM("main/main", selPlayDispType);
 
 // spr_prim on startUpDisp
-// INCLUDE_RODATA(const s32, "main/main", D_00393AA0);
+// INCLUDE_RODATA("main/main", D_00393AA0);
 
-INCLUDE_ASM(const s32, "main/main", selPlayDispSetPlay);
+INCLUDE_ASM("main/main", selPlayDispSetPlay);
 
-INCLUDE_ASM(const s32, "main/main", selPlayDispSetPlayOne);
+INCLUDE_ASM("main/main", selPlayDispSetPlayOne);
 
-INCLUDE_ASM(const s32, "main/main", gamePlayDisp);
+INCLUDE_ASM("main/main", gamePlayDisp);
 int gamePlayDisp(void);
 
-INCLUDE_ASM(const s32, "main/main", titleDisp);
+INCLUDE_ASM("main/main", titleDisp);
 #if 0
 void titleDisp(/* s1 17 */ int firstf)
 {
@@ -800,9 +800,9 @@ void titleDisp(/* s1 17 */ int firstf)
 }
 #endif
 
-INCLUDE_RODATA(const s32, "main/main", D_00393AD0);
+INCLUDE_RODATA("main/main", D_00393AD0);
 
-INCLUDE_ASM(const s32, "main/main", urawazaKeyCheck);
+INCLUDE_ASM("main/main", urawazaKeyCheck);
 int urawazaKeyCheck(void);
 
 extern char D_003996D0[]; /* sdata - "ura:%d" */
@@ -834,7 +834,7 @@ void ura_check(void)
     }
 }
 
-INCLUDE_ASM(const s32, "main/main", mainStart);
+INCLUDE_ASM("main/main", mainStart);
 void mainStart(/* a0 4 */ void *xx);
 #if 0
 {

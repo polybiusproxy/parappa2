@@ -802,7 +802,7 @@ int CdctrlWP2CheckBuffer(void)
     return WP2Ctrl(WP2_READBUF, WP2_NONE);
 }
 
-INCLUDE_ASM(const s32, "main/cdctrl", CdctrlWP2SetVolume);
+INCLUDE_ASM("main/cdctrl", CdctrlWP2SetVolume);
 #if 0
 void CdctrlWP2SetVolume(u_short vol)
 {

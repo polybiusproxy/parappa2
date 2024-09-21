@@ -62,7 +62,7 @@ PR_EXTERN void PrInitializeSceneDBuff(sceGsDBuff *buff, char *name, u_int fbp)
     scene->m_pDBuff = buff;
 }
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupScene);
+INCLUDE_ASM("prlib/prlib", PrCleanupScene);
 
 PR_EXTERN void PrSetSceneFrame(PrSceneObject *scene, sceGsFrame frame)
 {
@@ -75,21 +75,21 @@ PR_EXTERN void PrSetSceneEnv(PrSceneObject *scene, sceGsDrawEnv1 *drawEnv)
     scene->m_xyOffset = drawEnv->xyoffset1;
 }
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrPreprocessSceneModel);
+INCLUDE_ASM("prlib/prlib", PrPreprocessSceneModel);
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrInitializeModel);
+INCLUDE_ASM("prlib/prlib", PrInitializeModel);
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrInitializeAnimation);
+INCLUDE_ASM("prlib/prlib", PrInitializeAnimation);
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrInitializeCamera);
+INCLUDE_ASM("prlib/prlib", PrInitializeCamera);
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupModel);
+INCLUDE_ASM("prlib/prlib", PrCleanupModel);
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupAnimation);
+INCLUDE_ASM("prlib/prlib", PrCleanupAnimation);
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupCamera);
+INCLUDE_ASM("prlib/prlib", PrCleanupCamera);
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrCleanupAllSceneModel);
+INCLUDE_ASM("prlib/prlib", PrCleanupAllSceneModel);
 
 PR_EXTERN float PrGetAnimationStartFrame(SpaFileHeader *animation)
 {
@@ -186,11 +186,11 @@ PR_EXTERN void* PrGetCurrentCamera(PrSceneObject *scene)
     return scene->GetCurrentCamera();
 }
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSetDefaultCamera);
+INCLUDE_ASM("prlib/prlib", PrSetDefaultCamera);
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrSetAppropriateDefaultCamera);
+INCLUDE_ASM("prlib/prlib", PrSetAppropriateDefaultCamera);
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrShowModel);
+INCLUDE_ASM("prlib/prlib", PrShowModel);
 
 PR_EXTERN NaMATRIX<float, 4, 4>* PrGetModelMatrix(PrModelObject *model)
 {
@@ -248,7 +248,7 @@ PR_EXTERN void PrAnimateSceneCamera(PrSceneObject *scene, float time)
     scene->m_animTime = time * prInverseFrameRate;
 }
 
-INCLUDE_ASM(const s32, "prlib/prlib", PrRender);
+INCLUDE_ASM("prlib/prlib", PrRender);
 
 PR_EXTERN void PrWaitRender()
 {

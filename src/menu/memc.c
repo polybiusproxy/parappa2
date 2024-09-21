@@ -50,10 +50,10 @@ void memc_setIconSysHed(void *pIhData, int IhSize)
     memc_iconsys.OffsLF = nLF;
 }
 
-INCLUDE_RODATA(const s32, "menu/memc", D_00396650);
+INCLUDE_RODATA("menu/memc", D_00396650);
 
 #if 1
-INCLUDE_ASM(const s32, "menu/memc", memc_setSaveIcon);
+INCLUDE_ASM("menu/memc", memc_setSaveIcon);
 #else
 void memc_setSaveIcon(/* a0 4 */ int no, /* a1 5 */ void *pIconData, /* a2 6 */ int nIconSize)
 {
@@ -129,12 +129,12 @@ void memc_setSaveIcon(/* a0 4 */ int no, /* a1 5 */ void *pIconData, /* a2 6 */ 
 }
 #endif
 
-INCLUDE_RODATA(const s32, "menu/memc", D_00396670);
+INCLUDE_RODATA("menu/memc", D_00396670);
 
-INCLUDE_ASM(const s32, "menu/memc", memc_getfilename);
+INCLUDE_ASM("menu/memc", memc_getfilename);
 char* memc_getfilename(/* a0 4 */ int no);
 
-INCLUDE_ASM(const s32, "menu/memc", memc_getfilepath);
+INCLUDE_ASM("menu/memc", memc_getfilepath);
 char* memc_getfilepath(/* a0 4 */ int no);
 
 int memc_checkFormat(void)
@@ -187,7 +187,7 @@ static void memc_clearMEMCINFO(MEMC_INFO *info)
     info->savefile = 0;
 }
 
-INCLUDE_ASM(const s32, "menu/memc", memc_searchDirTbl);
+INCLUDE_ASM("menu/memc", memc_searchDirTbl);
 
 extern char D_00399880[]; // sdata - "/*"
 
@@ -277,13 +277,13 @@ int memc_load_file(int port, int no, char *buf, int size)
     return re;
 }
 
-INCLUDE_ASM(const s32, "menu/memc", memc_loadFirst);
+INCLUDE_ASM("menu/memc", memc_loadFirst);
 
-INCLUDE_ASM(const s32, "menu/memc", memc_save_file);
+INCLUDE_ASM("menu/memc", memc_save_file);
 
-INCLUDE_ASM(const s32, "menu/memc", memc_seeksave_file);
+INCLUDE_ASM("menu/memc", memc_seeksave_file);
 
-INCLUDE_ASM(const s32, "menu/memc", memc_save_overwrite);
+INCLUDE_ASM("menu/memc", memc_save_overwrite);
 
 int memc_port_check(int port, int *type, int *free)
 {
@@ -383,7 +383,7 @@ int memc_get_dir_continue(sceMcTblGetDir *dir, int max)
     return re;
 }
 
-INCLUDE_ASM(const s32, "menu/memc", memc_mansub_ErrChk);
+INCLUDE_ASM("menu/memc", memc_mansub_ErrChk);
 
 static int memc_mansub_Open(char *name, u_int type)
 {
@@ -413,7 +413,7 @@ static int memc_mansub_Close(void)
     return re;
 }
 
-INCLUDE_ASM(const s32, "menu/memc", memcsub_fileChk);
+INCLUDE_ASM("menu/memc", memcsub_fileChk);
 /* static */ int memcsub_fileChk(/* a0 4 */ sceMcTblGetDir *dir, /* a1 5 */ unsigned char *name, /* a2 6 */ int max);
 
 extern char D_00399888[]; /* sdata - "SAVE" */
@@ -509,7 +509,7 @@ static int memc_mansub_GetInfo(int result)
 }
 
 #if 1
-INCLUDE_ASM(const s32, "menu/memc", memc_mansub_load);
+INCLUDE_ASM("menu/memc", memc_mansub_load);
 static int memc_mansub_load(/* -0x40(sp) */ int result);
 #else
 {
@@ -570,12 +570,12 @@ static int memc_mansub_load(/* -0x40(sp) */ int result);
 }
 #endif
 
-INCLUDE_ASM(const s32, "menu/memc", memc_manager_save);
+INCLUDE_ASM("menu/memc", memc_manager_save);
 
-INCLUDE_ASM(const s32, "menu/memc", memc_manager_overwrite);
+INCLUDE_ASM("menu/memc", memc_manager_overwrite);
 
 #if 1
-INCLUDE_ASM(const s32, "menu/memc", memc_manager_chk);
+INCLUDE_ASM("menu/memc", memc_manager_chk);
 /* static */ int memc_manager_chk(int mode);
 #else
 static int memc_manager_chk(int mode)

@@ -28,7 +28,7 @@ void* SubtKanjiSet(void *adrs)
     return ret;
 }
 
-INCLUDE_ASM(const s32, "main/subt", SubtClear);
+INCLUDE_ASM("main/subt", SubtClear);
 
 void SubtFlash(void)
 {
@@ -86,7 +86,7 @@ static void euc2sjis(unsigned char *c1, unsigned char *c2)
 }
 
 #ifndef NON_MATCHING
-INCLUDE_ASM(const s32, "main/subt", SubtMsgPrint);
+INCLUDE_ASM("main/subt", SubtMsgPrint);
 #else
 void SubtMsgPrint(/* s0 16 */ u_char *msg_pp, /* -0xac(sp) */ int xp, /* -0xa8(sp) */ int yp, 
                     /* s3 19 */ int jap_flag, /* s4 20 */ int mline)
@@ -339,7 +339,7 @@ ok:
 }
 
 #ifndef NON_MATCHING
-INCLUDE_ASM(const s32, "main/subt", SubtTapPrintWake);
+INCLUDE_ASM("main/subt", SubtTapPrintWake);
 #else
 void SubtTapPrintWake(/* s1 17 */ u_char *tap_msg_pp, /* s4 20 */ int lang, /* s2 18 */ int lng, /* s0 16 */ int nowp)
 {
@@ -366,7 +366,7 @@ void SubtTapPrintWake(/* s1 17 */ u_char *tap_msg_pp, /* s4 20 */ int lang, /* s
 #endif
 
 #ifndef NON_MATCHING
-INCLUDE_ASM(const s32, "main/subt", SubtCtrlPrintBoxyWipe);
+INCLUDE_ASM("main/subt", SubtCtrlPrintBoxyWipe);
 #else
 void SubtCtrlPrintBoxyWipe(/* a0 4 */ JIMAKU_STR *jstr_pp, /* a1 5 */ int line, 
 /* a2 6 */ int time, /* s4 20 */ int lang, /* s0 16 */ void *code_pp)

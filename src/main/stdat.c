@@ -151,276 +151,276 @@ void stDatFirstFileSearch(void)
     }
 }
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391DA8);
+INCLUDE_RODATA("main/stdat", D_00391DA8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391DC0);
+INCLUDE_RODATA("main/stdat", D_00391DC0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391DD8);
+INCLUDE_RODATA("main/stdat", D_00391DD8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391DF0);
+INCLUDE_RODATA("main/stdat", D_00391DF0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391E08);
+INCLUDE_RODATA("main/stdat", D_00391E08);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391E20);
+INCLUDE_RODATA("main/stdat", D_00391E20);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391E38);
+INCLUDE_RODATA("main/stdat", D_00391E38);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391E50);
+INCLUDE_RODATA("main/stdat", D_00391E50);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391E68);
+INCLUDE_RODATA("main/stdat", D_00391E68);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391E80);
+INCLUDE_RODATA("main/stdat", D_00391E80);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391E98);
+INCLUDE_RODATA("main/stdat", D_00391E98);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391EB0);
+INCLUDE_RODATA("main/stdat", D_00391EB0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391EC8);
+INCLUDE_RODATA("main/stdat", D_00391EC8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391EE0);
+INCLUDE_RODATA("main/stdat", D_00391EE0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391EF8);
+INCLUDE_RODATA("main/stdat", D_00391EF8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391F08);
+INCLUDE_RODATA("main/stdat", D_00391F08);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391F20);
+INCLUDE_RODATA("main/stdat", D_00391F20);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391F30);
+INCLUDE_RODATA("main/stdat", D_00391F30);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391F48);
+INCLUDE_RODATA("main/stdat", D_00391F48);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391F60);
+INCLUDE_RODATA("main/stdat", D_00391F60);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391F78);
+INCLUDE_RODATA("main/stdat", D_00391F78);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391F90);
+INCLUDE_RODATA("main/stdat", D_00391F90);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391FA8);
+INCLUDE_RODATA("main/stdat", D_00391FA8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391FC0);
+INCLUDE_RODATA("main/stdat", D_00391FC0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391FD8);
+INCLUDE_RODATA("main/stdat", D_00391FD8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00391FE8);
+INCLUDE_RODATA("main/stdat", D_00391FE8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392000);
+INCLUDE_RODATA("main/stdat", D_00392000);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392018);
+INCLUDE_RODATA("main/stdat", D_00392018);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392030);
+INCLUDE_RODATA("main/stdat", D_00392030);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392048);
+INCLUDE_RODATA("main/stdat", D_00392048);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392060);
+INCLUDE_RODATA("main/stdat", D_00392060);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392078);
+INCLUDE_RODATA("main/stdat", D_00392078);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392090);
+INCLUDE_RODATA("main/stdat", D_00392090);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003920A8);
+INCLUDE_RODATA("main/stdat", D_003920A8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003920C0);
+INCLUDE_RODATA("main/stdat", D_003920C0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003920D8);
+INCLUDE_RODATA("main/stdat", D_003920D8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003920F0);
+INCLUDE_RODATA("main/stdat", D_003920F0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392108);
+INCLUDE_RODATA("main/stdat", D_00392108);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392120);
+INCLUDE_RODATA("main/stdat", D_00392120);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392138);
+INCLUDE_RODATA("main/stdat", D_00392138);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392150);
+INCLUDE_RODATA("main/stdat", D_00392150);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392168);
+INCLUDE_RODATA("main/stdat", D_00392168);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392180);
+INCLUDE_RODATA("main/stdat", D_00392180);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392198);
+INCLUDE_RODATA("main/stdat", D_00392198);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003921B0);
+INCLUDE_RODATA("main/stdat", D_003921B0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003921C8);
+INCLUDE_RODATA("main/stdat", D_003921C8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003921E0);
+INCLUDE_RODATA("main/stdat", D_003921E0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003921F8);
+INCLUDE_RODATA("main/stdat", D_003921F8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392210);
+INCLUDE_RODATA("main/stdat", D_00392210);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392228);
+INCLUDE_RODATA("main/stdat", D_00392228);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392240);
+INCLUDE_RODATA("main/stdat", D_00392240);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392258);
+INCLUDE_RODATA("main/stdat", D_00392258);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392270);
+INCLUDE_RODATA("main/stdat", D_00392270);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392288);
+INCLUDE_RODATA("main/stdat", D_00392288);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003922A0);
+INCLUDE_RODATA("main/stdat", D_003922A0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003922B8);
+INCLUDE_RODATA("main/stdat", D_003922B8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003922D0);
+INCLUDE_RODATA("main/stdat", D_003922D0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003922E8);
+INCLUDE_RODATA("main/stdat", D_003922E8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392300);
+INCLUDE_RODATA("main/stdat", D_00392300);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392318);
+INCLUDE_RODATA("main/stdat", D_00392318);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392330);
+INCLUDE_RODATA("main/stdat", D_00392330);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392348);
+INCLUDE_RODATA("main/stdat", D_00392348);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392360);
+INCLUDE_RODATA("main/stdat", D_00392360);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392378);
+INCLUDE_RODATA("main/stdat", D_00392378);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392390);
+INCLUDE_RODATA("main/stdat", D_00392390);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003923A8);
+INCLUDE_RODATA("main/stdat", D_003923A8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003923C0);
+INCLUDE_RODATA("main/stdat", D_003923C0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003923D8);
+INCLUDE_RODATA("main/stdat", D_003923D8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003923F0);
+INCLUDE_RODATA("main/stdat", D_003923F0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392408);
+INCLUDE_RODATA("main/stdat", D_00392408);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392420);
+INCLUDE_RODATA("main/stdat", D_00392420);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392438);
+INCLUDE_RODATA("main/stdat", D_00392438);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392450);
+INCLUDE_RODATA("main/stdat", D_00392450);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392468);
+INCLUDE_RODATA("main/stdat", D_00392468);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392480);
+INCLUDE_RODATA("main/stdat", D_00392480);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392498);
+INCLUDE_RODATA("main/stdat", D_00392498);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003924B0);
+INCLUDE_RODATA("main/stdat", D_003924B0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003924C8);
+INCLUDE_RODATA("main/stdat", D_003924C8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003924E0);
+INCLUDE_RODATA("main/stdat", D_003924E0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003924F8);
+INCLUDE_RODATA("main/stdat", D_003924F8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392510);
+INCLUDE_RODATA("main/stdat", D_00392510);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392528);
+INCLUDE_RODATA("main/stdat", D_00392528);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392540);
+INCLUDE_RODATA("main/stdat", D_00392540);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392558);
+INCLUDE_RODATA("main/stdat", D_00392558);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392570);
+INCLUDE_RODATA("main/stdat", D_00392570);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392588);
+INCLUDE_RODATA("main/stdat", D_00392588);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003925A0);
+INCLUDE_RODATA("main/stdat", D_003925A0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003925B8);
+INCLUDE_RODATA("main/stdat", D_003925B8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003925D0);
+INCLUDE_RODATA("main/stdat", D_003925D0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003925E8);
+INCLUDE_RODATA("main/stdat", D_003925E8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392600);
+INCLUDE_RODATA("main/stdat", D_00392600);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392618);
+INCLUDE_RODATA("main/stdat", D_00392618);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392630);
+INCLUDE_RODATA("main/stdat", D_00392630);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392648);
+INCLUDE_RODATA("main/stdat", D_00392648);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392660);
+INCLUDE_RODATA("main/stdat", D_00392660);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392678);
+INCLUDE_RODATA("main/stdat", D_00392678);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392690);
+INCLUDE_RODATA("main/stdat", D_00392690);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003926A8);
+INCLUDE_RODATA("main/stdat", D_003926A8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003926C0);
+INCLUDE_RODATA("main/stdat", D_003926C0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003926D8);
+INCLUDE_RODATA("main/stdat", D_003926D8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003926F0);
+INCLUDE_RODATA("main/stdat", D_003926F0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392708);
+INCLUDE_RODATA("main/stdat", D_00392708);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392720);
+INCLUDE_RODATA("main/stdat", D_00392720);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392738);
+INCLUDE_RODATA("main/stdat", D_00392738);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392750);
+INCLUDE_RODATA("main/stdat", D_00392750);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392768);
+INCLUDE_RODATA("main/stdat", D_00392768);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392780);
+INCLUDE_RODATA("main/stdat", D_00392780);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392798);
+INCLUDE_RODATA("main/stdat", D_00392798);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003927B0);
+INCLUDE_RODATA("main/stdat", D_003927B0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003927C8);
+INCLUDE_RODATA("main/stdat", D_003927C8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003927E0);
+INCLUDE_RODATA("main/stdat", D_003927E0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003927F8);
+INCLUDE_RODATA("main/stdat", D_003927F8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392810);
+INCLUDE_RODATA("main/stdat", D_00392810);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392828);
+INCLUDE_RODATA("main/stdat", D_00392828);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392840);
+INCLUDE_RODATA("main/stdat", D_00392840);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392858);
+INCLUDE_RODATA("main/stdat", D_00392858);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392870);
+INCLUDE_RODATA("main/stdat", D_00392870);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392888);
+INCLUDE_RODATA("main/stdat", D_00392888);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003928A0);
+INCLUDE_RODATA("main/stdat", D_003928A0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003928B8);
+INCLUDE_RODATA("main/stdat", D_003928B8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003928D0);
+INCLUDE_RODATA("main/stdat", D_003928D0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003928E8);
+INCLUDE_RODATA("main/stdat", D_003928E8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392900);
+INCLUDE_RODATA("main/stdat", D_00392900);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392918);
+INCLUDE_RODATA("main/stdat", D_00392918);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392930);
+INCLUDE_RODATA("main/stdat", D_00392930);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392948);
+INCLUDE_RODATA("main/stdat", D_00392948);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392958);
+INCLUDE_RODATA("main/stdat", D_00392958);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392970);
+INCLUDE_RODATA("main/stdat", D_00392970);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392988);
+INCLUDE_RODATA("main/stdat", D_00392988);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003929A0);
+INCLUDE_RODATA("main/stdat", D_003929A0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003929B8);
+INCLUDE_RODATA("main/stdat", D_003929B8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003929D0);
+INCLUDE_RODATA("main/stdat", D_003929D0);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_003929E8);
+INCLUDE_RODATA("main/stdat", D_003929E8);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392A00);
+INCLUDE_RODATA("main/stdat", D_00392A00);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392A18);
+INCLUDE_RODATA("main/stdat", D_00392A18);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392A30);
+INCLUDE_RODATA("main/stdat", D_00392A30);
 
-INCLUDE_RODATA(const s32, "main/stdat", D_00392A48);
+INCLUDE_RODATA("main/stdat", D_00392A48);

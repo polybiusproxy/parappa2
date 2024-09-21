@@ -29,7 +29,7 @@ static void _tsWorkEnd(TS_WORKMEM *emem)
 }
 
 #if 1
-INCLUDE_ASM(const s32, "menu/pksprite", _tsWorkInit);
+INCLUDE_ASM("menu/pksprite", _tsWorkInit);
 /* static */ u_int* _tsWorkInit(TS_WORKMEM *emem, u_int *buf, u_int size);
 #else
 static u_int* _tsWorkInit(/* s0 16 */ TS_WORKMEM *emem, /* s2 18 */ u_int *buf, /* s1 17 */ u_int size)
@@ -103,7 +103,7 @@ void TsEndUPacket(TsUSERPKT *pk)
 
 /* EUC-JP string: "★パケットSizeOver!!(User)(%x/%x)\n" */
 #if 1
-INCLUDE_ASM(const s32, "menu/pksprite", TsDrawUPacket);
+INCLUDE_ASM("menu/pksprite", TsDrawUPacket);
 #else
 void TsDrawUPacket(/* s1 17 */ TsUSERPKT *up)
 {
@@ -178,60 +178,60 @@ void TsDrawUPacket(/* s1 17 */ TsUSERPKT *up)
 }
 #endif
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkTEX0_Add);
+INCLUDE_ASM("menu/pksprite", PkTEX0_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkTEX1_Add);
+INCLUDE_ASM("menu/pksprite", PkTEX1_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkCLAMP_Add);
+INCLUDE_ASM("menu/pksprite", PkCLAMP_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkALPHA_Add);
+INCLUDE_ASM("menu/pksprite", PkALPHA_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkTEST_Add);
+INCLUDE_ASM("menu/pksprite", PkTEST_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkSCISSOR_Add);
+INCLUDE_ASM("menu/pksprite", PkSCISSOR_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkDefSCISSOR_Add);
+INCLUDE_ASM("menu/pksprite", PkDefSCISSOR_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkOFFSET_Add);
+INCLUDE_ASM("menu/pksprite", PkOFFSET_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkPABE_Add);
+INCLUDE_ASM("menu/pksprite", PkPABE_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkFBA_Add);
+INCLUDE_ASM("menu/pksprite", PkFBA_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkCCLAMP_Add);
+INCLUDE_ASM("menu/pksprite", PkCCLAMP_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkDefReg_Add);
+INCLUDE_ASM("menu/pksprite", PkDefReg_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkTEX0_SetAdd);
+INCLUDE_ASM("menu/pksprite", PkTEX0_SetAdd);
 
-INCLUDE_ASM(const s32, "menu/pksprite", GetDToneColor);
+INCLUDE_ASM("menu/pksprite", GetDToneColor);
 
-INCLUDE_ASM(const s32, "menu/pksprite", GetToneColorA);
+INCLUDE_ASM("menu/pksprite", GetToneColorA);
 
-INCLUDE_ASM(const s32, "menu/pksprite", GetToneColorH);
+INCLUDE_ASM("menu/pksprite", GetToneColorH);
 
-INCLUDE_ASM(const s32, "menu/pksprite", SetSprDefOfsXY);
+INCLUDE_ASM("menu/pksprite", SetSprDefOfsXY);
 
-INCLUDE_ASM(const s32, "menu/pksprite", SetSprScreenXYWH);
+INCLUDE_ASM("menu/pksprite", SetSprScreenXYWH);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkSprPkt_SetDrawEnv);
+INCLUDE_ASM("menu/pksprite", PkSprPkt_SetDrawEnv);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkZBUFMask_Add);
+INCLUDE_ASM("menu/pksprite", PkZBUFMask_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkSprPkt_SetTexVram);
+INCLUDE_ASM("menu/pksprite", PkSprPkt_SetTexVram);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkSprPkt_SetDefault);
+INCLUDE_ASM("menu/pksprite", PkSprPkt_SetDefault);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkNSprite_Add);
+INCLUDE_ASM("menu/pksprite", PkNSprite_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkNSprite_Add2);
+INCLUDE_ASM("menu/pksprite", PkNSprite_Add2);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkNSprite_AddAdj);
+INCLUDE_ASM("menu/pksprite", PkNSprite_AddAdj);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkCRect_Add);
+INCLUDE_ASM("menu/pksprite", PkCRect_Add);
 
 #if 1
-INCLUDE_ASM(const s32, "menu/pksprite", PkCGRect_Add);
+INCLUDE_ASM("menu/pksprite", PkCGRect_Add);
 void PkCGRect_Add(/* t4 12 */ SPR_PKT pk, /* a1 5 */ SPR_PRM *ppspr, /* a2 6 */ int flg);
 #else
 {
@@ -379,7 +379,7 @@ void _pkVU0RotMatrixZ(float rz)
 }
 
 #if 1
-INCLUDE_ASM(const s32, "menu/pksprite", PkRSprite_Add);
+INCLUDE_ASM("menu/pksprite", PkRSprite_Add);
 #else
 void PkRSprite_Add(/* s3 19 */ SPR_PKT pk, /* s0 16 */ SPR_PRM *ppspr, /* s2 18 */ int flg)
 {
@@ -535,19 +535,19 @@ void PkRSprite_Add(/* s3 19 */ SPR_PKT pk, /* s0 16 */ SPR_PRM *ppspr, /* s2 18 
 }
 #endif
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkCLine2_Add);
+INCLUDE_ASM("menu/pksprite", PkCLine2_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkCLineS_AddStart);
+INCLUDE_ASM("menu/pksprite", PkCLineS_AddStart);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkCLineS_AddNext);
+INCLUDE_ASM("menu/pksprite", PkCLineS_AddNext);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkPolyF3_Add);
+INCLUDE_ASM("menu/pksprite", PkPolyF3_Add);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkPolyF4_Add);
+INCLUDE_ASM("menu/pksprite", PkPolyF4_Add);
 void PkPolyF4_Add(/* t3 11 */ SPR_PKT pk, /* a1 5 */ SPR_PRM *ppspr, /* a2 6 */ int flg);
 
 #if 1
-INCLUDE_ASM(const s32, "menu/pksprite", PkPolyFT4_Add);
+INCLUDE_ASM("menu/pksprite", PkPolyFT4_Add);
 void PkPolyFT4_Add(/* t3 11 */ SPR_PKT pk, /* a1 5 */ SPR_PRM *ppspr, /* a2 6 */ int flg);
 #else
 void PkPolyFT4_Add(/* t3 11 */ SPR_PKT pk, /* a1 5 */ SPR_PRM *ppspr, /* a2 6 */ int flg)
@@ -855,7 +855,7 @@ void PkFTMesh_Add(SPR_PKT pk, SPR_PRM *spr, PKMESH *mesh)
 }
 
 #if 1
-INCLUDE_ASM(const s32, "menu/pksprite", PkMesh_SetHLinOfs);
+INCLUDE_ASM("menu/pksprite", PkMesh_SetHLinOfs);
 #else
 void PkMesh_SetHLinOfs(/* v1 3 */ PKMESH *mesh, /* a3 7 */ int no, /* f12 50 */ float x, /* f13 51 */ float y)
 {
@@ -892,8 +892,8 @@ void PkMesh_SetHLinOfs(/* v1 3 */ PKMESH *mesh, /* a3 7 */ int no, /* f12 50 */ 
 }
 #endif
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkMesh_SetVLinOfs);
+INCLUDE_ASM("menu/pksprite", PkMesh_SetVLinOfs);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkMesh_SetHLinOfsLRX);
+INCLUDE_ASM("menu/pksprite", PkMesh_SetHLinOfsLRX);
 
-INCLUDE_ASM(const s32, "menu/pksprite", PkMesh_SetVLinOfsUDY);
+INCLUDE_ASM("menu/pksprite", PkMesh_SetVLinOfsUDY);

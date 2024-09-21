@@ -33,7 +33,7 @@ PR_EXTERN TIM2_PICTUREHEADER* Tim2GetPictureHeader(void *pTim2, int imgno)
 
 // TODO: fix non-matching jump table
 #if 1
-INCLUDE_ASM(const s32, "prlib/tim2", Tim2GetMipMapPictureSize);
+INCLUDE_ASM("prlib/tim2", Tim2GetMipMapPictureSize);
 #else
 PR_EXTERN int Tim2GetMipMapPictureSize(TIM2_PICTUREHEADER *ph, int mipmap, int *pWidth, int *pHeight)
 {
@@ -291,7 +291,7 @@ PR_EXTERN u_int Tim2SetClutColor(TIM2_PICTUREHEADER *ph, int clut, int no, u_int
 
 // TODO: fix rodata
 #if 1
-INCLUDE_ASM(const s32, "prlib/tim2", Tim2GetTexel);
+INCLUDE_ASM("prlib/tim2", Tim2GetTexel);
 #else
 PR_EXTERN u_int Tim2GetTexel(TIM2_PICTUREHEADER *ph, int mipmap, int x, int y)
 {
@@ -338,7 +338,7 @@ PR_EXTERN u_int Tim2GetTexel(TIM2_PICTUREHEADER *ph, int mipmap, int x, int y)
 
 // TODO: fix rodata
 #if 1
-INCLUDE_ASM(const s32, "prlib/tim2", Tim2SetTexel);
+INCLUDE_ASM("prlib/tim2", Tim2SetTexel);
 #else
 PR_EXTERN u_int Tim2SetTexel(TIM2_PICTUREHEADER *ph, int mipmap, int x, int y, u_int newtexel)
 {
@@ -403,7 +403,7 @@ PR_EXTERN u_int Tim2SetTexel(TIM2_PICTUREHEADER *ph, int mipmap, int x, int y, u
 
 // TODO: fix rodata
 #if 1
-INCLUDE_ASM(const s32, "prlib/tim2", Tim2GetTextureColor);
+INCLUDE_ASM("prlib/tim2", Tim2GetTextureColor);
 #else
 PR_EXTERN u_int Tim2GetTextureColor(TIM2_PICTUREHEADER *ph, int mipmap, int clut, int x, int y)
 {
@@ -440,7 +440,7 @@ PR_EXTERN void Tim2LoadPicture(TIM2_PICTUREHEADER *ph)
 }
 
 #if 1 // non-matching
-INCLUDE_ASM(const s32, "prlib/tim2", Tim2LoadImage);
+INCLUDE_ASM("prlib/tim2", Tim2LoadImage);
 #else
 PR_EXTERN void Tim2LoadImage(TIM2_PICTUREHEADER *ph)
 {

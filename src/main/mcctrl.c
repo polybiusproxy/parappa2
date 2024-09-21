@@ -239,7 +239,7 @@ u_short mccReqTapGet(u_int time, u_int useLine, u_int *time_pp, PLAYER_ENUM ply)
 extern const char D_00393800[]; /* rodata - "TAP forward!!\n" */
 
 #if 1
-INCLUDE_ASM(const s32, "main/mcctrl", mccReqTapForward);
+INCLUDE_ASM("main/mcctrl", mccReqTapForward);
 #else
 void mccReqTapForward(/* s5 21 */ u_int time, /* s4 20 */ u_int useLine)
 {
@@ -273,7 +273,7 @@ void mccReqTapForward(/* s5 21 */ u_int time, /* s4 20 */ u_int useLine)
 }
 #endif
 
-INCLUDE_ASM(const s32, "main/mcctrl", mccReqTapForwardOwn);
+INCLUDE_ASM("main/mcctrl", mccReqTapForwardOwn);
 #if 0
 void mccReqTapForwardOwn(/* s3 19 */ u_int time, /* s2 18 */ u_int useLine, /* s4 20 */ int ply)
 {
@@ -324,4 +324,4 @@ void mccGlobalLocalCopy(void)
     mc_rep_str_local = mc_rep_str;
 }
 
-INCLUDE_RODATA(const s32, "main/mcctrl", D_00393800);
+INCLUDE_RODATA("main/mcctrl", D_00393800);

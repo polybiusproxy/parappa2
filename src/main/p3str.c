@@ -62,7 +62,7 @@ void p3strImage2RealPos(P3STR_SD *p3str_sd_pp)
     }
 }
 
-INCLUDE_ASM(const s32, "main/p3str", p3StrInit);
+INCLUDE_ASM("main/p3str", p3StrInit);
 #if 0
 void p3StrInit(/* s7 23 */ u_int adrs)
 {
