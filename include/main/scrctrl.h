@@ -266,8 +266,7 @@ typedef struct { // 0x13c
     /* 0x138 */ int exam_point;
 } SCR_EXAM_STR;
 
-typedef enum
-{
+typedef enum {
     GUI_CUR_NONE,
     GUI_CUR_PARAPPA,
     GUI_CUR_BOXY,
@@ -282,8 +281,7 @@ typedef enum
     GUI_CUR_MAX
 } GUI_CURSOR_ENUM;
 
-typedef enum
-{
+typedef enum {
     TAP_FOLLOW_NONE,
     TAP_FOLLOW_SAVE,
     TAP_FOLLOW_LOAD,
@@ -547,22 +545,9 @@ int ScrEndCheckScore(void);
 int ScrEndCheckTitle(void);
 int ScrEndCheckFadeOut(void);
 
-/* TODO(poly): move to main/mbar.h */
-typedef enum {
-    MBAR_NONE = 0,
-    MBAR_TEACHER = 393,
-    MBAR_PARAPPA = 745,
-    MBAR_TEACHER_HOOK = 393,
-    MBAR_PARAPPA_HOOK = 1769,
-    MBAR_TEACHER_VS = 105,
-    MBAR_PARAPPA_VS = 553,
-    MBAR_BOXY_VS = 2089
-} MBAR_REQ_ENUM;
-
 TIM2_DAT* lessonTim2InfoGet(void);
 TIM2_DAT* lessonCl2InfoGet(SCRRJ_LESSON_ROUND_ENUM type);
-void MbarSetCtrlTime(int mctime);
-void MbarReq(MBAR_REQ_ENUM mm_req, TAPSET *ts_pp, int curr_time, SCR_TAP_MEMORY *tm_pp, int tm_cnt, int lang, int tapdat_size, TAPDAT *tapdat_pp, GUI_CURSOR_ENUM guic);
+
 void vsAnimationReset(int ply, long scr);
 
 #endif

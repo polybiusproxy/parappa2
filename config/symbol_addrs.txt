@@ -815,6 +815,12 @@ lessonTim2InfoGet                   = 0x0011bba8; // type:func
 lessonCl2InfoGet                    = 0x0011bbb8; // type:func
 MbarDemoCharDisp                    = 0x0011bc18; // type:func
 
+mbar_ctrl_time                      = 0x00399a84;
+mbar_ctrl_stage                     = 0x00399a88;
+mbar_ctrl_stage_selT                = 0x00399a8c;
+
+mbar_req_str                        = 0x01c70110; // size:0xb4
+
 // main/pack.c
 PackGetDecodeSize                   = 0x0011bcc8; // type:func
 PackDecode                          = 0x0011bcd0; // type:func

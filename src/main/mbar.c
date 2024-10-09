@@ -1,4 +1,14 @@
-#include "common.h"
+#include "main/mbar.h"
+
+#include "main/scrctrl.h"
+
+/* .bss */
+extern MBAR_REQ_STR mbar_req_str[5];
+
+/* .sbss */
+extern int mbar_ctrl_time;
+extern int mbar_ctrl_stage;
+extern int mbar_ctrl_stage_selT;
 
 INCLUDE_ASM("main/mbar", examCharSet);
 
@@ -89,7 +99,17 @@ void ExamDispSubt(void)
     // Empty
 }
 
-INCLUDE_ASM("main/mbar", MbarInit);
+void MbarInit(int stg)
+{
+    mbar_ctrl_stage = stg;
+
+    if (stg == 6)
+        mbar_ctrl_stage_selT = 1;
+    else
+        mbar_ctrl_stage_selT = stg;
+    
+    MbarCharSetSub();
+}
 
 INCLUDE_ASM("main/mbar", MbarReset);
 
@@ -101,9 +121,34 @@ INCLUDE_RODATA("main/mbar", D_00393450);
 
 INCLUDE_RODATA("main/mbar", D_00393458);
 
-INCLUDE_ASM("main/mbar", MbarReq);
+void MbarReq(MBAR_REQ_ENUM mm_req, TAPSET *ts_pp, int curr_time, SCR_TAP_MEMORY *tm_pp, int tm_cnt, 
+            int lang, int tapdat_size, TAPDAT *tapdat_pp, GUI_CURSOR_ENUM guic)
+{
+    PLAYER_INDEX pidx;
 
-INCLUDE_ASM("main/mbar", MbarSetCtrlTime);
+    if (ts_pp == NULL)
+    {
+        printf("MbarReq   TAPSET adrs is NULL\n");
+        return;
+    }
+
+    pidx = Pcode2Pindex(ts_pp->player_code);
+    mbar_req_str[pidx].mbar_req_enum = mm_req;
+    mbar_req_str[pidx].tapset_pp = ts_pp;
+    mbar_req_str[pidx].current_time = curr_time;
+    mbar_req_str[pidx].scr_tap_memory_pp = tm_pp;
+    mbar_req_str[pidx].scr_tap_memory_cnt = tm_cnt;
+    mbar_req_str[pidx].lang = lang;
+
+    mbar_req_str[pidx].tapdat_size = tapdat_size;
+    mbar_req_str[pidx].tapdat_pp = tapdat_pp;
+    mbar_req_str[pidx].gui_cursor_enum = guic;
+}
+
+void MbarSetCtrlTime(int mctime)
+{
+    mbar_ctrl_time = mctime;
+}
 
 INCLUDE_ASM("main/mbar", MbarCl1CharSet);
 
@@ -135,7 +180,17 @@ INCLUDE_ASM("main/mbar", MbarGetStartTap);
 
 INCLUDE_ASM("main/mbar", MbarSclRotMake);
 
-INCLUDE_ASM("main/mbar", MbarGuideLightMake);
+void MbarGuideLightMake(MBARR_CHR *mbarr_pp, int mbtime)
+{
+    u_char col = 128;
+
+    if ((u_int)mbtime < 144)
+    {
+        col = (u_char)(((144 - mbtime) * 128) / 144) + 128;
+    }
+
+    mbarr_pp->r = mbarr_pp->g = mbarr_pp->b = col;
+}
 
 INCLUDE_ASM("main/mbar", MbarFlashMake);
 

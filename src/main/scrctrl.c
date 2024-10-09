@@ -1,5 +1,7 @@
 #include "main/scrctrl.h"
 
+#include "main/mbar.h"
+
 /* data */
 extern u_int thnum_tbl[4];
 extern TCL_CTRL tcl_ctrl[4][33];
