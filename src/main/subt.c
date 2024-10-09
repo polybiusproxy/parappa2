@@ -28,7 +28,18 @@ void* SubtKanjiSet(void *adrs)
     return ret;
 }
 
-INCLUDE_ASM("main/subt", SubtClear);
+void SubtClear(void)
+{
+    CmnGifOpenCmnPk(&subtPkSpr);
+
+    sceGifPkAddGsAD(&subtPkSpr, SCE_GS_TEXFLUSH, 0);
+    sceGifPkAddGsAD(&subtPkSpr, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(128, 128, 128, 128, 0));
+    sceGifPkAddGsAD(&subtPkSpr, SCE_GS_TEST_1, SCE_GS_SET_TEST_1(1, 6, 0, 0, 0, 0, 1, 1));
+    sceGifPkAddGsAD(&subtPkSpr, SCE_GS_PRMODECONT, 1);
+    sceGifPkAddGsAD(&subtPkSpr, SCE_GS_ALPHA_1, SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0));
+
+    subtSetNum = 0;
+}
 
 void SubtFlash(void)
 {
@@ -283,56 +294,44 @@ int SubtMsgDataKaijyouCnt(u_char *msg_pp, int jap_flag)
     return ret;
 }
 
-// TODO: Ugly match, find a way to make it cleaner
-u_char* SubtMsgDataPos(/* a0 4 */ u_char *msg_pp, /* s3 19 */ int jap_flag, /* s2 18 */ int pos)
+u_char* SubtMsgDataPos(u_char *msg_pp, int jap_flag, int pos)
 {
     u_char *tmp_pp;
     u_char  dat0, dat1;
-    u_char  x,    y;
     int     ret = 0;
 
     if (*msg_pp == '\0')
         return NULL;
-    
-    goto ok;
 
-fail:
-    return tmp_pp;
-    
-ok:
     tmp_pp = msg_pp;
     
-    x = 0x40;
-    y = 0x81;
-    
-    if (pos == 0)
-        goto fail;
-
-    while (*tmp_pp != '\0')
+    while (1)
     {
+        if (ret == pos)
+            return tmp_pp;
+        
+        if (*tmp_pp == '\0')
+            break;
+
         dat0 = tmp_pp[0];
         dat1 = tmp_pp[1];
-
         tmp_pp++;
 
-        /* New line */
-        if (dat0 == x)
+        if (dat0 == '@')
         {
+            // New line
             ret++;
         }
-        /* Japanese subt. new line */
         else if (jap_flag)
         {
             euc2sjis(&dat0, &dat1);
-            tmp_pp++;
 
-            // '@' (SHIFT-JIS)
-            if ( dat0 == y && dat1 == 0x97 )
+            // '@' (shift-jis)
+            if (dat0 == 0x81 && dat1 == 0x97)
                 ret++;
-        }
 
-        if (ret == pos)
-            goto fail;
+            tmp_pp++;
+        }
     }
 
     return NULL;
