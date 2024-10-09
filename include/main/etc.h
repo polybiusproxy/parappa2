@@ -46,8 +46,7 @@ typedef enum {
     PINDEX_MAX
 } PLAYER_INDEX;
 
-typedef enum
-{
+typedef enum {
     DTBL_ENUM_SERIAL_MAIN = 0,
     DTBL_ENUM_SERIAL_TOP = 0,
     DTBL_ENUM_HOOK_COOL = 0,

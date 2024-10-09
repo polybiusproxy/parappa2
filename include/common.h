@@ -23,13 +23,13 @@ typedef float f32;
 #define UNK_ARGS
 
 #ifndef NULL
-#define	NULL  0
+#define NULL  0
 #endif
 #ifndef TRUE
-#define	TRUE  1
+#define TRUE  1
 #endif
 #ifndef FALSE
-#define	FALSE 0
+#define FALSE 0
 #endif
 
 #define GS_X_COORD(x) ((2048 - (640 / 2) + x) << 4)

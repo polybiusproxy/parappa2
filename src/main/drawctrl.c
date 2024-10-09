@@ -293,7 +293,7 @@ void BallThrowPoll(void)
 
     TIM2INFO info;
     int w, h;
-	int px, py;
+    int px, py;
     
 
     for (i = 0; i < 2; i++)
@@ -734,9 +734,9 @@ INCLUDE_ASM("main/drawctrl", GetSpfTimeCtrl);
 #else
 static u_int GetSpfTimeCtrl(/* a0 4 */ OBJDAT *objdat_pp, /* v0 2 */ u_int frame) 
 {
-	/* a2 6 */ SPF_STR *spf_str_pp;
-	/* v0 2 */ u_int max_cnt;
-	/* v0 2 */ u_int ret;
+    /* a2 6 */ SPF_STR *spf_str_pp;
+    /* v0 2 */ u_int max_cnt;
+    /* v0 2 */ u_int ret;
 
     spf_str_pp = (SPF_STR*)objdat_pp->handle;
     max_cnt = (spf_str_pp->maxFrame * 2) - 2;
@@ -1224,7 +1224,7 @@ extern const char D_00399540[]; // .sdata - "#%02X"
 
 /* static */ int ddbg_scene_sel(int pad) 
 {
-	SCENESTR *scenestr_pp = &drawEventrec->scenestr_pp[ddbg_event_num];
+    SCENESTR *scenestr_pp = &drawEventrec->scenestr_pp[ddbg_event_num];
 
     ddbg_scene_num += pad;
 

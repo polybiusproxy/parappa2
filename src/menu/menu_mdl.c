@@ -307,11 +307,11 @@ INCLUDE_ASM("menu/menu_mdl", MnMoveModelPosition);
 #else
 static void MnMoveModelPosition(/* s2 18 */ void *spm, /* s0 16 */ int movNo, /* a2 6 */ int ttim, /* a3 7 */ int ttim0)
 {
-	/* f20 58 */ float rate;
-	/* f22 60 */ float WRATE;
-	/* f20 58 */ float fry;
-	/* -0xb0(sp) */ sceVu0FVECTOR cpos;
-	/* -0xa0(sp) */ sceVu0FMATRIX mt;
+    /* f20 58 */ float rate;
+    /* f22 60 */ float WRATE;
+    /* f20 58 */ float fry;
+    /* -0xb0(sp) */ sceVu0FVECTOR cpos;
+    /* -0xa0(sp) */ sceVu0FMATRIX mt;
 
     WRATE = D_00398F54;
 

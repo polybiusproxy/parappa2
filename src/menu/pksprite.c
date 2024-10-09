@@ -126,10 +126,10 @@ void TsDrawUPacket(/* s1 17 */ TsUSERPKT *up)
     /* s0 */ u_int    qwc = (up->ptop & ~0x20000000) - pk->PaketTop;
     /* s0 */ sceDmaChan *PktChan;
     /* a3 7 */ sceDmaTag *tp;
-	/* a1 5 */ u_int top;
-	/* s0 16 */ //int qwc;
-	/* a1 5 */ //void *addr;
-	/* a1 5 */ //void *addr;
+    /* a1 5 */ u_int top;
+    /* s0 16 */ //int qwc;
+    /* a1 5 */ //void *addr;
+    /* a1 5 */ //void *addr;
 
     if (qwc != 0)
     {
@@ -305,7 +305,7 @@ static void rotcossin(float rot)
 {
     asm __volatile__
     ("
-        mtc1	    $0, $f0
+        mtc1        $0, $f0
         c.olt.s     %0, $f0
         lwc1        $f0, FLT_003990DC   # li.s $f0, 1.57079637050628662109e0
         bc1f        _RotCosSin_01
@@ -315,7 +315,7 @@ static void rotcossin(float rot)
 
 _RotCosSin_01:
         sub.s       %0, $f0, %0         # rx = (π/2)-rx
-        move	    $7, $0
+        move        $7, $0
 
 _RotCosSin_02:
         mfc1        $8, %0

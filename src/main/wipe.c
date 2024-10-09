@@ -706,9 +706,9 @@ static void WipeParaInDispMove(void *x)
 static void WipeParaOutDisp(void *x)
 {
     VCLR_PARA vclr_para = {};
-	
-	SPR_PRIM  spr_prim  = D_00393680;
-	SPR_DAT   spr_dat   = {};
+
+    SPR_PRIM  spr_prim  = D_00393680;
+    SPR_DAT   spr_dat   = {};
     int       timer     = 0;
 
     spr_dat.GsTex0 = SCE_GS_SET_TEX0(6720, 10, 0, 10, 8, 1, 1, 0, 0, 0, 0, 0);

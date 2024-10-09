@@ -393,7 +393,7 @@ INCLUDE_ASM("menu/menusub", TsPatPut);
 
 static void TsPatGetSize(PATPOS *ppos, int *x, int *y, int *w, int *h)
 {
-	TSTEX_INF *ptex = &tblTex[ppos->texNo];
+    TSTEX_INF *ptex = &tblTex[ppos->texNo];
 
     if (w != NULL)
         *w = ptex->w;

@@ -425,7 +425,7 @@ INCLUDE_ASM("menu/p3mc", _P3MC_CheckUserDataHead);
 #else
 static int _P3MC_CheckUserDataHead(/* s1 17 */ P3MC_WORK *pw)
 {
-	/* s0 16 */ USER_HEADER *hed = (USER_HEADER*)pw->dhdl->pMemTop;
+    /* s0 16 */ USER_HEADER *hed = (USER_HEADER*)pw->dhdl->pMemTop;
 
     if (strcmp(hed->header, HedderID) == 0)
     {
