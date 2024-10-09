@@ -169,6 +169,18 @@ def disassemble_alpha(data, name):
     FIX = (data >> 32) & 0xff # bits 32-39
 
     return format_macro(name, A, B, C, D, FIX)
+
+def disassemble_test(data, name):
+    ATE   = (data >> 0 ) & 0b1
+    ATST  = (data >> 1 ) & 0b111
+    AREF  = (data >> 4 ) & 0xff
+    AFAIL = (data >> 12) & 0b11
+    DATE  = (data >> 14) & 0b1
+    DATM  = (data >> 15) & 0b1
+    ZTE   = (data >> 16) & 0b1
+    ZTST  = (data >> 17) & 0b11
+
+    return format_macro(name, ATE, ATST, AREF, AFAIL, DATE, DATM, ZTE, ZTST)
     
 DISASSEMBLY_FUNCTIONS = {
     # Vertex info
@@ -213,8 +225,8 @@ DISASSEMBLY_FUNCTIONS = {
     'DIMX':       lambda data: disassemble_null(data, 'DIMX'),
     'DTHE':       lambda data: disassemble_null(data, 'DTHE'),
     'COLCLAMP':   lambda data: disassemble_null(data, 'COLCLAMP'),
-    'TEST_1':     lambda data: disassemble_null(data, 'TEST_1'),
-    'TEST_2':     lambda data: disassemble_null(data, 'TEST_2'),
+    'TEST_1':     lambda data: disassemble_test(data, 'TEST_1'),
+    'TEST_2':     lambda data: disassemble_test(data, 'TEST_2'),
     'PABE':       lambda data: disassemble_null(data, 'PABE'),
     'FBA_1':      lambda data: disassemble_null(data, 'FBA_1'),
     'FBA_2':      lambda data: disassemble_null(data, 'FBA_2'),
@@ -237,6 +249,15 @@ DISASSEMBLY_FUNCTIONS = {
     'FINISH':     lambda data: disassemble_null(data, 'FINISH'),
     'LABEL':      lambda data: disassemble_null(data, 'LABEL'),
     'NOP':        lambda data: disassemble_null(data, 'NOP'),
+
+    # Pseudonyms
+    'XYOFFSET':   lambda data: disassemble_null(data, 'XYOFFSET'),
+
+    'TEX0':       lambda data: disassemble_tex0(data, 'TEX0'),
+    'TEX1':       lambda data: disassemble_tex1(data, 'TEX1'),
+    'TEX2':       lambda data: disassemble_null(data, 'TEX2'),
+
+    'TEST':       lambda data: disassemble_test(data, 'TEST'),
 }
 
 def disassemble_command(register_name, hex_data):
