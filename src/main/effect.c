@@ -63,7 +63,7 @@ void UG_WaveDisp(WAVE_STR *wstr, sceGsFrame *frame_pp, sceGifPacket *wavePkSpr)
 
     sceGifPkAddGsAD(wavePkSpr, SCE_GS_TEXFLUSH, 0);
     sceGifPkAddGsAD(wavePkSpr, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(128, 128, 128, 128, 0));
-    sceGifPkAddGsAD(wavePkSpr, SCE_GS_TEST_1, 0x30000);
+    sceGifPkAddGsAD(wavePkSpr, SCE_GS_TEST_1, SCE_GS_SET_TEST_1(0, 0, 0, 0, 0, 0, 1, 1));
     sceGifPkAddGsAD(wavePkSpr, SCE_GS_TEX0_1, SCE_GS_SET_TEX0(frame_pp->FBP << 5, frame_pp->FBW, 640, 0, 8, 0, 0, 0, 0, 0, 0, 0));
     sceGifPkAddGsAD(wavePkSpr, SCE_GS_TEX1_1, 0);
     sceGifPkAddGsAD(wavePkSpr, SCE_GS_PRIM, SCE_GS_SET_PRIM(SCE_GS_PRIM_SPRITE, 0, 1, 0, 0, 1, 1, 0, 0));
@@ -123,7 +123,7 @@ void UG_AlpDisp(/* s0 16 */ PLH_STR *plh_pp, /* s1 17 */ sceGsFrame *frame_pp, /
 
     sceGifPkAddGsAD(alpPkSpr, SCE_GS_TEXFLUSH, 0);
     sceGifPkAddGsAD(alpPkSpr, SCE_GS_PRMODECONT, 1);
-    sceGifPkAddGsAD(alpPkSpr, SCE_GS_TEST_1, 0x30000);
+    sceGifPkAddGsAD(alpPkSpr, SCE_GS_TEST_1, SCE_GS_SET_TEST_1(0, 0, 0, 0, 0, 0, 1, 1));
     // alpha_1
     sceGifPkAddGsAD(alpPkSpr, SCE_GS_CLAMP_1, 0x37c009fc00a);
     sceGifPkAddGsAD(alpPkSpr,SCE_GS_COLCLAMP,1);
@@ -150,7 +150,7 @@ void UG_AlpDisp(/* s0 16 */ PLH_STR *plh_pp, /* s1 17 */ sceGsFrame *frame_pp, /
     sceGifPkAddGsAD(alpPkSpr,SCE_GS_PRMODECONT,1);
     i = 3;
 
-    sceGifPkAddGsAD(alpPkSpr,SCE_GS_TEST_1,0x30000);
+    sceGifPkAddGsAD(alpPkSpr,SCE_GS_TEST_1,SCE_GS_SET_TEST_1(0, 0, 0, 0, 0, 0, 1, 1));
     sceGifPkAddGsAD(alpPkSpr,SCE_GS_ALPHA_1,(ulong)plh_pp->alp << 0x20 | 100);
     sceGifPkAddGsAD(alpPkSpr,SCE_GS_CLAMP_1,0x37c009fc00a);
     sceGifPkAddGsAD(alpPkSpr,SCE_GS_COLCLAMP,1);
@@ -225,7 +225,7 @@ void UG_MozaikuDisp(MOZAIKU_STR *moz_pp, sceGsFrame *frame_pp, sceGifPacket *moz
 {
     sceGifPkAddGsAD(mozPkSpr, SCE_GS_TEXFLUSH, 0);
     sceGifPkAddGsAD(mozPkSpr, SCE_GS_PRMODECONT, 1);
-    sceGifPkAddGsAD(mozPkSpr, SCE_GS_TEST_1, 0x30000);
+    sceGifPkAddGsAD(mozPkSpr, SCE_GS_TEST_1, SCE_GS_SET_TEST_1(0, 0, 0, 0, 0, 0, 1, 1));
     sceGifPkAddGsAD(mozPkSpr, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(128, 128, 128, 128, 0x3f800000));
 
     sceGifPkAddGsAD(mozPkSpr, SCE_GS_CLAMP_1, SCE_GS_SET_CLAMP(15, 0, moz_pp->umsk & 0x3ff, moz_pp->ufix & 0x3ff, moz_pp->vmsk & 0x3ff, moz_pp->vfix & 0x3ff));
@@ -320,7 +320,7 @@ void UG_FadeDisp2(/* s0 16 */ FADE_MAKE_STR *fade_pp, /* s3 19 */ sceGifPacket *
 
     #define PR_TXINT(x) (*(int*)&x)
 
-    sceGifPkAddGsAD(fadePkSpr, SCE_GS_TEST_1, 0x3000d);
+    sceGifPkAddGsAD(fadePkSpr, SCE_GS_TEST_1, SCE_GS_SET_TEST_1(1, 6, 0, 0, 0, 0, 1, 1));
     sceGifPkAddGsAD(fadePkSpr, SCE_GS_RGBAQ, SCE_GS_SET_RGBAQ(128, 128, 128, fade_pp->alp, 0));
 
     //sceGifPkAddGsAD(fadePkSpr, SCE_GS_TEX0_1,

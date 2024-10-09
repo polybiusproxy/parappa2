@@ -1996,7 +1996,7 @@ static void bonusScoreDraw(void)
     CmnGifADPacketMake(&bn_gif, NULL);
 
     sceGifPkAddGsAD(&bn_gif, SCE_GS_TEXFLUSH, 0);
-    sceGifPkAddGsAD(&bn_gif, SCE_GS_TEST_1, 0x30000);
+    sceGifPkAddGsAD(&bn_gif, SCE_GS_TEST_1, SCE_GS_SET_TEST_1(0, 0, 0, 0, 0, 0, 1, 1));
     sceGifPkAddGsAD(&bn_gif, SCE_GS_TEXA, 0x8000008000);
     sceGifPkAddGsAD(&bn_gif, SCE_GS_CLAMP_1, 5);
     sceGifPkAddGsAD(&bn_gif, SCE_GS_PABE, 0);
@@ -2032,35 +2032,32 @@ static void set_lero_gifset(sceGifPacket *gifpk_pp, LERO_TIM2_PT *let2_pp, short
                                                            (yp + 2048 + let2_pp->h) << 4, 1));
 }
 
-INCLUDE_ASM("main/scrctrl", LessonRoundDisp);
-#if 0
 static void LessonRoundDisp(SCRRJ_LESSON_ROUND_ENUM type)
 {
     sceGifPacket gifpk;
-    TIM2_DAT *tim2_dat_pp;
-    int i;
+    TIM2_DAT    *tim2_dat_pp;
+    int          i;
 
     if (type < SCRRJ_LR_MAX)
     {
         tim2_dat_pp = lessonTim2InfoGet();
 
         // Preserve CBP from our TEX0
-        tim2_dat_pp->GsTex0 &= SCE_GS_SET_TEX0(0x3fff, 0x3f, 0x3f, 0xf, 0xf, 0x1, 0x3, 0, 0xf, 0x1, 0x1f, 0x7)
-                             | lessonCl2InfoGet(type)->GsTex0 & SCE_GS_SET_TEX0(0, 0, 0, 0, 0, 0, 0, 0x3fff, 0, 0, 0, 0);
+        (*(sceGsTex0*)&tim2_dat_pp->GsTex0).CBP = (*(sceGsTex0*)&lessonCl2InfoGet(type)->GsTex0).CBP;
 
         CmnGifOpenCmnPk(&gifpk);
         ChangeDrawAreaSetGifTag(DrawGetDrawEnvP(DNUM_DRAW), &gifpk);
 
         sceGifPkAddGsAD(&gifpk, SCE_GS_TEXFLUSH, 0);
-        sceGifPkAddGsAD(&gifpk, SCE_GS_TEST_1, 0x3000d);
+        sceGifPkAddGsAD(&gifpk, SCE_GS_TEST_1, SCE_GS_SET_TEST_1(1, 6, 0, 0, 0, 0, 1, 1));
         sceGifPkAddGsAD(&gifpk, SCE_GS_TEXA, 0x8000008000);
         sceGifPkAddGsAD(&gifpk, SCE_GS_CLAMP_1, 5);
         sceGifPkAddGsAD(&gifpk, SCE_GS_PABE, 0);
         sceGifPkAddGsAD(&gifpk, SCE_GS_TEXA, 0x8000008000);
-        sceGifPkAddGsAD(&gifpk, SCE_GS_ALPHA_1, 0x44);
+        sceGifPkAddGsAD(&gifpk, SCE_GS_ALPHA_1, SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0));
         sceGifPkAddGsAD(&gifpk, SCE_GS_TEX0_1, tim2_dat_pp->GsTex0);
         sceGifPkAddGsAD(&gifpk, SCE_GS_TEX1_1, tim2_dat_pp->GsTex1);
-        sceGifPkAddGsAD(&gifpk, SCE_GS_PRIM, 0x156);
+        sceGifPkAddGsAD(&gifpk, SCE_GS_PRIM, SCE_GS_SET_PRIM(SCE_GS_PRIM_SPRITE, 0, 1, 0, 1, 0, 1, 0, 0));
 
         for (i = 0; i < 2; i++)
         {
@@ -2070,4 +2067,3 @@ static void LessonRoundDisp(SCRRJ_LESSON_ROUND_ENUM type)
         CmnGifCloseCmnPk(&gifpk, 2);
     }
 }
-#endif
