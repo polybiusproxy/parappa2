@@ -87,6 +87,24 @@ typedef struct { // 0x18
     /* 0x17 */ u_char a;
 } MBARR_CHR;
 
+typedef struct { // 0x38
+    /* 0x00 */ u_long GsTex0;
+    /* 0x08 */ u_long GsTex1;
+    /* 0x10 */ u_int GsRegs;
+    /* 0x14 */ short int x;
+    /* 0x16 */ short int y;
+    /* 0x18 */ u_short w;
+    /* 0x1a */ u_short h;
+    /* 0x1c */ u_short u;
+    /* 0x1e */ u_short v;
+    /* 0x20 */ u_short cx;
+    /* 0x22 */ u_short cy;
+    /* 0x24 */ u_short alpha;
+    /* 0x28 */ float scalex;
+    /* 0x2c */ float scaley;
+    /* 0x30 */ u_char kido[3];
+} EX_CHAR_DISP;
+
 void MbarSetCtrlTime(int mctime);
 void MbarReq(MBAR_REQ_ENUM mm_req, TAPSET *ts_pp, int curr_time, SCR_TAP_MEMORY *tm_pp, int tm_cnt, int lang, int tapdat_size, TAPDAT *tapdat_pp, GUI_CURSOR_ENUM guic);
 

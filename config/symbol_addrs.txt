@@ -819,6 +819,7 @@ mbar_ctrl_time                      = 0x00399a84;
 mbar_ctrl_stage                     = 0x00399a88;
 mbar_ctrl_stage_selT                = 0x00399a8c;
 
+conditionFramCnt                    = 0x01c70080; // size:0x10
 mbar_req_str                        = 0x01c70110; // size:0xb4
 
 // main/pack.c

@@ -3,6 +3,7 @@
 #include "main/scrctrl.h"
 
 /* .bss */
+extern int conditionFramCnt[4];
 extern MBAR_REQ_STR mbar_req_str[5];
 
 /* .sbss */
@@ -14,21 +15,84 @@ INCLUDE_ASM("main/mbar", examCharSet);
 
 INCLUDE_ASM("main/mbar", clrColorBuffer);
 
-INCLUDE_ASM("main/mbar", MbarMemberClear);
+void MbarMemberClear(int stg)
+{
+    if (stg < 6)
+        clrColorBuffer(59);
 
-INCLUDE_ASM("main/mbar", examCharBasic);
+    if (stg < 4)
+        clrColorBuffer(58);
 
-INCLUDE_ASM("main/mbar", examCharScaleSet);
+    if (stg < 3)
+        clrColorBuffer(57);
 
-INCLUDE_ASM("main/mbar", examCharCltSet);
+    if (stg < 2)
+        clrColorBuffer(56);
 
-INCLUDE_ASM("main/mbar", examCharPosSet);
+    if (stg < 1)
+        clrColorBuffer(55);
+}
 
-INCLUDE_ASM("main/mbar", examCharUVWHSet);
+void examCharBasic(EX_CHAR_DISP *ecd_pp, TIM2_DAT *tim2_dat_pp)
+{
+    ecd_pp->GsTex0 = tim2_dat_pp->GsTex0;
+    ecd_pp->GsTex1 = tim2_dat_pp->GsTex1;
+    ecd_pp->GsRegs = tim2_dat_pp->GsRegs;
 
-INCLUDE_ASM("main/mbar", examCharAlphaSet);
+    ecd_pp->w = tim2_dat_pp->w;
+    ecd_pp->h = tim2_dat_pp->h;
+    
+    ecd_pp->u = 0;
+    ecd_pp->v = 0;
+    ecd_pp->cx = 0;
+    ecd_pp->cy = 0;
+    
+    ecd_pp->scalex = 1.0f;
+    ecd_pp->scaley = 1.0f;
+    ecd_pp->alpha = 0.0f;
 
-INCLUDE_ASM("main/mbar", examCharKidoSet);
+    ecd_pp->kido[0] = 128;
+    ecd_pp->kido[1] = 128;
+    ecd_pp->kido[2] = 128;
+}
+
+void examCharScaleSet(EX_CHAR_DISP *ecd_pp, float scx, float scy)
+{
+    ecd_pp->scalex = ecd_pp->scalex * scx;
+    ecd_pp->scaley = ecd_pp->scaley * scy;
+}
+
+void examCharCltSet(EX_CHAR_DISP *ecd_pp, TIM2_DAT *tim2_dat_pp)
+{
+    ((sceGsTex0*)&ecd_pp->GsTex0)->CBP = ((sceGsTex0*)&tim2_dat_pp->GsTex0)->CBP;
+}
+
+void examCharPosSet(EX_CHAR_DISP *ecd_pp, int xp, int yp)
+{
+    ecd_pp->x = (xp << 4) - GS_X_COORD(640);
+    ecd_pp->y = (yp << 4) - GS_Y_COORD(224);
+}
+
+void examCharUVWHSet(EX_CHAR_DISP *ecd_pp, u_short u, u_short v, u_short w, u_short h)
+{
+    ecd_pp->u = u;
+    ecd_pp->v = v;
+
+    ecd_pp->w = w;
+    ecd_pp->h = h;
+}
+
+void examCharAlphaSet(EX_CHAR_DISP *ecd_pp, u_short on_off)
+{
+    ecd_pp->alpha = on_off;
+}
+
+void examCharKidoSet(EX_CHAR_DISP *ecd_pp, u_char rc, u_char gc, u_char bc)
+{
+    ecd_pp->kido[0] = rc;
+    ecd_pp->kido[1] = gc;
+    ecd_pp->kido[2] = bc;
+}
 
 INCLUDE_ASM("main/mbar", NikoReset);
 
@@ -68,7 +132,15 @@ INCLUDE_ASM("main/mbar", metColorSet);
 
 INCLUDE_ASM("main/mbar", metFrameInit);
 
-INCLUDE_ASM("main/mbar", conditionFrameInit);
+void conditionFrameInit(void)
+{
+    int i;
+
+    for (i = 0; i < PR_ARRAYSIZE(conditionFramCnt); i++)
+    {
+        conditionFramCnt[i] = 60;
+    }
+}
 
 INCLUDE_ASM("main/mbar", ExamDispInit);
 
@@ -172,9 +244,15 @@ INCLUDE_ASM("main/mbar", MbarGetTimeArea);
 
 INCLUDE_ASM("main/mbar", MbarGetTimeArea2);
 
-INCLUDE_ASM("main/mbar", MbarGetStartTime);
+int MbarGetStartTime(MBAR_REQ_STR *mr_pp)
+{
+    return ((mr_pp->current_time + mr_pp->tapset_pp->taptimeStart - 24) / 96) * 96;
+}
 
-INCLUDE_ASM("main/mbar", MbarGetEndTime);
+int MbarGetEndTime(MBAR_REQ_STR *mr_pp)
+{
+    return (mr_pp->current_time + mr_pp->tapset_pp->taptimeEnd);
+}
 
 INCLUDE_ASM("main/mbar", MbarGetStartTap);
 
