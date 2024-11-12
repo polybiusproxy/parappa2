@@ -1751,7 +1751,15 @@ AddShapePosition__12SpmShapeNodeUif = 0x0014bd18; // type:func
 RenderShapeNode__12SpmShapeNodeP13PrModelObject = 0x0014bdc0; // type:func
 
 // prlib/random.cpp
+RawRandom__Fv                       = 0x0014d8e0; // type:func
+PrRandom__Fv                        = 0x0014d900; // type:func
 PrInitializeRandomPool__Fv          = 0x0014d980; // type:func
+PrFloatRandom__Fv                   = 0x0014d9d8; // type:func
+
+randomSeed                          = 0x00399940;
+poolIndex                           = 0x00399944;
+
+randomPool                          = 0x01c833e0; // size:0x184
 
 // prlib/menderer.cpp
 PrSetMendererRatio                  = 0x0014f278; // type:func

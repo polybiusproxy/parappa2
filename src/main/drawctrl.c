@@ -200,7 +200,7 @@ void BallThrowSetFrame(int frame)
 
 void BallThrowInit(void)
 {
-    WorkClear(bthrow_ctrl, 0x1c28);
+    WorkClear(bthrow_ctrl, sizeof(bthrow_ctrl));
 
     bthrow_ctrl[0].targetY = 112.0f;
     bthrow_ctrl[0].targetX = 120.0f;
@@ -211,7 +211,7 @@ void BallThrowInit(void)
 
 void BallThrowInitDare(int dare)
 {
-    WorkClear(&bthrow_ctrl[dare], 0xe14);
+    WorkClear(&bthrow_ctrl[dare], sizeof(BTHROW_CTRL));
 }
 
 #if 1
@@ -294,7 +294,6 @@ void BallThrowPoll(void)
     TIM2INFO info;
     int w, h;
     int px, py;
-    
 
     for (i = 0; i < 2; i++)
     {
@@ -759,10 +758,11 @@ void camOtherKill(OBJACTPRG *objactprg_pp, int objactprg_num, int oya_num)
 
     for (i = 0; i < objactprg_num; i++, objactprg_pp++)
     {
-        if (i != oya_num && objactprg_pp->job_type == OCTRL_CAM)
-        {
+        if (i == oya_num)
+            continue;
+        
+        if (objactprg_pp->job_type == OCTRL_CAM)
             objactprg_pp->job_type = OCTRL_NON;
-        }
     }
 }
 
@@ -772,8 +772,11 @@ void posAniOtherKill(OBJACTPRG *objactprg_pp, int objactprg_num, int ani_num, in
 
     for (i = 0; i < objactprg_num; i++, objactprg_pp++)
     {
-        if ((i != ani_num) && (objactprg_pp->job_type == OCTRL_ANIPOS)
-        && (objactprg_pp->sub_num == mod_num))
+        if (i == ani_num)
+            continue;
+        
+        if (objactprg_pp->job_type == OCTRL_ANIPOS &&
+            objactprg_pp->sub_num == mod_num)
         {
             objactprg_pp->job_type = OCTRL_NON;
         }
@@ -805,7 +808,7 @@ void DrawSceneReset(SCENE_OBJDATA *scene_pp)
         DrawObjTapStrInit(&scene_pp->objtapstr_pp[i]);
     }
 
-    for (i = 0; i < 3; i++)
+    for (i = 0; i < PR_ARRAYSIZE(scene_pp->objactprg_ctrl.objactprg); i++)
     {
         if (scene_pp->objactprg_ctrl.objactprg[i] != NULL)
         {
@@ -814,7 +817,7 @@ void DrawSceneReset(SCENE_OBJDATA *scene_pp)
         } 
     }
 
-    for (i = 0; i < 40; i++)
+    for (i = 0; i < PR_ARRAYSIZE(scene_pp->dr_tap_req); i++)
     {
         scene_pp->dr_tap_req[i].req_no = -1;
     }
@@ -824,7 +827,7 @@ void DrawSceneFirstSet(SCENE_OBJDATA *scene_pp)
 {
     int i;
 
-    for (i = 0; i < 3; i++)
+    for (i = 0; i < PR_ARRAYSIZE(scene_pp->objactprg_ctrl.objactprg); i++)
     {
         if (scene_pp->objactprg_ctrl.objactprg[i] == NULL)
         {
@@ -836,7 +839,7 @@ void DrawSceneFirstSet(SCENE_OBJDATA *scene_pp)
 
     scene_pp->objactprg_ctrl.num = scene_pp->objdat_size;
 
-    for (i = 0; i < 40; i++)
+    for (i = 0; i < PR_ARRAYSIZE(scene_pp->dr_tap_req); i++)
     {
         scene_pp->dr_tap_req[i].req_no = -1;
     }
@@ -972,7 +975,7 @@ static void DrawCtrlMain(void *x)
 
         if (scenectrl_pp != NULL)
         {
-            for (i = 0; i < 20; i++)
+            for (i = 0; i < PR_ARRAYSIZE(check_scenectrl); i++)
             {
                 check_scenectrl[i] = NULL;
             }

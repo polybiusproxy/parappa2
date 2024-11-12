@@ -126,9 +126,7 @@ int PackIntDecodeWait(u_char *fp_r, u_char *fp_w, int wait_hline)
         }
 
         if (fp_w == fp_w_end)
-        {
             break;
-        }
 
         if (wait_hline < *T0_COUNT)
             MtcWait(1);

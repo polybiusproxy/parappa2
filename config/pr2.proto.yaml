@@ -120,7 +120,7 @@ segments:
         - [0x4dd38, asm, nalib/napacket] # Header
         - [0x4ddd0, asm, prlib/vram]
           # - [0x4e668, asm, nalib/napacket] # Header
-        - [0x4e8e0, asm, prlib/random]
+        - [0x4e8e0, cpp, prlib/random]
         - [0x4ea40, asm, prlib/menderer]
           # - [0x503b8, asm, nalib/navector] # Header
           # - [0x504c8, asm, nalib/navector] # Header
@@ -259,6 +259,8 @@ segments:
         #- [0x29a8c8, sdata, prlib/renderstuff] # prlib/renderstuff
         - [0x29a8cc, .sdata, prlib/prlib]
         - [0x29a8e0, sdata] # prlib/render
+        - [0x29a940, sdata, prlib/random]
+        - [0x29a948, sdata]
         #- [0x29a8ec, sdata]
         
         # - [0x29a9d8, rodatabin] # .sbss / .bss
@@ -313,7 +315,10 @@ segments:
         - { start: 0x29aa1c, type: bss,  vram: 0x01c81880, name: menu/menufont  }
         - { start: 0x29aa1c, type: .bss, vram: 0x01c828c0, name: iop_mdl/wp2cd_rpc  }
         - { start: 0x29aa1c, type: .bss, vram: 0x01c82a00, name: iop_mdl/tapctrl_rpc  }
+
         - { start: 0x29aa1c, type: bss,  vram: 0x01c82a70, name: tmp2  } # prlib
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c833e0, name: prlib/random }
+        - { start: 0x29aa1c, type: bss,  vram: 0x01c83570, name: tmp3  } # prlib
 
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c88500, name: sdk/scelib  }
         # - { start: 0x29aa1c, type: bss,  vram: 0x01c8df00, name: sdk/newlib  }

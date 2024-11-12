@@ -33,9 +33,7 @@ static void setMakinDataMoto(TAPDAT *tapdat_pp, int size, CM_STR *cm_str_pp)
 static int getMakingDataKeyKind(CM_STR *cm_str_pp)
 {
     int i;
-    int ret;
-
-    ret = 0;
+    int ret = 0;
 
     for (i = 0; i < 32; i++, cm_str_pp++)
     {
