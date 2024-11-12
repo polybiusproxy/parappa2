@@ -5,7 +5,7 @@
 
 #include <eetypes.h>
 
-int   PrRandom();
+u_int PrRandom();
 void  PrInitializeRandomPool();
 float PrFloatRandom();
 

@@ -9,7 +9,7 @@ static u_int RawRandom()
     return randomSeed;
 }
 
-int PrRandom()
+u_int PrRandom()
 {
     extern u_int poolIndex;
     int ret;
@@ -34,7 +34,7 @@ void PrInitializeRandomPool()
     PrRandom();
 }
 
-#define FLOAT_RAND 4.656613e-10f
+#define RAND_MAX 2147483647
 
 float PrFloatRandom()
 {
@@ -42,20 +42,10 @@ float PrFloatRandom()
     u_int rand;
 
 generate_rand:
-    rand = PrRandom();
-    if (rand >= 0)
-    {
-        ret = rand;
-    }
-    else
-    {
-        ret = ((rand & 1) | (rand >> 1));
-        ret += ret;
-    }
+    ret = PrRandom();
 
-    if ((ret * FLOAT_RAND) >= 1.0f)
+    if ((ret / RAND_MAX) >= 1.0f)
         goto generate_rand;
 
-    ret *= FLOAT_RAND;
-    return ret;
+    return ret / RAND_MAX;
 }
