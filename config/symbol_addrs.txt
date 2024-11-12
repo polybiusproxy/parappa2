@@ -1746,6 +1746,10 @@ FLT_003998E8                        = 0x003998e8; // type:s32
 
 AwfulStatus                         = 0x00399b94;
 
+// prlib/shape.cpp
+AddShapePosition__12SpmShapeNodeUif = 0x0014bd18; // type:func
+RenderShapeNode__12SpmShapeNodeP13PrModelObject = 0x0014bdc0; // type:func
+
 // prlib/random.cpp
 PrInitializeRandomPool__Fv          = 0x0014d980; // type:func
 

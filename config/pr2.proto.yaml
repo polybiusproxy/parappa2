@@ -113,7 +113,7 @@ segments:
           # - [0x4c988, asm, nalib/navector] # Header
           # - [0x4c9d8, asm, prlib/objectset] # Header
         - [0x4c9f8, asm, prlib/cluster]
-        - [0x4cd18, asm, prlib/shape]
+        - [0x4cd18, cpp, prlib/shape]
         - [0x4d200, asm, prlib/billboard]
           # - [0x4d4e8, asm, nalib/navector] # Header
         - [0x4d8e8, asm, prlib/depthfield]

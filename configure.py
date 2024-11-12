@@ -208,6 +208,8 @@ def patch_branch_instructions(folder: str) -> None:
 def apply_short_loop_fix():
     print(f"(HACK) Applying short loop fix on \"menu/menusub.c\"")
     patch_branch_instructions("asm/nonmatchings/menu/menusub")
+    print(f"(HACK) Applying short loop fix on \"prlib/shape.cpp\"")
+    patch_branch_instructions("asm/nonmatchings/prlib/shape")
 
 EUC_HACK_FILENAME_TABLE = ["TsDrawUPacket.s", "_P3MC_SetBrowsInfo.s"]
 def eucjp_convert():
@@ -460,7 +462,10 @@ if __name__ == "__main__":
 
     # Only to be performed with a clean build
     if args.gp_analysis:
-        perform_gp_analysis()
+        if args.clean:
+            perform_gp_analysis()
+        else:
+            print("(ERROR) Trying to perform %gp_rel analysis without a clean build. Ignoring.")
 
     if not args.no_eucjp_converting:
         eucjp_convert()
