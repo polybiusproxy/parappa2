@@ -1732,6 +1732,13 @@ debugParam                          = 0x00399b90;
 vector_0                            = 0x01c83190;
 vector_1                            = 0x01c831a0;
 
+// prlib/setpointer.cpp
+ChangePointer__13SpmFileHeader      = 0x001420b8; // type:func
+ChangePointer__7SpmNodeP13SpmFileHeaderP7SpmNode = 0x00142168; // type:func
+ChangePointer__13SpaFileHeader      = 0x00142308; // type:func
+ChangePointer__16SpaNodeAnimationP13SpaFileHeader = 0x001423c0; // type:func
+ChangePointer__13SpcFileHeader      = 0x00142670; // type:func
+
 // prlib/render.cpp
 prSpramData                         = 0x003998e0;
 FLT_003998E4                        = 0x003998e4; // type:s32
