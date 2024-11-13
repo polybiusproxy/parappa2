@@ -1,5 +1,7 @@
 #include "random.h"
 
+#include <stdlib.h>
+
 extern u_int randomSeed;
 extern u_int randomPool[97];
 
@@ -33,8 +35,6 @@ void PrInitializeRandomPool()
     PrRandom();
     PrRandom();
 }
-
-#define RAND_MAX 2147483647
 
 float PrFloatRandom()
 {
