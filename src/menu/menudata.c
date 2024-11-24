@@ -1,4 +1,4 @@
-#include "common.h"
+#include "menu/menudata.h"
 
 #include "os/system.h"
 
@@ -62,22 +62,39 @@ void MenuDataSndSetVol(int chanId, int req, int vol0)
     TapCt(0x130, chanId, sndtap_pp->volume * vol0 >> 8); /* Should be a division rather than a shift? */
 }
 
-INCLUDE_ASM("menu/menudata", MenuDataSndTrans);
+MENU_SPU_ENUM MenuDataSndTrans(int bdId, int hdId, MENU_SPU_ENUM trId)
+{
+    TapCt(0x8030 | trId, (int)GetIntAdrsCurrent(bdId), (int)GetIntSizeCurrent(bdId));
+    TapCt(0x8040 | trId, (int)GetIntAdrsCurrent(hdId), (int)GetIntSizeCurrent(hdId));
+    return trId;
+}
 
 int MenuDataSndTransCheck(void)
 {
     return TapCt(0x8070, 0, 0);
 }
 
-INCLUDE_ASM("menu/menudata", MenuDataSndReqChan);
+void MenuDataSndReqChan(int chanId, int req, MENU_SPU_ENUM trId)
+{
+    SNDTAP *sndtap_pp = &sndtap_menu[req];
+
+    TapCt(0xf0 | trId, chanId, sndtap_pp->volume);
+    TapCt(0xd0 | trId, chanId, sndtap_pp->prg + sndtap_pp->key * 256);
+}
 
 INCLUDE_ASM("menu/menudata", MenuDataSpuVolume);
 
 INCLUDE_ASM("menu/menudata", MenuDataDiskVolume);
 
-INCLUDE_ASM("menu/menudata", MenuDataDiskSndReq);
+void MenuDataDiskSndReq(MENU_DISKSND_ENUM sndId)
+{
+    CdctrlWP2Set(&file_str_extra_file[sndId]);
+}
 
-INCLUDE_ASM("menu/menudata", MenuDataDiskSndReady);
+int MenuDataDiskSndReady(void)
+{
+    return CdctrlWP2CheckBuffer();
+}
 
 INCLUDE_ASM("menu/menudata", MenuDataDiskSndPlay);
 

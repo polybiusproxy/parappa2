@@ -32,6 +32,7 @@ typedef struct { // 0x38
 
 FILE_STR file_str_logo_file;
 FILE_STR file_str_menu_file;
+FILE_STR file_str_extra_file[10];
 
 STDAT_REC stdat_rec[19];
 

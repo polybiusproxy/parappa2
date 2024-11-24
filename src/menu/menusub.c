@@ -405,7 +405,7 @@ static void TsPatGetSize(PATPOS *ppos, int *x, int *y, int *w, int *h)
         *x = ppos->x + (ptex->w / 2);
 
     if (y != NULL)
-        *y = ppos->y + (ptex->h / 2);      
+        *y = ppos->y + (ptex->h / 2);
 }
 
 INCLUDE_ASM("menu/menusub", TsPatPutRZoom);
