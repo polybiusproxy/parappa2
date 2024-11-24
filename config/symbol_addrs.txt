@@ -829,20 +829,44 @@ PackGetAdrs                         = 0x0011be08; // type:func
 PackDbgList                         = 0x0011be38; // type:func
 
 // main/etc.c
+GlobalInit                          = 0x0011bec0; // type:func
+clearStageCheck                     = 0x0011bf38; // type:func
 GlobalTimeInit                      = 0x0011bf80; // type:func
 GlobalSetTempo                      = 0x0011bfa0; // type:func
+GlobalTimeJobChange                 = 0x0011bfa8; // type:func
+GlobalTimeJob                       = 0x0011bfc0; // type:func
+GlobalTimeGet                       = 0x0011c0e8; // type:func
+GlobalSndTimeGet                    = 0x0011c0f8; // type:func
 GlobalSndSampleGet                  = 0x0011c108; // type:func
 GetHatRound                         = 0x0011c118; // type:func
 GlobalMendererUseCheck              = 0x0011c130; // type:func
+GlobalLobcalCopy                    = 0x0011c158; // type:func
 GlobalPlySet                        = 0x0011c288; // type:func
+GetPcode2PadType                    = 0x0011c6c8; // type:func
+TimeCallback                        = 0x0011c720; // type:func
+TimeCallbackSet                     = 0x0011c758; // type:func
 TimeCallbackTimeGetChan             = 0x0011c790; // type:func
 TimeCallbackTimeSetChan             = 0x0011c7d8; // type:func
 TimeCallbackTimeSetChanTempo        = 0x0011c808; // type:func
+TimeCallbackTimeGet                 = 0x0011c8a0; // type:func
+TimeCallbackTimeSet                 = 0x0011c8c0; // type:func
 Pcode2Pindex                        = 0x0011c8d0; // type:func
+GetKeyCode2Index                    = 0x0011c918; // type:func
 GetIndex2KeyCode                    = 0x0011c990; // type:func
+GetIndex2PressId                    = 0x0011c9c0; // type:func
+GetKeyCode2PressId                  = 0x0011c9e8; // type:func
+ChangeTapLevel                      = 0x0011ca50; // type:func
+UsrPrInitScene                      = 0x0011ca58; // type:func
+UsrPrQuitScene                      = 0x0011ca60; // type:func
 UsrPrSetScene                       = 0x0011ca68; // type:func
 SpuBankSet                          = 0x0011cad0; // type:func
+SpuBankSetAll                       = 0x0011cb38; // type:func
+inCmnInit                           = 0x0011cba0; // type:func
+inCmnHookMaxLineCnt                 = 0x0011cbe0; // type:func
+inCmnHookMaxLinePknum               = 0x0011cc08; // type:func
+inCmnHookSet                        = 0x0011cc48; // type:func
 inCmnHook2GameCheck                 = 0x0011ccd0; // type:func
+inCmnHook2GameSave                  = 0x0011cd30; // type:func
 
 // main/wipe.c
 wipeSndReq                          = 0x0011cd58; // type:func
