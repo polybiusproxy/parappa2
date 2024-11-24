@@ -16,13 +16,13 @@ def save(data, filename):
 
 def getColor(percentage):
     if percentage >= 75:
-        return "brightgreen"
+        return "lime"
     elif percentage >= 50:
-        return "brightyellow"
+        return "yellow"
     if percentage >= 25:
-        return "brightorange"
+        return "darkorange"
     else:
-        return "brightred"
+        return "crimson"
 
 def parse_progress(output):
     lines = output.strip().split("\n")
