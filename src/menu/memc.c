@@ -10,6 +10,8 @@ extern u_int _memc_type[];
 /* bss - static */
 extern MEMC_STAT memc_stat;
 
+static int memc_mansub_Open(char *name, u_int type);
+
 void memc_init(void)
 {
     sceMcInit();

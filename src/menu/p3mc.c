@@ -18,10 +18,10 @@ GETUSER_WORK *pUChkWork;
 extern P3MC_WORK P3MC_Work;
 
 /* sbss - static */
-int FreeSizeFlg;
-int portCheckFlg;
-int NeedSize[2];
-int UChkSize[2];
+extern int FreeSizeFlg;
+extern int portCheckFlg;
+extern int NeedSize[2];
+extern int UChkSize[2];
 
 /* bss - static */
 extern char filePath[64];
@@ -29,7 +29,7 @@ extern MEMC_INFO *mcmenu_info;
 extern sceMcTblGetDir p3mcTblGetDir[8];
 
 /* sbss - static */
-int isFileFlgCash;
+extern int isFileFlgCash;
 
 /* bss - static */
 extern u_char McLogFileFlg[80];
