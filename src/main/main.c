@@ -142,6 +142,42 @@ static void dummyPlay(/* s0 16 */ int retTitle)
         "VS COM  A or O .. CLEAR  X .. NG"
     };
 
+    mode = 0; // 177
+
+    if (retTitle == 0)
+    {
+        if (game_status.demo_flagG != 2) {
+            // 179
+            mode = 1;
+            if (game_status.play_modeG == 0) {
+                //DbgMsgInit();
+            }
+        }
+    }
+
+    game_status.bonusG = 0; // 185
+    DbgMsgInit(); // 186
+
+    while (1)
+    {
+        /* -0x120(sp) */ u_char msg_dat[80];
+        /* -0xd0(sp) */ u_char *pmd[3] = { "SINGLE", "VS MAN", "VS COM" };
+        /* -0xc0(sp) */ u_char *ptype[2] = { "NORMAL", "EASY" };
+    }
+
+#if 0
+    /* s1 17 */ int mode;
+    /* s2 18 */ int ret;
+    /* -0x150(sp) */ long scoreTmp[2] = {};
+    /* -0x140(sp) */ u_char *msgDmy[5] =
+    {
+        "TITLE   A or O or X EXIT",
+        "REPLAY  A or O or X EXIT",
+        "SINGLE  A .. COOL O .. GOOD  X .. NG",
+        "VS MAN  A..1p win O..2p win X..EXIT",
+        "VS COM  A or O .. CLEAR  X .. NG"
+    };
+
     mode = 0;
 
     if (retTitle == 0)
@@ -321,6 +357,7 @@ static void dummyPlay(/* s0 16 */ int retTitle)
     // /* v1 3 */ GLOBAL_PLY *gply_pp;
     // /* v0 2 */ GLOBAL_PLY *gply_pp;
     // /* v0 2 */ GLOBAL_PLY *gply_pp;
+#endif
 }
 #endif
 
@@ -585,7 +622,7 @@ void xtrView(FILE_STR *file_str_pp)
     {
         MtcWait(1);
 
-        if ((pad[0].one & SCE_PADstart) || CdctrlWP2PlayEndCheck() || timer >= 6540 )
+        if ((pad[0].one & SCE_PADstart) || CdctrlWP2PlayEndCheck() || timer >= 6540)
             break;
 
         CdctrlWp2GetSampleTmpBuf();
@@ -731,6 +768,8 @@ INCLUDE_ASM("main/main", selPlayDispSetPlayOne);
 INCLUDE_ASM("main/main", gamePlayDisp);
 int gamePlayDisp(void);
 
+void GlobalLobcalCopy();
+
 INCLUDE_ASM("main/main", titleDisp);
 #if 0
 void titleDisp(/* s1 17 */ int firstf)
@@ -753,7 +792,7 @@ void titleDisp(/* s1 17 */ int firstf)
         GlobalLobcalCopy();
 
         stdat_dat_pp = stdat_rec[19].stdat_dat_pp;
-        fsize = CdctrlGetFileSize(&stdat_dat_pp->intfile) + 2047;
+        fsize = (CdctrlGetFileSize(&stdat_dat_pp->intfile) + 2047) / 2048;
         decp = UsrMemEndAlloc(fsize / 2048);
 
         CdctrlReadOne(&stdat_dat_pp->intfile, decp, 0);
@@ -776,7 +815,10 @@ void titleDisp(/* s1 17 */ int firstf)
         GlobalLobcalCopy();
 
         if (selPlayDispTitleDisp(19, deramode, loop))
+        {
+            SetBackColor(0, 0, 0);
             break;
+        }
 
         firstf = 0;
 
@@ -795,8 +837,6 @@ void titleDisp(/* s1 17 */ int firstf)
         WipeInReq();
         MtcWait(2);
     }
-
-    SetBackColor(0, 0, 0);
 }
 #endif
 

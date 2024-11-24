@@ -15,7 +15,7 @@ void memc_init(void)
     sceMcInit();
 
     memset(&memc_stat, 0, sizeof(memc_stat));
-    memset(memc_iconsys.Reserve3, 0, 512);
+    memset(memc_iconsys.Reserve3, 0, sizeof(memc_iconsys.Reserve3));
 }
 
 void memc_setDirName(char *name)
@@ -50,14 +50,9 @@ void memc_setIconSysHed(void *pIhData, int IhSize)
     memc_iconsys.OffsLF = nLF;
 }
 
-INCLUDE_RODATA("menu/memc", D_00396650);
-
-#if 1
-INCLUDE_ASM("menu/memc", memc_setSaveIcon);
-#else
-void memc_setSaveIcon(/* a0 4 */ int no, /* a1 5 */ void *pIconData, /* a2 6 */ int nIconSize)
+void memc_setSaveIcon(int no, void *pIconData, int nIconSize)
 {
-    /* a3 7 */ MEMC_STAT *pmw = &memc_stat;
+    MEMC_STAT *pmw = &memc_stat;
 
     switch (no)
     {
@@ -66,76 +61,104 @@ void memc_setSaveIcon(/* a0 4 */ int no, /* a1 5 */ void *pIconData, /* a2 6 */ 
         pmw->iconSize1 = nIconSize;
         
         strcpy(memc_iconsys.FnameView, "icon1.ico");
-        return;
+        break;
     case 1:
-        if (pIconData != NULL)
-        {
-            if (nIconSize == 0)
-            {
-                pmw->iconData2 = 0;
-                pmw->iconSize2 = 0;
-
-                strcpy(memc_iconsys.FnameCopy, "icon1.ico");
-                return;
-            }
-            else
-            {
-                pmw->iconData2 = pIconData;
-                pmw->iconSize2 = nIconSize;
-
-                strcpy(memc_iconsys.FnameCopy, "icon2.ico");
-                return;
-            }
-        }
-        else
+        if (pIconData == NULL || nIconSize == 0)
         {
             pmw->iconData2 = 0;
             pmw->iconSize2 = 0;
 
             strcpy(memc_iconsys.FnameCopy, "icon1.ico");
-            return;
-        }
-    case 2:
-        if (pIconData != NULL)
-        {
-            if (nIconSize != 0)
-            {
-                pmw->iconData3 = 0;
-                pmw->iconSize3 = 0;
-
-                strcpy(memc_iconsys.FnameDel, "icon1.ico");
-                return;
-            }
-            else
-            {
-                pmw->iconData3 = pIconData;
-                pmw->iconSize3 = nIconSize;
-
-                strcpy(memc_iconsys.FnameDel, "icon3.ico");
-                return;
-            }
         }
         else
+        {
+            pmw->iconData2 = pIconData;
+            pmw->iconSize2 = nIconSize;
+
+            strcpy(memc_iconsys.FnameCopy, "icon2.ico");
+        }
+        break;
+    case 2:
+        if (pIconData == NULL || nIconSize == 0)
         {
             pmw->iconData3 = 0;
             pmw->iconSize3 = 0;
 
             strcpy(memc_iconsys.FnameDel, "icon1.ico");
-            return;
         }
+        else
+        {
+            pmw->iconData3 = pIconData;
+            pmw->iconSize3 = nIconSize;
+
+            strcpy(memc_iconsys.FnameDel, "icon3.ico");
+        }
+        break;
     default:
-        return;
+        break;
     }
 }
-#endif
 
-INCLUDE_RODATA("menu/memc", D_00396670);
+char* memc_getfilename(int no)
+{
+    char *fbody;
+    extern char tmps0[64];
 
-INCLUDE_ASM("menu/memc", memc_getfilename);
-char* memc_getfilename(/* a0 4 */ int no);
+    switch (no)
+    {
+    case -1:
+        fbody = "icon.sys";
+        break;
+    case -2:
+        fbody = "icon1.ico";
+        break;
+    case -3:
+        if (memc_stat.iconData2 == NULL)
+            return NULL;
+    case -4:
+        if (memc_stat.iconData3 == NULL)
+            return NULL;
+    default:
+        if (no >= 2)
+            return NULL;
 
-INCLUDE_ASM("menu/memc", memc_getfilepath);
-char* memc_getfilepath(/* a0 4 */ int no);
+        if (no == 0)
+        {
+            fbody = memc_stat.saveDir;
+        }
+        else
+        {
+            sprintf(tmps0, "SAVE%03d", no);
+            fbody = tmps0;
+        }
+        break;
+    }
+
+    return fbody;
+}
+
+extern char D_00399878[]; // sdata - "/"
+
+char* memc_getfilepath(int no)
+{
+    extern char tmps1[130];
+    char *fbody;
+
+    fbody = memc_getfilename(no);
+    if (fbody == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        strcpy(tmps1, memc_stat.saveDir);
+        strcat(tmps1, D_00399878);
+        strcat(tmps1, fbody);
+        fbody = tmps1;
+    }
+
+    return fbody;
+}
 
 int memc_checkFormat(void)
 {
@@ -277,13 +300,135 @@ int memc_load_file(int port, int no, char *buf, int size)
     return re;
 }
 
-INCLUDE_ASM("menu/memc", memc_loadFirst);
+int memc_loadFirst(int port, int no, char *buf, int size)
+{
+    MEMC_STAT *pmw = &memc_stat;
+    char      *tmpp;
 
-INCLUDE_ASM("menu/memc", memc_save_file);
+    pmw->port        = port;
+    pmw->buf         = buf;
+    pmw->size        = size;
 
-INCLUDE_ASM("menu/memc", memc_seeksave_file);
+    pmw->retry       = 0;
+    pmw->isSyncClose = 1;
+    pmw->fileNo      = no;
 
-INCLUDE_ASM("menu/memc", memc_save_overwrite);
+    tmpp = memc_getfilepath(no);
+    if (tmpp != NULL)
+        strcpy(pmw->filename, tmpp);
+    else 
+        pmw->filename[0] = '\0';
+
+    if (memc_mansub_Open(pmw->filename, SCE_RDONLY) == 0)
+    {
+        pmw->func = 3;
+        return 0;
+    }
+
+    return 1;
+}
+
+int memc_save_file(int port, int no, char* buf, int size, int bSysRW)
+{
+    int        re;
+    int        n;
+    int        isize;
+
+    MEMC_STAT* pmw;
+    char*      tmpp;
+
+    pmw = &memc_stat;
+
+    pmw->port    = port;
+    pmw->buf     = buf;
+    pmw->size    = size;
+    pmw->retry   = 0;
+    pmw->stat    &= ~0x1f; /* Clear all flags */
+
+    pmw->seek    = 0;
+    pmw->size2   = 0;
+    pmw->bChkSys = bSysRW;
+    pmw->fileNo  = no;
+
+    tmpp = memc_getfilepath(no);
+    if (tmpp != NULL)
+        strcpy(pmw->filename, tmpp);
+    else
+        pmw->filename[0] = '\0';
+
+    n = 3;
+    isize = (pmw->iconSize1 + 1023) / 1024;
+
+    if (memc_getfilename(-3) != NULL)
+    {
+        isize += (pmw->iconSize2 + 1023) / 1024;
+        n++;
+    }
+
+    if (memc_getfilename(-4) != NULL)
+    {
+        isize += (pmw->iconSize3 + 1023) / 1024;
+        n++;
+    }
+
+    pmw->sysFileSize = isize + ((n + 1) / 2) + 3;
+
+    re = sceMcGetInfo(pmw->port, pmw->slot, &pmw->type, &pmw->free, &pmw->format);
+    if (re == sceMcResSucceed)
+    {
+        pmw->cmd  = 14;
+        pmw->func = 4;
+    }
+
+    return re;
+}
+
+int memc_seeksave_file(int port, int no, char *buf, int size, int seek, int sizef, int bSysRW)
+{
+    MEMC_STAT *pmw = &memc_stat;
+    int        re;
+
+    re = memc_save_file(port, no, buf, size, bSysRW);
+
+    pmw->seek = seek;
+    pmw->size2 = sizef;
+    return re;
+}
+
+int memc_save_overwrite(void)
+{
+    int        re;
+    int        n;
+    int        isize;
+
+    MEMC_STAT *pmw = &memc_stat;
+
+    n = 2;
+    isize = (pmw->iconSize1 + 1023) / 1024;
+
+    if (memc_getfilename(-3) != NULL)
+    {
+        isize += (pmw->iconSize2 + 1023) / 1024;
+        n++;
+    }
+
+    if (memc_getfilename(-4) != NULL)
+    {
+        isize += (pmw->iconSize3 + 1023) / 1024;
+        n++;
+    }
+
+    pmw->sysFileSize = isize + ((n + 1) / 2) + 3;
+
+    re = sceMcGetInfo(pmw->port, pmw->slot, &pmw->type, &pmw->free, &pmw->format);
+    if (re == sceMcResSucceed)
+    {
+        pmw->cmd  = 14;
+        pmw->func = 14;
+    }
+
+    return re;
+}
 
 int memc_port_check(int port, int *type, int *free)
 {
@@ -327,7 +472,7 @@ int memc_chg_dir(int port, char *name)
     pmw->retry = 0;
     strcpy(pmw->filename, name);
 
-    re = sceMcChdir(port, 0, name, 0);
+    re = sceMcChdir(port, 0, name, NULL);
     if (re == sceMcResSucceed)
     {
         pmw->func = 10;
@@ -508,67 +653,61 @@ static int memc_mansub_GetInfo(int result)
     }
 }
 
-#if 1
-INCLUDE_ASM("menu/memc", memc_mansub_load);
-static int memc_mansub_load(/* -0x40(sp) */ int result);
-#else
+static int memc_mansub_load(int result)
 {
-    /* s0 16 */ MEMC_STAT *pmw = &memc_stat;
+    MEMC_STAT *pmw = &memc_stat;
 
     switch (pmw->cmd)
     {
-    case 14: // l 1206- 1215-
+    case 14:
         if (result < 0)
+            return memc_mansub_ErrChk(result);
+
+        if (pmw->type != 2)
         {
-            if (pmw->type != 2)
-            {
-                pmw->func = 0;
-                return 2;
-            }
-
-            if (memc_mansub_Open(pmw->filename, 1) == 0)
-            {
-                pmw->func = 3;
-                return 16;
-            }
-
-            return 1;
+            pmw->func = 0;
+            return 2;
         }
-        return memc_mansub_ErrChk(result);
-    case 2: // l 1230-
+
+        if (!memc_mansub_Open(pmw->filename, 1))
+        {
+            pmw->func = 3;
+            break;
+        }
+
+        return 1;
+    case 2:
         if (result < 0)
+            return memc_mansub_ErrChk(result);
+
+        pmw->fd = result;
+        if (!sceMcRead(pmw->fd, pmw->buf, pmw->size))
         {
-            pmw->fd = result;
-            
-            if (sceMcRead(result, pmw->buf, pmw->size) == sceMcResSucceed) 
-                pmw->cmd = 5;            
+            pmw->cmd = 5;
+            return 16;
         }
-        return memc_mansub_ErrChk(result);
-    case 5: // l 1240-
-        if (result < 0)
-        {
-            if (memc_mansub_Close())
-                return 1;
-            
-            pmw->func = 6;
 
-            if (pmw->isSyncClose)
-            {
-                pmw->func = 6;
-                return 16;
-            }
-
-            pmw->isSyncClose = 0;
-
-            if (sceMcSync(0, 0, &result) != 1)
-                return 16;
-        }
-        return memc_mansub_ErrChk(result);
-    default:
         return 16;
-    }   
+    case 5:
+        if (result < 0)
+            return memc_mansub_ErrChk(result);
+
+        if (memc_mansub_Close())
+            return 1;
+
+        pmw->func = 6;
+        if (!pmw->isSyncClose)
+            return 16;
+
+        pmw->isSyncClose = 0;
+        if (sceMcSync(0, NULL, &result) != 1)
+            return 16;
+
+        return memc_mansub_ErrChk(result);
+    }
+
+    return 16;
 }
-#endif
 
 INCLUDE_ASM("menu/memc", memc_manager_save);
 
