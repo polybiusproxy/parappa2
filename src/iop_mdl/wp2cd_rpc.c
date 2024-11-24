@@ -34,7 +34,7 @@ typedef struct
 
 int WP2Ctrl(int command, int data0)
 {
-    if (command == 0x8013 || command == 0x8014)
+    if (command == WP2_OPENFLOC || command == WP2_SEEKFLOC)
     {
         *(rpcBuff*)sbuff = *(rpcBuff*)data0;
 

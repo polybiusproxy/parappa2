@@ -1,4 +1,4 @@
-#include "prlib/utility.h"
+#include "utility.h"
 
 int PrGetBitSize(u_int number)
 {

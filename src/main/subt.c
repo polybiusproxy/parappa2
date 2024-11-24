@@ -364,35 +364,32 @@ void SubtTapPrintWake(/* s1 17 */ u_char *tap_msg_pp, /* s4 20 */ int lang, /* s
 }
 #endif
 
-#ifndef NON_MATCHING
-INCLUDE_ASM("main/subt", SubtCtrlPrintBoxyWipe);
-#else
-void SubtCtrlPrintBoxyWipe(/* a0 4 */ JIMAKU_STR *jstr_pp, /* a1 5 */ int line, 
-/* a2 6 */ int time, /* s4 20 */ int lang, /* s0 16 */ void *code_pp)
+void SubtCtrlPrintBoxyWipe(JIMAKU_STR *jstr_pp, int line, int time, int lang, void *code_pp)
 {
-    /* a0 4 */ int i;
-    /* s1 17 */ void *kanjiset_tmp_pp;
-    /* s3 19 */ JIMAKU_STR *jstr_tmp_pp = &jstr_pp[line];
-    /* s0 16 */ int lang_f;
+    int         i;
+    int         lang_f;
 
-    for ( i = 0; i < jstr_tmp_pp->size; i++ )
+    void       *kanjiset_tmp_pp;
+    JIMAKU_STR *jstr_tmp_pp = &jstr_pp[line];
+
+    for (i = 0; i < jstr_tmp_pp->size; i++)
     {
         if ((time >= jstr_tmp_pp->jimaku_dat_pp[i].starTime) &&
             (time <  jstr_tmp_pp->jimaku_dat_pp[i].endTime))
         {
             SubtInit();
+            
             kanjiset_tmp_pp = SubtKanjiSet(code_pp);
 
-            lang_f = (lang == LANG_ENGLISH) ? 0 : 2;
-
+            lang_f = CHECK_LANG(lang);
+            if (lang_f) lang_f = 2;
+            
             SubtClear();
-            SubtMsgPrint(jstr_tmp_pp->jimaku_dat_pp[i].txtData[lang], 2048,
-                        2122, lang_f, 0);
-
+            SubtMsgPrint(jstr_tmp_pp->jimaku_dat_pp[i].txtData[lang], 2048, 2122, lang_f, 0);
+            
             SubtFlash();
             SubtKanjiSet(kanjiset_tmp_pp);
             return;
         }
     }
 }
-#endif
