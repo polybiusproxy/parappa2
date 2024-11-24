@@ -1463,6 +1463,8 @@ memc_manager                        = 0x0013cba0; // type:func
 memc_iconsys                        = 0x0018ddf8; // size:0x3c4
 _memc_type                          = 0x0018e1c0; // type:u32 size:0x4
 
+tmps0                               = 0x01c81440; // size:0x40
+tmps1                               = 0x01c81480; // size:0x82
 memc_stat                           = 0x01c81540; // size:0x340
 
 // menu/mntm2hed.c
@@ -1801,6 +1803,11 @@ Tim2LoadTexture__FiUiiiiPUI80       = 0x001536d0; // type:func
 
 mmsize                              = 0x003999b8;
 
+// prlib/dma.cpp
+PrWaitDmaFinish__FUi                = 0x001543e8; // type:func
+
+chcr_table                          = 0x0038cd80; // size:0x28
+
 //
 //
 // ** SCE SDK FUNCTIONS **
@@ -1924,6 +1931,8 @@ sceCdReadClock                      = 0x00163a20; // type:func
 sceMcInit                           = 0x00163b18; // type:func
 sceMcOpen                           = 0x00163e78; // type:func
 sceMcClose                          = 0x00163fe8; // type:func
+sceMcRead                           = 0x00164208; // type:func
+sceMcSync                           = 0x00164518; // type:func
 sceMcGetInfo                        = 0x00164650; // type:func
 sceMcGetDir                         = 0x001647d8; // type:func
 sceMcChdir                          = 0x001649b8; // type:func

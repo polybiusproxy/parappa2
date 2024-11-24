@@ -138,7 +138,8 @@ segments:
         - [0x54888, asm, prlib/camera]
           # - [0x54ad0, asm, nalib/navector] # Header
         - [0x54e80, asm, prlib/contour]
-        - [0x553e8, asm, prlib/dma]
+        - [0x553e8, cpp, prlib/dma]
+        - [0x554a8, asm, nalib/stub_0x554a8]
           # - [0x554a8, asm, nalib/navector] # Header
         - [0x555d8, asm, nalib/navector]
 
@@ -165,7 +166,9 @@ segments:
         - [0x87288, data] # main/mbar
         - [0x88400, data, main/main]
         - [0x884f0, data] # main/commake
-        - [0x28d458, data, prlib]
+        - [0x28d458, data, prlib/prlib]
+        - [0x28dd80, .data, prlib/dma]
+        - [0x28ddb0, data, prlib/stub_0x28ddb0]
         
         # .vudata
         - [0x291ed0, data, vudata]
