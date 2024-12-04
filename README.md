@@ -3,10 +3,11 @@
 ![progress](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/polybiusproxy/parappa2/main/progress/total_progress.json)
 ![discord](https://img.shields.io/discord/302537923910303744?color=%235865F2&logo=discord&logoColor=%23FFFFFF)
 
-<img src=".github/resources/transparent.png" style="margin:7px" align="right" width="30%" alt="PaRappa icon by pips">
+<img src=".github/resources/transparent.png" style="margin:7px" align="right" width="20%" alt="PaRappa icon by pips">
 
 A work-in-progress decompilation of [*PaRappa the Rapper 2*](https://en.wikipedia.org/wiki/PaRappa_the_Rapper_2) (パラッパラッパー2) for the PlayStation 2.<br>
-We are currently targeting the July 12th NTSC-J prototype, but we aim to target the final NTSC-J/NTSC/PAL builds in the foreseeable future.
+We are currently targeting the July 12th NTSC-J prototype, but we aim to target the final NTSC-J/NTSC/PAL builds in the foreseeable future.<br><br>
+For any questions, we have a home at the [PS1/PS2 Decompilation Discord server](https://discord.gg/VwCPdfbxgm) and the [PaRappa the Rapper Modding Community Discord server](https://discord.gg/xpvVnYd).
 
 ### Progress
 #### EE main core
