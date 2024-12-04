@@ -8,6 +8,30 @@
 A work-in-progress decompilation of [*PaRappa the Rapper 2*](https://en.wikipedia.org/wiki/PaRappa_the_Rapper_2) (パラッパラッパー2) for the PlayStation 2.<br>
 We are currently targeting the July 12th NTSC-J prototype, but we aim to target the final NTSC-J/NTSC/PAL builds in the foreseeable future.
 
+### Progress
+#### EE main core
+| Folder | Progress | Description
+|------------|----------|------------
+| `dbug` | ![progress](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/polybiusproxy/parappa2/main/progress/dbug_progress.json) | Debug utilities (VRAM save, debug menus, etc.)
+| `os` | ![progress](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/polybiusproxy/parappa2/main/progress/os_progress.json) | OS utilities (threading, pad, memory, etc.)
+| `iop_mdl` | ![progress](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/polybiusproxy/parappa2/main/progress/iop_mdl_progress.json) | IOP module control routines
+| `main` | ![progress](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/polybiusproxy/parappa2/main/progress/main_progress.json) | Gameplay code (score logic, loading screen, etc.)
+| `menu` | ![progress](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/polybiusproxy/parappa2/main/progress/menu_progress.json) | Menu code (UI flow, Memory Card saving, etc.)
+| `prlib` | ![progress](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/polybiusproxy/parappa2/main/progress/prlib_progress.json) | Game engine (rendering, models/animations, etc.)
+| `nalib` | ![progress](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/polybiusproxy/parappa2/main/progress/nalib_progress.json) | Game engine utilities (vectors, matrices, packets)
+| `src` | ![progress](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/polybiusproxy/parappa2/main/progress/total_progress.json) | Total percentage
+
+#### IOP modules
+| Folder | Progress | Description
+|------------|----------|------------
+| `tapctrl` | N/A | Voice and sound effect playback
+| `wavep2` | N/A | Music and asset streaming
+
+#### VU1 microcode
+| Folder | Progress | Description
+|------------|----------|------------
+| N/A | N/A | N/A
+
 ### Requirements setup
 1. `sudo apt install gcc-mipsel-linux-gnu binutils-mips-linux-gnu ninja-build`
 2. `sudo apt install python3-pip`
