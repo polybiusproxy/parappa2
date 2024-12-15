@@ -9,11 +9,28 @@
 
 #include "iop_mdl/tapctrl_rpc.h"
 
+// unsure where to put at the moment
+typedef struct
+{
+    u_short bnkNo;
+    SNDTAP *pTap;
+} VOICE_TBL;
+
+typedef struct
+{
+    int fno[4][4];
+} MN_CRWCL1_TBL;
+
 // temp
 int hat_change_enum;
 
 /* data */
-/* static */ extern SNDTAP sndtap_menu[];
+/* static */ extern SNDTAP         sndtap_menu[];
+/* static */ extern VOICE_TBL      VoiceSet[];
+/* static */ extern int           *ocl1_rndTbl[];
+/* static */ extern MN_CRWCL1_TBL *ocl1_stageTbl[];
+/* static */ extern RT2TRANS_STR   rt2trans_str[];
+
 extern MESS mess_mc[];
 extern MESS mess_menu[];
 
@@ -27,7 +44,7 @@ void MenuDataSndInit(void)
 {
     _BankChan1Req = 0;
     _BankChan1Stat = 0;
-    
+
     TapCt(0x8011, 0x135010, 0);
     TapCt(0x90, PR_CONCAT(0x3fff, 0x3fff), 0);
 }
@@ -35,7 +52,7 @@ void MenuDataSndInit(void)
 void MenuDataSndReq(int chanId, int req)
 {
     SNDTAP *sndtap_pp = &sndtap_menu[req];
-  
+
     TapCt(0xf0, chanId, sndtap_pp->volume);
     TapCt(0xd0, chanId, sndtap_pp->prg + sndtap_pp->key * 256);
 }
@@ -50,9 +67,7 @@ void MenuDataSndQuit(void)
     int i;
 
     for (i = 0; i < 3; i++)
-    {
         TapCt(0x50 | i, 0, 0);
-    }
 }
 
 void MenuDataSndSetVol(int chanId, int req, int vol0)
@@ -66,6 +81,7 @@ MENU_SPU_ENUM MenuDataSndTrans(int bdId, int hdId, MENU_SPU_ENUM trId)
 {
     TapCt(0x8030 | trId, (int)GetIntAdrsCurrent(bdId), (int)GetIntSizeCurrent(bdId));
     TapCt(0x8040 | trId, (int)GetIntAdrsCurrent(hdId), (int)GetIntSizeCurrent(hdId));
+
     return trId;
 }
 
@@ -82,9 +98,20 @@ void MenuDataSndReqChan(int chanId, int req, MENU_SPU_ENUM trId)
     TapCt(0xd0 | trId, chanId, sndtap_pp->prg + sndtap_pp->key * 256);
 }
 
-INCLUDE_ASM("menu/menudata", MenuDataSpuVolume);
+void MenuDataSpuVolume(int vol)
+{
+    if (vol << 7 <= 0x3FFF)
+        vol = vol << 7;
+    else
+        vol = 0x3FFF;
 
-INCLUDE_ASM("menu/menudata", MenuDataDiskVolume);
+    TapCt(0x90, vol << 16 | vol, 0);
+}
+
+void MenuDataDiskVolume(u_int vol)
+{
+    CdctrlWP2SetVolume(vol);
+}
 
 void MenuDataDiskSndReq(MENU_DISKSND_ENUM sndId)
 {
@@ -96,21 +123,112 @@ int MenuDataDiskSndReady(void)
     return CdctrlWP2CheckBuffer();
 }
 
-INCLUDE_ASM("menu/menudata", MenuDataDiskSndPlay);
+void MenuDataDiskSndPlay()
+{
+    CdctrlWP2Play();
+}
 
-INCLUDE_ASM("menu/menudata", MenuDataDiskSndEnd);
+void MenuDataDiskSndEnd()
+{
+    CdctrlWp2FileEnd();
+}
 
-INCLUDE_ASM("menu/menudata", menuDiskSndDebug);
+void menuDiskSndDebug(void *x)
+{
+    int sndId = MDISK_00;
 
-INCLUDE_ASM("menu/menudata", MenuVoiceBankSet);
+    while (TRUE)
+    {
+    loop:
+        do
+        {
+            MtcWait(1);
+        } while (!(pad[1].one & SCE_PADRdown));
 
+        MenuDataDiskSndReq(sndId);
+
+        do
+        {
+            MtcWait(1);
+        } while (MenuDataDiskSndReady());
+
+        MenuDataDiskSndPlay();
+        MenuDataDiskVolume(128);
+
+        do
+        {
+            MtcWait(1);
+        } while (!(pad[1].one & SCE_PADRdown));
+
+        MenuDataDiskSndEnd();
+        sndId++;
+
+        if (sndId < MDISK_MAX)
+            goto loop;
+
+        sndId = MDISK_00;
+    }
+}
+
+int MenuVoiceBankSet(int bnkNo)
+{
+    _BankChan1Req = bnkNo;
+    _BankChan1Stat = 0;
+
+    return 0;
+}
+
+#if 1
 INCLUDE_ASM("menu/menudata", MenuVoicePlayVol);
+#else
+void MenuVoicePlayVol(int chanId, int vsetIdx, int vol0)
+{
+    SNDTAP       *sndtap_pp;
+    MENU_SPU_ENUM trId;
+    int           bnkNo;
 
-INCLUDE_ASM("menu/menudata", MenuVoicePlay);
+    if (VoiceSet[vsetIdx].bnkNo == 0)
+    {
+        bnkNo = 0;
+    }
+    else if (_BankChan1Req != VoiceSet[vsetIdx].bnkNo)
+    {
+        return;
+    }
+    else
+    {
+        bnkNo = 1;
+        if (_BankChan1Stat != 0 && MenuVoiceBankSet(_BankChan1Req) != 0)
+        {
+            return;
+        }
+    }
 
-INCLUDE_ASM("menu/menudata", MenuVoiceStop);
+    sndtap_pp = VoiceSet[vsetIdx].pTap;
 
-INCLUDE_ASM("menu/menudata", MenuVoiceSetVol);
+    TapCt(bnkNo | 0xf0, chanId, (sndtap_pp->volume * vol0) >> 8);
+    TapCt(bnkNo | 0xd0, chanId, sndtap_pp->prg + sndtap_pp->key * 0x100);
+}
+#endif
+
+void MenuVoicePlay(int chanId, int vsetIdx)
+{
+    MenuVoicePlayVol(chanId, vsetIdx, 0x100);
+}
+
+void MenuVoiceStop(int chanId)
+{
+    TapCt(0xe0, chanId, 0);
+}
+
+void MenuVoiceSetVol(int chanId, int vsetIdx, int vol0)
+{
+    SNDTAP *sndtap_pp;
+
+    sndtap_pp = VoiceSet[vsetIdx].pTap;
+
+    TapCt(0x130, chanId, (sndtap_pp->volume * vol0) >> 8);
+}
 
 void MenuMsgInit(void)
 {
@@ -128,21 +246,66 @@ void MenuMsgPrintMc(int id, int xp, int yp, int flg)
     SubtMenuCtrlPrint(mess_mc[id][flg], xp, yp, flg);
 }
 
-char* MenuMsgGetMessageMc(int id, int flg)
+char *MenuMsgGetMessageMc(int id, int flg)
 {
     return mess_mc[id][flg];
 }
 
-char* MenuMsgGetMessageSub(int id, int flg)
+char *MenuMsgGetMessageSub(int id, int flg)
 {
     return mess_menu[id][flg];
 }
 
-INCLUDE_ASM("menu/menudata", MenuRoundTim2Trans);
+int MenuRoundTim2Trans(TAP_ROUND_ENUM round)
+{
+    RT2TRANS_STR *rt2trans_str_pp;
+    int           i;
 
-INCLUDE_ASM("menu/menudata", MenuStageCl1Trans);
+    if (round < TRND_R4)
+        hat_change_enum = HCNG_AUTO;
 
-INCLUDE_ASM("menu/menudata", MenuCoolCl1Trans);
+    if (hat_change_enum != HCNG_AUTO)
+        round = hat_change_enum;
+
+    if (round >= TRND_MAX)
+        return 1;
+
+    rt2trans_str_pp = &rt2trans_str[round];
+
+    for (i = 0; i < rt2trans_str_pp->num; i++)
+        Tim2Trans(GetIntAdrsCurrent(rt2trans_str_pp->data_pp[i]));
+
+    return 0;
+}
+
+int MenuStageCl1Trans(int nStage, int nRound)
+{
+    if (nStage > 7U)
+        return 1;
+
+    if (nRound > 3U)
+        return 0;
+
+    Tim2Trans(GetIntAdrsCurrent(ocl1_rndTbl[nRound][nStage]));
+
+    return 0;
+}
+
+int MenuCoolCl1Trans(int nStage, int nPos, int nRound)
+{
+    if (nStage > 7U)
+        return 1;
+
+    if (nRound > 3U)
+        return 1;
+
+    if (nPos > 3U)
+        return 1;
+
+    Tim2Trans(GetIntAdrsCurrent(ocl1_stageTbl[nStage]->fno[nPos][nRound]));
+
+    return 0;
+}
 
 /* EUC-JP strings... scary */
 INCLUDE_RODATA("menu/menudata", D_00393C00);
