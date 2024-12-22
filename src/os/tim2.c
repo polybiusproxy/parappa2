@@ -89,7 +89,7 @@ int GetTim2Info(void *tim2_pp, TIM2INFO *info_pp, int maxinfo)
             current_pp += mm_ofs;
         }
 
-        k_size = info_pp->picturH->HeaderSize - 48 - mm_ofs;
+        k_size = info_pp->picturH->HeaderSize - sizeof(TIM2_PICTUREHEADER) - mm_ofs;
         if (k_size != 0)
         {
             info_pp->exH = current_pp;

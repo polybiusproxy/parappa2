@@ -35,7 +35,7 @@ extern GAME_STATUS game_status;
 extern MC_REP_STR  mc_rep_str;
 
 /* .sdata */
-// extern HAT_CHANGE_ENUM hat_change_enum;
+extern HAT_CHANGE_ENUM hat_change_enum;
 
 extern INGAME_COMMON_STR ingame_common_str;
 

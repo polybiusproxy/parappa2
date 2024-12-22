@@ -9,9 +9,6 @@
 
 #include "iop_mdl/tapctrl_rpc.h"
 
-// temp
-int hat_change_enum;
-
 /* data */
 /* static */ extern SNDTAP sndtap_menu[];
 extern MESS mess_mc[];

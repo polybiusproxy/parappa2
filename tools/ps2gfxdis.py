@@ -92,15 +92,15 @@ def disassemble_null(data, name):
     return f"Unimplemented register {name}"
 
 def disassemble_prim(data, name):
-    PRIM = (data >> 0 ) & 0b111 # bits 0-2
-    IIP  = (data >> 3 ) & 0b1   # bit 3
-    TME  = (data >> 4 ) & 0b1   # bit 4
-    FGE  = (data >> 5 ) & 0b1   # bit 5
-    ABE  = (data >> 6 ) & 0b1   # bit 6
-    AA1  = (data >> 7 ) & 0b1   # bit 7
-    FST  = (data >> 8 ) & 0b1   # bit 8
-    CTXT = (data >> 9 ) & 0b1   # bit 9
-    FIX  = (data >> 10) & 0b1   # bit 10
+    PRIM = (data >> 0 ) & 0b111
+    IIP  = (data >> 3 ) & 0b1
+    TME  = (data >> 4 ) & 0b1
+    FGE  = (data >> 5 ) & 0b1
+    ABE  = (data >> 6 ) & 0b1
+    AA1  = (data >> 7 ) & 0b1
+    FST  = (data >> 8 ) & 0b1
+    CTXT = (data >> 9 ) & 0b1
+    FIX  = (data >> 10) & 0b1
 
     return format_macro(name, PRIM, IIP, TME, FGE, ABE, AA1, FST, CTXT, FIX)
 
@@ -109,7 +109,7 @@ def disassemble_rgbaq(data, name):
     G = (data >> 8 ) & 255
     B = (data >> 16) & 255
     A = (data >> 24) & 255
-    Q = (data >> 32) & 0xFFFFFFFF
+    Q = (data >> 32) & 0xffffffff
 
     # TODO: Add option to display Q as a float
     # q_bits = (data >> 32) & 0xFFFFFFFF
@@ -123,9 +123,9 @@ def disassemble_rgbaq(data, name):
     return format_macro(name, R, G, B, A, Q_str)
 
 def disassemble_xyz(data, name):
-    X = (data >> 0 ) & 0xffff     # bits 0-15
-    Y = (data >> 16) & 0xffff     # bits 16-31
-    Z = (data >> 32) & 0xffffffff # bits 32-63
+    X = (data >> 0 ) & 0xffff
+    Y = (data >> 16) & 0xffff
+    Z = (data >> 32) & 0xffffffff
 
     # Convert the GS coordinates back to screen coordinates
     SCREEN_X = round((X / 16) - (2048 - (640 / 2)))
@@ -151,22 +151,22 @@ def disassemble_tex0(data, name):
                         CBP, CPSM, CSM, CSA, CLD)
 
 def disassemble_tex1(data, name):
-    LCM  = (data >> 0 ) & 0b1   # bit 0
-    MXL  = (data >> 2 ) & 0b111 # bits 2-4
-    MMAG = (data >> 5 ) & 0b1   # bit 5
-    MMIN = (data >> 6 ) & 0b111 # bits 6-8
-    MTBA = (data >> 9 ) & 0b1   # bit 9
-    L    = (data >> 19) & 0b11  # bits 19-20
-    K    = (data >> 32) & 0xfff # bits 32-43
+    LCM  = (data >> 0 ) & 0b1
+    MXL  = (data >> 2 ) & 0b111
+    MMAG = (data >> 5 ) & 0b1
+    MMIN = (data >> 6 ) & 0b111
+    MTBA = (data >> 9 ) & 0b1
+    L    = (data >> 19) & 0b11
+    K    = (data >> 32) & 0xfff
 
     return format_macro(name, LCM, MXL, MMAG, MMIN, MTBA, L, K)
 
 def disassemble_alpha(data, name):
-    A   = (data >> 0 ) & 0b11 # bits 0-1
-    B   = (data >> 2 ) & 0b11 # bits 2-3
-    C   = (data >> 4 ) & 0b11 # bits 4-5
-    D   = (data >> 6 ) & 0b11 # bits 6-7
-    FIX = (data >> 32) & 0xff # bits 32-39
+    A   = (data >> 0 ) & 0b11
+    B   = (data >> 2 ) & 0b11
+    C   = (data >> 4 ) & 0b11
+    D   = (data >> 6 ) & 0b11
+    FIX = (data >> 32) & 0xff
 
     return format_macro(name, A, B, C, D, FIX)
 
