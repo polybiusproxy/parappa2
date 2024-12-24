@@ -868,6 +868,20 @@ inCmnHookSet                        = 0x0011cc48; // type:func
 inCmnHook2GameCheck                 = 0x0011ccd0; // type:func
 inCmnHook2GameSave                  = 0x0011cd30; // type:func
 
+usrSceneHandle                      = 0x00399590; // size:0x4
+
+scr_snd_area                        = 0x00186f50; // size:0x30
+hkl_pknum_01                        = 0x00186f80; // size:0x8
+hkl_pknum_02                        = 0x00186f88; // size:0x8
+hkl_pknum_03                        = 0x00186f90; // size:0x8
+hkl_pknum_04                        = 0x00186f98; // size:0x8
+hkl_pknum_05                        = 0x00186fa0; // size:0x8
+hkl_pknum_06                        = 0x00186fa8; // size:0x8
+hkl_pknum_07                        = 0x00186fb0; // size:0x8
+hkl_pkstr                           = 0x00186fb8; // size:0x48
+
+vsync_time                          = 0x01c73018; // size:0xcc
+
 // main/wipe.c
 wipeSndReq                          = 0x0011cd58; // type:func
 wipeSndStop                         = 0x0011cde8; // type:func
@@ -1850,6 +1864,7 @@ sceGsSyncPath                       = 0x001551d0; // type:func
 sceGsSetDefStoreImage               = 0x001556d0; // type:func
 sceGsExecLoadImage                  = 0x00155810; // type:func
 sceGsExecStoreImage                 = 0x00155990; // type:func
+sceGsSyncVCallback                  = 0x00156020; // type:func
 sceGsSetHalfOffset                  = 0x001560c0; // type:func
 sceGsSetHalfOffset2                 = 0x00156148; // type:func
 sceGsSetDefDBuffDc                  = 0x001561d0; // type:func

@@ -147,7 +147,7 @@ void SubtMsgPrint(/* s0 16 */ u_char *msg_pp, /* -0xac(sp) */ int xp, /* -0xa8(s
                     {
                         euc2sjis(&dat0, (dat0 | 1));
 
-                        if ((dat0 == '\x81') && (dat1 == '\x97'))
+                        if (dat0 == 0x81 && dat1 == 0x97)
                         {
                             line_num++;
                         }
@@ -337,32 +337,29 @@ u_char* SubtMsgDataPos(u_char *msg_pp, int jap_flag, int pos)
     return NULL;
 }
 
-#ifndef NON_MATCHING
-INCLUDE_ASM("main/subt", SubtTapPrintWake);
-#else
-void SubtTapPrintWake(/* s1 17 */ u_char *tap_msg_pp, /* s4 20 */ int lang, /* s2 18 */ int lng, /* s0 16 */ int nowp)
+void SubtTapPrintWake(u_char *tap_msg_pp, int lang, int lng, int nowp)
 {
     int cntmax;
     int selpos;
 
-    if (nowp >= 0)
+    if (nowp < 0)
+        return;
+
+    if (nowp >= lng)
+        nowp = lng - 1;
+
+    if (tap_msg_pp == NULL)
+        return;
+
+    cntmax = SubtMsgDataKaijyouCnt(tap_msg_pp, CHECK_LANG(lang));
+    if (cntmax >= 3)
     {
-        if (nowp > lng)
-            selpos = nowp;
-        else
-            selpos = lng - 1;
-
-        if (tap_msg_pp != NULL)
-        {
-            cntmax = SubtMsgDataKaijyouCnt(tap_msg_pp, CHECK_LANG(lang));
-            if (cntmax >= 3) // (cntmax > 2) LOGIC
-                selpos = SubtMsgDataPos(tap_msg_pp, CHECK_LANG(lang), (((cntmax + 1) / 2) * selpos) / lng << 1);
-
-            SubtTapPrint(selpos, lang);
-        }
+        cntmax = ((cntmax + 1) / 2 * nowp) / lng * 2;
+        tap_msg_pp = SubtMsgDataPos(tap_msg_pp, CHECK_LANG(lang), cntmax);
     }
+
+    SubtTapPrint(tap_msg_pp, lang);
 }
-#endif
 
 void SubtCtrlPrintBoxyWipe(JIMAKU_STR *jstr_pp, int line, int time, int lang, void *code_pp)
 {

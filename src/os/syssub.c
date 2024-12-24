@@ -786,7 +786,7 @@ int DrawGetTbpPos(DNUM_ENUM dnum)
     int ret = 0;
 
     // TODO(poly): figure out what these values mean
-    switch (dnum) 
+    switch (dnum)
     {
     case DNUM_SHOW:
         ret = 2240;

@@ -3,10 +3,6 @@
 
 #include <eetypes.h>
 
-// Typedef structs that I'm too lazy to define here
-// -----------------------------------------------
-// -----------------------------------------------
-
 typedef struct { // 0x18
     /* 0x00 */ u_char per[17];
     /* 0x14 */ int pls_point;
@@ -295,16 +291,15 @@ typedef enum
     RLVL_HK_MAX = 17
 } RANK_LEVEL;
 
-typedef enum
-{
-    PAD_1CON,
-    PAD_2CON,
-    PAD_NOPLAYER,
-    PAD_COM,
-    PAD_DEMO,
-    PAD_REPLAY,
-    PAD_UNUSE,
-    PAD_TYPE_MAX
+typedef enum {
+    PAD_1CON = 0,
+    PAD_2CON = 1,
+    PAD_NOPLAYER = 2,
+    PAD_COM = 2,
+    PAD_DEMO = 3,
+    PAD_REPLAY = 4,
+    PAD_UNUSE = 5,
+    PAD_TYPE_MAX = 6
 } PAD_TYPE;
 
 typedef enum {
@@ -508,13 +503,26 @@ typedef enum {
     TCBK_CHANNEL_MAX = 51
 } TCBK_CHANNEL_ENUM;
 
+// TODO(poly): ^ everything above should NOT be here!
+
+typedef struct { // 0xc
+    /* 0x0 */ int spu_size;
+    /* 0x4 */ int spu_adrs;
+    /* 0x8 */ int iop_size;
+} SCR_SND_AREA;
+
+typedef struct { // 0x8
+    /* 0x0 */ int cnt;
+    /* 0x4 */ u_char *hknum_pp;
+} HKL_PKSTR;
+
 void GlobalTimeInit(GLOBAL_DATA *gl_pp);
 void GlobalSetTempo(GLOBAL_DATA *gl_pp, float tempo);
 void GlobalPlySet(GLOBAL_DATA *gl_pp, PLAY_STEP stp, int stage_num);
 
 TAP_ROUND_ENUM GetHatRound(void);
 int GlobalSndSampleGet(void);
-void TimeCallbackTimeSetChan(int chan, u_int time);
+void TimeCallbackTimeSetChan(TCBK_CHANNEL_ENUM chan, u_int time);
 u_int TimeCallbackTimeGetChan(int chan);
 void GlobalTimeJobChange(TIME_GET_FLAG tfg);
 void TimeCallbackTimeSetChanTempo(int chan, u_int time, float tempo);

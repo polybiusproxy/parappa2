@@ -21,9 +21,6 @@ typedef struct
     int fno[4][4];
 } MN_CRWCL1_TBL;
 
-// temp
-int hat_change_enum;
-
 /* data */
 /* static */ extern SNDTAP         sndtap_menu[];
 /* static */ extern VOICE_TBL      VoiceSet[];
